@@ -1,0 +1,5 @@
+rootProject.name = 'memato'
+
+include 'api'
+include 'ui'
+
