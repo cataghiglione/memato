@@ -1,6 +1,8 @@
 plugins {
     // Apply the java plugin to add support for Java
     id 'java'
+    id 'application'
+
 }
 
 repositories {
@@ -21,5 +23,8 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.9.0'
     // Use JUnit test framework
     testImplementation 'junit:junit:4.13.2'
+}
+application{
+    mainClassName = "AppLauncher"
 }
 
