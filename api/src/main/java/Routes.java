@@ -94,6 +94,12 @@ public class Routes {
             return "";
 
         });
+        authorizedGet(USERS_ROUTE, (req, res) -> {
+            final List<User> users = system.listUsers();
+            return JsonParser.toJson(users);
+        });
+        authorizedGet(USER_ROUTE, (req, res) -> getToken(req).map(JsonParser::toJson));
+        authorizedGet(USER_ROUTE, (req, res) -> getToken(req).map(JsonParser::toJson));
         Spark.get("/getAllUsers", "application/json", (req, resp) -> {
             resp.type("application/json");
             resp.status(200);

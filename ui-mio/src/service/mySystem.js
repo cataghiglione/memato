@@ -44,7 +44,7 @@ const MySystem = {
             if (resp.status === 200) {
                 resp.json().then(users => okCallback(users))
             } else {
-                errorCallback()
+                errorCallback("Could not load users")
             }
         })
     }

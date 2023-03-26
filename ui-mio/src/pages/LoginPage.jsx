@@ -25,6 +25,7 @@ export const LoginPage = () => {
     const isOk = searchParams.get("ok")
 
     function loginUser(credentials) {
+        console.log("toy aca")
         mySystem.login(
             credentials,
             (token) => {
