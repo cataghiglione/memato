@@ -1,5 +1,5 @@
 rootProject.name = 'memato'
 
 include 'api'
-include 'ui'
+include 'ui-mio'
 
