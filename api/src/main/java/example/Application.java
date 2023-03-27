@@ -19,7 +19,7 @@ public class Application {
 
         Spark.port(4326);
 
-        storedBasicUser(entityManagerFactory);
+//        storedBasicUser(entityManagerFactory);
 
 
         Spark.get("/getAllUsers", "application/json", (req, resp) -> {
@@ -40,26 +40,26 @@ public class Application {
 
     }
 
-    private static void storedBasicUser(EntityManagerFactory entityManagerFactory) {
-        final EntityManager entityManager = entityManagerFactory.createEntityManager();
-        final Users users = new Users(entityManager);
-
-        EntityTransaction tx = entityManager.getTransaction();
-        tx.begin();
-        if (users.listAll().isEmpty()) {
-            final User kate =
-                    User.create("catuchi22@river.com", "91218","Catuchi","Ghi");
-            final User coke =
-                    User.create("cocaL@depo.com","1234","Coke","Lasa");
-
-            final User fercho =
-                    User.create("ferpalacios@remix.com","4321","Fercho","Palacios");
-
-            users.persist(kate);
-            users.persist(coke);
-            users.persist(fercho);
-        }
-        tx.commit();
-        entityManager.close();
-    }
+//    private static void storedBasicUser(EntityManagerFactory entityManagerFactory) {
+//        final EntityManager entityManager = entityManagerFactory.createEntityManager();
+//        final Users users = new Users(entityManager);
+//
+//        EntityTransaction tx = entityManager.getTransaction();
+//        tx.begin();
+//        if (users.listAll().isEmpty()) {
+//            final User kate =
+//                    User.create("catuchi22@river.com", "91218","Catuchi","Ghi");
+//            final User coke =
+//                    User.create("cocaL@depo.com","1234","Coke","Lasa");
+//
+//            final User fercho =
+//                    User.create("ferpalacios@remix.com","4321","Fercho","Palacios");
+//
+//            users.persist(kate);
+//            users.persist(coke);
+//            users.persist(fercho);
+//        }
+//        tx.commit();
+//        entityManager.close();
+//    }
 }
