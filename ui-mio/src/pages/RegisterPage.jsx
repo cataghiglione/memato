@@ -13,6 +13,9 @@ export const RegisterPage = () => {
 
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
+    const[name, setName] = useState('')
+    const[lastName, setLastName] = useState('')
+
     const [errorMsg, setErrorMsg] = useState(undefined)
     const navigate = useNavigate();
     const mySystem = useMySystem();
@@ -50,6 +53,12 @@ export const RegisterPage = () => {
     const passwordChange = (event) => {
         setPassword(event.target.value)
     }
+    const nameChange = (event) => {
+        setName(event.target.value)
+    }
+    const lastNameChange = (event) => {
+        setLastName(event.target.value)
+    }
     function RegisterRequest(){
         console.log("Im requesting a register!");
     }
@@ -67,6 +76,26 @@ export const RegisterPage = () => {
                            value={username}
                            name="email"
                            onChange={usernameChange}/>
+                </div>
+
+                <br/>
+                <div>
+                    <input type="Name"
+                    id="Name"
+                    placeholder="Name"
+                    name ="Name"
+                    value={name}
+                    onChange={nameChange}/>
+                </div>
+                <br/>
+                <div>
+                    <input
+                        type="lastName"
+                        id="lastName"
+                        placeholder="Last Name"
+                        name="lastName"
+                        value={lastName}
+                        onChange={lastNameChange}/>
                 </div>
                 <br/>
                 <div>
