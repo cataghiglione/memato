@@ -47,6 +47,38 @@ const MySystem = {
                 errorCallback("Could not load users")
             }
         })
+    },
+
+    getUser: (token, okCallback, errorCallback) => {
+        fetch('http://localhost:4326/user/:mail', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token
+            }
+        }).then(resp => {
+            if (resp.status === 200) {
+                okCallback()
+            } else {
+                errorCallback()
+            }
+        })
+    },
+
+    pickTeam: (token, okCallback, errorCallback) => {
+        fetch('http://localhost:4326/pickTeam', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token
+            }
+        }).then(resp => {
+            if (resp.status === 200) {
+                resp.json().then(users => okCallback(users))
+            } else {
+                errorCallback("Could not load users")
+            }
+        })
     }
 }
 

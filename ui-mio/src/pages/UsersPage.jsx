@@ -4,16 +4,22 @@ import {useNavigate} from "react-router";
 import {useAuthProvider} from "../auth/auth";
 import {useMySystem} from "../service/mySystem";
 
-export const HomePage = () => {
+export const UsersPage = () => {
     const navigate = useNavigate()
     const mySystem = useMySystem()
     const auth = useAuthProvider()
 
     const token = auth.getToken();
+    const [users, setUsers] = useState([])
     const [user, setUser] = useState('')
-    console.log("ESTOY EN HOMEE")
-    mySystem.getUser(token, (user) => {setUser(user);})
-    console.log(user.email)
+
+    useEffect(() => {
+        mySystem.listUsers(token, (users) => setUsers(users));
+    }, [])
+    useEffect(() => {
+        mySystem.getUser(token, (user) => setUser(user));
+    })
+
     const signOut = () => {
         auth.removeToken();
 
@@ -34,8 +40,13 @@ export const HomePage = () => {
             </nav>
 
             <div className="container">
-                <h1>Hi ${user.email}
-                </h1>
+                <h1>Users</h1>
+                <ul>
+                    {users.map(user =>
+                        <li key={user.email}>{user.email}</li>
+                    )}
+                </ul>
+                <h1>Hi {user}</h1>
             </div>
 
             <footer className="footer">

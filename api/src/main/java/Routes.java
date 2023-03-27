@@ -19,6 +19,7 @@ import javax.persistence.Persistence;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicReference;
 
 import static java.util.concurrent.TimeUnit.MINUTES;
 import static json.JsonParser.toJson;
@@ -98,7 +99,24 @@ public class Routes {
             final List<User> users = system.listUsers();
             return JsonParser.toJson(users);
         });
-        authorizedGet(USER_ROUTE, (req, res) -> getToken(req).map(JsonParser::toJson));
+        authorizedGet(USER_ROUTE+"/:mail", (req, res) -> {
+            final String mail = req.params("mail");
+            AtomicReference<User> user = null;
+            system.findUserByEmail(mail).ifPresentOrElse(
+                    (user1) -> {
+                        res.status(200);
+                        user.set(user1);
+                    },
+                    () -> {
+                        res.status(409);
+                        req.body();
+                    }
+            );
+            if(user.get() != null){
+                return JsonParser.toJson(user);
+            }
+            return req.body();
+        });
         authorizedGet(USER_ROUTE, (req, res) -> getToken(req).map(JsonParser::toJson));
         Spark.get("/getAllUsers", "application/json", (req, resp) -> {
             resp.type("application/json");
