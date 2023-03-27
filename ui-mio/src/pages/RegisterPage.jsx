@@ -12,6 +12,7 @@ function goToLogin() {
 export const RegisterPage = () => {
 
     const [username, setUsername] = useState('')
+    const [mail, setMail] = useState('')
     const [password, setPassword] = useState('')
     const[name, setName] = useState('')
     const[lastName, setLastName] = useState('')
@@ -24,7 +25,10 @@ export const RegisterPage = () => {
         console.log("Estoy aca");
         e.preventDefault();
         registerUser({
-            email: username,
+            username: username,
+            firstName: name,
+            lastName: lastName,
+            email: mail,
             password: password
         })
     }
@@ -32,6 +36,9 @@ export const RegisterPage = () => {
     const resetForm = () => {
         setUsername('')
         setPassword('')
+        setName('')
+        setMail('')
+        setLastName('')
     }
 
     const registerUser = (user) => {
@@ -59,6 +66,9 @@ export const RegisterPage = () => {
     const lastNameChange = (event) => {
         setLastName(event.target.value)
     }
+    const mailChange = (event) => {
+        setMail(event.target.value)
+    }
     function RegisterRequest(){
         console.log("Im requesting a register!");
     }
@@ -73,9 +83,9 @@ export const RegisterPage = () => {
                 <div>
                     <input type="email"
                            placeholder="name@example.com"
-                           value={username}
+                           value={mail}
                            name="email"
-                           onChange={usernameChange}/>
+                           onChange={mailChange}/>
                 </div>
 
                 <br/>
@@ -96,6 +106,16 @@ export const RegisterPage = () => {
                         name="lastName"
                         value={lastName}
                         onChange={lastNameChange}/>
+                </div>
+                <br/>
+                <div>
+                    <input
+                        type="username"
+                        id="username"
+                        placeholder="username"
+                        name="username"
+                        value={username}
+                        onChange={usernameChange}/>
                 </div>
                 <br/>
                 <div>

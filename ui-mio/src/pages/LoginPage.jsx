@@ -54,11 +54,10 @@ export const LoginPage = () => {
     const passwordChange = (event) => {
         setPassword(event.target.value)
     }
+
     function LoginRequest(){
         console.log("hola");
-
     }
-
 
     return (
         <div className={"containerPrincipal"}>
