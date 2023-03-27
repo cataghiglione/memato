@@ -38,15 +38,17 @@ public class User {
     public User() {
     }
 
-    private User(String firstName, String lastName, String email, String password) {
+    private User(String firstName, String lastName, String email, String password, String username) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.password = password;
+        this.username=username;
+
     }
 
-    public static User create(String email, String password, String firstName, String lastName) {
-        return new User(firstName, lastName, email, password);
+    public static User create(String email, String password, String firstName, String lastName,String username) {
+        return new User(firstName, lastName, email, password,username);
     }
 
     public String getFirstName() {
