@@ -16,9 +16,6 @@ export const UsersPage = () => {
     useEffect(() => {
         mySystem.listUsers(token, (users) => setUsers(users));
     }, [])
-    useEffect(() => {
-        mySystem.getUser(token, (user) => setUser(user));
-    })
 
     const signOut = () => {
         auth.removeToken();
@@ -46,7 +43,6 @@ export const UsersPage = () => {
                         <li key={user.email}>{user.email}</li>
                     )}
                 </ul>
-                <h1>Hi {user}</h1>
             </div>
 
             <footer className="footer">

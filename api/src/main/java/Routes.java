@@ -6,6 +6,7 @@ import com.google.gson.Gson;
 import com.sun.tools.jconsole.JConsoleContext;
 import json.JsonParser;
 import model.*;
+import repository.Teams;
 import repository.Users;
 import spark.Request;
 import spark.Response;
@@ -30,7 +31,7 @@ public class Routes {
     public static final String USERS_ROUTE = "/users";
     public static final String USER_ROUTE = "/user1";
     public static final String AUTH_ROUTE = "/auth";
-    public static final String TEAM_ROUTE = "/team";
+    public static final String PICK_TEAM_ROUTE = "/pickTeam";
     public static final String NEW_TEAM_ROUTE = "/newTeam";
 
 
@@ -117,6 +118,11 @@ public class Routes {
         authorizedGet(USERS_ROUTE, (req, res) -> {
             final List<User> users = system.listUsers();
             return JsonParser.toJson(users);
+        });
+        get(PICK_TEAM_ROUTE, (req, res) -> {
+            final EntityManager entityManager = entityManagerFactory.createEntityManager();
+            final Teams teams = new Teams(entityManager);
+            return gson.toJson(teams.listAll());
         });
         Spark.get("/user", (req, res) -> {
             String mail = req.queryParams("m");

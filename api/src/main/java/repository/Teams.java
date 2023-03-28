@@ -5,6 +5,7 @@ import model.User;
 import model.Team;
 
 import javax.persistence.EntityManager;
+import java.util.List;
 import java.util.Optional;
 
 public class Teams {
@@ -31,5 +32,7 @@ public class Teams {
         return findTeamByName(name).isPresent();
     }
 
-
+    public List<Team> listAll() {
+        return entityManager.createQuery("SELECT u FROM Team u", Team.class).getResultList();
+    }
 }

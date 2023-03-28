@@ -11,7 +11,6 @@ import {RequireAuth} from "./components/RequireAuth";
 import {HomePage} from "./pages/HomePage";
 import {PickTeamPage} from "./pages/PickTeamPage";
 import {NewTeamPage} from "./pages/NewTeamPage"
-
 function App() {
     return (
         <Routes>
@@ -21,6 +20,7 @@ function App() {
             <Route path="/user" element={<HomePage/>}/>
             <Route path="/pickTeam" element={<PickTeamPage/>}/>
             <Route path="/newTeam" element={<NewTeamPage/>}/>
+            <Route path="/users" element={<UsersPage/>}/>
             <Route
                 path="/home"
                 element={
