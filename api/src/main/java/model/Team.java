@@ -15,21 +15,25 @@ public class Team {
     private String sport;
 
     @Column(name = "QUANTITY")
-    private int quantity;
+    private String quantity;
+
+    @Column(name = "AGE_GROUP")
+    private String group;
 
     @Column (name = "PUNTUALITY")
     private int puntuality;
 
     public Team(){}
 
-    private Team(String name, String sport, int quantity, int puntuality){
+    private Team(String name, String sport, String quantity, int puntuality, String group){
         this.name=name;
         this.sport=sport;
         this.quantity=quantity;
         this.puntuality=puntuality;
+        this.group=group;
     }
-    public static Team create(String name, String sport, int quantity, int puntuality){
-        return new Team(name,sport,quantity,puntuality);
+    public static Team create(String name, String sport, String quantity, int puntuality,String group){
+        return new Team(name,sport,quantity,puntuality, group);
     }
 
     public long getId() {
@@ -40,11 +44,15 @@ public class Team {
         return name;
     }
 
+    public String getGroup() {
+        return group;
+    }
+
     public String getSport() {
         return sport;
     }
 
-    public int getQuantity() {
+    public String getQuantity() {
         return quantity;
     }
 

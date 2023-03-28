@@ -9,17 +9,22 @@ public class CreateTeamForm {
 
     private final String sport;
 
-    private final int quantity;
+    private final String quantity;
+    private  final String group;
 
     public String getName() {
         return name;
+    }
+
+    public String getGroup() {
+        return group;
     }
 
     public String getSport() {
         return sport;
     }
 
-    public int getQuantity() {
+    public String getQuantity() {
         return quantity;
     }
 
@@ -29,11 +34,12 @@ public class CreateTeamForm {
 
     private final int puntuality;
 
-    public CreateTeamForm(String name, String sport, int quantity, int puntuality){
+    public CreateTeamForm(String name, String sport, String quantity, int puntuality, String group){
         this.name=name;
         this.sport=sport;
         this.quantity=quantity;
         this.puntuality=puntuality;
+        this.group=group;
     }
 
     public static CreateTeamForm createFromJson(String body){

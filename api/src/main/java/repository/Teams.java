@@ -22,7 +22,7 @@ public class Teams {
                 .findFirst();
     }
     public Team createTeam(CreateTeamForm creationValues){
-        final Team newTeam = Team.create(creationValues.getName(),creationValues.getSport(),creationValues.getQuantity(),0);
+        final Team newTeam = Team.create(creationValues.getName(),creationValues.getSport(),creationValues.getQuantity(),0, creationValues.getGroup());
         if (findTeamByName(creationValues.getName()).isPresent()) throw new IllegalStateException("A team with that name already exists");
         entityManager.persist(newTeam);
         return newTeam;

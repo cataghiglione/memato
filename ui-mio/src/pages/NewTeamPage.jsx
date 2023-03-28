@@ -44,7 +44,7 @@ export const NewTeamPage = () => {
             user,
             () => navigate("/login?ok=true"),
             () => {
-                setErrorMsg('User already exists!')
+                setErrorMsg('Team name already in use!')
                 resetForm();
             }
         )
