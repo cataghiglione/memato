@@ -6,15 +6,13 @@ import {useMySystem} from "../service/mySystem";
 import "../css/Login.css"
 import "../images/RivalMatch_logoRecortado.png"
 
-function goToLogin() {
-    window.location.href = "/login"
-}
 export const RegisterPage = () => {
 
     const [sport, setSport] = useState('')
     const [quant_Players, setQuant_player] = useState('')
     const [group, setGroup] = useState('')
     const[zone, setZone] = useState('')
+    const[name, setName] = useState('')
 
     const [errorMsg, setErrorMsg] = useState(undefined)
     const navigate = useNavigate();
@@ -36,6 +34,7 @@ export const RegisterPage = () => {
         setZone('')
         setGroup('')
         setQuant_player('')
+        setName('')
     }
 
     const registerUser = (user) => {
@@ -50,90 +49,91 @@ export const RegisterPage = () => {
         )
     }
 
-    // const usernameChange = (event) => {
-    //     set(event.target.value)
-    // }
-    //
-    // const passwordChange = (event) => {
-    //     setPassword(event.target.value)
-    // }
-    // const nameChange = (event) => {
-    //     setName(event.target.value)
-    // }
-    // const lastNameChange = (event) => {
-    //     setLastName(event.target.value)
-    // }
-    // const mailChange = (event) => {
-    //     setMail(event.target.value)
-    // }
-    // function RegisterRequest(){
-    //     console.log("Im requesting a register!");
-    // }
+    const sportChange = (event) => {
+        setSport(event.target.value)
+    }
+    const quant_PlayersChange = (event) => {
+        setQuant_player(event.target.value)
+    }
+    const groupChange = (event) => {
+        setGroup(event.target.value)
+    }
+    const zoneChange = (event) => {
+        setZone(event.target.value)
+    }
 
-//     return (
-//         <div className={"containerPrincipal"}>
-//             {errorMsg && <div className="alert alert-danger" role="alert">{errorMsg}</div>}
-//
-//             <img style={{ width: 218, height: "auto"}} src={require("../images/RivalMatch_logoRecortado.png")} alt={"Logo"}/>
-//             <form onSubmit={handleSubmit}>
-//                 <br/>
-//                 <div>
-//                     <input type="email"
-//                            placeholder="name@example.com"
-//                            value={mail}
-//                            name="email"
-//                            onChange={mailChange}/>
-//                 </div>
-//
-//                 <br/>
-//                 <div>
-//                     <input type="Name"
-//                            id="Name"
-//                            placeholder="Name"
-//                            name ="Name"
-//                            value={name}
-//                            onChange={nameChange}/>
-//                 </div>
-//                 <br/>
-//                 <div>
-//                     <input
-//                         type="lastName"
-//                         id="lastName"
-//                         placeholder="Last Name"
-//                         name="lastName"
-//                         value={lastName}
-//                         onChange={lastNameChange}/>
-//                 </div>
-//                 <br/>
-//                 <div>
-//                     <input
-//                         type="username"
-//                         id="username"
-//                         placeholder="username"
-//                         name="username"
-//                         value={username}
-//                         onChange={usernameChange}/>
-//                 </div>
-//                 <br/>
-//                 <div>
-//                     <input type="password"
-//                            id="floatingPassword"
-//                            placeholder="Password"
-//                            name="password"
-//                            value={password}
-//                            onChange={passwordChange}/>
-//                 </div>
-//                 <br/>
-//                 <br/>
-//                 <div>
-//                     {/*<button type="submit" className={"signUpButton"}>Sign up</button>*/}
-//                     <button id="submit" type="submit" onClick={() => RegisterRequest()}>Register</button>
-//                 </div>
-//                 <br/>
-//                 <div>
-//                     <button className={"goToSignUp"} onClick={goToLogin}>Go to Login</button>
-//                 </div>
-//             </form>
-//         </div>
-//     )
+    const nameChange = (event) => {
+        setName(event.target.value)
+    }
+
+    function newTeamRequest(){
+        console.log("Im requesting a new Team!");
+    }
+
+    return (
+        <div className={"containerPrincipal"}>
+            {errorMsg && <div className="alert alert-danger" role="alert">{errorMsg}</div>}
+
+            <img style={{ width: 218, height: "auto"}} src={require("../images/RivalMatch_logoRecortado.png")} alt={"Logo"}/>
+            <form onSubmit={handleSubmit}>
+                <br/>
+                <div>
+                    <input type="sport"
+                           placeholder="Football"
+                           value={sport}
+                           name="sport"
+                           onChange={sportChange}/>
+                </div>
+
+                <br/>
+                <div>
+                    <input type="Name"
+                           id="Name"
+                           placeholder="Name"
+                           name ="Name"
+                           value={name}
+                           onChange={nameChange}/>
+                </div>
+                <br/>
+                <div>
+                    <input
+                        type="quantity Players"
+                        id="quantPlayers"
+                        placeholder="11"
+                        name="quantity Players"
+                        value={quant_Players}
+                        onChange={quant_PlayersChange}/>
+                </div>
+                <br/>
+                <div>
+                    <input
+                        type="zone"
+                        id="zone"
+                        placeholder="Pilar"
+                        name="zone"
+                        value={zone}
+                        onChange={zoneChange}/>
+                </div>
+                <br/>
+                <div>
+                    <input type="group"
+                           id="group"
+                           placeholder="Young"
+                           name="group"
+                           value={group}
+                           onChange={groupChange}/>
+                </div>
+                <br/>
+                <br/>
+                <div>
+                    {/*<button type="submit" className={"signUpButton"}>Sign up</button>*/}
+                    <button id="submit" type="submit" onClick={() => newTeamRequest()}>newTeam</button>
+                </div>
+                <br/>
+            </form>
+        </div>
+    )
+}
+
+export class NewTeamPage {
 }
