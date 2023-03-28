@@ -42,9 +42,9 @@ export const NewTeamPage = () => {
         console.log("pase!")
         mySystem.newTeam(
             user,
-            () => navigate("/login?ok=true"),
+            () => console.log("New Team created!"),
             () => {
-                setErrorMsg('User already exists!')
+                setErrorMsg('Team already exists!')
                 resetForm();
             }
         )

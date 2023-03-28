@@ -53,6 +53,7 @@ public class MySystem {
     }
 
 
+
     private <E> E runInTransaction(Function<MySystemRepository, E> closure) {
         final EntityManager entityManager = factory.createEntityManager();
         final MySystemRepository ds = MySystemRepository.create(entityManager);

@@ -4,6 +4,9 @@ import {useNavigate} from "react-router";
 import {useAuthProvider} from "../auth/auth";
 import {useMySystem} from "../service/mySystem";
 
+function goToTeams() {
+    window.location.href = "/pickTeam"
+}
 export const HomePage = () => {
     const navigate = useNavigate()
     const mySystem = useMySystem()
@@ -37,6 +40,9 @@ export const HomePage = () => {
             <div className="container">
                 <h1>Hi ${user}
                 </h1>
+            </div>
+            <div>
+                <button id="submit" type="submit" onClick={() => goToTeams()}>Teams</button>
             </div>
 
             <footer className="footer">
