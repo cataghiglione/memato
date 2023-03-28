@@ -3,10 +3,7 @@ import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.google.gson.Gson;
 import json.JsonParser;
-import model.Auth;
-import model.AuthRequest;
-import model.RegistrationUserForm;
-import model.User;
+import model.*;
 import repository.Users;
 import spark.Request;
 import spark.Response;
@@ -30,6 +27,7 @@ public class Routes {
     public static final String USERS_ROUTE = "/users";
     public static final String USER_ROUTE = "/user";
     public static final String AUTH_ROUTE = "/auth";
+    public static final String TEAM_ROUTE = "/team";
 
 
     private MySystem system;
@@ -51,6 +49,22 @@ public class Routes {
         options("/*", (req, resp) -> {
             resp.status(200);
             return "ok";
+        });
+        post(TEAM_ROUTE, (req,res) ->{
+            final CreateTeamForm form = CreateTeamForm.createFromJson(req.body());
+
+            system.createTeam(form).ifPresentOrElse(
+                    (team) -> {
+                        res.status(201);
+                        res.body("team created");
+                    },
+                    () ->{
+                        res.status(409);
+                        res.body("Team name already in use");
+                    }
+            );
+            return res.body();
+
         });
 
         post(REGISTER_ROUTE, (req, res) -> {

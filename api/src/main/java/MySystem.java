@@ -1,6 +1,9 @@
+import model.CreateTeamForm;
 import model.RegistrationUserForm;
 import model.User;
+import repository.Teams;
 import repository.Users;
+import model.Team;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -27,6 +30,13 @@ public class MySystem {
             final Users users = datasource.users();
             return users.exists(form.getEmail(),form.getUsername()) ? Optional.empty() : Optional.of(users.createUser(form));
         });
+    }
+    public Optional<Team> createTeam(CreateTeamForm form){
+        return runInTransaction(datasource ->{
+            final Teams teams = datasource.teams();
+            return teams.exists(form.getName()) ? Optional.empty() : Optional.of(teams.createTeam(form));
+        });
+
     }
 
 
