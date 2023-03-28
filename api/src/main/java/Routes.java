@@ -31,6 +31,7 @@ public class Routes {
     public static final String USER_ROUTE = "/user1";
     public static final String AUTH_ROUTE = "/auth";
     public static final String TEAM_ROUTE = "/team";
+    public static final String NEW_TEAM_ROUTE = "/newTeam";
 
 
     private MySystem system;
@@ -53,7 +54,7 @@ public class Routes {
             resp.status(200);
             return "ok";
         });
-        post(TEAM_ROUTE, (req,res) ->{
+        post(NEW_TEAM_ROUTE, (req,res) ->{
             final CreateTeamForm form = CreateTeamForm.createFromJson(req.body());
 
             system.createTeam(form).ifPresentOrElse(

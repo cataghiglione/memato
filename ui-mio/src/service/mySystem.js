@@ -67,18 +67,18 @@ const MySystem = {
         })
     },
 
-    pickTeam: (token, okCallback, errorCallback) => {
-        fetch('http://localhost:4326/pickTeam', {
-            method: 'GET',
+    newTeam: (user, okCallback, errorCallback) => {
+        fetch('http://localhost:4326/newTeam', {
+            method: 'POST',
             headers: {
-                'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + token
-            }
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(user)
         }).then(resp => {
-            if (resp.status === 200) {
-                resp.json().then(users => okCallback(users))
+            if (resp.status === 201) {
+                okCallback()
             } else {
-                errorCallback("Could not load users")
+                errorCallback()
             }
         })
     }

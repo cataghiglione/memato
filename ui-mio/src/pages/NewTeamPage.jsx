@@ -1,12 +1,12 @@
 import * as React from 'react'
-import {Link} from "react-router-dom";
+
 import {useState} from "react";
 import {useNavigate} from "react-router";
 import {useMySystem} from "../service/mySystem";
 import "../css/Login.css"
 import "../images/RivalMatch_logoRecortado.png"
 
-export const RegisterPage = () => {
+export const NewTeamPage = () => {
 
     const [sport, setSport] = useState('')
     const [quant_Players, setQuant_player] = useState('')
@@ -25,7 +25,8 @@ export const RegisterPage = () => {
             sport: sport,
             quant_players: quant_Players,
             group: group,
-            zone: zone
+            zone: zone,
+            name: name
         })
     }
 
@@ -39,7 +40,7 @@ export const RegisterPage = () => {
 
     const registerUser = (user) => {
         console.log("pase!")
-        mySystem.register(
+        mySystem.newTeam(
             user,
             () => navigate("/login?ok=true"),
             () => {
@@ -127,13 +128,10 @@ export const RegisterPage = () => {
                 <br/>
                 <div>
                     {/*<button type="submit" className={"signUpButton"}>Sign up</button>*/}
-                    <button id="submit" type="submit" onClick={() => newTeamRequest()}>newTeam</button>
+                    <button id="submit" type="submit" onClick={() => newTeamRequest()}>Create Team</button>
                 </div>
                 <br/>
             </form>
         </div>
     )
-}
-
-export class NewTeamPage {
 }
