@@ -13,7 +13,8 @@ export const HomePage = () => {
     const [user, setUser] = useState('')
     console.log("ESTOY EN HOMEE")
     mySystem.getUser(token, (user) => {setUser(user);})
-    console.log(user.email)
+    console.log("pase")
+    console.log(user)
     const signOut = () => {
         auth.removeToken();
 
@@ -34,7 +35,7 @@ export const HomePage = () => {
             </nav>
 
             <div className="container">
-                <h1>Hi ${user.email}
+                <h1>Hi ${user}
                 </h1>
             </div>
 

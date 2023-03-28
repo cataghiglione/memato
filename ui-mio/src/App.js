@@ -9,6 +9,8 @@ import {RegisterPage} from "./pages/RegisterPage";
 import {UsersPage} from "./pages/UsersPage";
 import {RequireAuth} from "./components/RequireAuth";
 import {HomePage} from "./pages/HomePage";
+import {PickTeamPage} from "./pages/PickTeamPage";
+import {NewTeamPage} from "./pages/NewTeamPage"
 
 function App() {
     return (
@@ -16,7 +18,9 @@ function App() {
             <Route path="/" element={<PublicPage/>}/>
             <Route path="/login" element={<LoginPage/>}/>
             <Route path="/register" element={<RegisterPage/>}/>
-            <Route path="/user/:mail" element={<HomePage/>}/>
+            <Route path="/user" element={<HomePage/>}/>
+            <Route path="/pickTeam" element={<PickTeamPage/>}/>
+            <Route path="/newTeam" element={<NewTeamPage/>}/>
             <Route
                 path="/home"
                 element={

@@ -50,18 +50,20 @@ const MySystem = {
     },
 
     getUser: (token, okCallback, errorCallback) => {
-        fetch('http://localhost:4326/user/:mail', {
+        fetch('http://localhost:4326/user', {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + token
             }
         }).then(resp => {
             if (resp.status === 200) {
                 okCallback()
+                resp.body("llegue")
             } else {
-                errorCallback()
+                errorCallback("no llegue")
+                // resp.body("no llegue")
             }
+            return resp.body;
         })
     },
 

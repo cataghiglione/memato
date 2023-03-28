@@ -1,7 +1,9 @@
 
+import com.google.common.base.Strings;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.google.gson.Gson;
+import com.sun.tools.jconsole.JConsoleContext;
 import json.JsonParser;
 import model.*;
 import repository.Users;
@@ -12,6 +14,7 @@ import spark.Spark;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 import java.util.List;
 import java.util.Optional;
@@ -25,7 +28,7 @@ import static spark.Spark.*;
 public class Routes {
     public static final String REGISTER_ROUTE = "/register";
     public static final String USERS_ROUTE = "/users";
-    public static final String USER_ROUTE = "/user";
+    public static final String USER_ROUTE = "/user1";
     public static final String AUTH_ROUTE = "/auth";
     public static final String TEAM_ROUTE = "/team";
 
@@ -66,6 +69,7 @@ public class Routes {
             return res.body();
 
         });
+        storedBasicUser(entityManagerFactory);
 
         post(REGISTER_ROUTE, (req, res) -> {
             final RegistrationUserForm form = RegistrationUserForm.createFromJson(req.body());
@@ -113,23 +117,22 @@ public class Routes {
             final List<User> users = system.listUsers();
             return JsonParser.toJson(users);
         });
-        authorizedGet(USER_ROUTE+"/:mail", (req, res) -> {
-            final String mail = req.params("mail");
-            AtomicReference<User> user = null;
+        Spark.get("/user", (req, res) -> {
+            String mail = req.queryParams("m");
+            System.out.println(req.queryParams("m"));
             system.findUserByEmail(mail).ifPresentOrElse(
-                    (user1) -> {
+                    (user) -> {
+                        System.out.println(user.getFirstName());
                         res.status(200);
-                        user.set(user1);
+                        res.body(user.getFirstName());
                     },
                     () -> {
+                        System.out.println("no pase :(");
                         res.status(409);
-                        req.body();
+                        res.body();
                     }
             );
-            if(user.get() != null){
-                return JsonParser.toJson(user);
-            }
-            return req.body();
+            return res.body();
         });
         authorizedGet(USER_ROUTE, (req, res) -> getToken(req).map(JsonParser::toJson));
         Spark.get("/getAllUsers", "application/json", (req, resp) -> {
@@ -202,6 +205,31 @@ public class Routes {
 
     private boolean isAuthenticated(String token) {
         return emailByToken.getIfPresent(token) != null;
+    }
+    private static void storedBasicUser(EntityManagerFactory entityManagerFactory) {
+        final EntityManager entityManager = entityManagerFactory.createEntityManager();
+        final Users users = new Users(entityManager);
+
+        EntityTransaction tx = entityManager.getTransaction();
+        tx.begin();
+        if (users.listAll().isEmpty()) {
+            final User kate =
+                    User.create("catuchi22@river.com", "91218","Catuchi","Ghi", "cghi");
+            final User coke =
+                    User.create("cocaL@depo.com","1234","Coke","Lasa", "clasa");
+
+            final User fercho =
+                    User.create("ferpalacios@remix.com","4321","Fercho","Palacios", "ferpa");
+
+            users.persist(kate);
+            users.persist(coke);
+            users.persist(fercho);
+        }
+        tx.commit();
+        entityManager.close();
+    }
+    private static String capitalized(String name) {
+        return Strings.isNullOrEmpty(name) ? name : name.substring(0, 1).toUpperCase() + name.substring(1).toLowerCase();
     }
 
 }
