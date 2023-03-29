@@ -32,6 +32,7 @@ export const LoginPage = () => {
             (token) => {
                 setToken(token)
                 navigate("/home", {replace: true});
+                console.log("1234")
             },
             (msg) => {
                 setErrorMsg(msg)
@@ -58,7 +59,6 @@ export const LoginPage = () => {
 
     function LoginRequest(){
         console.log("hola");
-        navigate("/user?m="+password)
     }
 
     return (

@@ -1,9 +1,7 @@
-
 import com.google.common.base.Strings;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.google.gson.Gson;
-import com.sun.tools.jconsole.JConsoleContext;
 import json.JsonParser;
 import model.*;
 import repository.Teams;
@@ -23,6 +21,7 @@ import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 
 import static java.util.concurrent.TimeUnit.MINUTES;
+import static json.JsonParser.fromJson;
 import static json.JsonParser.toJson;
 import static spark.Spark.*;
 
@@ -46,6 +45,7 @@ public class Routes {
     }
 
     private void routes() {
+        AtomicReference<User> user_now = new AtomicReference<>(new User());
         before((req, resp) -> {
             resp.header("Access-Control-Allow-Origin", "*");
             resp.header("Access-Control-Allow-Headers", "*");
@@ -55,7 +55,7 @@ public class Routes {
             resp.status(200);
             return "ok";
         });
-        post(NEW_TEAM_ROUTE, (req,res) ->{
+        post(NEW_TEAM_ROUTE, (req, res) -> {
             final CreateTeamForm form = CreateTeamForm.createFromJson(req.body());
 
             system.createTeam(form).ifPresentOrElse(
@@ -63,7 +63,7 @@ public class Routes {
                         res.status(201);
                         res.body("team created");
                     },
-                    () ->{
+                    () -> {
                         res.status(409);
                         res.body("Team name already in use");
                     }
@@ -124,22 +124,18 @@ public class Routes {
             final Teams teams = new Teams(entityManager);
             return gson.toJson(teams.listAll());
         });
-        Spark.get("/user", (req, res) -> {
-            String mail = req.queryParams("m");
-            System.out.println(req.queryParams("m"));
-            system.findUserByEmail(mail).ifPresentOrElse(
+        authorizedGet("/home", (req, res) -> {
+            getUser(req).ifPresentOrElse(
                     (user) -> {
-                        System.out.println(user.getFirstName());
-                        res.status(200);
-                        res.body(user.getFirstName());
+                        res.status(201);
+                        res.body(toJson(user));
                     },
                     () -> {
-                        System.out.println("no pase :(");
-                        res.status(409);
-                        res.body();
+                        res.status(401);
+                        res.body("Invalid Token");
                     }
             );
-            return res.body();
+            return gson.toJson(user_now);
         });
         authorizedGet(USER_ROUTE, (req, res) -> getToken(req).map(JsonParser::toJson));
         Spark.get("/getAllUsers", "application/json", (req, resp) -> {
@@ -147,13 +143,6 @@ public class Routes {
             resp.status(200);
             final EntityManager entityManager = entityManagerFactory.createEntityManager();
             final Users users = new Users(entityManager);
-
-//            try {
-//
-//            }catch (SQL) {
-//                resp.status(409);
-//                resp.body("ee");
-//            }
             return gson.toJson(users.listAll());
         });
     }
@@ -213,6 +202,7 @@ public class Routes {
     private boolean isAuthenticated(String token) {
         return emailByToken.getIfPresent(token) != null;
     }
+
     private static void storedBasicUser(EntityManagerFactory entityManagerFactory) {
         final EntityManager entityManager = entityManagerFactory.createEntityManager();
         final Users users = new Users(entityManager);
@@ -221,12 +211,12 @@ public class Routes {
         tx.begin();
         if (users.listAll().isEmpty()) {
             final User kate =
-                    User.create("catuchi22@river.com", "91218","Catuchi","Ghi", "cghi");
+                    User.create("catuchi22@river.com", "91218", "Catuchi", "Ghi", "cghi");
             final User coke =
-                    User.create("cocaL@depo.com","1234","Coke","Lasa", "clasa");
+                    User.create("cocaL@depo.com", "1234", "Coke", "Lasa", "clasa");
 
             final User fercho =
-                    User.create("ferpalacios@remix.com","4321","Fercho","Palacios", "ferpa");
+                    User.create("ferpalacios@remix.com", "4321", "Fercho", "Palacios", "ferpa");
 
             users.persist(kate);
             users.persist(coke);
@@ -235,6 +225,7 @@ public class Routes {
         tx.commit();
         entityManager.close();
     }
+
     private static String capitalized(String name) {
         return Strings.isNullOrEmpty(name) ? name : name.substring(0, 1).toUpperCase() + name.substring(1).toLowerCase();
     }

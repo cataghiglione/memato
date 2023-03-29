@@ -38,7 +38,7 @@ export const HomePage = () => {
             </nav>
 
             <div className="container">
-                <h1>Hi ${user}
+                <h1>Hi ${user.name}
                 </h1>
             </div>
             <div>
