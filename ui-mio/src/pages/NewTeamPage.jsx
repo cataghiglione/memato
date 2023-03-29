@@ -56,6 +56,29 @@ export const NewTeamPage = () => {
 
     const sportChange = (event) => {
         setSport(event.target.value)
+        if(sport === "Football"){
+            return(
+                <br>
+                <div>
+                    <select id="Quantity" required onChange={quant_PlayersChange}>
+                        <option value="11">11</option>
+                        <option value="7">7</option>
+                    </select>
+                </div>
+            </br>
+        )
+        }
+        else{
+            return(
+                <br>
+                <div>
+                    <select id="Quantity" required onChange={quant_PlayersChange}>
+                        <option value="2">2</option>
+                        <option value="1">1</option>
+                    </select>
+                </div>
+                </br>
+            )}
     }
     const quant_PlayersChange = (event) => {
         setQuant_player(event.target.value)
@@ -73,9 +96,11 @@ export const NewTeamPage = () => {
 
     function newTeamRequest(){
         console.log("Im requesting a new Team!");
-        resetForm();
     }
 
+    if(isOk){
+        resetForm();
+    }
     return (
         <div className={"containerPrincipal"}>
             {errorMsg && <div className="alert alert-danger" role="alert">{errorMsg}</div>}
@@ -83,16 +108,6 @@ export const NewTeamPage = () => {
 
             <img style={{ width: 218, height: "auto"}} src={require("../images/RivalMatch_logoRecortado.png")} alt={"Logo"}/>
             <form onSubmit={handleSubmit}>
-                <br/>
-                <div>
-                    <input type="sport"
-                           id="Sport"
-                           placeholder="Football"
-                           value={sport}
-                           name="sport"
-                           onChange={sportChange}/>
-                </div>
-
                 <br/>
                 <div>
                     <input type="Name"
@@ -105,16 +120,6 @@ export const NewTeamPage = () => {
                 <br/>
                 <div>
                     <input
-                        type="quantity Players"
-                        id="quantPlayers"
-                        placeholder="11"
-                        name="quantity Players"
-                        value={quant_Players}
-                        onChange={quant_PlayersChange}/>
-                </div>
-                <br/>
-                <div>
-                    <input
                         type="zone"
                         id="zone"
                         placeholder="Pilar"
@@ -123,16 +128,18 @@ export const NewTeamPage = () => {
                         onChange={zoneChange}/>
                 </div>
                 <br/>
-                <div>
-                    <input type="group"
-                           id="group"
-                           placeholder="Young"
-                           name="group"
-                           value={group}
-                           onChange={groupChange}/>
+                <select id="Group" required onChange={sportChange}>
+                    <option value="Young">Young</option>
+                    <option value="Adults">Adults</option>
+                </select>
+                <br/>
+                <select id="Sport" required onChange={sportChange}>
+                    <option value="Football">Football</option>
+                    <option value="Padel">Padel</option>
+                </select>
+                <br/>
+                <div >
                 </div>
-                <br/>
-                <br/>
                 <div>
                     {/*<button type="submit" className={"signUpButton"}>Sign up</button>*/}
                     <button id="submit" type="submit" onClick={() => newTeamRequest()}>Create Team</button>
