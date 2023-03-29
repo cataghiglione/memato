@@ -31,10 +31,10 @@ public class MySystem {
             return users.exists(form.getEmail(),form.getUsername()) ? Optional.empty() : Optional.of(users.createUser(form));
         });
     }
-    public Optional<Team> createTeam(CreateTeamForm form){
+    public Optional<Team> createTeam(CreateTeamForm form, long user_id){
         return runInTransaction(datasource ->{
             final Teams teams = datasource.teams();
-            return teams.exists(form.getName()) ? Optional.empty() : Optional.of(teams.createTeam(form));
+            return teams.exists(form.getName()) ? Optional.empty() : Optional.of(teams.createTeam(form,user_id));
         });
 
     }
@@ -45,6 +45,7 @@ public class MySystem {
                 ds -> ds.users().findByEmail(email)
         );
     }
+
 
     public List<User> listUsers() {
         return runInTransaction(

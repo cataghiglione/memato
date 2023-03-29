@@ -56,18 +56,26 @@ public class Routes {
             return "ok";
         });
         post(NEW_TEAM_ROUTE, (req,res) ->{
-            final CreateTeamForm form = CreateTeamForm.createFromJson(req.body());
+            String body = req.body();
+            getUser(req).ifPresentOrElse(
+                    (user) -> {
+                        long id = user.getId();
+                        final CreateTeamForm form = CreateTeamForm.createFromJson(body);
 
-            system.createTeam(form).ifPresentOrElse(
-                    (team) -> {
-                        res.status(201);
-                        res.body("team created");
+                        system.createTeam(form,id).ifPresentOrElse(
+                                (team) -> {
+                                    res.status(201);
+                                    res.body("team created");
+                                },
+                                () ->{
+                                    res.status(409);
+                                    res.body("Team name already in use");
+                                }
+                        );
                     },
-                    () ->{
-                        res.status(409);
-                        res.body("Team name already in use");
-                    }
+            ()->{res.status(409);}
             );
+            final CreateTeamForm form = CreateTeamForm.createFromJson(body);
             return res.body();
 
         });
@@ -165,6 +173,11 @@ public class Routes {
     private void authorizedDelete(final String path, final Route route) {
         delete(path, (request, response) -> authorize(route, request, response));
     }
+
+    private void authorizedPost(final String path, final Route route) {
+        post(path, (request, response) -> authorize(route, request, response));
+    }
+
 
     private Object authorize(Route route, Request request, Response response) throws Exception {
         if (isAuthorized(request)) {
