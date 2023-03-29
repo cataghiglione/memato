@@ -67,7 +67,7 @@ const MySystem = {
     },
 
     getUser: (token, okCallback, errorCallback) => {
-        fetch('http://localhost:4326/user', {
+        fetch(`${restApiEndpoint}/user`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
