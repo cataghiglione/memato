@@ -23,7 +23,7 @@ export const NewTeamPage = () => {
         e.preventDefault();
         registerUser({
             sport: sport,
-            quant_players: quant_Players,
+            quantity: quant_Players,
             group: group,
             zone: zone,
             name: name
@@ -82,6 +82,7 @@ export const NewTeamPage = () => {
                     <input type="sport"
                            placeholder="Football"
                            value={sport}
+                           id="sport"
                            name="sport"
                            onChange={sportChange}/>
                 </div>
