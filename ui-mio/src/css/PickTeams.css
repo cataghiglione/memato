@@ -1,21 +1,11 @@
 .containerPrincipal{
     position: absolute;
     left: 50%;
-    top: 40%;
-    transform: translate(-50%, -50%);
-    background-color: white;
-
-}
-.containerForgotPassword{
-    position: absolute;
-    left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
     background-color: white;
-    border: 1px solid gray;
-    padding: 10px 40px 40px;
-    border-radius: 10px;
     text-align: center;
+    text-decoration: none;
 }
 
 button{
@@ -29,35 +19,21 @@ button{
     transition-duration: 0.4s;
     cursor: pointer;
 }
-.showTeamButton{
+.logInButton{
     position: absolute;
+    left: 50%;
     transform: translate(-50%, -50%);
     background-color: white;
     color: black;
-    border: 1px solid #4CAF50;
-    border-radius: 1px;
+    border: 2px solid #4CAF50;
+    border-radius: 4px;
     transition-duration: 0.4s;
-    width: 100%;
+    width: 200px;
 }
-.showTeamButton:hover {
+.logInButton:hover {
     background-color: #4CAF50;
     color: white;
 }
-input, select {
-    padding: 12px 20px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box;
-    display: flex;
-    flex-wrap: wrap;
-    margin-bottom: 4px;
-}
-lable{
-    text-align: center;
-    justify-content: center;
-
-}
-
 .signUpButton{
     position: absolute;
     left: 50%;
@@ -67,20 +43,9 @@ lable{
     border: 2px solid #b95de3;
     border-radius: 4px;
     transition-duration: 0.4s;
-    width: 100%;
+    width: 200px;
 }
 .signUpButton:hover {
     background-color: #b95de3;
     color: white;
-}
-.goToSignUp{
-    background-color: white;
-    padding: 10px 20px;
-    color: blue;
-    font-weight: bold;
-}
-.forgotPasswordImage{
-    width: 100px;
-    height: auto;
-    padding: 10px;
 }

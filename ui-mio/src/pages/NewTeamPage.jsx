@@ -5,6 +5,7 @@ import {useNavigate} from "react-router";
 import {useMySystem} from "../service/mySystem";
 import "../css/Login.css"
 import "../images/RivalMatch_logoRecortado.png"
+import {useSearchParams} from "react-router-dom";
 
 export const NewTeamPage = () => {
 
@@ -17,7 +18,9 @@ export const NewTeamPage = () => {
     const [errorMsg, setErrorMsg] = useState(undefined)
     const navigate = useNavigate();
     const mySystem = useMySystem();
-
+    const [searchParams, setSearchParams] = useSearchParams();
+    const isOk = searchParams.get("ok")
+    const dropdowns = document.querySelectorAll(".dropdown")
     const handleSubmit = async e => {
         console.log("Estoy aca");
         e.preventDefault();
@@ -36,13 +39,14 @@ export const NewTeamPage = () => {
         setGroup('')
         setQuant_player('')
         setName('')
+        navigate("/newTeam")
     }
 
     const registerUser = (user) => {
         console.log("pase!")
         mySystem.newTeam(
             user,
-            () => console.log("New Team created!"),
+            () => navigate("/newTeam?ok=true"),
             () => {
                 setErrorMsg('Team already exists!')
                 resetForm();
@@ -69,17 +73,20 @@ export const NewTeamPage = () => {
 
     function newTeamRequest(){
         console.log("Im requesting a new Team!");
+        resetForm();
     }
 
     return (
         <div className={"containerPrincipal"}>
             {errorMsg && <div className="alert alert-danger" role="alert">{errorMsg}</div>}
+            {isOk && <div className="alert alert-success" role="alert">Team created</div>}
 
             <img style={{ width: 218, height: "auto"}} src={require("../images/RivalMatch_logoRecortado.png")} alt={"Logo"}/>
             <form onSubmit={handleSubmit}>
                 <br/>
                 <div>
                     <input type="sport"
+                           id="Sport"
                            placeholder="Football"
                            value={sport}
                            id="sport"
