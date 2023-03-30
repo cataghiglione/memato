@@ -11,7 +11,6 @@ export const HomePage = () => {
     const navigate = useNavigate()
     const mySystem = useMySystem()
     const auth = useAuthProvider()
-
     const token = auth.getToken();
     const [user, setUser] = useState('')
     console.log("ESTOY EN HOMEE")

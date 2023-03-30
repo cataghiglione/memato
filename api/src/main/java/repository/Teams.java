@@ -22,9 +22,9 @@ public class Teams {
                 .stream()
                 .findFirst();
     }
-    public Team createTeam(CreateTeamForm creationValues, Long user_id){
-        final Team newTeam = Team.create(creationValues.getName(),creationValues.getSport(),creationValues.getQuantity(),0, creationValues.getGroup(), creationValues.getZone(),user_id);
+    public Team createTeam(CreateTeamForm creationValues, User user){
         if (findTeamByName(creationValues.getName()).isPresent()) throw new IllegalStateException("A team with that name already exists");
+        final Team newTeam = Team.create(creationValues.getName(),creationValues.getSport(),creationValues.getQuantity(),0, creationValues.getGroup(), creationValues.getZone(),user);
         entityManager.persist(newTeam);
         return newTeam;
     }
@@ -34,5 +34,13 @@ public class Teams {
 
     public List<Team> listAll() {
         return entityManager.createQuery("SELECT u FROM Team u", Team.class).getResultList();
+    }
+    public List<Team> findTeamsByUserId(String user_id){
+        return entityManager
+                .createQuery("SELECT t FROM Team t WHERE cast(t.user.id as string )  LIKE :user_id",Team.class)
+                .setParameter("user_id",user_id).getResultList();}
+    public Team persist(Team team) {
+        entityManager.persist(team);
+        return team;
     }
 }

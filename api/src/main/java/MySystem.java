@@ -31,10 +31,10 @@ public class MySystem {
             return users.exists(form.getEmail(),form.getUsername()) ? Optional.empty() : Optional.of(users.createUser(form));
         });
     }
-    public Optional<Team> createTeam(CreateTeamForm form, long user_id){
+    public Optional<Team> createTeam(CreateTeamForm form, User user){
         return runInTransaction(datasource ->{
             final Teams teams = datasource.teams();
-            return teams.exists(form.getName()) ? Optional.empty() : Optional.of(teams.createTeam(form,user_id));
+            return teams.exists(form.getName()) ? Optional.empty() : Optional.of(teams.createTeam(form,user));
         });
 
     }

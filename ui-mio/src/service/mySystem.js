@@ -61,7 +61,7 @@ const MySystem = {
             if (resp.status === 200) {
                 resp.json().then(teams => okCallback(teams))
             } else {
-                errorCallback("Could not load users")
+                errorCallback("Could not load teams")
             }
         })
     },
@@ -84,11 +84,14 @@ const MySystem = {
         })
     },
 
-    newTeam: (user, okCallback, errorCallback) => {
-        fetch('http://localhost:4326/newTeam', {
+    newTeam: (token,user, okCallback, errorCallback) => {
+        console.log("estoy en mysistem")
+        fetch(`${restApiEndpoint}/newTeam`, {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token
+
             },
             body: JSON.stringify(user)
         }).then(resp => {

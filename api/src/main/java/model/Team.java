@@ -2,13 +2,14 @@ package model;
 
 import javax.persistence.*;
 
+
 @Entity
 public class Team {
     @Id
-    @GeneratedValue (generator = "teamGen", strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(generator = "teamGen", strategy = GenerationType.SEQUENCE)
     private long id;
 
-    @Column(name="NAME")
+    @Column(name = "NAME")
     private String name;
 
     @Column(name = "SPORT")
@@ -20,33 +21,36 @@ public class Team {
     @Column(name = "AGE_GROUP")
     private String group;
 
-    @Column (name = "PUNTUALITY")
+    @Column(name = "PUNTUALITY")
     private int puntuality;
 
-    @Column (name = "ZONE")
+    @Column(name = "ZONE")
     private String zone;
 
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.MERGE)
+    @JoinColumn(name = "USER_ID", referencedColumnName = "id")
     private User user;
 
-    @Column(name="USER_ID")
-    private Long user_id;
+//    @Column(name = "USUARIO_ID")
+//    private Long user_id;
 
 
-    public Team(){}
-
-    private Team(String name, String sport, String quantity, int puntuality, String group, String zone, Long user_id){
-        this.name=name;
-        this.sport=sport;
-        this.quantity=quantity;
-        this.puntuality=puntuality;
-        this.group=group;
-        this.zone = zone;
-        this.user_id=user_id;
+    public Team() {
     }
-    public static Team create(String name, String sport, String quantity, int puntuality,String group, String zone, Long user_id){
-        return new Team(name,sport,quantity,puntuality, group, zone,user_id);
+
+    private Team(String name, String sport, String quantity, int puntuality, String group, String zone, User user) {
+        this.name = name;
+        this.sport = sport;
+        this.quantity = quantity;
+        this.puntuality = puntuality;
+        this.group = group;
+        this.zone = zone;
+        this.user = user;
+    }
+
+    public static Team create(String name, String sport, String quantity, int puntuality, String group, String zone, User user) {
+        return new Team(name, sport, quantity, puntuality, group, zone, user);
     }
 
     public String getZone() {
@@ -76,7 +80,8 @@ public class Team {
     public int getPuntuality() {
         return puntuality;
     }
-    public void setPuntuality(int value){
-        this.puntuality=value;
+
+    public void setPuntuality(int value) {
+        this.puntuality = value;
     }
 }

@@ -45,6 +45,9 @@ public class Routes {
         routes();
     }
 
+    private Long id = (long)-1;
+
+
     private void routes() {
         before((req, resp) -> {
             resp.header("Access-Control-Allow-Origin", "*");
@@ -56,13 +59,13 @@ public class Routes {
             return "ok";
         });
         post(NEW_TEAM_ROUTE, (req,res) ->{
-            String body = req.body();
+
             getUser(req).ifPresentOrElse(
                     (user) -> {
-                        long id = user.getId();
-                        final CreateTeamForm form = CreateTeamForm.createFromJson(body);
+//
+                        final CreateTeamForm form = CreateTeamForm.createFromJson(req.body());
 
-                        system.createTeam(form,id).ifPresentOrElse(
+                        system.createTeam(form,user).ifPresentOrElse(
                                 (team) -> {
                                     res.status(201);
                                     res.body("team created");
@@ -75,11 +78,11 @@ public class Routes {
                     },
             ()->{res.status(409);}
             );
-            final CreateTeamForm form = CreateTeamForm.createFromJson(body);
             return res.body();
 
         });
         storedBasicUser(entityManagerFactory);
+        storedBasicTeam(entityManagerFactory);
 
         post(REGISTER_ROUTE, (req, res) -> {
             final RegistrationUserForm form = RegistrationUserForm.createFromJson(req.body());
@@ -130,7 +133,19 @@ public class Routes {
         get(PICK_TEAM_ROUTE, (req, res) -> {
             final EntityManager entityManager = entityManagerFactory.createEntityManager();
             final Teams teams = new Teams(entityManager);
-            return gson.toJson(teams.listAll());
+            Optional<User> user = getUser(req);
+            if (user.isPresent()){
+                String id = user.get().getId().toString();
+                List<Team> teamList = teams.findTeamsByUserId(id);
+                if (teamList.isEmpty()){
+                    return gson.toJson("no teams yet");
+                }
+                else return gson.toJson(teamList);
+            }
+            else return gson.toJson("No teams yet");
+//            return gson.toJson(teams.listAll());
+
+
         });
         Spark.get("/user", (req, res) -> {
             String mail = req.queryParams("m");
@@ -244,6 +259,22 @@ public class Routes {
             users.persist(kate);
             users.persist(coke);
             users.persist(fercho);
+        }
+        tx.commit();
+        entityManager.close();
+    }
+    private static void storedBasicTeam(EntityManagerFactory entityManagerFactory) {
+        final EntityManager entityManager = entityManagerFactory.createEntityManager();
+        final Teams teams = new Teams(entityManager);
+        final Users users = new Users(entityManager);
+        List<User> userList = users.listAll();
+        EntityTransaction tx = entityManager.getTransaction();
+        tx.begin();
+        if (teams.listAll().isEmpty()) {
+            final Team kateTeam =
+                    Team.create("river", "Fulbo","11",0, "young", "Pili", userList.get(0));
+
+            teams.persist(kateTeam);
         }
         tx.commit();
         entityManager.close();

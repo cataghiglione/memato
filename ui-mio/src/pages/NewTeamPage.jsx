@@ -7,6 +7,7 @@ import "../css/Login.css"
 import "../images/RivalMatch_logoRecortado.png"
 import {useSearchParams} from "react-router-dom";
 import {render} from "@testing-library/react";
+import {useAuthProvider} from "../auth/auth";
 
 export const NewTeamPage = () => {
 
@@ -15,6 +16,8 @@ export const NewTeamPage = () => {
     const [group, setGroup] = useState('')
     const [zone, setZone] = useState('')
     const [name, setName] = useState('')
+    const auth = useAuthProvider()
+    const token = auth.getToken();
 
     const [errorMsg, setErrorMsg] = useState(undefined)
     const navigate = useNavigate();
@@ -27,7 +30,7 @@ export const NewTeamPage = () => {
         registerUser({
             sport: sport,
             quantity: quant_Players,
-            group: group,
+            age_group: group,
             zone: zone,
             name: name
         })
@@ -43,8 +46,8 @@ export const NewTeamPage = () => {
     }
 
     const registerUser = (user) => {
-        console.log("pase!")
-        mySystem.newTeam(
+        console.log("estoy en el registro!")
+        mySystem.newTeam(token,
             user,
             () => navigate("/newTeam?ok=true"),
             () => {
@@ -133,6 +136,7 @@ export const NewTeamPage = () => {
                 </div>
                 <br/>
                 <select id="Group" required onChange={groupChange}>
+                    <option value="Group">Group </option>
                     <option value="Young">Young</option>
                     <option value="Adults">Adults</option>
                 </select>
