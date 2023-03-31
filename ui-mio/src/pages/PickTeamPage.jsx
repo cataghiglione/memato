@@ -46,6 +46,9 @@ export const PickTeamPage = () => {
 
     return (
         <div>
+            <button className={"Menu"} id="submit" type="submit" onClick={() => setMenuOpen(!menuOpen)}>
+                <img style={{ width: 22, height: "auto"}} src={require("../images/sideBarIcon.png")} alt={"Logo"}/>
+            </button>x
             {isOk && <div className="alert alert-success" role="alert">Team created</div>}
             {isOk && sleep(500)}
             {menuOpen &&
@@ -60,20 +63,15 @@ export const PickTeamPage = () => {
             <div className="containerPrincipal">
                 {pageChange === "User" && HomePage.goToUserInfo()}
                 {pageChange === "Pick Team" && HomePage.goToPickTeam()}
-                {pageChange === "New Team" && goToNewTeam()}
+                {pageChange === "New Team" && goToHome()}
                 <h1>Teams</h1>
-                <ul>
+                <p>
                     {teams.map(team =>
                         <p>nombre = {team.name}    deporte = {team.sport} </p>
                     )}
-                </ul>
+                </p>
                 <button className={"newTeamButton"} onClick={goToNewTeam}>New Team</button>
             </div>
-
-            <footer className="footer">
-                <p>Footer</p>
-                <a href="" onClick={goToHome}>Home</a>
-            </footer>
         </div>
     )
 }

@@ -2,6 +2,7 @@
     position: absolute;
     transform: translate(-50%, -50%);
     background-color: white;
+    text-align-all: center;
 
 }
 .containerForgotPassword{

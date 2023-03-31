@@ -3,6 +3,8 @@ import {useEffect, useState} from 'react'
 import {useNavigate} from "react-router";
 import {useAuthProvider} from "../auth/auth";
 import {useMySystem} from "../service/mySystem";
+import {HomePage} from "./HomePage";
+import "../css/Home.css"
 
 function goToHome() {
     window.location.href = "/user"
@@ -18,6 +20,13 @@ export const UserPage = () => {
     const token = auth.getToken();
     const [user, setUser] = useState('')
     const [once, setOnce] = useState(true);
+
+    const [menuOpen, setMenuOpen] = useState(false);
+    const [pageChange, setPageChange] = useState("Home");
+
+    const changePage = (event) => {
+        setPageChange(event.target.value);
+    }
 
     const signOut = () => {
         auth.removeToken();
@@ -35,6 +44,9 @@ export const UserPage = () => {
     return (
         <div>
             {once && getUser()}
+            <button className={"Menu"} id="submit" type="submit" onClick={() => setMenuOpen(!menuOpen)}>
+                <img style={{ width: 22, height: "auto"}} src={require("../images/sideBarIcon.png")} alt={"Logo"}/>
+            </button>
             <nav className="navbar navbar-default" role="navigation">
                 <div>
                     <ul className="nav navbar-nav navbar-right">
@@ -44,18 +56,25 @@ export const UserPage = () => {
                     </ul>
                 </div>
             </nav>
+            {menuOpen &&
+                <select className={"custom-select"} id="Menu" multiple={true} onChange={changePage}>
+                    <option className={"custom-select-option"} value="Home">Home</option>
+                    <option className={"custom-select-option"} value="User">User</option>
+                    <option className={"custom-select-option"} value="Pick Team">Pick Team</option>
+                    <option className={"custom-select-option"} value="New Team">New Team</option>
+                </select>
+            }
 
-            <div className="container">
+            <div className="containerPrincipal">
+                {pageChange === "User" && goToHome()}
+                {pageChange === "Pick Team" && HomePage.goToPickTeam()}
+                {pageChange === "New Team" && HomePage.goToNewTeam()}
                 <h1>Hi {user.username}
                 </h1>
-            </div>
-            <div className="container">
-                <p>First name: {user.firstName}</p>
+                <p align="center">First name: {user.firstName}</p>
                 <p>Last name: {user.lastName}</p>
                 <p>Email: {user.email}</p>
                 <p>Password: {user.password}</p>
-            </div>
-            <div>
                 <button id="submit" type="submit" onClick={() => goToTeams()}>Teams</button>
             </div>
 
