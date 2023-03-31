@@ -1,6 +1,7 @@
 package model;
 
 import com.google.gson.Gson;
+import json.JsonParser;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -100,8 +101,9 @@ public class User {
     }
 
     public String asJson() {
+        User newUser = new User(this.email, this.password, this.firstName, this.lastName, this.username);
         Gson gson = new Gson();
-        return gson.toJson(this);
+        return JsonParser.toJson(newUser);
     }
 
 

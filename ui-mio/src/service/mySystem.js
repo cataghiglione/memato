@@ -75,17 +75,17 @@ const MySystem = {
             }
         }).then(resp => {
             if (resp.status === 200) {
-                resp.json().then(value => {
-                    console.log(value);
-                    okCallback(value);
-                }).catch(err => {
-                    console.log(err);
-                });
+                var mydata = JSON.parse(resp);
+                okCallback(mydata)
+                var s = resp.json()
+                console.log(s)
+                okCallback(s)
+                console.log("esaa")
             } else {
                 errorCallback("no llegue")
                 okCallback("")
             }
-            return resp.body;
+            return resp.json();
         })
     },
 

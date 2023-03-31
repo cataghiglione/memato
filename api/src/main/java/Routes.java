@@ -150,22 +150,18 @@ public class Routes {
 
 
         });
-        Spark.get("/user", (req, res) -> {
-            String mail = req.queryParams("m");
-            System.out.println(req.queryParams("m"));
-            system.findUserByEmail(mail).ifPresentOrElse(
+        authorizedGet("/home", (req, res) -> {
+            getUser(req).ifPresentOrElse(
                     (user) -> {
-                        System.out.println(user.getFirstName());
                         res.status(200);
-                        res.body(user.getFirstName());
+                        res.body(user.asJson());
                     },
                     () -> {
-                        System.out.println("no pase :(");
-                        res.status(409);
-                        res.body();
+                        res.status(404);
+                        res.body("Invalid Token");
                     }
             );
-            return res.body();
+            return toJson(res.body());
         });
         authorizedGet(USER_ROUTE, (req, res) -> getToken(req).map(JsonParser::toJson));
         Spark.get("/getAllUsers", "application/json", (req, resp) -> {

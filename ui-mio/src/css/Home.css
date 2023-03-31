@@ -65,22 +65,6 @@ lable{
     justify-content: center;
 
 }
-
-.signUpButton{
-    position: absolute;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: white;
-    color: black;
-    border: 2px solid #b95de3;
-    border-radius: 4px;
-    transition-duration: 0.4s;
-    width: 100%;
-}
-.signUpButton:hover {
-    background-color: #b95de3;
-    color: white;
-}
 .goTo{
     background-color: white;
     padding: 10px 20px;
@@ -92,9 +76,6 @@ lable{
     width: 100px;
     height: auto;
     padding: 10px;
-}
-select{
-
 }
 /* The container must be positioned relative: */
 .custom-select {
@@ -108,8 +89,6 @@ select{
     background: white;
     box-shadow: 0 10px 25px rgba(42, 179, 248, 0.4);
     position: relative;
-}
-option {
 }
 .custom-select-option{
     padding: 16px;

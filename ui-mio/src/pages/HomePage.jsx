@@ -35,7 +35,11 @@ export const HomePage = () => {
         navigate("/");
     }
     const getUser = () => {
-        mySystem.getUser(token, (user) => setUser(user))
+        console.log(token)
+        mySystem.getUser(token, (user) => {
+            console.log(user);
+            setUser(user);
+        })
         setOnceOpen(false);
     }
     const changePage = (event) => {

@@ -58,30 +58,6 @@ export const NewTeamPage = () => {
 
     const sportChange = (event) => {
         setSport(event.target.value)
-        // console.log(sport)
-        // if(event.target.value === "Football"){
-        //     render(
-        //         <br>
-        //         <div>
-        //                 <select id="Quantity" required onChange={this.quant_PlayersChange}>
-        //                 <option>11</option>
-        //                 <option>7</option>
-        //             </select>
-        //         </div>
-        //     </br>
-        // )
-        // }
-        // else{
-        //     return(
-        //         <br>
-        //         <div>
-        //             <select id="Quantity" required onChange={quant_PlayersChange}>
-        //                 <option value="2">2</option>
-        //                 <option value="1">1</option>
-        //             </select>
-        //         </div>
-        //         </br>
-        //     )}
     }
     const quant_PlayersChange = (event) => {
         setQuant_player(event.target.value)
