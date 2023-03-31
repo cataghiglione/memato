@@ -18,11 +18,11 @@ function App() {
             <Route path="/" element={<PublicPage/>}/>
             <Route path="/login" element={<LoginPage/>}/>
             <Route path="/register" element={<RegisterPage/>}/>
-            <Route path="/user" element={<HomePage/>}/>
+            <Route path="/home" element={<HomePage/>}/>
             <Route path="/pickTeam" element={<PickTeamPage/>}/>
             <Route path="/newTeam" element={<NewTeamPage/>}/>
             <Route path="/users" element={<UsersPage/>}/>
-            <Route path="/userInfo" element={<UserPage/>}/>
+            <Route path="/user" element={<UserPage/>}/>
             <Route
                 path="/home"
                 element={
