@@ -4,15 +4,14 @@ import {useNavigate} from "react-router";
 import {useAuthProvider} from "../auth/auth";
 import {useMySystem} from "../service/mySystem";
 
+function goToHome() {
+    window.location.href = "/user"
+}
 function goToTeams() {
     window.location.href = "/pickTeam"
 }
 
-function goToUserInfo() {
-    window.location.href = "/userInfo"
-}
-
-export const HomePage = () => {
+export const UserPage = () => {
     const navigate = useNavigate()
     const mySystem = useMySystem()
     const auth = useAuthProvider()
@@ -47,15 +46,21 @@ export const HomePage = () => {
             </nav>
 
             <div className="container">
-                <h1>Hi {user.firstName}
+                <h1>Hi {user.username}
                 </h1>
+            </div>
+            <div className="container">
+                <p>First name: {user.firstName}</p>
+                <p>Last name: {user.lastName}</p>
+                <p>Email: {user.email}</p>
+                <p>Password: {user.password}</p>
             </div>
             <div>
                 <button id="submit" type="submit" onClick={() => goToTeams()}>Teams</button>
             </div>
 
             <footer className="footer">
-                <a href="" onClick={goToUserInfo}>User Information</a>
+                <a href="" onClick={goToHome}>Home</a>
             </footer>
         </div>
     )

@@ -14,6 +14,14 @@ function goToHome(){
 function showTeam(team){
     window.location.href = "/pickTeam"
 }
+function sleep(milliseconds) {
+    var start = new Date().getTime();
+    for (var i = 0; i < 1e7; i++) {
+        if ((new Date().getTime() - start) > milliseconds){
+            break;
+        }
+    }
+}
 export const PickTeamPage = () => {
     const navigate = useNavigate()
     const mySystem = useMySystem()
@@ -21,11 +29,16 @@ export const PickTeamPage = () => {
 
     const token = auth.getToken();
     const [teams, setTeams] = useState([]);
+
+    const [searchParams, setSearchParams] = useSearchParams();
+    const isOk = searchParams.get("ok")
     useEffect(() => {
         mySystem.listTeams(token, (teams) => setTeams(teams));
     }, [])
     return (
         <div>
+            {isOk && <div className="alert alert-success" role="alert">Team created</div>}
+            {isOk && sleep(500)}
             <nav className="navbar navbar-default" role="navigation">
                 <div>
                     <ul className="nav navbar-nav navbar-right">

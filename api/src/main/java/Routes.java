@@ -95,7 +95,9 @@ public class Routes {
             authenticate(authReq)
                     .ifPresentOrElse(token -> {
                         res.status(201);
-                        res.body(toJson(Auth.create(token)));
+                        String j = toJson(Auth.create(token));
+                        res.body(j);
+                        System.out.println(j);
                     }, () -> {
                         res.status(401);
                         res.body("");
@@ -127,15 +129,15 @@ public class Routes {
         authorizedGet("/home", (req, res) -> {
             getUser(req).ifPresentOrElse(
                     (user) -> {
-                        res.status(201);
+                        res.status(200);
                         res.body(toJson(user));
                     },
                     () -> {
-                        res.status(401);
+                        res.status(404);
                         res.body("Invalid Token");
                     }
             );
-            return gson.toJson(user_now);
+            return res.body();
         });
         authorizedGet(USER_ROUTE, (req, res) -> getToken(req).map(JsonParser::toJson));
         Spark.get("/getAllUsers", "application/json", (req, resp) -> {

@@ -19,12 +19,9 @@ export const NewTeamPage = () => {
     const [errorMsg, setErrorMsg] = useState(undefined)
     const navigate = useNavigate();
     const mySystem = useMySystem();
-    const [searchParams, setSearchParams] = useSearchParams();
-    const isOk = searchParams.get("ok")
     const handleSubmit = async e => {
-        console.log("Estoy aca");
         e.preventDefault();
-        registerUser({
+        registerTeam({
             sport: sport,
             quantity: quant_Players,
             group: group,
@@ -42,11 +39,13 @@ export const NewTeamPage = () => {
         navigate("/newTeam")
     }
 
-    const registerUser = (user) => {
-        console.log("pase!")
+    const registerTeam = (team) => {
         mySystem.newTeam(
-            user,
-            () => navigate("/newTeam?ok=true"),
+            team,
+            () => {
+                navigate("/pickTeam?ok=true", {replace: true})
+                console.log("entro al okCall")
+            },
             () => {
                 setErrorMsg('Team already exists!')
                 resetForm();
@@ -56,37 +55,16 @@ export const NewTeamPage = () => {
 
     const sportChange = (event) => {
         setSport(event.target.value)
-        // console.log(sport)
-        // if(event.target.value === "Football"){
-        //     render(
-        //         <br>
-        //         <div>
-        //                 <select id="Quantity" required onChange={this.quant_PlayersChange}>
-        //                 <option>11</option>
-        //                 <option>7</option>
-        //             </select>
-        //         </div>
-        //     </br>
-        // )
-        // }
-        // else{
-        //     return(
-        //         <br>
-        //         <div>
-        //             <select id="Quantity" required onChange={quant_PlayersChange}>
-        //                 <option value="2">2</option>
-        //                 <option value="1">1</option>
-        //             </select>
-        //         </div>
-        //         </br>
-        //     )}
     }
+
     const quant_PlayersChange = (event) => {
         setQuant_player(event.target.value)
     }
+
     const groupChange = (event) => {
         setGroup(event.target.value)
     }
+
     const zoneChange = (event) => {
         setZone(event.target.value)
     }
@@ -99,15 +77,10 @@ export const NewTeamPage = () => {
         console.log("Im requesting a new Team!");
     }
 
-    if (isOk) {
-        resetForm();
-    }
-
 
     return (
         <div className={"containerPrincipal"}>
             {errorMsg && <div className="alert alert-danger" role="alert">{errorMsg}</div>}
-            {isOk && <div className="alert alert-success" role="alert">Team created</div>}
 
             <img style={{width: 218, height: "auto"}} src={require("../images/RivalMatch_logoRecortado.png")}
                  alt={"Logo"}/>
@@ -133,6 +106,7 @@ export const NewTeamPage = () => {
                 </div>
                 <br/>
                 <select id="Group" required onChange={groupChange}>
+                    <option value="Group">Group</option>
                     <option value="Young">Young</option>
                     <option value="Adults">Adults</option>
                 </select>
@@ -147,6 +121,7 @@ export const NewTeamPage = () => {
                     (
                         <div>
                             <select id="Quantity" required onChange={quant_PlayersChange}>
+                                <option value="Quantity">Quantity</option>
                                 <option value="11">11</option>
                                 <option value="7">7</option>
                                 <option value="5">5</option>
@@ -158,6 +133,7 @@ export const NewTeamPage = () => {
                     (
                         <div>
                             <select id="Quantity" required onChange={quant_PlayersChange}>
+                                <option value="Quantity">Quantity</option>
                                 <option value="2">2</option>
                                 <option value="1">1</option>
                             </select>

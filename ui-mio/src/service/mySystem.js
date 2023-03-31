@@ -67,25 +67,33 @@ const MySystem = {
     },
 
     getUser: (token, okCallback, errorCallback) => {
-        fetch(`${restApiEndpoint}/user`, {
+        fetch(`${restApiEndpoint}/home`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token
             }
         }).then(resp => {
             if (resp.status === 200) {
-                okCallback()
-                resp.body("llegue")
+                // var mydata = JSON.parse(resp);
+                // okCallback(mydata)
+                // console.log("esaa")
+                // okCallback(resp.body)
+                resp.json().then(value => {
+                    console.log(value);
+                    okCallback(value);
+                }).catch(err => {
+                    console.log(err);
+                });
             } else {
                 errorCallback("no llegue")
-                // resp.body("no llegue")
+                okCallback("")
             }
-            return resp.body;
         })
     },
 
     newTeam: (user, okCallback, errorCallback) => {
-        fetch('http://localhost:4326/newTeam', {
+        fetch(`${restApiEndpoint}/newTeam`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

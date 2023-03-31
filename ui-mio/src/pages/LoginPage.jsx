@@ -32,7 +32,6 @@ export const LoginPage = () => {
             (token) => {
                 setToken(token)
                 navigate("/home", {replace: true});
-                console.log("1234")
             },
             (msg) => {
                 setErrorMsg(msg)
