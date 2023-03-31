@@ -3,9 +3,11 @@ import * as React from 'react'
 import {useState} from "react";
 import {useNavigate} from "react-router";
 import {useMySystem} from "../service/mySystem";
-import "../css/Home.css"
+import "../css/Login.css"
 import "../images/RivalMatch_logoRecortado.png"
-import {HomePage} from "./HomePage";
+import {useSearchParams} from "react-router-dom";
+import {render} from "@testing-library/react";
+import {useAuthProvider} from "../auth/auth";
 
 export const NewTeamPage = () => {
 
@@ -14,18 +16,21 @@ export const NewTeamPage = () => {
     const [group, setGroup] = useState('')
     const [zone, setZone] = useState('')
     const [name, setName] = useState('')
+    const auth = useAuthProvider()
+    const token = auth.getToken();
 
     const [errorMsg, setErrorMsg] = useState(undefined)
-    const [menuOpen, setMenuOpen] = useState(false);
-    const [pageChange, setPageChange] = useState("New Team");
     const navigate = useNavigate();
     const mySystem = useMySystem();
+    const [searchParams, setSearchParams] = useSearchParams();
+    const isOk = searchParams.get("ok")
     const handleSubmit = async e => {
+        console.log("Estoy aca");
         e.preventDefault();
         registerTeam({
             sport: sport,
             quantity: quant_Players,
-            group: group,
+            age_group: group,
             zone: zone,
             name: name
         })
@@ -37,16 +42,13 @@ export const NewTeamPage = () => {
         setGroup('')
         setQuant_player('')
         setName('')
-        navigate("/newTeam")
     }
 
-    const registerTeam = (team) => {
-        mySystem.newTeam(
-            team,
-            () => {
-                navigate("/pickTeam?ok=true", {replace: true})
-                console.log("entro al okCall")
-            },
+    const registerTeam = (user) => {
+        console.log("estoy en el registro!")
+        mySystem.newTeam(token,
+            user,
+            () => navigate("/pickTeam?ok=true"),
             () => {
                 setErrorMsg('Team already exists!')
                 resetForm();
@@ -56,16 +58,37 @@ export const NewTeamPage = () => {
 
     const sportChange = (event) => {
         setSport(event.target.value)
+        // console.log(sport)
+        // if(event.target.value === "Football"){
+        //     render(
+        //         <br>
+        //         <div>
+        //                 <select id="Quantity" required onChange={this.quant_PlayersChange}>
+        //                 <option>11</option>
+        //                 <option>7</option>
+        //             </select>
+        //         </div>
+        //     </br>
+        // )
+        // }
+        // else{
+        //     return(
+        //         <br>
+        //         <div>
+        //             <select id="Quantity" required onChange={quant_PlayersChange}>
+        //                 <option value="2">2</option>
+        //                 <option value="1">1</option>
+        //             </select>
+        //         </div>
+        //         </br>
+        //     )}
     }
-
     const quant_PlayersChange = (event) => {
         setQuant_player(event.target.value)
     }
-
     const groupChange = (event) => {
         setGroup(event.target.value)
     }
-
     const zoneChange = (event) => {
         setZone(event.target.value)
     }
@@ -77,96 +100,81 @@ export const NewTeamPage = () => {
     function newTeamRequest() {
         console.log("Im requesting a new Team!");
     }
-    const changePage = (event) => {
-        setPageChange(event.target.value);
+
+    if (isOk) {
+        resetForm();
     }
 
+
     return (
-        <div>
-            <button className={"Menu"} id="submit" type="submit" onClick={() => setMenuOpen(!menuOpen)}>
-                <img style={{ width: 22, height: "auto"}} src={require("../images/sideBarIcon.png")} alt={"Logo"}/>
-            </button>
-            {menuOpen &&
-                <select className={"custom-select"} id="Menu" multiple={true} onChange={changePage}>
-                    <option className={"custom-select-option"} value="Home">Home</option>
-                    <option className={"custom-select-option"} value="User">User</option>
-                    <option className={"custom-select-option"} value="Pick Team">Pick Team</option>
-                    <option className={"custom-select-option"} value="New Team">New Team</option>
+        <div className={"containerPrincipal"}>
+            {errorMsg && <div className="alert alert-danger" role="alert">{errorMsg}</div>}
+            {isOk && <div className="alert alert-success" role="alert">Team created</div>}
+
+            <img style={{width: 218, height: "auto"}} src={require("../images/RivalMatch_logoRecortado.png")}
+                 alt={"Logo"}/>
+            <form onSubmit={handleSubmit}>
+                <br/>
+                <div>
+                    <input type="Name"
+                           id="Name"
+                           placeholder="Name"
+                           name="Name"
+                           value={name}
+                           onChange={nameChange}/>
+                </div>
+                <br/>
+                <div>
+                    <input
+                        type="zone"
+                        id="zone"
+                        placeholder="Pilar"
+                        name="zone"
+                        value={zone}
+                        onChange={zoneChange}/>
+                </div>
+                <br/>
+                <select id="Group" required onChange={groupChange}>
+                    <option value="Group">Group</option>
+                    <option value="Young">Young</option>
+                    <option value="Adults">Adults</option>
                 </select>
-            }
-
-            <div className="containerPrincipal">
-                {errorMsg && <div className="alert alert-danger" role="alert">{errorMsg}</div>}
-
-                {pageChange === "User" && HomePage.goToUserInfo()}
-                {pageChange === "Pick Team" && HomePage.goToPickTeam()}
-                {pageChange === "New Team" && HomePage.goToNewTeam()}
-                {pageChange === "Home" && HomePage.goToHome()}
-                <img style={{width: 218, height: "auto"}} src={require("../images/RivalMatch_logoRecortado.png")}
-                     alt={"Logo"}/>
-                <form onSubmit={handleSubmit}>
-                    <br/>
-                    <div>
-                        <input type="Name"
-                               id="Name"
-                               placeholder="Name"
-                               name="Name"
-                               value={name}
-                               onChange={nameChange}/>
-                    </div>
-                    <br/>
-                    <div>
-                        <input
-                            type="zone"
-                            id="zone"
-                            placeholder="Pilar"
-                            name="zone"
-                            value={zone}
-                            onChange={zoneChange}/>
-                    </div>
-                    <br/>
-                    <select id="Group" required onChange={groupChange}>
-                        <option value="Group">Group</option>
-                        <option value="Young">Young</option>
-                        <option value="Adults">Adults</option>
-                    </select>
-                    <br/>
-                    <select id="sport" required onChange={sportChange}>
-                        <option value="Sport">Sport</option>
-                        <option value="Football">Football</option>
-                        <option value="Padel">Padel</option>
-                    </select>
-                    <br/>
-                    {sport === "Football" &&
-                        (
-                            <div>
-                                <select id="Quantity" required onChange={quant_PlayersChange}>
-                                    <option value="Quantity">Quantity</option>
-                                    <option value="11">11</option>
-                                    <option value="7">7</option>
-                                    <option value="5">5</option>
-                                </select>
-                            </div>
-                        )
-                    }
-                    {sport === "Padel" &&
-                        (
-                            <div>
-                                <select id="Quantity" required onChange={quant_PlayersChange}>
-                                    <option value="Quantity">Quantity</option>
-                                    <option value="2">2</option>
-                                    <option value="1">1</option>
-                                </select>
-                            </div>
-                        )
-                    }
-                    <div>
-                        {/*<button type="submit" className={"signUpButton"}>Sign up</button>*/}
-                        <button id="submit" type="submit" onClick={() => newTeamRequest()}>Create Team</button>
-                    </div>
-                    <br/>
-                </form>
-            </div>
-    </div>
+                <br/>
+                <select id="sport" required onChange={sportChange}>
+                    <option value="Sport">Sport</option>
+                    <option value="Football">Football</option>
+                    <option value="Padel">Padel</option>
+                </select>
+                <br/>
+                {sport === "Football" &&
+                    (
+                        <div>
+                            <select id="Quantity" required onChange={quant_PlayersChange}>
+                                <option value="Quantity">Quantity</option>
+                                <option value="11">11</option>
+                                <option value="7">7</option>
+                                <option value="5">5</option>
+                            </select>
+                        </div>
+                    )
+                }
+                {sport === "Padel" &&
+                    (
+                        <div>
+                            <select id="Quantity" required onChange={quant_PlayersChange}>
+                                <option value="Quantity">Quantity</option>
+                                <option value="2">2</option>
+                                <option value="1">1</option>
+                            </select>
+                        </div>
+                    )
+                }
+                <div>
+                    {/*<button type="submit" className={"signUpButton"}>Sign up</button>*/}
+                    <button id="submit" type="submit" onClick={() => newTeamRequest()}>Create Team</button>
+                </div>
+                <br/>
+            </form>
+        </div>
     )
 }

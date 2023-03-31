@@ -58,6 +58,7 @@ export const LoginPage = () => {
 
     function LoginRequest(){
         console.log("hola");
+        // navigate("/user?m="+password)
     }
 
     return (

@@ -3,10 +3,8 @@ package model;
 import com.google.gson.Gson;
 import org.hibernate.annotations.GenericGenerator;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.List;
 
 @Entity
 public class User {
@@ -24,6 +22,9 @@ public class User {
 
     @Column(name="USERNAME")
     private String username;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    private List<Team> teams;
 
     public String getUsername() {
         return username;
