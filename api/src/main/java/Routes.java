@@ -138,11 +138,15 @@ public class Routes {
                 String id = user.get().getId().toString();
                 List<Team> teamList = teams.findTeamsByUserId(id);
                 if (teamList.isEmpty()){
-                    return gson.toJson("no teams yet");
+                    res.status(204);
+                    res.body("no teams yet");
+                    return res.body();
                 }
                 else return gson.toJson(teamList);
             }
-            else return gson.toJson("No teams yet");
+            else {
+                return "";
+            }
 //            return gson.toJson(teams.listAll());
 
 

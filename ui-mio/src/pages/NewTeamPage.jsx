@@ -27,7 +27,7 @@ export const NewTeamPage = () => {
     const handleSubmit = async e => {
         console.log("Estoy aca");
         e.preventDefault();
-        registerUser({
+        registerTeam({
             sport: sport,
             quantity: quant_Players,
             age_group: group,
@@ -42,14 +42,13 @@ export const NewTeamPage = () => {
         setGroup('')
         setQuant_player('')
         setName('')
-        navigate("/newTeam")
     }
 
-    const registerUser = (user) => {
+    const registerTeam = (user) => {
         console.log("estoy en el registro!")
         mySystem.newTeam(token,
             user,
-            () => navigate("/newTeam?ok=true"),
+            () => navigate("/pickTeam?ok=true"),
             () => {
                 setErrorMsg('Team already exists!')
                 resetForm();
