@@ -75,10 +75,6 @@ const MySystem = {
             }
         }).then(resp => {
             if (resp.status === 200) {
-                // var mydata = JSON.parse(resp);
-                // okCallback(mydata)
-                // console.log("esaa")
-                // okCallback(resp.body)
                 resp.json().then(value => {
                     console.log(value);
                     okCallback(value);
