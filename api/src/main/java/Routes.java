@@ -45,9 +45,6 @@ public class Routes {
         routes();
     }
 
-    private Long id = (long)-1;
-
-
     private void routes() {
         before((req, resp) -> {
             resp.header("Access-Control-Allow-Origin", "*");
@@ -106,7 +103,9 @@ public class Routes {
             authenticate(authReq)
                     .ifPresentOrElse(token -> {
                         res.status(201);
-                        res.body(toJson(Auth.create(token)));
+                        String j = toJson(Auth.create(token));
+                        res.body(j);
+                        System.out.println(j);
                     }, () -> {
                         res.status(401);
                         res.body("");

@@ -135,7 +135,7 @@ export const NewTeamPage = () => {
                 </div>
                 <br/>
                 <select id="Group" required onChange={groupChange}>
-                    <option value="Group">Group </option>
+                    <option value="Group">Group</option>
                     <option value="Young">Young</option>
                     <option value="Adults">Adults</option>
                 </select>
@@ -150,6 +150,7 @@ export const NewTeamPage = () => {
                     (
                         <div>
                             <select id="Quantity" required onChange={quant_PlayersChange}>
+                                <option value="Quantity">Quantity</option>
                                 <option value="11">11</option>
                                 <option value="7">7</option>
                                 <option value="5">5</option>
@@ -161,6 +162,7 @@ export const NewTeamPage = () => {
                     (
                         <div>
                             <select id="Quantity" required onChange={quant_PlayersChange}>
+                                <option value="Quantity">Quantity</option>
                                 <option value="2">2</option>
                                 <option value="1">1</option>
                             </select>
