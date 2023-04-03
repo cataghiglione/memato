@@ -3,7 +3,7 @@ import * as React from 'react'
 import {useState} from "react";
 import {useNavigate} from "react-router";
 import {useMySystem} from "../service/mySystem";
-import "../css/Login.css"
+import "../css/Home.css"
 import "../images/RivalMatch_logoRecortado.png"
 import {useSearchParams} from "react-router-dom";
 import {render} from "@testing-library/react";
@@ -24,6 +24,14 @@ export const NewTeamPage = () => {
     const mySystem = useMySystem();
     const [searchParams, setSearchParams] = useSearchParams();
     const isOk = searchParams.get("ok")
+
+    const [menuOpen, setMenuOpen] = useState(false);
+    const [pageChange, setPageChange] = useState("Home");
+
+    const changePage = (event) => {
+        setPageChange(event.target.value);
+    }
+
     const handleSubmit = async e => {
         console.log("Estoy aca");
         e.preventDefault();
@@ -58,30 +66,6 @@ export const NewTeamPage = () => {
 
     const sportChange = (event) => {
         setSport(event.target.value)
-        // console.log(sport)
-        // if(event.target.value === "Football"){
-        //     render(
-        //         <br>
-        //         <div>
-        //                 <select id="Quantity" required onChange={this.quant_PlayersChange}>
-        //                 <option>11</option>
-        //                 <option>7</option>
-        //             </select>
-        //         </div>
-        //     </br>
-        // )
-        // }
-        // else{
-        //     return(
-        //         <br>
-        //         <div>
-        //             <select id="Quantity" required onChange={quant_PlayersChange}>
-        //                 <option value="2">2</option>
-        //                 <option value="1">1</option>
-        //             </select>
-        //         </div>
-        //         </br>
-        //     )}
     }
     const quant_PlayersChange = (event) => {
         setQuant_player(event.target.value)
@@ -108,6 +92,9 @@ export const NewTeamPage = () => {
 
     return (
         <div className={"containerPrincipal"}>
+            <button className={"Menu"} id="submit" type="submit" onClick={() => setMenuOpen(!menuOpen)}>
+                <img style={{ width: 22, height: "auto"}} src={require("../images/sideBarIcon.png")} alt={"Logo"}/>
+            </button>
             {errorMsg && <div className="alert alert-danger" role="alert">{errorMsg}</div>}
             {isOk && <div className="alert alert-success" role="alert">Team created</div>}
 

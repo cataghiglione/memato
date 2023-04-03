@@ -1,9 +1,10 @@
 import React, {Component, useEffect, useState} from 'react';
-import "../css/PickTeams.css"
+import "../css/Home.css"
 import {useNavigate} from "react-router";
 import {useMySystem} from "../service/mySystem";
 import {useAuthProvider} from "../auth/auth";
 import {useSearchParams} from "react-router-dom";
+import {HomePage} from "./HomePage";
 
 function goToNewTeam(){
     window.location.href = "/newTeam"
@@ -32,35 +33,45 @@ export const PickTeamPage = () => {
 
     const [searchParams, setSearchParams] = useSearchParams();
     const isOk = searchParams.get("ok")
+
+    const [menuOpen, setMenuOpen] = useState(false);
+    const [pageChange, setPageChange] = useState("Home");
     useEffect(() => {
         mySystem.listTeams(token, (teams) => setTeams(teams));
     }, [])
+
+    const changePage = (event) => {
+        setPageChange(event.target.value);
+    }
+
     return (
         <div>
+            <button className={"Menu"} id="submit" type="submit" onClick={() => setMenuOpen(!menuOpen)}>
+                <img style={{ width: 22, height: "auto"}} src={require("../images/sideBarIcon.png")} alt={"Logo"}/>
+            </button>
             {isOk && <div className="alert alert-success" role="alert">Team created</div>}
             {isOk && sleep(500)}
-            <nav className="navbar navbar-default" role="navigation">
-                <div>
-                    <ul className="nav navbar-nav navbar-right">
-
-                    </ul>
-                </div>
-            </nav>
+            {menuOpen &&
+                <select className={"custom-select"} id="Menu" multiple={true} onChange={changePage}>
+                    <option className={"custom-select-option"} value="Home">Home</option>
+                    <option className={"custom-select-option"} value="User">User</option>
+                    <option className={"custom-select-option"} value="Pick Team">Pick Team</option>
+                    <option className={"custom-select-option"} value="New Team">New Team</option>
+                </select>
+            }
 
             <div className="containerPrincipal">
+                {pageChange === "User" && HomePage.goToUserInfo()}
+                {pageChange === "Pick Team" && HomePage.goToPickTeam()}
+                {pageChange === "New Team" && goToHome()}
                 <h1>Teams</h1>
-                <ul>
+                <p>
                     {teams.map(team =>
                         <p>nombre = {team.name}    deporte = {team.sport} </p>
                     )}
-                </ul>
+                </p>
                 <button className={"newTeamButton"} onClick={goToNewTeam}>New Team</button>
             </div>
-
-            <footer className="footer">
-                <p>Footer</p>
-                <a href="" onClick={goToHome}>Home</a>
-            </footer>
         </div>
     )
 }

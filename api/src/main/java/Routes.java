@@ -59,7 +59,6 @@ public class Routes {
 
             getUser(req).ifPresentOrElse(
                     (user) -> {
-//
                         final CreateTeamForm form = CreateTeamForm.createFromJson(req.body());
 
                         system.createTeam(form,user).ifPresentOrElse(
@@ -99,7 +98,6 @@ public class Routes {
         });
         post(AUTH_ROUTE, (req, res) -> {
             final AuthRequest authReq = AuthRequest.createFromJson(req.body());
-
             authenticate(authReq)
                     .ifPresentOrElse(token -> {
                         res.status(201);
@@ -146,26 +144,19 @@ public class Routes {
             else {
                 return "";
             }
-//            return gson.toJson(teams.listAll());
-
-
         });
-        Spark.get("/user", (req, res) -> {
-            String mail = req.queryParams("m");
-            System.out.println(req.queryParams("m"));
-            system.findUserByEmail(mail).ifPresentOrElse(
+        authorizedGet("/home", (req, res) -> {
+            getUser(req).ifPresentOrElse(
                     (user) -> {
-                        System.out.println(user.getFirstName());
                         res.status(200);
-                        res.body(user.getFirstName());
+                        res.body(user.asJson());
                     },
                     () -> {
-                        System.out.println("no pase :(");
-                        res.status(409);
-                        res.body();
+                        res.status(404);
+                        res.body("Invalid Token");
                     }
             );
-            return res.body();
+            return toJson(res.body());
         });
         authorizedGet(USER_ROUTE, (req, res) -> getToken(req).map(JsonParser::toJson));
         Spark.get("/getAllUsers", "application/json", (req, resp) -> {

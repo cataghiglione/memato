@@ -77,11 +77,8 @@ const MySystem = {
             if (resp.status === 200) {
                 // var mydata = JSON.parse(resp);
                 // okCallback(mydata)
-                // console.log("esaa")
-                // okCallback(resp.body)
                 resp.json().then(value => {
-                    console.log(value);
-                    okCallback(value);
+                    okCallback(JSON.parse(value));
                 }).catch(err => {
                     console.log(err);
                 });

@@ -58,7 +58,6 @@ export const LoginPage = () => {
 
     function LoginRequest(){
         console.log("hola");
-        // navigate("/user?m="+password)
     }
 
     return (
@@ -71,11 +70,6 @@ export const LoginPage = () => {
                 <div>
                     <br></br>
                     <input type="email" id="username" value={username} placeholder="name@example.com" onChange={usernameChange}/>
-                    {/*<input type="email"*/}
-                    {/*       value={username}*/}
-                    {/*       onChange={usernameChange}*/}
-                    {/*       placeholder="Name@example.com"*/}
-                    {/*       name="email"/>*/}
                 </div>
                 <br></br>
                 <div>
@@ -87,7 +81,6 @@ export const LoginPage = () => {
                 </div>
                 <br></br>
                 <br></br>
-                {/*<button type="submit" className={"logInButton"}>Sign in</button>*/}
                 <button id="submit" type="submit" onClick={() => LoginRequest()}>Login</button>
             </form>
             <br></br>
