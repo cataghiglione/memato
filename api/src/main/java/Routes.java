@@ -59,7 +59,6 @@ public class Routes {
 
             getUser(req).ifPresentOrElse(
                     (user) -> {
-//
                         final CreateTeamForm form = CreateTeamForm.createFromJson(req.body());
 
                         system.createTeam(form,user).ifPresentOrElse(
@@ -99,7 +98,6 @@ public class Routes {
         });
         post(AUTH_ROUTE, (req, res) -> {
             final AuthRequest authReq = AuthRequest.createFromJson(req.body());
-
             authenticate(authReq)
                     .ifPresentOrElse(token -> {
                         res.status(201);
@@ -146,9 +144,6 @@ public class Routes {
             else {
                 return "";
             }
-//            return gson.toJson(teams.listAll());
-
-
         });
         authorizedGet("/home", (req, res) -> {
             getUser(req).ifPresentOrElse(

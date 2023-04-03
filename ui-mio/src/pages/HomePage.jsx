@@ -37,8 +37,8 @@ export const HomePage = () => {
     const getUser = () => {
         console.log(token)
         mySystem.getUser(token, (user) => {
-            console.log(user);
             setUser(user);
+            console.log(JSON.stringify(user));
         })
         setOnceOpen(false);
     }
@@ -62,6 +62,8 @@ export const HomePage = () => {
 
             <div className="containerPrincipal">
                 {onceOpen && getUser()}
+                {console.log("user")}
+                {console.log(user.firstName)}
                 {pageChange === "User" && goToUserInfo()}
                 {pageChange === "Pick Team" && goToPickTeam()}
                 {pageChange === "New Team" && goToNewTeam()}

@@ -48,7 +48,7 @@ export const PickTeamPage = () => {
         <div>
             <button className={"Menu"} id="submit" type="submit" onClick={() => setMenuOpen(!menuOpen)}>
                 <img style={{ width: 22, height: "auto"}} src={require("../images/sideBarIcon.png")} alt={"Logo"}/>
-            </button>x
+            </button>
             {isOk && <div className="alert alert-success" role="alert">Team created</div>}
             {isOk && sleep(500)}
             {menuOpen &&

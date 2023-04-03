@@ -101,7 +101,7 @@ public class User {
     }
 
     public String asJson() {
-        User newUser = new User(this.email, this.password, this.firstName, this.lastName, this.username);
+        User newUser = new User(this.firstName, this.password, this.email, this.lastName, this.username);
         Gson gson = new Gson();
         return JsonParser.toJson(newUser);
     }
