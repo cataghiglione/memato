@@ -1,6 +1,5 @@
-import React, {Component, useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import "../css/Home.css"
-import "../css/PickTeam.css"
 import {useNavigate} from "react-router";
 import {useMySystem} from "../service/mySystem";
 import {useAuthProvider} from "../auth/auth";
@@ -16,42 +15,28 @@ function goToHome(){
 function showTeam(team){
     window.location.href = "/pickTeam"
 }
-function sleep(milliseconds) {
-    var start = new Date().getTime();
-    for (var i = 0; i < 1e7; i++) {
-        if ((new Date().getTime() - start) > milliseconds){
-            break;
-        }
-    }
-}
 
-export const PickTeamPage = () => {
+export const FindRivalPage = () => {
     const navigate = useNavigate()
     const mySystem = useMySystem()
     const auth = useAuthProvider()
 
     const token = auth.getToken();
-    const [teams, setTeams] = useState([]);
 
-    const [searchParams, setSearchParams] = useSearchParams();
-    const isOk = searchParams.get("ok")
+    const [searchParams] = useSearchParams();
+    const idTeam = searchParams.get("id")
 
     const [menuOpen, setMenuOpen] = useState(false);
     const [pageChange, setPageChange] = useState("Home");
 
-    const [nextTeam, setNextTeam] = useState('')
+    const [teams, setTeams] = useState([]);
+
     useEffect(() => {
-        mySystem.listTeams(token, (teams) => setTeams(teams));
+        mySystem.findRival(token, idTeam, (teams) => setTeams(teams));
     }, [])
 
     const changePage = (event) => {
         setPageChange(event.target.value);
-    }
-    const changeNextTeam = (event) => {
-        setNextTeam(event.target.value);
-        if(event.target.value != null){
-            navigate('/findRival?id='+ event.target.value)
-        }
     }
 
     return (
@@ -59,8 +44,6 @@ export const PickTeamPage = () => {
             <button className={"Menu"} id="submit" type="submit" onClick={() => setMenuOpen(!menuOpen)}>
                 <img style={{ width: 22, height: "auto"}} src={require("../images/sideBarIcon.png")} alt={"Logo"}/>
             </button>
-            {isOk && <div className="alert alert-success" role="alert">Team created</div>}
-            {isOk && sleep(500)}
             {menuOpen &&
                 <select className={"custom-select"} id="Menu" multiple={true} onChange={changePage}>
                     <option className={"custom-select-option"} value="Home">Home</option>
@@ -74,13 +57,12 @@ export const PickTeamPage = () => {
                 {pageChange === "User" && HomePage.goToUserInfo()}
                 {pageChange === "Pick Team" && HomePage.goToPickTeam()}
                 {pageChange === "New Team" && HomePage.goToNewTeam()}
-                <h1>Teams</h1>
-                <button className={"newTeamButton"} onClick={goToNewTeam}>New Team</button>
-                <select className={"team-select"} multiple={true} onChange={changeNextTeam}>
-                    {teams.map(team =>
-                        <option className={"team-select-option"} value={team.id}>nombre = {team.name}    deporte = {team.sport} </option>
-                    )}
-                </select>
+            </div>
+            <div>
+                {console.log(teams)}
+                {teams.map(team =>
+                    <p>nombre = {team.name}    deporte = {team.sport} </p>
+                )}
             </div>
         </div>
     )

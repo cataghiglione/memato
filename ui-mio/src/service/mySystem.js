@@ -1,4 +1,7 @@
+import {PickTeamPage} from "../pages/PickTeamPage";
+
 const restApiEndpoint = "http://localhost:4326"
+
 
 const MySystem = {
     login: (credentials, okCallback, errorCallback) => {
@@ -103,6 +106,22 @@ const MySystem = {
         }).then(resp => {
             if (resp.status === 201) {
                 okCallback()
+            } else {
+                errorCallback()
+            }
+        })
+    },
+
+    findRival: (token,id, okCallback, errorCallback) => {
+        fetch(`${restApiEndpoint}/findRival?id=${id}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token
+            },
+        }).then(resp => {
+            if (resp.status === 200) {
+                resp.json().then(teams => okCallback(teams))
             } else {
                 errorCallback()
             }

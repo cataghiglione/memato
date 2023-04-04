@@ -34,7 +34,7 @@ public class MySystem {
     public Optional<Team> createTeam(CreateTeamForm form, User user){
         return runInTransaction(datasource ->{
             final Teams teams = datasource.teams();
-            return teams.exists(form.getName()) ? Optional.empty() : Optional.of(teams.createTeam(form,user));
+            return teams.exists(form.getName(), user) ? Optional.empty() : Optional.of(teams.createTeam(form,user));
         });
 
     }
