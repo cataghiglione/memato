@@ -13,7 +13,7 @@ export const NewTeamPage = () => {
 
     const [sport, setSport] = useState('')
     const [quant_Players, setQuant_player] = useState('')
-    const [group, setGroup] = useState('')
+    const [age_group, setAge_group] = useState('')
     const [zone, setZone] = useState('')
     const [name, setName] = useState('')
     const auth = useAuthProvider()
@@ -38,7 +38,7 @@ export const NewTeamPage = () => {
         registerTeam({
             sport: sport,
             quantity: quant_Players,
-            age_group: group,
+            age_group: age_group,
             zone: zone,
             name: name
         })
@@ -47,7 +47,7 @@ export const NewTeamPage = () => {
     const resetForm = () => {
         setSport('')
         setZone('')
-        setGroup('')
+        setAge_group('')
         setQuant_player('')
         setName('')
     }
@@ -71,7 +71,7 @@ export const NewTeamPage = () => {
         setQuant_player(event.target.value)
     }
     const groupChange = (event) => {
-        setGroup(event.target.value)
+        setAge_group(event.target.value)
     }
     const zoneChange = (event) => {
         setZone(event.target.value)
@@ -120,12 +120,16 @@ export const NewTeamPage = () => {
                         value={zone}
                         onChange={zoneChange}/>
                 </div>
+                <div>
                 <br/>
-                <select id="Group" required onChange={groupChange}>
+                <select id="age_group" required onChange={groupChange}>
                     <option value="Group">Group</option>
                     <option value="Young">Young</option>
                     <option value="Adults">Adults</option>
                 </select>
+                </div>
+
+
                 <br/>
                 <select id="sport" required onChange={sportChange}>
                     <option value="Sport">Sport</option>

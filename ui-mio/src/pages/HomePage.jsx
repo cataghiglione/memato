@@ -17,6 +17,9 @@ function goToUserInfo() {
 function goToHome() {
     window.location.href = "/home"
 }
+function goToFindRival(){
+    window.location.href = "/findRival"
+}
 
 export const HomePage = () => {
     const navigate = useNavigate()
@@ -57,6 +60,8 @@ export const HomePage = () => {
                     <option className={"custom-select-option"} value="User">User</option>
                     <option className={"custom-select-option"} value="Pick Team">Pick Team</option>
                     <option className={"custom-select-option"} value="New Team">New Team</option>
+                    <option className={"custom-select-option"} value="Find Rival">Find Rival</option>
+
                 </select>
             }
 
@@ -67,6 +72,7 @@ export const HomePage = () => {
                 {pageChange === "User" && goToUserInfo()}
                 {pageChange === "Pick Team" && goToPickTeam()}
                 {pageChange === "New Team" && goToNewTeam()}
+                {pageChange === "Find Rival" && goToFindRival()}
                 <div>
                     <h1>Hi {user.firstName}
                     </h1>

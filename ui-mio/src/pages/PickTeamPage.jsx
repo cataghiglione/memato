@@ -15,6 +15,9 @@ function goToHome(){
 function showTeam(team){
     window.location.href = "/pickTeam"
 }
+function goToFindRival(team){
+    window.location.href = "/findRival"
+}
 function sleep(milliseconds) {
     var start = new Date().getTime();
     for (var i = 0; i < 1e7; i++) {
@@ -57,19 +60,23 @@ export const PickTeamPage = () => {
                     <option className={"custom-select-option"} value="User">User</option>
                     <option className={"custom-select-option"} value="Pick Team">Pick Team</option>
                     <option className={"custom-select-option"} value="New Team">New Team</option>
+                    <option className={"custom-select-option"} value="Find Rival">Find Rival</option>
                 </select>
             }
 
             <div className="containerPrincipal">
                 {pageChange === "User" && HomePage.goToUserInfo()}
                 {pageChange === "Pick Team" && HomePage.goToPickTeam()}
-                {pageChange === "New Team" && goToHome()}
+                {pageChange === "New Team" && goToNewTeam()}
+                {pageChange === "Find Rival" && goToFindRival()}
                 <h1>Teams</h1>
-                <p>
+                <select>
                     {teams.map(team =>
-                        <p>nombre = {team.name}    deporte = {team.sport} </p>
+                        // <p>nombre = {team.name}    deporte = {team.sport} </p>
+                        <option>{team.name}</option>
+
                     )}
-                </p>
+                </select>
                 <button className={"newTeamButton"} onClick={goToNewTeam}>New Team</button>
             </div>
         </div>
