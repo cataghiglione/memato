@@ -16,7 +16,7 @@ public class Teams {
     }
     public Team createTeam(CreateTeamForm creationValues, User user){
         if (findTeamByName(creationValues.getName(), user).isPresent()) throw new IllegalStateException("A team with that name already exists");
-        final Team newTeam = Team.create(creationValues.getName(),creationValues.getSport(),creationValues.getQuantity(),0, creationValues.getGroup(), creationValues.getZone(),user);
+        final Team newTeam = Team.create(creationValues.getName(),creationValues.getSport(),creationValues.getQuantity(),0, creationValues.getAgeGroup(), creationValues.getZone(),user);
         entityManager.persist(newTeam);
         return newTeam;
     }
