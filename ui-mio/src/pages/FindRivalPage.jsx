@@ -42,6 +42,7 @@ export const FindRivalPage = () => {
     const isOk = searchParams.get("ok")
 
     const [menuOpen, setMenuOpen] = useState(false);
+    const[pickTeamOpen, setPickTeamOpen] = useState(false)
     const [pageChange, setPageChange] = useState("Home");
     useEffect(() => {
         mySystem.listTeams(token, (teams) => setTeams(teams));
@@ -53,8 +54,6 @@ export const FindRivalPage = () => {
 
     return (
         <div>
-            <img style={{width: 218, height: "auto"}} src={require("../images/RivalMatch_logoRecortado.png")}
-                 alt={"Logo"}/>
             <button className={"Menu"} id="submit" type="submit" onClick={() => setMenuOpen(!menuOpen)}>
                 <img style={{width: 22, height: "auto"}} src={require("../images/sideBarIcon.png")} alt={"Logo"}/>
             </button>
@@ -72,26 +71,31 @@ export const FindRivalPage = () => {
             }
 
             <div className="containerPrincipal">
+                <img style={{width: 218, height: "auto", left:50}} src={require("../images/RivalMatch_logoRecortado.png")}
+                     alt={"Logo"}/>
                 {pageChange === "User" && HomePage.goToUserInfo()}
                 {pageChange === "Pick Team" && HomePage.goToPickTeam()}
                 {pageChange === "New Team" && goToHome()}
                 <h1>Pick your team to find a new rival!</h1>
 
-                <div className="dropdown">
+                {/*<div className="dropdown">*/}
                     <button className="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"
-                            aria-expanded="false">
+                            aria-expanded="false" onClick={()=> setPickTeamOpen(!pickTeamOpen)}>
                         Choose a Team:
                     </button>
-                    <ul className="dropdown-menu">
-                        {teams.map(team => <li><a className="dropdown-item" href="#">{team.name}</a></li>)}
-                    </ul>
-                </div>
+                {pickTeamOpen &&
+                    <select name="teams" id="teams" className="form-select" aria-label="Default select example" multiple={true}>
+                        { teams.map(team => <option value={team.name}>{team.name}</option>) }
+                    </select>
+                }
+                    {/*<ul className="dropdown-menu">*/}
+                    {/*    {teams.map(team => <li><a className="dropdown-item" href="#">{team.name}</a></li>)}*/}
+                    {/*</ul>*/}
+                {/*</div>*/}
 
-                <label htmlFor="teams">Choose a team:</label>
+                {/*<label htmlFor="teams">Choose a team:</label>*/}
 
-                <select name="teams" id="teams" className="form-select" aria-label="Default select example" multiple={true}>
-                    { teams.map(team => <option value={team.name}>{team.name}</option>) }
-                </select>
+
 
                 {/*<DropdownButton*/}
                 {/*    variant="secondary"*/}
