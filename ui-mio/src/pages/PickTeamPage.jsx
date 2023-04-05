@@ -1,5 +1,6 @@
 import React, {Component, useEffect, useState} from 'react';
 import "../css/Home.css"
+import "../css/PickTeam.css"
 import {useNavigate} from "react-router";
 import {useMySystem} from "../service/mySystem";
 import {useAuthProvider} from "../auth/auth";
@@ -39,12 +40,20 @@ export const PickTeamPage = () => {
 
     const [menuOpen, setMenuOpen] = useState(false);
     const [pageChange, setPageChange] = useState("Home");
+
+    const [nextTeam, setNextTeam] = useState('')
     useEffect(() => {
         mySystem.listTeams(token, (teams) => setTeams(teams));
     }, [])
 
     const changePage = (event) => {
         setPageChange(event.target.value);
+    }
+    const changeNextTeam = (event) => {
+        setNextTeam(event.target.value);
+        if(event.target.value != null){
+            navigate('/findRival?id='+ event.target.value)
+        }
     }
 
     return (
@@ -67,15 +76,20 @@ export const PickTeamPage = () => {
             <div className="containerPrincipal">
                 {pageChange === "User" && HomePage.goToUserInfo()}
                 {pageChange === "Pick Team" && HomePage.goToPickTeam()}
+                {pageChange === "New Team" && HomePage.goToNewTeam()}
                 {pageChange === "New Team" && goToNewTeam()}
                 {pageChange === "Find Rival" && goToFindRival()}
                 <h1>Teams</h1>
+                <button className={"newTeamButton"} onClick={goToNewTeam}>New Team</button>
+                <select className={"team-select"} multiple={true} onChange={changeNextTeam}>
                 <select>
                     {teams.map(team =>
+                        <option className={"team-select-option"} value={team.id}>nombre = {team.name}    deporte = {team.sport} </option>
                         // <p>nombre = {team.name}    deporte = {team.sport} </p>
                         <option>{team.name}</option>
 
                     )}
+                </select>
                 </select>
                 <button className={"newTeamButton"} onClick={goToNewTeam}>New Team</button>
             </div>

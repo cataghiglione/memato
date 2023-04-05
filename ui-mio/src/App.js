@@ -12,6 +12,8 @@ import {HomePage} from "./pages/HomePage";
 import {PickTeamPage} from "./pages/PickTeamPage";
 import {UserPage} from "./pages/UserPage";
 import {NewTeamPage} from "./pages/NewTeamPage"
+import {FindRivalPage} from "./pages/FindRival";
+
 function App() {
     return (
         <Routes>
@@ -23,6 +25,7 @@ function App() {
             <Route path="/newTeam" element={<NewTeamPage/>}/>
             <Route path="/users" element={<UsersPage/>}/>
             <Route path="/user" element={<UserPage/>}/>
+            <Route path="/findRival" element={<FindRivalPage/>}/>
             <Route
                 path="/home"
                 element={

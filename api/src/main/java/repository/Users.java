@@ -19,11 +19,10 @@ public class Users {
         return findByEmail(email).isPresent() || findByUsername(username).isPresent();
     }
     public User createUser(RegistrationUserForm signUpValues) {
+        if (findByEmail(signUpValues.getEmail()).isPresent()) throw new IllegalStateException("Email already in use.");
+        if (findByEmail(signUpValues.getUsername()).isPresent()) throw new IllegalStateException("Username already in use.");
+
         final User newUser = User.create(signUpValues.getEmail(), signUpValues.getPassword(),signUpValues.getFirstName(),signUpValues.getLastName(), signUpValues.getUsername());
-
-        if (findByEmail(newUser.getEmail()).isPresent()) throw new IllegalStateException("Email already in use.");
-        if (findByEmail(newUser.getUsername()).isPresent()) throw new IllegalStateException("Username already in use.");
-
 
         entityManager.persist(newUser);
 

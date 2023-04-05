@@ -33,6 +33,8 @@ public class Routes {
     public static final String AUTH_ROUTE = "/auth";
     public static final String PICK_TEAM_ROUTE = "/pickTeam";
     public static final String NEW_TEAM_ROUTE = "/newTeam";
+    public static final String HOME_ROUTE = "/home";
+    public static final String FIND_RIVAL_ROUTE = "/findRival";
 
 
     private MySystem system;
@@ -145,7 +147,7 @@ public class Routes {
                 return "";
             }
         });
-        authorizedGet("/home", (req, res) -> {
+        authorizedGet(HOME_ROUTE, (req, res) -> {
             getUser(req).ifPresentOrElse(
                     (user) -> {
                         res.status(200);
@@ -172,6 +174,30 @@ public class Routes {
 //                resp.body("ee");
 //            }
             return gson.toJson(users.listAll());
+        });
+        authorizedGet(FIND_RIVAL_ROUTE, (req, res) -> {
+            final String id = (req.queryParams("id"));
+            final EntityManager entityManager = entityManagerFactory.createEntityManager();
+            final Teams teams = new Teams(entityManager);
+            teams.findTeamsById(id).ifPresentOrElse(
+                    (team) -> {
+                        List<Team> rivals = teams.findRival(team.getSport(), team.getGroup(), team.getQuantity());
+                        rivals.remove(team);
+                        if(rivals.size() == 0){
+                            res.status(404);
+                            res.body("Not rivals found");
+                        }
+                        else{
+                            res.status(200);
+                            res.body(gson.toJson(rivals));
+                        }
+                    },
+                    () -> {
+                        res.status(404);
+                        res.body("Invalid Token");
+                    }
+            );
+            return res.body();
         });
     }
 
@@ -266,9 +292,11 @@ public class Routes {
         tx.begin();
         if (teams.listAll().isEmpty()) {
             final Team kateTeam =
-                    Team.create("river", "Fulbo","11",0, "young", "Pili", userList.get(0));
-
+                    Team.create("river", "Football","11",0, "Young", "Pilar", userList.get(0));
+            final Team cocaTeam =
+                    Team.create("depo", "Football","11",0, "Young", "Pilar", userList.get(1));
             teams.persist(kateTeam);
+            teams.persist(cocaTeam);
         }
         tx.commit();
         entityManager.close();

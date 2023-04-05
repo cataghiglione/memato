@@ -32,10 +32,6 @@ public class Team {
     @JoinColumn(name = "USER_ID", referencedColumnName = "id")
     private User user;
 
-//    @Column(name = "USUARIO_ID")
-//    private Long user_id;
-
-
     public Team() {
     }
 
@@ -71,6 +67,9 @@ public class Team {
 
     public String getSport() {
         return sport;
+    }
+    public long getUserId() {
+        return user.getId();
     }
 
     public String getQuantity() {
