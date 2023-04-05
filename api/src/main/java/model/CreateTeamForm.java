@@ -10,7 +10,7 @@ public class CreateTeamForm {
     private final String sport;
 
     private final String quantity;
-    private  final String group;
+    private  final String age_group;
     private final String zone;
 
     public String getName() {
@@ -18,8 +18,8 @@ public class CreateTeamForm {
     }
     public String getZone(){return zone;}
 
-    public String getGroup() {
-        return group;
+    public String getAgeGroup() {
+        return age_group;
     }
 
     public String getSport() {
@@ -41,7 +41,7 @@ public class CreateTeamForm {
         this.sport=sport;
         this.quantity=quantity;
         this.puntuality=puntuality;
-        this.group=group;
+        this.age_group=group;
         this.zone=zone;
     }
 
