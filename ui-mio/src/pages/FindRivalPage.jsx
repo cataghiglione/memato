@@ -5,13 +5,13 @@ import {useMySystem} from "../service/mySystem";
 import {useAuthProvider} from "../auth/auth";
 import {useSearchParams} from "react-router-dom";
 import {HomePage} from "./HomePage";
-import {Button} from 'reactstrap';
-import DropdownButton from 'react-bootstrap/DropdownButton';
-import {Dropdown} from "react-bootstrap";
+// import {Button} from 'reactstrap';
+// import DropdownButton from 'react-bootstrap/DropdownButton';
+// import {Dropdown} from "react-bootstrap";
 
-export default (props) => {
-    return <Button color="danger">Danger!</Button>;
-};
+// export default (props) => {
+//     return <Button color="danger">Danger!</Button>;
+// };
 
 function goToNewTeam() {
     window.location.href = "/newTeam"
@@ -136,8 +136,8 @@ export const FindRivalPage = () => {
                 <div style={{justifyContent: "center", alignItems: "center", position: "absolute", bottom: -250}}>
                     <p></p>
                     <p>No teams yet? Create a new one!</p>
-                    <Button data-toggle="button" aria-pressed="true" active color="success" outline
-                            className={"newTeamButton"} onClick={goToNewTeam}>New Team</Button>
+                    <button data-toggle="button" aria-pressed="true" active color="success" outline
+                            className={"newTeamButton"} onClick={goToNewTeam}>New Team</button>
                 </div>
             </div>
         </div>

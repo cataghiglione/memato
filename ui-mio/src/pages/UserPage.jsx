@@ -29,10 +29,8 @@ export const UserPage = () => {
     }
 
     const signOut = () => {
+        mySystem.signOut(token, navigate("/"))
         auth.removeToken();
-
-        //TODO falta llamar al server
-        navigate("/");
     }
     const getUser = () => {
         console.log(token)

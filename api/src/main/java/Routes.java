@@ -121,7 +121,6 @@ public class Routes {
                     }, () -> {
                         res.status(404);
                     });
-
             return "";
 
         });
