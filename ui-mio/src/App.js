@@ -12,7 +12,7 @@ import {HomePage} from "./pages/HomePage";
 import {PickTeamPage} from "./pages/PickTeamPage";
 import {UserPage} from "./pages/UserPage";
 import {NewTeamPage} from "./pages/NewTeamPage"
-import {FindRivalPage} from "./pages/FindRival";
+import {FindRivalPage} from "./pages/FindRivalPage";
 
 function App() {
     return (

@@ -36,6 +36,40 @@ const MySystem = {
         })
     },
 
+    newTeam: (token,user, okCallback, errorCallback) => {
+        console.log("estoy en mysistem")
+        fetch(`${restApiEndpoint}/newTeam`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token
+
+            },
+            body: JSON.stringify(user)
+        }).then(resp => {
+            if (resp.status === 201) {
+                okCallback()
+            } else {
+                errorCallback()
+            }
+        })
+    },
+
+    signOut: (token, okCallback, errorCallback) => {
+        fetch(`${restApiEndpoint}/auth`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token
+            }
+        }).then(resp => {
+            if (resp.status === 200) {
+                okCallback();
+            } else {
+                errorCallback("Could not sign out")
+            }
+        })
+    },
 
     listUsers: (token, okCallback, errorCallback) => {
         fetch('http://localhost:4326/users', {
@@ -68,21 +102,21 @@ const MySystem = {
             }
         })
     },
-    findRival:(token, okCallback, errorCallback)=>{
-        fetch(`${restApiEndpoint}/findRival`,{
-            method: 'GET',
-            headers:{
-                'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + token
-            }
-        }).then(resp => {
-            if (resp.status === 200) {
-                resp.json().then(teams => okCallback(teams))
-            } else {
-                errorCallback("Could not create a rival request")
-            }
-        })
-    },
+    // findRival:(token, okCallback, errorCallback)=>{
+    //     fetch(`${restApiEndpoint}/findRival`,{
+    //         method: 'GET',
+    //         headers:{
+    //             'Content-Type': 'application/json',
+    //             'Authorization': 'Bearer ' + token
+    //         }
+    //     }).then(resp => {
+    //         if (resp.status === 200) {
+    //             resp.json().then(teams => okCallback(teams))
+    //         } else {
+    //             errorCallback("Could not create a rival request")
+    //         }
+    //     })
+    // },
 
     getUser: (token, okCallback, errorCallback) => {
         fetch(`${restApiEndpoint}/home`, {
@@ -105,25 +139,6 @@ const MySystem = {
                 okCallback("")
             }
             return resp.body;
-        })
-    },
-
-    newTeam: (token,user, okCallback, errorCallback) => {
-        console.log("estoy en mysistem")
-        fetch(`${restApiEndpoint}/newTeam`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + token
-
-            },
-            body: JSON.stringify(user)
-        }).then(resp => {
-            if (resp.status === 201) {
-                okCallback()
-            } else {
-                errorCallback()
-            }
         })
     },
 
