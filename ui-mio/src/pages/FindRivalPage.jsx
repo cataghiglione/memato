@@ -36,6 +36,21 @@ export default function FindRivalPage() {
     const token = auth.getToken();
     const [time, setTime] = useState('')
 
+    const [teams, setTeams] = useState([]);
+    const [team, setTeam] = useState('');
+
+    // con esto lee los params
+    const searchParams = useSearchParams();
+    // con este lee el paramentro de "id"
+    const id = searchParams.get("id")
+
+    // aca va al mySystem para agarrar los != teams
+    useEffect(() => {
+        mySystem.findRival(token, id,(teams) => setTeams(teams));
+    }, [])
+    // aca va al mySystem para agarrar el team
+    mySystem.getTeam(token, id, (team) => setTeam(team))
+
     const handleSubmit = async e => {
 
     }

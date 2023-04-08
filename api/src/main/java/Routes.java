@@ -35,6 +35,7 @@ public class Routes {
     public static final String NEW_TEAM_ROUTE = "/newTeam";
     public static final String HOME_ROUTE = "/home";
     public static final String FIND_RIVAL_ROUTE = "/findRival";
+    public static final String GET_TEAM_BY_ID_ROUTE = "/getTeamById";
 
 
     private MySystem system;
@@ -151,6 +152,22 @@ public class Routes {
                     (user) -> {
                         res.status(200);
                         res.body(user.asJson());
+                    },
+                    () -> {
+                        res.status(404);
+                        res.body("Invalid Token");
+                    }
+            );
+            return toJson(res.body());
+        });
+        authorizedGet(GET_TEAM_BY_ID_ROUTE, (req, res) -> {
+            final String id = (req.queryParams("id"));
+            final EntityManager entityManager = entityManagerFactory.createEntityManager();
+            final Teams teams = new Teams(entityManager);
+            teams.findTeamsById(id).ifPresentOrElse(
+                    (team) -> {
+                        res.status(200);
+                        res.body(JsonParser.toJson(team));
                     },
                     () -> {
                         res.status(404);

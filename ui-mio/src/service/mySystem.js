@@ -156,7 +156,29 @@ const MySystem = {
                 errorCallback()
             }
         })
-    }
+    },
+    getTeam: (token, id, okCallback, errorCallback) => {
+        //                                aca agregas al path del *back* el id
+        fetch(`${restApiEndpoint}/getTeamById?id=${id}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token
+            }
+        }).then(resp => {
+            if (resp.status === 200) {
+                resp.json().then(value => {
+                    okCallback(JSON.parse(value));
+                }).catch(err => {
+                    console.log(err);
+                });
+            } else {
+                errorCallback("no llegue")
+                okCallback("")
+            }
+            return resp.body;
+        })
+    },
 }
 
 const useMySystem = () => MySystem
