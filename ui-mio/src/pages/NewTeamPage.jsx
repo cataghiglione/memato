@@ -33,7 +33,6 @@ export const NewTeamPage = () => {
     }
 
     const handleSubmit = async e => {
-        console.log("Estoy aca");
         e.preventDefault();
         registerTeam({
             sport: sport,
@@ -161,6 +160,7 @@ export const NewTeamPage = () => {
                     )
                 }
                 <div>
+
                     {/*<button type="submit" className={"signUpButton"}>Sign up</button>*/}
                     <button id="submit" type="submit" onClick={() => newTeamRequest()}>Create Team</button>
                 </div>

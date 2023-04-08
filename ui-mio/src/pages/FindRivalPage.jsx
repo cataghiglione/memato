@@ -21,6 +21,10 @@ function goToHome() {
     window.location.href = "/user"
 }
 
+function goToMap(){
+    window.location.href = "/map"
+}
+
 function sleep(milliseconds) {
     var start = new Date().getTime();
     for (var i = 0; i < 1e7; i++) {
@@ -88,6 +92,10 @@ export const FindRivalPage = () => {
                         { teams.map(team => <option value={team.name}>{team.name}</option>) }
                     </select>
                 }
+                <div style={{justifyContent: "center", alignItems: "center", position: "absolute", bottom: -50}}>
+                {/*Maybe it's better to make the map pop up, but as for now it takes you to /map*/}
+                <button className="btn btn-secondary" type="button" onClick={goToMap}>Select location</button>
+                </div>
                     {/*<ul className="dropdown-menu">*/}
                     {/*    {teams.map(team => <li><a className="dropdown-item" href="#">{team.name}</a></li>)}*/}
                     {/*</ul>*/}
