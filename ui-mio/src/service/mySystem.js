@@ -178,7 +178,8 @@ const MySystem = {
             }
             return resp.body;
         })
-    },
+    }
+
 }
 
 const useMySystem = () => MySystem

@@ -1,9 +1,10 @@
 import React, {Component, useEffect, useState} from 'react';
 import "../css/FindRival.css"
-import {useNavigate} from "react-router";
+import {useLocation, useNavigate} from "react-router";
 import {useMySystem} from "../service/mySystem";
 import {useAuthProvider} from "../auth/auth";
 import {useSearchParams} from "react-router-dom";
+
 import DatePicker, {CalendarContainer} from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import {Dropdown} from "bootstrap";
@@ -13,8 +14,16 @@ function goToNewTeam() {
     window.location.href = "/newTeam"
 }
 
-function goToHome() {
+
+function goToUserInfo() {
     window.location.href = "/user"
+}
+function goToHome() {
+    window.location.href = "/home"
+}
+
+function goToPickTeam(){
+    window.location.href="/pickTeam"
 }
 
 function sleep(milliseconds) {
@@ -29,27 +38,39 @@ function findRival(){
 
 }
 
-export default function FindRivalPage() {
+export const FindRivalPage= () => {
     const [date, setDate] = useState(new Date());
     const mySystem = useMySystem()
     const auth = useAuthProvider()
     const token = auth.getToken();
     const [time, setTime] = useState('')
+    const [menuOpen, setMenuOpen] = useState(false);
+    const [pageChange, setPageChange] = useState("Find rival");
+    const changePage = (event) => {
+        setPageChange(event.target.value);
+    }
+
+
 
     const [teams, setTeams] = useState([]);
     const [team, setTeam] = useState('');
+    const location = useLocation();
+    const params = new URLSearchParams(location.search)
+    const id = params.get("id");
+
 
     // con esto lee los params
-    const searchParams = useSearchParams();
-    // con este lee el paramentro de "id"
-    const id = searchParams.get("id")
+    // const searchParams = useSearchParams();
+    // // con este lee el paramentro de "id"
+    // const id = searchParams.get("id")
 
     // aca va al mySystem para agarrar los != teams
     useEffect(() => {
         mySystem.findRival(token, id,(teams) => setTeams(teams));
+        mySystem.getTeam(token, id, (team) => setTeam(team));
     }, [])
     // aca va al mySystem para agarrar el team
-    mySystem.getTeam(token, id, (team) => setTeam(team))
+
 
     const handleSubmit = async e => {
 
@@ -74,9 +95,39 @@ export default function FindRivalPage() {
     return (
 
         <div>
+
+            <button className={"Menu"} id="submit" type="submit" onClick={() => setMenuOpen(!menuOpen)}>
+                <img style={{ width: 22, height: "auto"}} src={require("../images/sideBarIcon.png")} alt={"Logo"}/>
+            </button>
+            {menuOpen &&
+                <select className={"custom-select"} id="Menu" multiple={true} onChange={changePage}>
+                    <option className={"custom-select-option"} value="Home">Home</option>
+                    <option className={"custom-select-option"} value="User">User</option>
+                    <option className={"custom-select-option"} value="Pick Team">Pick Team</option>
+                    <option className={"custom-select-option"} value="New Team">New Team</option>
+                    {pageChange === "User" && goToUserInfo()}
+                    {pageChange === "Pick Team" && goToPickTeam()}
+                    {pageChange === "New Team" && goToNewTeam()}
+                    {pageChange === "Home" && goToHome()}
+                </select>
+            }
+
             <div className={"logo"}>
                 <img style={{width: 218, height: "auto"}} src={require("../images/logo_solo_letras.png")} alt={"Logo"}/>
             </div>
+            <div className={"sports_image"}>
+            <img style={{width: 218, height: "auto"}} src={require("../images/varios_deportes.png")} alt={"deportes"}/>
+            </div>
+            <div className={"mirror_sports_image"}>
+                <img style={{width: 218, height: "auto"}} src={require("../images/varios_deportes.png")} alt={"deportes"}/>
+            </div>
+
+            <div className="team_name">
+                You've chosen {team.name}
+                <br/>
+                Sport: {team.sport}
+            </div>
+
 
             <div className={"containerPrincipal"}>
                 <DatePicker
@@ -86,11 +137,7 @@ export default function FindRivalPage() {
                     calendarContainer={MyContainer}
 
                 />
-                You've selected
-                <br/>
-                Day: {date.getDate()}
-                <br/>
-                Month: {date.getMonth()}
+
 
             </div>
             <div className={"time_select"}>
@@ -112,6 +159,7 @@ export default function FindRivalPage() {
 
             </div>
             <button className={"findRivalButton"} onClick={findRival}> Find Rival!</button>
+            <button className={"goToPickTeamButton"} onClick={goToPickTeam}> Change Team</button>
         </div>
 
 
