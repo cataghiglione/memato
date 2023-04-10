@@ -102,24 +102,9 @@ const MySystem = {
             }
         })
     },
-    // findRival:(token, okCallback, errorCallback)=>{
-    //     fetch(`${restApiEndpoint}/findRival`,{
-    //         method: 'GET',
-    //         headers:{
-    //             'Content-Type': 'application/json',
-    //             'Authorization': 'Bearer ' + token
-    //         }
-    //     }).then(resp => {
-    //         if (resp.status === 200) {
-    //             resp.json().then(teams => okCallback(teams))
-    //         } else {
-    //             errorCallback("Could not create a rival request")
-    //         }
-    //     })
-    // },
 
     getUser: (token, okCallback, errorCallback) => {
-        fetch(`${restApiEndpoint}/home`, {
+        fetch(`${restApiEndpoint}/user`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
