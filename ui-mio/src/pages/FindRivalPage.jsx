@@ -49,6 +49,9 @@ export const FindRivalPage= () => {
     const changePage = (event) => {
         setPageChange(event.target.value);
     }
+    const playMatch = (event) =>{
+        setPageChange(event.target.value);
+    }
 
 
 
@@ -130,6 +133,7 @@ export const FindRivalPage= () => {
 
 
             <div className={"containerPrincipal"}>
+                Choose a day to play:
                 <DatePicker
                     showIcon
                     selected={date}
@@ -153,11 +157,25 @@ export const FindRivalPage= () => {
                 </select>
             </div>
             <div className={"zone"}>
-                <p>Your team's zone is...</p>
-                <p></p>
-
-
+                <p>Select your preferred zone: </p>
+                {/*ferpa aca iria el mapa*/}
             </div>
+            <div>
+                <div className={"title"}>
+                Teams searching for rivals:
+                </div>
+
+            <select className={"team-select"} multiple={true} onChange={playMatch}>
+                {teams.map(team =>
+                        <option className={"team-select-option"} value={team.id}>nombre = {team.name} deporte = {team.sport} categoria = {team.group} </option>
+                    // <p>nombre = {team.name}    deporte = {team.sport} </p>
+                    // <option>{team.name}</option>
+
+                )}
+            </select>
+            </div>
+
+
             <button className={"findRivalButton"} onClick={findRival}> Find Rival!</button>
             <button className={"goToPickTeamButton"} onClick={goToPickTeam}> Change Team</button>
         </div>
