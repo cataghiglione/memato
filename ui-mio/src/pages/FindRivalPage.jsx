@@ -1,12 +1,12 @@
 import React, {Component, useEffect, useState} from 'react';
-import "../css/FindRival.css"
+// import "../css/FindRival.css"
 import {useLocation, useNavigate} from "react-router";
 import {useMySystem} from "../service/mySystem";
 import {useAuthProvider} from "../auth/auth";
-import {useSearchParams} from "react-router-dom";
+// import {useSearchParams} from "react-router-dom";
 
-import DatePicker, {CalendarContainer} from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
+// import DatePicker, {CalendarContainer} from "react-datepicker";
+// import "react-datepicker/dist/react-datepicker.css";
 import {Dropdown} from "bootstrap";
 
 
@@ -81,17 +81,17 @@ export const FindRivalPage= () => {
     const timeChange = (event) => {
         setTime(event.target.value)
     }
-    const MyContainer = ({ className, children }) => {
-        return (
-            <div style={{ padding: "16px", background: "green", color: "#fff" }}>
-                <CalendarContainer className={className}>
-                    <div style={{ background: "transparent" }}>
-                    </div>
-                    <div style={{ position: "relative" }}>{children}</div>
-                </CalendarContainer>
-            </div>
-        );
-    };
+    // const MyContainer = ({ className, children }) => {
+    //     return (
+    //         <div style={{ padding: "16px", background: "green", color: "#fff" }}>
+    //             <CalendarContainer className={className}>
+    //                 <div style={{ background: "transparent" }}>
+    //                 </div>
+    //                 <div style={{ position: "relative" }}>{children}</div>
+    //             </CalendarContainer>
+    //         </div>
+    //     );
+    // };
     return (
 
         <div>
@@ -129,17 +129,17 @@ export const FindRivalPage= () => {
             </div>
 
 
-            <div className={"containerPrincipal"}>
-                <DatePicker
-                    showIcon
-                    selected={date}
-                    onChange={date => setDate(date)}
-                    calendarContainer={MyContainer}
+            {/*<div className={"containerPrincipal"}>*/}
+            {/*    <DatePicker*/}
+            {/*        showIcon*/}
+            {/*        selected={date}*/}
+            {/*        onChange={date => setDate(date)}*/}
+            {/*        calendarContainer={MyContainer}*/}
 
-                />
+            {/*    />*/}
 
 
-            </div>
+            {/*</div>*/}
             <div className={"time_select"}>
                 <p>Select your time of preference!</p>
                 <select id="time" required onChange={setTime}>

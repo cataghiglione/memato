@@ -29,7 +29,7 @@ import static spark.Spark.*;
 public class Routes {
     public static final String REGISTER_ROUTE = "/register";
     public static final String USERS_ROUTE = "/users";
-    public static final String USER_ROUTE = "/user1";
+    public static final String USER_ROUTE = "/user";
     public static final String AUTH_ROUTE = "/auth";
     public static final String PICK_TEAM_ROUTE = "/pickTeam";
     public static final String NEW_TEAM_ROUTE = "/newTeam";
@@ -147,7 +147,7 @@ public class Routes {
                 return "";
             }
         });
-        authorizedGet(HOME_ROUTE, (req, res) -> {
+        authorizedGet(USER_ROUTE, (req, res) -> {
             getUser(req).ifPresentOrElse(
                     (user) -> {
                         res.status(200);
@@ -176,7 +176,6 @@ public class Routes {
             );
             return toJson(res.body());
         });
-        authorizedGet(USER_ROUTE, (req, res) -> getToken(req).map(JsonParser::toJson));
         Spark.get("/getAllUsers", "application/json", (req, resp) -> {
             resp.type("application/json");
             resp.status(200);
