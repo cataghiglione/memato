@@ -8,19 +8,7 @@ import {useAuthProvider} from "../auth/auth";
 // import DatePicker, {CalendarContainer} from "react-datepicker";
 // import "react-datepicker/dist/react-datepicker.css";
 import {Dropdown} from "bootstrap";
-
-
-function goToNewTeam() {
-    window.location.href = "/newTeam"
-}
-
-
-function goToUserInfo() {
-    window.location.href = "/user"
-}
-function goToHome() {
-    window.location.href = "/home"
-}
+import MenuSidebarWrapper from "./MenuDropdown";
 
 function goToPickTeam(){
     window.location.href="/pickTeam"
@@ -44,11 +32,6 @@ export const FindRivalPage= () => {
     const auth = useAuthProvider()
     const token = auth.getToken();
     const [time, setTime] = useState('')
-    const [menuOpen, setMenuOpen] = useState(false);
-    const [pageChange, setPageChange] = useState("Find rival");
-    const changePage = (event) => {
-        setPageChange(event.target.value);
-    }
 
 
 
@@ -95,23 +78,7 @@ export const FindRivalPage= () => {
     return (
 
         <div>
-
-            <button className={"Menu"} id="submit" type="submit" onClick={() => setMenuOpen(!menuOpen)}>
-                <img style={{ width: 22, height: "auto"}} src={require("../images/sideBarIcon.png")} alt={"Logo"}/>
-            </button>
-            {menuOpen &&
-                <select className={"custom-select"} id="Menu" multiple={true} onChange={changePage}>
-                    <option className={"custom-select-option"} value="Home">Home</option>
-                    <option className={"custom-select-option"} value="User">User</option>
-                    <option className={"custom-select-option"} value="Pick Team">Pick Team</option>
-                    <option className={"custom-select-option"} value="New Team">New Team</option>
-                    {pageChange === "User" && goToUserInfo()}
-                    {pageChange === "Pick Team" && goToPickTeam()}
-                    {pageChange === "New Team" && goToNewTeam()}
-                    {pageChange === "Home" && goToHome()}
-                </select>
-            }
-
+            <MenuSidebarWrapper/>
             <div className={"logo"}>
                 <img style={{width: 218, height: "auto"}} src={require("../images/logo_solo_letras.png")} alt={"Logo"}/>
             </div>
