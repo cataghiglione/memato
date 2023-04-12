@@ -6,6 +6,7 @@ import {useMySystem} from "../service/mySystem";
 import {useAuthProvider} from "../auth/auth";
 import {useSearchParams} from "react-router-dom";
 import {HomePage} from "./HomePage";
+import MenuSidebarWrapper from "./MenuDropdown";
 
 function goToNewTeam(){
     window.location.href = "/newTeam"
@@ -38,17 +39,11 @@ export const PickTeamPage = () => {
     const [searchParams, setSearchParams] = useSearchParams();
     const isOk = searchParams.get("ok")
 
-    const [menuOpen, setMenuOpen] = useState(false);
-    const [pageChange, setPageChange] = useState("Home");
-
     const [nextTeam, setNextTeam] = useState('')
     useEffect(() => {
         mySystem.listTeams(token, (teams) => setTeams(teams));
     }, [])
 
-    const changePage = (event) => {
-        setPageChange(event.target.value);
-    }
     const changeNextTeam = (event) => {
         setNextTeam(event.target.value);
         if(event.target.value != null){
@@ -58,27 +53,8 @@ export const PickTeamPage = () => {
 
     return (
         <div>
-            <button className={"Menu"} id="submit" type="submit" onClick={() => setMenuOpen(!menuOpen)}>
-                <img style={{ width: 22, height: "auto"}} src={require("../images/sideBarIcon.png")} alt={"Logo"}/>
-            </button>
-            {isOk && <div className="alert alert-success" role="alert">Team created</div>}
-            {isOk && sleep(500)}
-            {menuOpen &&
-                <select className={"custom-select"} id="Menu" multiple={true} onChange={changePage}>
-                    <option className={"custom-select-option"} value="Home">Home</option>
-                    <option className={"custom-select-option"} value="User">User</option>
-                    <option className={"custom-select-option"} value="Pick Team">Pick Team</option>
-                    <option className={"custom-select-option"} value="New Team">New Team</option>
-                    <option className={"custom-select-option"} value="Find Rival">Find Rival</option>
-                </select>
-            }
-
+            <MenuSidebarWrapper/>
             <div className="containerPrincipal">
-                {pageChange === "User" && HomePage.goToUserInfo()}
-                {pageChange === "Pick Team" && HomePage.goToPickTeam()}
-                {pageChange === "New Team" && HomePage.goToNewTeam()}
-                {pageChange === "New Team" && goToNewTeam()}
-                {pageChange === "Find Rival" && goToFindRival()}
                 <h1>Teams</h1>
                 <button className={"newTeamButton"} onClick={goToNewTeam}>New Team</button>
                 <select className={"team-select"} multiple={true} onChange={changeNextTeam}>

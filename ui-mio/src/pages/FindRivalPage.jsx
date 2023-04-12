@@ -8,6 +8,7 @@ import {useSearchParams} from "react-router-dom";
 import DatePicker, {CalendarContainer} from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import {Dropdown} from "bootstrap";
+import MenuSidebarWrapper from "./MenuDropdown";
 
 
 function goToNewTeam() {
@@ -35,7 +36,9 @@ function sleep(milliseconds) {
         }
     }
 }
+function findRival(){
 
+}
 
 export const FindRivalPage = () => {
     const [date, setDate] = useState(new Date());
@@ -55,6 +58,7 @@ export const FindRivalPage = () => {
     const playMatch = (event) => {
         setPageChange(event.target.value);
     }
+
 
 
     const [teams, setTeams] = useState([]);
@@ -114,6 +118,7 @@ export const FindRivalPage = () => {
     return (
 
         <div>
+            <MenuSidebarWrapper/>
 
             <button className={"Menu"} id="submit" type="submit" onClick={() => setMenuOpen(!menuOpen)}>
                 <img style={{width: 22, height: "auto"}} src={require("../images/sideBarIcon.png")} alt={"Logo"}/>

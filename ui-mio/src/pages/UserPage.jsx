@@ -5,6 +5,7 @@ import {useAuthProvider} from "../auth/auth";
 import {useMySystem} from "../service/mySystem";
 import {HomePage} from "./HomePage";
 import "../css/Home.css"
+import MenuSidebarWrapper from "./MenuDropdown";
 
 function goToHome() {
     window.location.href = "/user"
@@ -21,13 +22,6 @@ export const UserPage = () => {
     const [user, setUser] = useState('')
     const [once, setOnce] = useState(true);
 
-    const [menuOpen, setMenuOpen] = useState(false);
-    const [pageChange, setPageChange] = useState("Home");
-
-    const changePage = (event) => {
-        setPageChange(event.target.value);
-    }
-
     const signOut = () => {
         mySystem.signOut(token, navigate("/"))
         auth.removeToken();
@@ -42,31 +36,9 @@ export const UserPage = () => {
     return (
         <div>
             {once && getUser()}
-            <button className={"Menu"} id="submit" type="submit" onClick={() => setMenuOpen(!menuOpen)}>
-                <img style={{ width: 22, height: "auto"}} src={require("../images/sideBarIcon.png")} alt={"Logo"}/>
-            </button>
-            <nav className="navbar navbar-default" role="navigation">
-                <div>
-                    <ul className="nav navbar-nav navbar-right">
-                        <li>
-                            <a href="" onClick={signOut}>Sign Out</a>
-                        </li>
-                    </ul>
-                </div>
-            </nav>
-            {menuOpen &&
-                <select className={"custom-select"} id="Menu" multiple={true} onChange={changePage}>
-                    <option className={"custom-select-option"} value="Home">Home</option>
-                    <option className={"custom-select-option"} value="User">User</option>
-                    <option className={"custom-select-option"} value="Pick Team">Pick Team</option>
-                    <option className={"custom-select-option"} value="New Team">New Team</option>
-                </select>
-            }
+            <MenuSidebarWrapper/>
 
             <div className="containerPrincipal">
-                {pageChange === "User" && goToHome()}
-                {pageChange === "Pick Team" && HomePage.goToPickTeam()}
-                {pageChange === "New Team" && HomePage.goToNewTeam()}
                 <h1>Hi {user.username}
                 </h1>
                 <p align="center">First name: {user.firstName}</p>

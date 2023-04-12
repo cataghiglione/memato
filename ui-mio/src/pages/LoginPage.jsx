@@ -6,7 +6,6 @@ import {useMySystem} from "../service/mySystem";
 import "../css/Login.css";
 import "bootstrap/dist/css/bootstrap.min.css"; //npm install bootstrap axios md5 universal-cookie
 import "../images/RivalMatch_logoRecortado.png";
-import {UsersPage} from "./UsersPage";
 
 function setToken(userToken) {
     sessionStorage.setItem('token', JSON.stringify(userToken));
