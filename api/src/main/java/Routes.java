@@ -6,6 +6,7 @@ import com.google.gson.Gson;
 import com.sun.tools.jconsole.JConsoleContext;
 import json.JsonParser;
 import model.*;
+import repository.Searches;
 import repository.Teams;
 import repository.Users;
 import spark.Request;
@@ -36,6 +37,7 @@ public class Routes {
     public static final String HOME_ROUTE = "/home";
     public static final String FIND_RIVAL_ROUTE = "/findRival";
     public static final String GET_TEAM_BY_ID_ROUTE = "/getTeamById";
+    public static final String NEW_SEARCH_ROUTE = "/newSearch";
 
 
     private MySystem system;
@@ -58,24 +60,26 @@ public class Routes {
             resp.status(200);
             return "ok";
         });
-        post(NEW_TEAM_ROUTE, (req,res) ->{
+        post(NEW_TEAM_ROUTE, (req, res) -> {
 
             getUser(req).ifPresentOrElse(
                     (user) -> {
                         final CreateTeamForm form = CreateTeamForm.createFromJson(req.body());
 
-                        system.createTeam(form,user).ifPresentOrElse(
+                        system.createTeam(form, user).ifPresentOrElse(
                                 (team) -> {
                                     res.status(201);
                                     res.body("team created");
                                 },
-                                () ->{
+                                () -> {
                                     res.status(409);
                                     res.body("Team name already in use");
                                 }
                         );
                     },
-            ()->{res.status(409);}
+                    () -> {
+                        res.status(409);
+                    }
             );
             return res.body();
 
@@ -133,17 +137,15 @@ public class Routes {
             final EntityManager entityManager = entityManagerFactory.createEntityManager();
             final Teams teams = new Teams(entityManager);
             Optional<User> user = getUser(req);
-            if (user.isPresent()){
+            if (user.isPresent()) {
                 String id = user.get().getId().toString();
                 List<Team> teamList = teams.findTeamsByUserId(id);
-                if (teamList.isEmpty()){
+                if (teamList.isEmpty()) {
                     res.status(204);
                     res.body("no teams yet");
                     return res.body();
-                }
-                else return gson.toJson(teamList);
-            }
-            else {
+                } else return gson.toJson(teamList);
+            } else {
                 return "";
             }
         });
@@ -198,11 +200,10 @@ public class Routes {
                     (team) -> {
                         List<Team> rivals = teams.findRival(team.getSport(), team.getGroup(), team.getQuantity());
                         rivals.remove(team);
-                        if(rivals.size() == 0){
+                        if (rivals.size() == 0) {
                             res.status(404);
-                            res.body("Not rivals found");
-                        }
-                        else{
+                            res.body("No rivals found");
+                        } else {
                             res.status(200);
                             res.body(gson.toJson(rivals));
                         }
@@ -213,6 +214,23 @@ public class Routes {
                     }
             );
             return res.body();
+        });
+        authorizedPost(NEW_SEARCH_ROUTE, (req, res) -> {
+            final EntityManager entityManager = entityManagerFactory.createEntityManager();
+            final Searches searches = new Searches(entityManager);
+            final Teams teams = new Teams(entityManager);
+            final String id = (req.queryParams("id"));
+            teams.findTeamsById(id).ifPresent(
+                    (team) -> {
+                        final CreateSearchForm searchForm = CreateSearchForm.createFromJson(req.body());
+                        searches.createSearch(team, searchForm.getDate(), searchForm.getTime());
+                        res.body("Search is now active");
+                        res.status(201);
+                    }
+            );
+            return res.body();
+
+
         });
     }
 
@@ -276,6 +294,7 @@ public class Routes {
     private boolean isAuthenticated(String token) {
         return emailByToken.getIfPresent(token) != null;
     }
+
     private static void storedBasicUser(EntityManagerFactory entityManagerFactory) {
         final EntityManager entityManager = entityManagerFactory.createEntityManager();
         final Users users = new Users(entityManager);
@@ -284,12 +303,12 @@ public class Routes {
         tx.begin();
         if (users.listAll().isEmpty()) {
             final User kate =
-                    User.create("catuchi22@river.com", "91218","Catuchi","Ghi", "cghi");
+                    User.create("catuchi22@river.com", "91218", "Catuchi", "Ghi", "cghi");
             final User coke =
-                    User.create("cocaL@depo.com","1234","Coke","Lasa", "clasa");
+                    User.create("cocaL@depo.com", "1234", "Coke", "Lasa", "clasa");
 
             final User fercho =
-                    User.create("ferpalacios@remix.com","4321","Fercho","Palacios", "ferpa");
+                    User.create("ferpalacios@remix.com", "4321", "Fercho", "Palacios", "ferpa");
 
             users.persist(kate);
             users.persist(coke);
@@ -298,6 +317,7 @@ public class Routes {
         tx.commit();
         entityManager.close();
     }
+
     private static void storedBasicTeam(EntityManagerFactory entityManagerFactory) {
         final EntityManager entityManager = entityManagerFactory.createEntityManager();
         final Teams teams = new Teams(entityManager);
@@ -307,15 +327,16 @@ public class Routes {
         tx.begin();
         if (teams.listAll().isEmpty()) {
             final Team kateTeam =
-                    Team.create("river", "Football","11",0, "Young", "Pilar", userList.get(0));
+                    Team.create("river", "Football", "11", 0, "Young", "Pilar", userList.get(0));
             final Team cocaTeam =
-                    Team.create("depo", "Football","11",0, "Young", "Pilar", userList.get(1));
+                    Team.create("depo", "Football", "11", 0, "Young", "Pilar", userList.get(1));
             teams.persist(kateTeam);
             teams.persist(cocaTeam);
         }
         tx.commit();
         entityManager.close();
     }
+
     private static String capitalized(String name) {
         return Strings.isNullOrEmpty(name) ? name : name.substring(0, 1).toUpperCase() + name.substring(1).toLowerCase();
     }

@@ -36,7 +36,7 @@ const MySystem = {
         })
     },
 
-    newTeam: (token,user, okCallback, errorCallback) => {
+    newTeam: (token, user, okCallback, errorCallback) => {
         console.log("estoy en mysistem")
         fetch(`${restApiEndpoint}/newTeam`, {
             method: 'POST',
@@ -127,7 +127,7 @@ const MySystem = {
         })
     },
 
-    findRival: (token,id, okCallback, errorCallback) => {
+    findRivals: (token, id, okCallback, errorCallback) => {
         fetch(`${restApiEndpoint}/findRival?id=${id}`, {
             method: 'GET',
             headers: {
@@ -162,6 +162,25 @@ const MySystem = {
                 okCallback("")
             }
             return resp.body;
+        })
+    },
+    findRival: (token, id,form, okCallback, errorCallback) => {
+        fetch(`${restApiEndpoint}/newSearch?id=${id}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token
+
+            },
+
+            body: JSON.stringify({id,form})
+        }).then(resp=>{
+            if (resp.status === 201) {
+                okCallback()
+            } else {
+                errorCallback()
+            }
+
         })
     }
 

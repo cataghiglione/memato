@@ -18,12 +18,13 @@ function goToNewTeam() {
 function goToUserInfo() {
     window.location.href = "/user"
 }
+
 function goToHome() {
     window.location.href = "/home"
 }
 
-function goToPickTeam(){
-    window.location.href="/pickTeam"
+function goToPickTeam() {
+    window.location.href = "/pickTeam"
 }
 
 function sleep(milliseconds) {
@@ -34,25 +35,26 @@ function sleep(milliseconds) {
         }
     }
 }
-function findRival(){
 
-}
 
-export const FindRivalPage= () => {
+export const FindRivalPage = () => {
     const [date, setDate] = useState(new Date());
     const mySystem = useMySystem()
     const auth = useAuthProvider()
     const token = auth.getToken();
+    const navigate = useNavigate();
+    const [errorMsg, setErrorMsg] = useState(undefined)
+
+
     const [time, setTime] = useState('')
     const [menuOpen, setMenuOpen] = useState(false);
     const [pageChange, setPageChange] = useState("Find rival");
     const changePage = (event) => {
         setPageChange(event.target.value);
     }
-    const playMatch = (event) =>{
+    const playMatch = (event) => {
         setPageChange(event.target.value);
     }
-
 
 
     const [teams, setTeams] = useState([]);
@@ -69,13 +71,27 @@ export const FindRivalPage= () => {
 
     // aca va al mySystem para agarrar los != teams
     useEffect(() => {
-        mySystem.findRival(token, id,(teams) => setTeams(teams));
+        mySystem.findRivals(token, id, (teams) => setTeams(teams));
         mySystem.getTeam(token, id, (team) => setTeam(team));
     }, [])
     // aca va al mySystem para agarrar el team
 
 
     const handleSubmit = async e => {
+        e.preventDefault();
+        findRival(id,{
+            date:date,
+            time:time
+        })
+
+
+    }
+    const findRival = (id, search) => {
+        mySystem.findRival(token, id, search, () => navigate("/pickTeam?ok=true"),
+            () => {
+                setErrorMsg('Team already exists!')
+            })
+
 
     }
     const requestRivals = (user) => {
@@ -84,13 +100,13 @@ export const FindRivalPage= () => {
     const timeChange = (event) => {
         setTime(event.target.value)
     }
-    const MyContainer = ({ className, children }) => {
+    const MyContainer = ({className, children}) => {
         return (
-            <div style={{ padding: "16px", background: "green", color: "#fff" }}>
+            <div style={{padding: "16px", background: "green", color: "#fff"}}>
                 <CalendarContainer className={className}>
-                    <div style={{ background: "transparent" }}>
+                    <div style={{background: "transparent"}}>
                     </div>
-                    <div style={{ position: "relative" }}>{children}</div>
+                    <div style={{position: "relative"}}>{children}</div>
                 </CalendarContainer>
             </div>
         );
@@ -100,7 +116,7 @@ export const FindRivalPage= () => {
         <div>
 
             <button className={"Menu"} id="submit" type="submit" onClick={() => setMenuOpen(!menuOpen)}>
-                <img style={{ width: 22, height: "auto"}} src={require("../images/sideBarIcon.png")} alt={"Logo"}/>
+                <img style={{width: 22, height: "auto"}} src={require("../images/sideBarIcon.png")} alt={"Logo"}/>
             </button>
             {menuOpen &&
                 <select className={"custom-select"} id="Menu" multiple={true} onChange={changePage}>
@@ -119,10 +135,12 @@ export const FindRivalPage= () => {
                 <img style={{width: 218, height: "auto"}} src={require("../images/logo_solo_letras.png")} alt={"Logo"}/>
             </div>
             <div className={"sports_image"}>
-            <img style={{width: 218, height: "auto"}} src={require("../images/varios_deportes.png")} alt={"deportes"}/>
+                <img style={{width: 218, height: "auto"}} src={require("../images/varios_deportes.png")}
+                     alt={"deportes"}/>
             </div>
             <div className={"mirror_sports_image"}>
-                <img style={{width: 218, height: "auto"}} src={require("../images/varios_deportes.png")} alt={"deportes"}/>
+                <img style={{width: 218, height: "auto"}} src={require("../images/varios_deportes.png")}
+                     alt={"deportes"}/>
             </div>
 
             <div className="team_name">
@@ -130,53 +148,56 @@ export const FindRivalPage= () => {
                 <br/>
                 Sport: {team.sport}
             </div>
+            <form onSubmit={handleSubmit}>
 
 
-            <div className={"containerPrincipal"}>
-                Choose a day to play:
-                <DatePicker
-                    showIcon
-                    selected={date}
-                    onChange={date => setDate(date)}
-                    calendarContainer={MyContainer}
+                <div className={"containerPrincipal"}>
+                    Choose a day to play:
+                    <DatePicker
+                        showIcon
+                        selected={date}
+                        onChange={date => setDate(date)}
+                        calendarContainer={MyContainer}
 
-                />
+                    />
 
 
-            </div>
-            <div className={"time_select"}>
-                <p>Select your time of preference!</p>
-                <select id="time" required onChange={setTime}>
-                    <option disabled={true} value="">
-                        Time of day...
-                    </option>
-                    <option value="Morning">Morning</option>
-                    <option value="Afternoon">Afternoon</option>
-                    <option value="Night">Night</option>
-                    <option value="No preference">No preference</option>
-                </select>
-            </div>
+                </div>
+                <div className={"time_select"}>
+                    <p>Select your time of preference!</p>
+                    <select id="time" required onChange={setTime}>
+                        <option disabled={true} value="">
+                            Time of day...
+                        </option>
+                        <option value="Morning">Morning</option>
+                        <option value="Afternoon">Afternoon</option>
+                        <option value="Night">Night</option>
+                        <option value="No preference">No preference</option>
+                    </select>
+                </div>
+            </form>
             <div className={"zone"}>
                 <p>Select your preferred zone: </p>
                 {/*ferpa aca iria el mapa*/}
             </div>
             <div>
                 <div className={"title"}>
-                Teams searching for rivals:
+                    Teams searching for rivals:
                 </div>
 
-            <select className={"team-select"} multiple={true} onChange={playMatch}>
-                {teams.map(team =>
-                        <option className={"team-select-option"} value={team.id}>nombre = {team.name} deporte = {team.sport} categoria = {team.group} </option>
-                    // <p>nombre = {team.name}    deporte = {team.sport} </p>
-                    // <option>{team.name}</option>
+                <select className={"team-select"} multiple={true} onChange={playMatch}>
+                    {teams.map(team =>
+                            <option className={"team-select-option"} value={team.id}>nombre = {team.name} deporte
+                                = {team.sport} categoria = {team.group} </option>
+                        // <p>nombre = {team.name}    deporte = {team.sport} </p>
+                        // <option>{team.name}</option>
 
-                )}
-            </select>
+                    )}
+                </select>
             </div>
 
 
-            <button className={"findRivalButton"} onClick={findRival}> Find Rival!</button>
+            <button className={"findRivalButton"} id="submit" type="submit" > Find Rival!</button>
             <button className={"goToPickTeamButton"} onClick={goToPickTeam}> Change Team</button>
         </div>
 
