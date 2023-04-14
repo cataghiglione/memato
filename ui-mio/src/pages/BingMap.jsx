@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import ReactBingmaps from "../components";
-import './BingMap.css';
+import '../css/BingMap.css';
 
 function goToFindRival(){
     window.location.href = "/findRival"
