@@ -6,7 +6,7 @@ import {LoginPage} from "./pages/LoginPage";
 import {PublicPage} from "./pages/PublicPage";
 import {Routes} from "react-router";
 import {RegisterPage} from "./pages/RegisterPage";
-import {UsersPage} from "./pages/UsersPage";
+//import {UsersPage} from "./pages/UsersPage";
 import {RequireAuth} from "./components/RequireAuth";
 import {HomePage} from "./pages/HomePage";
 import {PickTeamPage} from "./pages/PickTeamPage";
@@ -24,7 +24,7 @@ function App() {
             <Route path="/home" element={<HomePage/>}/>
             <Route path="/pickTeam" element={<PickTeamPage/>}/>
             <Route path="/newTeam" element={<NewTeamPage/>}/>
-            <Route path="/users" element={<UsersPage/>}/>
+            {/*<Route path="/users" element={<UsersPage/>}/>*/}
             <Route path="/user" element={<UserPage/>}/>
             <Route path="/findRival" element={<FindRivalPage/>}/>
             <Route path="/map" element={<BingMap/>}/>

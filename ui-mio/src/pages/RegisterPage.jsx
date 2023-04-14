@@ -74,7 +74,7 @@ export const RegisterPage = () => {
     }
 
     return (
-        <div className={"containerPrincipal"}>
+        <div className={"mainContainer"}>
             {errorMsg && <div className="alert alert-danger" role="alert">{errorMsg}</div>}
 
             <img style={{ width: 218, height: "auto"}} src={require("../images/RivalMatch_logoRecortado.png")} alt={"Logo"}/>
