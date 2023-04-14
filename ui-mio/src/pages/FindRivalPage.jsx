@@ -219,8 +219,8 @@ export const FindRivalPage = () => {
                 <div className={"title"}>
                     Teams searching for rivals:
                 </div>
-
-                <select className={"team-select"} multiple={true} onChange={playMatch}>
+                {teams.length > 0 &&
+                    <select className={"team-select"} multiple={true} onChange={playMatch}>
                     {teams.map(team =>
                             <option className={"team-select-option"} value={team.id}>nombre = {team.name} deporte
                                 = {team.sport} categoria = {team.group} </option>
@@ -228,7 +228,11 @@ export const FindRivalPage = () => {
                         // <option>{team.name}</option>
 
                     )}
-                </select>
+                    </select>
+                }
+                {teams.length === 0 &&
+                    <p className={"noTeamSearch"}>There are no current teams searching for rivals</p>
+                }
             </div>
 
 
