@@ -1,30 +1,13 @@
 .App {
-	height: 350px;
+	height: 600px;
 	width: 50%;
 }
 
 .map-one{
-	border: 1px solid black;
-	width: 95%;
+	width: 100%;
 	float: left;
-	height: 700px;
-	padding: 10px;
-	margin: 5px;
-}
-.map-two{
-	border: 1px solid black;
-	width: 47%;
-	float: right;
-	height: 500px;
-	padding: 10px;
-	margin: 5px;
-}
-.map-three{
-	border: 1px solid black;
-	width: 96%;
-	float: left;
-	height: 500px;
-	padding: 10px;
+	height: 600px;
+	padding-bottom: 100px;
 	margin: 5px;
 }
 div#eleven {

@@ -9,12 +9,12 @@ import DatePicker, {CalendarContainer} from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import {Dropdown} from "bootstrap";
 import MenuSidebarWrapper from "./MenuDropdown";
+import {BingMap} from "./BingMap";
 
 
 function goToNewTeam() {
     window.location.href = "/newTeam"
 }
-
 
 function goToUserInfo() {
     window.location.href = "/user"
@@ -52,6 +52,11 @@ export const FindRivalPage = () => {
     const [time, setTime] = useState('')
     const [menuOpen, setMenuOpen] = useState(false);
     const [pageChange, setPageChange] = useState("Find rival");
+
+    const [zone, setZone] = useState([])
+    const [showPopup, setShowPopup] = useState(false);
+    const [changeLocationButton, setChangeLocationButton] = useState('Select location');
+
     const changePage = (event) => {
         setPageChange(event.target.value);
     }
@@ -59,6 +64,18 @@ export const FindRivalPage = () => {
         setPageChange(event.target.value);
     }
 
+    function handleSelectLocation() {
+        if(showPopup === false)
+            setShowPopup(true);
+        else
+            setShowPopup(false);
+    }
+    const handleInfoboxesWithPushPins = (infoboxesWithPushPinsData) => {
+        setChangeLocationButton("Change Location")
+        setZone(infoboxesWithPushPinsData[0].location);
+        console.log(infoboxesWithPushPinsData[0].location);
+        console.log(zone);
+    };
 
 
     const [teams, setTeams] = useState([]);
@@ -77,7 +94,7 @@ export const FindRivalPage = () => {
     useEffect(() => {
         mySystem.findRivals(token, id, (teams) => setTeams(teams));
         mySystem.getTeam(token, id, (team) => setTeam(team));
-    }, [])
+    }, [zone])
     // aca va al mySystem para agarrar el team
 
 
@@ -85,7 +102,9 @@ export const FindRivalPage = () => {
         e.preventDefault();
         findRival(id,{
             date:date,
-            time:time
+            time:time,
+            latitude: zone[0],
+            longitude: zone[1]
         })
 
 
@@ -183,6 +202,17 @@ export const FindRivalPage = () => {
             </form>
             <div className={"zone"}>
                 <p>Select your preferred zone: </p>
+                <p><span>Latitude: {zone[0]}, Longitude: {zone[1]}</span></p>
+                <button onClick={handleSelectLocation}>{changeLocationButton}</button>
+                {showPopup && (
+                    <div className="popup">
+                        <BingMap
+                            onInfoboxesWithPushPinsChange={handleInfoboxesWithPushPins}
+                        />
+                        <button id="confirmLoc" onClick={handleSelectLocation}>Confirm location</button>
+                    </div>
+                )}
+
                 {/*ferpa aca iria el mapa*/}
             </div>
             <div>
@@ -209,31 +239,3 @@ export const FindRivalPage = () => {
 
     )
 }
-
-
-// React.useEffect(()=>{
-//     async function getTeams(){
-//         const response = await fetch('http://localhost:4326/findRival',{
-//             method: 'GET',
-//             headers: {
-//                 'Content-Type': 'application/json',
-//                 'Authorization': 'Bearer ' + token
-//             }});
-//         const body = await response.json();
-//         setItems(body.results.map(({name})=>({label: name, value: name})));
-//         setLoading(false);
-//     }
-//     getTeams();
-// },[]);
-
-// <select disabled={loading}
-//         value={value}
-//         onChange={e => setValue(e.currentTarget.value)}>
-// <select>
-//     {teams.map(({ label, value }) => (
-//         <option key={value} value={value}>
-//             {label}
-//         </option>
-//     ))}
-//
-// </select>

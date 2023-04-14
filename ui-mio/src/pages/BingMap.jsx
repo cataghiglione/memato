@@ -2,9 +2,6 @@ import React, { Component } from 'react';
 import ReactBingmaps from "../components";
 import '../css/BingMap.css';
 
-function goToFindRival(){
-    window.location.href = "/findRival"
-}
 export class BingMap extends Component {
     constructor(props) {
         super(props);
@@ -50,7 +47,11 @@ export class BingMap extends Component {
                         "infoboxAddHandler": {"type" : "click", callback: this.callBackMethod },
                         "pushPinAddHandler": {"type" : "click", callback: this.callBackMethod }
                     }
-                ]});
+                ]},() => {
+                if (this.props.onInfoboxesWithPushPinsChange) {
+                    this.props.onInfoboxesWithPushPinsChange(this.state.infoboxesWithPushPins);
+                }
+            });
         }
         else{console.log("Pin selected already")}
     }
@@ -62,18 +63,16 @@ export class BingMap extends Component {
         //it works, you can move the pin if you click anywhere else but it doesnt erase the pin until you click
         this.setState({infoboxesWithPushPins: ""});
     }
-    ReturnToFindRival(){
 
-    }
     render() {
         return (
             <div>
                 {this.state.isVisible && (<div>
                     <div className = "map-one">
                         SELECT THE LOCATION OF YOUR TEAM
-                        <u><span>{this.state.getLocationHandledData}</span></u>
                         <br></br>
                         <button onClick={this.UndoPinSelected}>Change location</button>
+                        <br></br>
                         (By pressing "change location" the current location mantains itself until you press on the new location)
                         <ReactBingmaps
                             id = "seven"
@@ -86,7 +85,7 @@ export class BingMap extends Component {
                             infoboxesWithPushPins={this.state.infoboxesWithPushPins}
                         >
                         </ReactBingmaps>
-                        <button onClick={goToFindRival}>Confirm location</button>
+                        {/*<button onClick={goToFindRival}>Confirm location</button>*/}
                     </div>
                 </div>)}
             </div>

@@ -13,7 +13,6 @@ import {PickTeamPage} from "./pages/PickTeamPage";
 import {UserPage} from "./pages/UserPage";
 import {NewTeamPage} from "./pages/NewTeamPage"
 import {FindRivalPage} from "./pages/FindRivalPage";
-import {BingMap} from "./pages/BingMap";
 
 function App() {
     return (
@@ -27,7 +26,6 @@ function App() {
             {/*<Route path="/users" element={<UsersPage/>}/>*/}
             <Route path="/user" element={<UserPage/>}/>
             <Route path="/findRival" element={<FindRivalPage/>}/>
-            <Route path="/map" element={<BingMap/>}/>
             <Route
                 path="/home"
                 element={
