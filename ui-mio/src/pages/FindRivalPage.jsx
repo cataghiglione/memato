@@ -229,8 +229,8 @@ export const FindRivalPage = () => {
                 {teams.length > 0 &&
                     <select className={"team-select"} multiple={true} onChange={playMatch}>
                     {teams.map(team =>
-                            <option className={"team-select-option"} value={team.id}>nombre = {team.name} deporte
-                                = {team.sport} categoria = {team.group} </option>
+                            <option className={"team-select-option"} value={team.id} style={{ textTransform: 'capitalize'}}>
+                                Nombre: {team.name}, Deporte: {team.sport}, Categoria: {team.group} </option>
                         // <p>nombre = {team.name}    deporte = {team.sport} </p>
                         // <option>{team.name}</option>
 

@@ -60,8 +60,8 @@ export const PickTeamPage = () => {
                 {teams.length > 0 &&
                     <select className={"team-pick"} multiple={true} onChange={changeNextTeam}>
                         {teams.map(team =>
-                                <option className={"team-select-option"} value={team.id}>nombre = {team.name} deporte
-                                    = {team.sport} </option>
+                                <option className={"team-select-option"} value={team.id} style={{ textTransform: 'capitalize'}}>
+                                    Nombre: {team.name}, Deporte: {team.sport} {team.quantity} </option>
                             // <p>nombre = {team.name}    deporte = {team.sport} </p>
                             // <option>{team.name}</option>
 
