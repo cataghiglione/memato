@@ -18,6 +18,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
+import java.text.ParseException;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -192,40 +193,40 @@ public class Routes {
 //            }
             return gson.toJson(users.listAll());
         });
-        authorizedGet(FIND_RIVAL_ROUTE, (req, res) -> {
-            final String id = (req.queryParams("id"));
-            final EntityManager entityManager = entityManagerFactory.createEntityManager();
-            final Teams teams = new Teams(entityManager);
-            teams.findTeamsById(id).ifPresentOrElse(
-                    (team) -> {
-                        List<Team> rivals = teams.findRival(team.getSport(), team.getGroup(), team.getQuantity());
-                        rivals.remove(team);
-                        if (rivals.size() == 0) {
-                            res.status(404);
-                            res.body("No rivals found");
-                        } else {
-                            res.status(200);
-                            res.body(gson.toJson(rivals));
-                        }
-                    },
-                    () -> {
-                        res.status(404);
-                        res.body("Invalid Token");
-                    }
-            );
-            return res.body();
-        });
-        authorizedPost(NEW_SEARCH_ROUTE, (req, res) -> {
+//        authorizedGet(FIND_RIVAL_ROUTE, (req, res) -> {
+//            final String id = (req.queryParams("id"));
+//            final EntityManager entityManager = entityManagerFactory.createEntityManager();
+//            final Searches searches=new Searches(entityManager);
+//            final CreateSearchForm searchForm = CreateSearchForm.createFromJson(req.body());
+//            List<Team> candidates = searches.findCandidates(id,searchForm.getTime(),searchForm.getDate().toString());
+//            return gson.toJson(candidates);
+//        });
+        post(NEW_SEARCH_ROUTE, (req, res) -> {
             final EntityManager entityManager = entityManagerFactory.createEntityManager();
             final Searches searches = new Searches(entityManager);
             final Teams teams = new Teams(entityManager);
             final String id = (req.queryParams("id"));
+            Optional<User> user = getUser(req);
+
             teams.findTeamsById(id).ifPresent(
                     (team) -> {
                         final CreateSearchForm searchForm = CreateSearchForm.createFromJson(req.body());
-                        searches.createSearch(team, searchForm.getDate(), searchForm.getTime());
-                        res.body("Search is now active");
-                        res.status(201);
+                        system.createSearch(searchForm,team).ifPresentOrElse(
+                                (search) ->{
+                                    res.status(201);
+                                },
+                                ()->{
+                                    res.status(401);
+                                    res.body("Search not created");
+                                }
+                        );
+                        if (user.isPresent()){
+                            String user_id = user.get().getId().toString();
+                            List<Search> candidates =searches.findCandidates(user_id,searchForm.getTime(),searchForm.getDate(),team.getSport(),team.getQuantity());
+                            res.body(JsonParser.toJson(candidates));
+
+                        }
+
                     }
             );
             return res.body();

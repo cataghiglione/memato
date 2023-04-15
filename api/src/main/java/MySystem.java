@@ -1,13 +1,12 @@
-import model.CreateTeamForm;
-import model.RegistrationUserForm;
-import model.User;
+import model.*;
+import repository.Searches;
 import repository.Teams;
 import repository.Users;
-import model.Team;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import java.text.ParseException;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
@@ -35,6 +34,17 @@ public class MySystem {
         return runInTransaction(datasource ->{
             final Teams teams = datasource.teams();
             return teams.exists(form.getName(), user) ? Optional.empty() : Optional.of(teams.createTeam(form,user));
+        });
+
+    }
+    public Optional<Search> createSearch(CreateSearchForm form, Team team){
+        return runInTransaction(datasource ->{
+            final Searches searches = datasource.searches();
+            try {
+                return searches.exists(Long.toString(team.getId()), form.getTime(),form.getDate()) ? Optional.empty() : Optional.of(searches.createSearch(team,form.getDate(), form.getTime()));
+            } catch (ParseException e) {
+                throw new RuntimeException(e);
+            }
         });
 
     }

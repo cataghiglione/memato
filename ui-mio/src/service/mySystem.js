@@ -127,7 +127,7 @@ const MySystem = {
         })
     },
 
-    findRivals: (token, id, okCallback, errorCallback) => {
+    findRivals: (token, id,form, okCallback, errorCallback) => {
         fetch(`${restApiEndpoint}/findRival?id=${id}`, {
             method: 'GET',
             headers: {
@@ -173,10 +173,10 @@ const MySystem = {
 
             },
 
-            body: JSON.stringify({id,form})
+            body: JSON.stringify({id,...form})
         }).then(resp=>{
             if (resp.status === 201) {
-                okCallback()
+                resp.json().then(teams=>okCallback(teams))
             } else {
                 errorCallback()
             }

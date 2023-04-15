@@ -56,17 +56,17 @@ export const PickTeamPage = () => {
             <MenuSidebarWrapper/>
             <div className="containerPrincipal">
                 <h1>Teams</h1>
-                <button className={"newTeamButton"} onClick={goToNewTeam}>New Team</button>
-                <select className={"team-select"} multiple={true} onChange={changeNextTeam}>
+                <select multiple={true} onChange={changeNextTeam}>
                     {teams.map(team =>
-                        <option className={"team-select-option"} value={team.id}>nombre = {team.name}    deporte = {team.sport} </option>
+                        <option  value={team.id}>nombre = {team.name}    deporte = {team.sport} </option>
                         // <p>nombre = {team.name}    deporte = {team.sport} </p>
                         // <option>{team.name}</option>
 
                     )}
                 </select>
-                <button className={"newTeamButton"} onClick={goToNewTeam}>New Team</button>
+
             </div>
+            <button className={"newTeamButton"} onClick={goToNewTeam}>New Team</button>
         </div>
     )
 }

@@ -51,6 +51,7 @@ export const FindRivalPage = () => {
 
     const [time, setTime] = useState('')
     const [menuOpen, setMenuOpen] = useState(false);
+    const[rivalMenuOpen, setRivalMenuOpen]=useState(false);
     const [pageChange, setPageChange] = useState("Find rival");
     const changePage = (event) => {
         setPageChange(event.target.value);
@@ -75,10 +76,13 @@ export const FindRivalPage = () => {
 
     // aca va al mySystem para agarrar los != teams
     useEffect(() => {
-        mySystem.findRivals(token, id, (teams) => setTeams(teams));
         mySystem.getTeam(token, id, (team) => setTeam(team));
     }, [])
     // aca va al mySystem para agarrar el team
+
+    const openAndFindRivals = async e =>{
+        setRivalMenuOpen(!rivalMenuOpen)
+    }
 
 
     const handleSubmit = async e => {
@@ -91,12 +95,11 @@ export const FindRivalPage = () => {
 
     }
     const findRival = (id, search) => {
-        mySystem.findRival(token, id, search, () => navigate("/pickTeam?ok=true"),
+        mySystem.findRival(token, id, search, (teams) => {setTeams(teams)
+            },
             () => {
                 setErrorMsg('Team already exists!')
             })
-
-
     }
     const requestRivals = (user) => {
 
@@ -170,7 +173,7 @@ export const FindRivalPage = () => {
                 </div>
                 <div className={"time_select"}>
                     <p>Select your time of preference!</p>
-                    <select id="time" required onChange={setTime}>
+                    <select id="time" required onChange={timeChange} value={time}>
                         <option disabled={true} value="">
                             Time of day...
                         </option>
@@ -180,7 +183,7 @@ export const FindRivalPage = () => {
                         <option value="No preference">No preference</option>
                     </select>
                 </div>
-            </form>
+
             <div className={"zone"}>
                 <p>Select your preferred zone: </p>
                 {/*ferpa aca iria el mapa*/}
@@ -190,6 +193,13 @@ export const FindRivalPage = () => {
                     Teams searching for rivals:
                 </div>
 
+
+            </div>
+
+
+                <button className={"findRivalButton"} id="submit" type="submit" onClick={openAndFindRivals} > Find Rival!</button>
+            </form>
+            {rivalMenuOpen &&
                 <select className={"team-select"} multiple={true} onChange={playMatch}>
                     {teams.map(team =>
                             <option className={"team-select-option"} value={team.id}>nombre = {team.name} deporte
@@ -198,11 +208,7 @@ export const FindRivalPage = () => {
                         // <option>{team.name}</option>
 
                     )}
-                </select>
-            </div>
-
-
-            <button className={"findRivalButton"} id="submit" type="submit" > Find Rival!</button>
+                </select>}
             <button className={"goToPickTeamButton"} onClick={goToPickTeam}> Change Team</button>
         </div>
 

@@ -115,7 +115,7 @@ export const NewTeamPage = () => {
                         <input
                             type="zone"
                             id="zone"
-                            placeholder="Pilar"
+                            placeholder="Zone"
                             name="zone"
                             value={zone}
                             onChange={zoneChange}/>
