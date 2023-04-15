@@ -56,6 +56,7 @@ export const FindRivalPage = () => {
     const [zone, setZone] = useState([])
     const [showPopup, setShowPopup] = useState(false);
     const [changeLocationButton, setChangeLocationButton] = useState('Select location');
+    const [selectedLocation, setSelectedLocation] = useState("")
 
     const changePage = (event) => {
         setPageChange(event.target.value);
@@ -70,13 +71,19 @@ export const FindRivalPage = () => {
         else
             setShowPopup(false);
     }
+
     const handleInfoboxesWithPushPins = (infoboxesWithPushPinsData) => {
-        setChangeLocationButton("Change Location")
+        setChangeLocationButton('Change Location');
         setZone(infoboxesWithPushPinsData[0].location);
-        console.log(infoboxesWithPushPinsData[0].location);
-        console.log(zone);
+        printSelectedLocation(infoboxesWithPushPinsData[0].location);
     };
 
+    const printSelectedLocation = (location) => {
+        const [lat, long] = location;
+        if (long && lat) {
+            setSelectedLocation(`Latitude: ${lat}, Longitude: ${long}`);
+        }
+    };
 
     const [teams, setTeams] = useState([]);
     const [team, setTeam] = useState('');
@@ -202,7 +209,7 @@ export const FindRivalPage = () => {
             </form>
             <div className={"zone"}>
                 <p>Select your preferred zone: </p>
-                <p><span>Latitude: {zone[0]}, Longitude: {zone[1]}</span></p>
+                <p>{selectedLocation}</p>
                 <button onClick={handleSelectLocation}>{changeLocationButton}</button>
                 {showPopup && (
                     <div className="popup">
