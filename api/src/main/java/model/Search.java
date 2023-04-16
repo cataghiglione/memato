@@ -3,7 +3,12 @@ package model;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 
 
 @Entity
@@ -24,7 +29,13 @@ public class Search {
     private String time;
 
     @Column
-    private Date date;
+    private int month;
+
+    @Column
+    private int day;
+
+    @Column
+    private int year;
 
     public Search() {
     }
@@ -32,12 +43,14 @@ public class Search {
     private Search(Team team, Date date, String time) {
         this.team=team;
         this.isSearching=true;
-        this.date=date;
+        this.month=date.getMonth();
+        this.day=date.getDate();
+        this.year=date.getYear();
         this.time=time;
 
 
     }
-    public Search create(Team team, Date date, String time){
+    public static Search create(Team team, Date date, String time){
         return new Search(team, date,time);
     }
     private void setSearching(boolean value){

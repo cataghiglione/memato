@@ -51,6 +51,7 @@ export const FindRivalPage = () => {
 
     const [time, setTime] = useState('')
     const [menuOpen, setMenuOpen] = useState(false);
+    const[rivalMenuOpen, setRivalMenuOpen]=useState(false);
     const [pageChange, setPageChange] = useState("Find rival");
 
     const [zone, setZone] = useState([])
@@ -104,6 +105,10 @@ export const FindRivalPage = () => {
     }, [zone])
     // aca va al mySystem para agarrar el team
 
+    const openAndFindRivals = async e =>{
+        setRivalMenuOpen(!rivalMenuOpen)
+    }
+
 
     const handleSubmit = async e => {
         e.preventDefault();
@@ -117,7 +122,8 @@ export const FindRivalPage = () => {
 
     }
     const findRival = (id, search) => {
-        mySystem.findRival(token, id, search, () => navigate("/pickTeam?ok=true"),
+        mySystem.findRival(token, id, search, (teams) => {setTeams(teams)
+            },
             () => {
                 setErrorMsg('Team already exists!')
             })
@@ -196,7 +202,7 @@ export const FindRivalPage = () => {
                 </div>
                 <div className={"time_select"}>
                     <p>Select your time of preference!</p>
-                    <select id="time" required onChange={setTime}>
+                    <select id="time" required onChange={timeChange} value={time}>
                         <option disabled={true} value="">
                             Time of day...
                         </option>
@@ -250,3 +256,31 @@ export const FindRivalPage = () => {
 
     )
 }
+
+
+// React.useEffect(()=>{
+//     async function getTeams(){
+//         const response = await fetch('http://localhost:4326/findRival',{
+//             method: 'GET',
+//             headers: {
+//                 'Content-Type': 'application/json',
+//                 'Authorization': 'Bearer ' + token
+//             }});
+//         const body = await response.json();
+//         setItems(body.results.map(({name})=>({label: name, value: name})));
+//         setLoading(false);
+//     }
+//     getTeams();
+// },[]);
+
+// <select disabled={loading}
+//         value={value}
+//         onChange={e => setValue(e.currentTarget.value)}>
+// <select>
+//     {teams.map(({ label, value }) => (
+//         <option key={value} value={value}>
+//             {label}
+//         </option>
+//     ))}
+//
+// </select>
