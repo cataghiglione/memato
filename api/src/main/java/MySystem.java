@@ -1,6 +1,5 @@
-import model.CreateTeamForm;
-import model.RegistrationUserForm;
-import model.User;
+import model.*;
+import repository.Searches;
 import repository.Teams;
 import repository.Users;
 import model.Team;
@@ -8,6 +7,7 @@ import model.Team;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import java.text.ParseException;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
