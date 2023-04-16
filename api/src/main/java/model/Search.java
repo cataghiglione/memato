@@ -37,21 +37,30 @@ public class Search {
     @Column
     private int year;
 
+    @Column
+    private double latitude;
+
+    @Column
+    private double longitude;
+
+
     public Search() {
     }
 
-    private Search(Team team, Date date, String time) {
+    private Search(Team team, Date date, String time,double latitude, double longitude) {
         this.team=team;
         this.isSearching=true;
         this.month=date.getMonth();
         this.day=date.getDate();
         this.year=date.getYear();
         this.time=time;
+        this.latitude=latitude;
+        this.longitude=longitude;
 
 
     }
-    public static Search create(Team team, Date date, String time){
-        return new Search(team, date,time);
+    public static Search create(Team team, Date date, String time,double latitude,double longitude){
+        return new Search(team, date,time,latitude,longitude);
     }
     private void setSearching(boolean value){
         this.isSearching=value;

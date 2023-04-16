@@ -222,7 +222,7 @@ public class Routes {
                         );
                         if (user.isPresent()){
                             String user_id = user.get().getId().toString();
-                            List<Search> candidates =searches.findCandidates(user_id,searchForm.getTime(),searchForm.getDate(),team.getSport(),team.getQuantity());
+                            List<Team> candidates =searches.findCandidates(user_id,searchForm.getTime(),searchForm.getDate(),team.getSport(),team.getQuantity());
                             res.body(JsonParser.toJson(candidates));
 
                         }
