@@ -21,10 +21,10 @@ public class Searches {
         this.entityManager = entityManager;
     }
 
-    public Search createSearch(Team team, Date date, String time) throws ParseException {
+    public Search createSearch(Team team, Date date, String time, String latitude,String longitude) throws ParseException {
         Optional<Search> searchOptional = findSearchByTeam(Long.toString(team.getId()), time,date.getMonth(),date.getDate(), date.getYear() );
         if (searchOptional.isEmpty()) {
-            final Search search = Search.create(team, date, time);
+            final Search search = Search.create(team, date, time,latitude,longitude);
 
             entityManager.persist(search);
             return search;
@@ -45,16 +45,6 @@ public class Searches {
                 .getResultList()
                 .stream()
                 .findFirst();
-
-
-//        return entityManager.createQuery("SELECT s FROM Search s WHERE (cast( s.team.id as string) LIKE :team_id AND s.time LIKE :time AND DAY(s.date) =:day AND MONTH(s.date) =:month)",Search.class)
-//                .setParameter("team_id", team_id)
-//                .setParameter("month", date.getMonthValue())
-//                .setParameter("day",date.getDayOfMonth())
-//                .setParameter("time", time)
-//                .getResultList().
-//                stream().findFirst();
-
     }
 
     private void reactivateSearch(Team team, String time, Date date) {
@@ -64,8 +54,8 @@ public class Searches {
     public boolean exists(String id, String time, Date date){
         return findSearchByTeam(id,time,date.getMonth(),date.getDate(), date.getYear()).isPresent();
     }
-    public List<Search> findCandidates(String id, String time, Date date, String sport, String quantity){
-        return entityManager.createQuery("SELECT s FROM Search s WHERE (s.time like :time AND s.month =: month AND s.day =: day AND s.year=: year AND cast(s.team.user.id as string) not LIKE :id AND s.team.sport LIKE :sport AND s.team.quantity LIKE :quantity)", Search.class)
+    public List<Team> findCandidates(String id, String time, Date date, String sport, String quantity){
+        return entityManager.createQuery("SELECT s.team FROM Search s WHERE (s.time like :time AND s.month =: month AND s.day =: day AND s.year=: year AND cast(s.team.user.id as string) not LIKE :id AND s.team.sport LIKE :sport AND s.team.quantity LIKE :quantity)", Team.class)
                 .setParameter("time",time)
                 .setParameter("month", date.getMonth())
                 .setParameter("day",date.getDate())
@@ -74,15 +64,7 @@ public class Searches {
                 .setParameter("id",id)
                 .setParameter("quantity",quantity)
                 .getResultList();
-//        return entityManager.createQuery("SELECT s FROM Search s WHERE( s.time LIKE :time AND MONTH(s.date)= :month AND DAY(s.date) = :day AND cast(s.team.user.id as string) not LIKE :id AND s.team.sport LIKE :sport AND s.team.quantity LIKE :quantity)"
-//                        ,Search.class)
-//                .setParameter("time",time)
-//                .setParameter("month", date.getMonthValue())
-//                .setParameter("day", date.getDayOfMonth())
-//                .setParameter("id",id)
-//                .setParameter("sport",sport)
-//                .setParameter("quantity",quantity)
-//                .getResultList();
+
     }
 
 

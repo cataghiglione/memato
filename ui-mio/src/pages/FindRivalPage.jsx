@@ -16,6 +16,7 @@ function goToNewTeam() {
     window.location.href = "/newTeam"
 }
 
+
 function goToUserInfo() {
     window.location.href = "/user"
 }
@@ -41,17 +42,17 @@ function findRival(){
 }
 
 export const FindRivalPage = () => {
-    const [date, setDate] = useState(new Date());
     const mySystem = useMySystem()
     const auth = useAuthProvider()
     const token = auth.getToken();
     const navigate = useNavigate();
     const [errorMsg, setErrorMsg] = useState(undefined)
 
-
+    const [date, setDate] = useState(new Date());
     const [time, setTime] = useState('')
     const [menuOpen, setMenuOpen] = useState(false);
-    const[rivalMenuOpen, setRivalMenuOpen]=useState(false);
+
+    const [rivalMenuOpen, setRivalMenuOpen] = useState(false);
     const [pageChange, setPageChange] = useState("Find rival");
 
     const [zone, setZone] = useState([])
@@ -100,13 +101,14 @@ export const FindRivalPage = () => {
 
     // aca va al mySystem para agarrar los != teams
     useEffect(() => {
-        mySystem.findRivals(token, id, (teams) => setTeams(teams));
         mySystem.getTeam(token, id, (team) => setTeam(team));
-    }, [zone])
+    }, [])
     // aca va al mySystem para agarrar el team
 
-    const openAndFindRivals = async e =>{
-        setRivalMenuOpen(!rivalMenuOpen)
+    const openAndFindRivals = async e => {
+        // if no team meets the requirements --> setRivalMenuOpen(false)
+        setRivalMenuOpen(true);
+        console.log(teams.length)
     }
 
 
@@ -115,20 +117,19 @@ export const FindRivalPage = () => {
         findRival(id,{
             date:date,
             time:time,
-            latitude: zone[0],
-            longitude: zone[1]
+            latitude: zone[0].toString(),
+            longitude: zone[1].toString()
         })
 
 
     }
     const findRival = (id, search) => {
-        mySystem.findRival(token, id, search, (teams) => {setTeams(teams)
+        mySystem.findRival(token, id, search, (teams) => {
+                setTeams(teams)
             },
             () => {
                 setErrorMsg('Team already exists!')
             })
-
-
     }
     const requestRivals = (user) => {
 
@@ -212,44 +213,51 @@ export const FindRivalPage = () => {
                         <option value="No preference">No preference</option>
                     </select>
                 </div>
-            </form>
-            <div className={"zone"}>
-                <p>Select your preferred zone: </p>
-                <p>{selectedLocation}</p>
-                <button onClick={handleSelectLocation}>{changeLocationButton}</button>
-                {showPopup && (
-                    <div className="popup">
-                        <BingMap
-                            onInfoboxesWithPushPinsChange={handleInfoboxesWithPushPins}
-                        />
-                        <button id="confirmLoc" onClick={handleSelectLocation}>Confirm location</button>
-                    </div>
-                )}
 
-                {/*ferpa aca iria el mapa*/}
-            </div>
-            <div>
-                <div className={"title"}>
-                    Teams searching for rivals:
+                <div className={"zone"}>
+                    <p>Select your preferred zone: </p>
+                    <p>{selectedLocation}</p>
+                    <button onClick={handleSelectLocation}>{changeLocationButton}</button>
+                    {showPopup && (
+                        <div className="popup">
+                            <BingMap
+                                onInfoboxesWithPushPinsChange={handleInfoboxesWithPushPins}
+                            />
+                            <button id="confirmLoc" onClick={handleSelectLocation}>Confirm location</button>
+                        </div>
+                    )}
+
+
+                    {/*ferpa aca iria el mapa*/}
                 </div>
-                {teams.length > 0 &&
-                    <select className={"team-select"} multiple={true} onChange={playMatch}>
+                <div>
+                    <div className={"title"}>
+                        Teams searching for rivals:
+                    </div>
+
+
+                </div>
+
+
+                <button className={"findRivalButton"} id="submit" type="submit" onClick={openAndFindRivals}> Find
+                    Rival!
+                </button>
+            </form>
+            {rivalMenuOpen &&
+                <select className={"team-select"} multiple={true} onChange={playMatch}>
                     {teams.map(team =>
-                            <option className={"team-select-option"} value={team.id} style={{ textTransform: 'capitalize'}}>
-                                Nombre: {team.name}, Deporte: {team.sport}, Categoria: {team.group} </option>
+                            <option className={"team-select-option"} value={team.id}>nombre ={team.name} deporte
+                                = {team.sport} categoria = {team.group} </option>
                         // <p>nombre = {team.name}    deporte = {team.sport} </p>
                         // <option>{team.name}</option>
 
                     )}
-                    </select>
-                }
-                {teams.length === 0 &&
-                    <p className={"noTeamSearch"}>There are no current teams searching for rivals</p>
-                }
-            </div>
+                </select>}
+            {teams.length === 0 &&
+                <p className={"noTeamSearch"}>There are no current teams searching for rivals</p>
+            }
 
 
-            <button className={"findRivalButton"} id="submit" type="submit" > Find Rival!</button>
             <button className={"goToPickTeamButton"} onClick={goToPickTeam}> Change Team</button>
         </div>
 

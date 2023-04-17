@@ -42,7 +42,7 @@ public class MySystem {
         return runInTransaction(datasource ->{
             final Searches searches = datasource.searches();
             try {
-                return searches.exists(Long.toString(team.getId()), form.getTime(),form.getDate()) ? Optional.empty() : Optional.of(searches.createSearch(team,form.getDate(), form.getTime()));
+                return searches.exists(Long.toString(team.getId()), form.getTime(),form.getDate()) ? Optional.empty() : Optional.of(searches.createSearch(team,form.getDate(), form.getTime(),form.getLatitude(), form.getLongitude()));
             } catch (ParseException e) {
                 throw new RuntimeException(e);
             }
