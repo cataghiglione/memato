@@ -1,33 +1,40 @@
 import * as React from 'react'
-import {useState} from 'react'
-import {useAuthProvider} from "../auth/auth";
-import {useMySystem} from "../service/mySystem";
-import MenuSidebarWrapper from "./MenuDropdown";
-import "../css/Home.css";
-
+import { useEffect, useState } from 'react'
+import { useAuthProvider } from '../auth/auth'
+import { useMySystem } from '../service/mySystem'
+import MenuSidebarWrapper from './MenuDropdown'
+import '../css/Home.css'
+import { useNavigate } from 'react-router-dom'
 
 export const HomePage = () => {
     const mySystem = useMySystem()
     const auth = useAuthProvider()
-    const token = auth.getToken();
+    const token = auth.getToken()
+    const navigate = useNavigate()
+
     const [user, setUser] = useState('')
-    const [onceOpen, setOnceOpen] = useState(true);
-    const getUser = () => {
+
+    useEffect(() => {
         mySystem.getUser(token, (user) => {
-            setUser(user);
+            setUser(user)
+            if (!user) {
+                navigate('/login')
+            }
         })
-        setOnceOpen(false);
-    }
+    }, [token, navigate])
+
     return (
         <div>
-            <MenuSidebarWrapper/>
-            <div className="containerPrincipal">
-                {onceOpen && getUser()}
+            {user && (
                 <div>
-                    <h1>Hi {user.firstName}
-                    </h1>
+                    <MenuSidebarWrapper />
+                    <div className="containerPrincipal">
+                        <div>
+                            <h1>Hi {user.firstName}</h1>
+                        </div>
+                    </div>
                 </div>
-            </div>
+            )}
         </div>
     )
 }

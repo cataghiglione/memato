@@ -10,6 +10,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import {Dropdown} from "bootstrap";
 import MenuSidebarWrapper from "./MenuDropdown";
 import {BingMap} from "./BingMap";
+import {forEach} from "react-bootstrap/ElementChildren";
 
 
 function goToNewTeam() {
@@ -106,7 +107,6 @@ export const FindRivalPage = () => {
     // aca va al mySystem para agarrar el team
 
     const openAndFindRivals = async e => {
-        // if no team meets the requirements --> setRivalMenuOpen(false)
         setRivalMenuOpen(true);
         console.log(teams.length)
     }
@@ -120,15 +120,13 @@ export const FindRivalPage = () => {
             latitude: zone[0].toString(),
             longitude: zone[1].toString()
         })
-
-
     }
     const findRival = (id, search) => {
         mySystem.findRival(token, id, search, (teams) => {
                 setTeams(teams)
             },
             () => {
-                setErrorMsg('Team already exists!')
+                setErrorMsg('Search already exists!')
             })
     }
     const requestRivals = (user) => {
@@ -246,8 +244,8 @@ export const FindRivalPage = () => {
             {(rivalMenuOpen & teams.length>0) &&
                 <select className={"team-select"} multiple={true} onChange={playMatch}>
                     {teams.map(team =>
-                            <option className={"team-select-option"} value={team.id}>nombre ={team.name} deporte
-                                = {team.sport} categoria = {team.group} </option>
+                            <option className={"team-select-option"} style={{ textTransform: 'capitalize'}} value={team.id}>
+                                nombre: {team.name}, deporte: {team.sport}, categoria: {team.group} </option>
                         // <p>nombre = {team.name}    deporte = {team.sport} </p>
                         // <option>{team.name}</option>
 
