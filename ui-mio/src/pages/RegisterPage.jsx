@@ -24,6 +24,10 @@ export const RegisterPage = () => {
     const handleSubmit = async e => {
         console.log("Estoy aca");
         e.preventDefault();
+        if(!username || !name || !lastName || !mail || !password){
+            setErrorMsg('Please fill out all the required fields')
+            return;
+        }
         registerUser({
             username: username,
             firstName: name,

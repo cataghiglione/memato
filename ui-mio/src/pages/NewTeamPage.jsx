@@ -36,6 +36,10 @@ export const NewTeamPage = () => {
     const handleSubmit = async e => {
         console.log("Estoy aca");
         e.preventDefault();
+        if (!name || !zone || !age_group || !sport || !quant_Players) {
+            setErrorMsg('Please fill out all the required fields')
+            return;
+        }
         registerTeam({
             sport: sport,
             quantity: quant_Players,
