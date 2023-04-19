@@ -1,14 +1,15 @@
 import React, {Component, useEffect, useState} from 'react';
 // import "../css/FindRival.css"
 import {useLocation, useNavigate} from "react-router";
-import {useMySystem} from "../service/mySystem";
+import {findRival, getTeam} from "../service/mySystem";
 import {useAuthProvider} from "../auth/auth";
 // import {useSearchParams} from "react-router-dom";
 
 // import DatePicker, {CalendarContainer} from "react-datepicker";
 // import "react-datepicker/dist/react-datepicker.css";
 import {Dropdown} from "bootstrap";
-import MenuSidebarWrapper from "./MenuDropdown";
+import MenuSidebarWrapper from "./MenuSideBar";
+import {TeamDropdown} from "./TeamDropdown";
 
 function goToPickTeam(){
     window.location.href="/pickTeam"
@@ -22,13 +23,9 @@ function sleep(milliseconds) {
         }
     }
 }
-function findRival(){
 
-}
-
-export const FindRivalPage= () => {
+export function FindRivalPage(props){
     const [date, setDate] = useState(new Date());
-    const mySystem = useMySystem()
     const auth = useAuthProvider()
     const token = auth.getToken();
     const [time, setTime] = useState('')
@@ -43,14 +40,14 @@ export const FindRivalPage= () => {
 
 
     // con esto lee los params
-    // const searchParams = useSearchParams();
+    // const searchParams = useSearchParam(teams) => setTeams(teams)s();
     // // con este lee el paramentro de "id"
     // const id = searchParams.get("id")
 
     // aca va al mySystem para agarrar los != teams
     useEffect(() => {
-        mySystem.findRival(token, id,(teams) => setTeams(teams));
-        mySystem.getTeam(token, id, (team) => setTeam(team));
+        findRival(token, id,);
+        getTeam(token, id, (team) => setTeam(team));
     }, [])
     // aca va al mySystem para agarrar el team
 
@@ -78,7 +75,7 @@ export const FindRivalPage= () => {
     return (
 
         <div>
-            <MenuSidebarWrapper/>
+            <TeamDropdown getTeamId={props.getTeamId} toggleTeamId={props.toggleTeamId}/>
             <div className={"logo"}>
                 <img style={{width: 218, height: "auto"}} src={require("../images/logo_solo_letras.png")} alt={"Logo"}/>
             </div>

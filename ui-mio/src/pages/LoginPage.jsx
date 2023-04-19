@@ -2,7 +2,7 @@ import * as React from 'react'
 import {useState} from 'react'
 import {useSearchParams} from "react-router-dom";
 import {useNavigate} from "react-router";
-import {useMySystem} from "../service/mySystem";
+import {login} from "../service/mySystem";
 import "../css/Login.css";
 import "bootstrap/dist/css/bootstrap.min.css"; //npm install bootstrap axios md5 universal-cookie
 import "../images/RivalMatch_logoRecortado.png";
@@ -20,13 +20,12 @@ export const LoginPage = () => {
     const [password, setPassword] = useState('')
     const [errorMsg, setErrorMsg] = useState(undefined)
     const navigate = useNavigate()
-    const mySystem = useMySystem()
     const [searchParams, setSearchParams] = useSearchParams();
     const isOk = searchParams.get("ok")
 
     function loginUser(credentials) {
         console.log("toy aca")
-        mySystem.login(
+        login(
             credentials,
             (token) => {
                 setToken(token)

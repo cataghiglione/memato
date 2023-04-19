@@ -2,7 +2,7 @@ import * as React from 'react'
 import {Link} from "react-router-dom";
 import {useState} from "react";
 import {useNavigate} from "react-router";
-import {useMySystem} from "../service/mySystem";
+import {register} from "../service/mySystem";
 import "../css/Login.css"
 import "../images/RivalMatch_logoRecortado.png"
 
@@ -43,7 +43,7 @@ export const RegisterPage = () => {
 
     const registerUser = (user) => {
         console.log("pase!")
-        mySystem.register(
+        register(
             user,
             () => navigate("/login?ok=true"),
             () => {

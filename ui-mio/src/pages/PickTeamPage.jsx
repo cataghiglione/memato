@@ -2,35 +2,17 @@ import React, {Component, useEffect, useState} from 'react';
 import "../css/Home.css"
 import "../css/PickTeam.css"
 import {useNavigate} from "react-router";
-import {useMySystem} from "../service/mySystem";
+import {listTeams} from "../service/mySystem";
 import {useAuthProvider} from "../auth/auth";
 import {useSearchParams} from "react-router-dom";
 import {HomePage} from "./HomePage";
-import MenuSidebarWrapper from "./MenuDropdown";
+import MenuSidebarWrapper from "./MenuSideBar";
 
 function goToNewTeam(){
     window.location.href = "/newTeam"
 }
-function goToHome(){
-    window.location.href = "/user"
-}
-function showTeam(team){
-    window.location.href = "/pickTeam"
-}
-function goToFindRival(team){
-    window.location.href = "/findRival"
-}
-function sleep(milliseconds) {
-    var start = new Date().getTime();
-    for (var i = 0; i < 1e7; i++) {
-        if ((new Date().getTime() - start) > milliseconds){
-            break;
-        }
-    }
-}
 export const PickTeamPage = () => {
     const navigate = useNavigate()
-    const mySystem = useMySystem()
     const auth = useAuthProvider()
 
     const token = auth.getToken();
@@ -41,8 +23,8 @@ export const PickTeamPage = () => {
 
     const [nextTeam, setNextTeam] = useState('')
     useEffect(() => {
-        mySystem.listTeams(token, (teams) => setTeams(teams));
-    }, [])
+        listTeams(token, (teams) => setTeams(teams));
+    }, [token])
 
     const changeNextTeam = (event) => {
         setNextTeam(event.target.value);
@@ -53,7 +35,6 @@ export const PickTeamPage = () => {
 
     return (
         <div>
-            <MenuSidebarWrapper/>
             <div className="containerPrincipal">
                 <h1>Teams</h1>
                 <button className={"newTeamButton"} onClick={goToNewTeam}>New Team</button>
