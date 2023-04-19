@@ -1,13 +1,11 @@
 package repository;
 
-import model.CreateTeamForm;
 import model.Search;
 import model.Team;
-import model.User;
+
 import java.util.Date;
 
 import java.text.ParseException;
-import java.time.LocalDate;
 
 
 import javax.persistence.EntityManager;
@@ -47,9 +45,10 @@ public class Searches {
                 .findFirst();
     }
 
-    private void reactivateSearch(Team team, String time, Date date) {
+    public Optional<Search> reactivateSearch(Team team, String time, Date date) {
         Optional<Search> search = findSearchByTeam(Long.toString(team.getId()), time, date.getMonth(),date.getDay(),date.getYear());
         search.ifPresent(Search::reactivateSearching);
+        return search;
     }
     public boolean exists(String id, String time, Date date){
         return findSearchByTeam(id,time,date.getMonth(),date.getDate(), date.getYear()).isPresent();

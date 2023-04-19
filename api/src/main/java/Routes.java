@@ -3,7 +3,6 @@ import com.google.common.base.Strings;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.google.gson.Gson;
-import com.sun.tools.jconsole.JConsoleContext;
 import json.JsonParser;
 import model.*;
 import repository.Searches;
@@ -18,11 +17,9 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
-import java.text.ParseException;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.concurrent.atomic.AtomicReference;
 
 import static java.util.concurrent.TimeUnit.MINUTES;
 import static json.JsonParser.toJson;
@@ -211,14 +208,14 @@ public class Routes {
             teams.findTeamsById(id).ifPresent(
                     (team) -> {
                         final CreateSearchForm searchForm = CreateSearchForm.createFromJson(req.body());
-                        system.createSearch(searchForm,team).ifPresentOrElse(
+                        system.findOrCreateSearch(searchForm,team).ifPresentOrElse(
                                 (search) ->{
                                     res.status(201);
                                 },
                                 ()->{
-                                    res.status(401);
-                                    res.body("Search not created");
+                                    res.status(200);
                                 }
+
                         );
                         if (user.isPresent()){
                             String user_id = user.get().getId().toString();

@@ -175,7 +175,7 @@ const MySystem = {
 
             body: JSON.stringify({id,...form})
         }).then(resp=>{
-            if (resp.status === 201) {
+            if (resp.status === 201 || resp.status===200) {
                 resp.json().then(teams=>okCallback(teams))
             } else {
                 errorCallback()

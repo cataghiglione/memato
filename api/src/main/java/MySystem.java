@@ -28,21 +28,23 @@ public class MySystem {
     public Optional<User> registerUser(RegistrationUserForm form) {
         return runInTransaction(datasource -> {
             final Users users = datasource.users();
-            return users.exists(form.getEmail(),form.getUsername()) ? Optional.empty() : Optional.of(users.createUser(form));
+            return users.exists(form.getEmail(), form.getUsername()) ? Optional.empty() : Optional.of(users.createUser(form));
         });
     }
-    public Optional<Team> createTeam(CreateTeamForm form, User user){
-        return runInTransaction(datasource ->{
+
+    public Optional<Team> createTeam(CreateTeamForm form, User user) {
+        return runInTransaction(datasource -> {
             final Teams teams = datasource.teams();
-            return teams.exists(form.getName(), user) ? Optional.empty() : Optional.of(teams.createTeam(form,user));
+            return teams.exists(form.getName(), user) ? Optional.empty() : Optional.of(teams.createTeam(form, user));
         });
 
     }
-    public Optional<Search> createSearch(CreateSearchForm form, Team team){
-        return runInTransaction(datasource ->{
+
+    public Optional<Search> findOrCreateSearch(CreateSearchForm form, Team team) {
+        return runInTransaction(datasource -> {
             final Searches searches = datasource.searches();
             try {
-                return searches.exists(Long.toString(team.getId()), form.getTime(),form.getDate()) ? Optional.empty() : Optional.of(searches.createSearch(team,form.getDate(), form.getTime(),form.getLatitude(), form.getLongitude()));
+                return searches.exists(Long.toString(team.getId()), form.getTime(), form.getDate()) ? searches.reactivateSearch(team, form.getTime(), form.getDate()) : Optional.of(searches.createSearch(team, form.getDate(), form.getTime(), form.getLatitude(), form.getLongitude()));
             } catch (ParseException e) {
                 throw new RuntimeException(e);
             }
@@ -63,7 +65,6 @@ public class MySystem {
                 ds -> ds.users().list()
         );
     }
-
 
 
     private <E> E runInTransaction(Function<MySystemRepository, E> closure) {

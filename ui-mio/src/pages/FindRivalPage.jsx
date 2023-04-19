@@ -243,7 +243,7 @@ export const FindRivalPage = () => {
                     Rival!
                 </button>
             </form>
-            {rivalMenuOpen &&
+            {(rivalMenuOpen & teams.length>0) &&
                 <select className={"team-select"} multiple={true} onChange={playMatch}>
                     {teams.map(team =>
                             <option className={"team-select-option"} value={team.id}>nombre ={team.name} deporte
@@ -254,7 +254,7 @@ export const FindRivalPage = () => {
                     )}
                 </select>}
             {teams.length === 0 &&
-                <p className={"noTeamSearch"}>There are no current teams searching for rivals</p>
+                <p className={"noTeamSearch"}>There are currently no teams searching for rivals with your preferences</p>
             }
 
 
