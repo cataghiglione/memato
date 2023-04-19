@@ -1,14 +1,14 @@
 import React, {Component, useEffect, useState} from 'react';
 import "../css/FindRival.css"
 import {useLocation, useNavigate} from "react-router";
-import {useMySystem} from "../service/mySystem";
+import {findRival, getTeam} from "../service/mySystem";
 import {useAuthProvider} from "../auth/auth";
 import {useSearchParams} from "react-router-dom";
 
 import DatePicker, {CalendarContainer} from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import {Dropdown} from "bootstrap";
-import MenuSidebarWrapper from "./MenuDropdown";
+import {TeamDropdown} from "./TeamDropdown";
 import {BingMap} from "./BingMap";
 import {forEach} from "react-bootstrap/ElementChildren";
 
@@ -38,12 +38,7 @@ function sleep(milliseconds) {
         }
     }
 }
-function findRival(){
-
-}
-
-export const FindRivalPage = () => {
-    const mySystem = useMySystem()
+export function FindRivalPage(props){
     const auth = useAuthProvider()
     const token = auth.getToken();
     const navigate = useNavigate();
@@ -51,22 +46,13 @@ export const FindRivalPage = () => {
 
     const [date, setDate] = useState(new Date());
     const [time, setTime] = useState('')
-    const [menuOpen, setMenuOpen] = useState(false);
 
     const [rivalMenuOpen, setRivalMenuOpen] = useState(false);
-    const [pageChange, setPageChange] = useState("Find rival");
 
     const [zone, setZone] = useState([])
     const [showPopup, setShowPopup] = useState(false);
     const [changeLocationButton, setChangeLocationButton] = useState('Select location');
     const [selectedLocation, setSelectedLocation] = useState("")
-
-    const changePage = (event) => {
-        setPageChange(event.target.value);
-    }
-    const playMatch = (event) => {
-        setPageChange(event.target.value);
-    }
 
     function handleSelectLocation() {
         if(showPopup === false)
@@ -102,7 +88,7 @@ export const FindRivalPage = () => {
 
     // aca va al mySystem para agarrar los != teams
     useEffect(() => {
-        mySystem.getTeam(token, id, (team) => setTeam(team));
+        getTeam(token, id, (team) => setTeam(team));
     }, [])
     // aca va al mySystem para agarrar el team
 
@@ -122,7 +108,7 @@ export const FindRivalPage = () => {
         })
     }
     const findRival = (id, search) => {
-        mySystem.findRival(token, id, search, (teams) => {
+        findRival(token, id, search, (teams) => {
                 setTeams(teams)
             },
             () => {
@@ -149,24 +135,7 @@ export const FindRivalPage = () => {
     return (
 
         <div>
-            <MenuSidebarWrapper/>
-
-            <button className={"Menu"} id="submit" type="submit" onClick={() => setMenuOpen(!menuOpen)}>
-                <img style={{width: 22, height: "auto"}} src={require("../images/sideBarIcon.png")} alt={"Logo"}/>
-            </button>
-            {menuOpen &&
-                <select className={"custom-select"} id="Menu" multiple={true} onChange={changePage}>
-                    <option className={"custom-select-option"} value="Home">Home</option>
-                    <option className={"custom-select-option"} value="User">User</option>
-                    <option className={"custom-select-option"} value="Pick Team">Pick Team</option>
-                    <option className={"custom-select-option"} value="New Team">New Team</option>
-                    {pageChange === "User" && goToUserInfo()}
-                    {pageChange === "Pick Team" && goToPickTeam()}
-                    {pageChange === "New Team" && goToNewTeam()}
-                    {pageChange === "Home" && goToHome()}
-                </select>
-            }
-
+            <TeamDropdown getTeamId={props.getTeamId} toggleTeamId={props.toggleTeamId}/>
             <div className={"logo"}>
                 <img style={{width: 218, height: "auto"}} src={require("../images/logo_solo_letras.png")} alt={"Logo"}/>
             </div>

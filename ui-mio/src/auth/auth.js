@@ -9,7 +9,8 @@ const AuthProvider = {
     },
     removeToken: () => {
         sessionStorage.removeItem('token');
-    }
+    },
+
 };
 
 const useAuthProvider = () => AuthProvider

@@ -2,13 +2,13 @@ import * as React from 'react'
 
 import {useState} from "react";
 import {useNavigate} from "react-router";
-import {useMySystem} from "../service/mySystem";
+import {newTeam} from "../service/mySystem";
 import "../css/Home.css"
 import "../images/RivalMatch_logoRecortado.png"
 import {useSearchParams} from "react-router-dom";
 import {render} from "@testing-library/react";
 import {useAuthProvider} from "../auth/auth";
-import MenuSidebarWrapper from "./MenuDropdown";
+import MenuSidebarWrapper from "./MenuSideBar";
 
 export const NewTeamPage = () => {
 
@@ -59,7 +59,7 @@ export const NewTeamPage = () => {
 
     const registerTeam = (user) => {
         console.log("estoy en el registro!")
-        mySystem.newTeam(token,
+        newTeam(token,
             user,
             () => navigate("/pickTeam?ok=true"),
             () => {
