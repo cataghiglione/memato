@@ -14,7 +14,7 @@ export class PublicPage extends Component {
     }
     render() {
         return (
-            <div className={"containerPrincipal"}>
+            <div className={"mainContainer"}>
 
                 <button className={"logInButton"} onClick={this.goToLogin}>Log in</button>
                 <br></br>

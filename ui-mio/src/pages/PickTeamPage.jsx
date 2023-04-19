@@ -36,17 +36,22 @@ export const PickTeamPage = () => {
     return (
         <div>
             <div className="containerPrincipal">
-                <h1>Teams</h1>
+                <h1 style={{textAlign:"center"}}>Teams</h1>
                 <button className={"newTeamButton"} onClick={goToNewTeam}>New Team</button>
-                <select className={"team-select"} multiple={true} onChange={changeNextTeam}>
-                    {teams.map(team =>
-                        <option className={"team-select-option"} value={team.id}>nombre = {team.name}    deporte = {team.sport} </option>
-                        // <p>nombre = {team.name}    deporte = {team.sport} </p>
-                        // <option>{team.name}</option>
+                {teams.length > 0 &&
+                    <select className={"team-pick"} multiple={true} onChange={changeNextTeam}>
+                        {teams.map(team =>
+                                <option className={"team-select-option"} value={team.id} style={{ textTransform: 'capitalize'}}>
+                                    Nombre: {team.name}, Deporte: {team.sport} {team.quantity} </option>
+                            // <p>nombre = {team.name}    deporte = {team.sport} </p>
+                            // <option>{team.name}</option>
 
-                    )}
-                </select>
-                <button className={"newTeamButton"} onClick={goToNewTeam}>New Team</button>
+                        )}
+                    </select>
+                }
+                {teams.length === 0 &&
+                    <p className={"noTeamPick"}>You haven't created any team yet</p>
+                }
             </div>
         </div>
     )

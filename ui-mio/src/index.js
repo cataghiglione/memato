@@ -1,11 +1,14 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import * as ReactDOMClient from 'react-dom/client';
 import './index.css';
 import App from './App';
 import {BrowserRouter} from "react-router-dom";
 import {TeamIdProvider} from './service/teamId'
 
-ReactDOM.render(
+// Made slight changes to solve reactdom not being supported anymore for react 18; fer
+const rootElement = document.getElementById('root');
+const root = ReactDOMClient.createRoot(rootElement);
+    root.render(
     <React.StrictMode>
         <BrowserRouter>
             <TeamIdProvider>
@@ -13,6 +16,5 @@ ReactDOM.render(
             </TeamIdProvider>
         </BrowserRouter>
     </React.StrictMode>,
-    document.getElementById('root')
 )
 ;

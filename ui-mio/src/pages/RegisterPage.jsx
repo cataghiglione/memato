@@ -24,6 +24,10 @@ export const RegisterPage = () => {
     const handleSubmit = async e => {
         console.log("Estoy aca");
         e.preventDefault();
+        if(!username || !name || !lastName || !mail || !password){
+            setErrorMsg('Please fill out all the required fields')
+            return;
+        }
         registerUser({
             username: username,
             firstName: name,
@@ -74,7 +78,7 @@ export const RegisterPage = () => {
     }
 
     return (
-        <div className={"containerPrincipal"}>
+        <div className={"mainContainer"}>
             {errorMsg && <div className="alert alert-danger" role="alert">{errorMsg}</div>}
 
             <img style={{ width: 218, height: "auto"}} src={require("../images/RivalMatch_logoRecortado.png")} alt={"Logo"}/>

@@ -59,7 +59,7 @@ export const LoginPage = () => {
     }
 
     return (
-        <div className={"containerPrincipal"}>
+        <div className={"mainContainer"}>
             {isOk && <div className="alert alert-success" role="alert">User created</div>}
             {errorMsg && <div className="alert alert-warning" role="alert">{errorMsg}</div>}
 

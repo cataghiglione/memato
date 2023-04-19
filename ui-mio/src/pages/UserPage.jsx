@@ -41,11 +41,15 @@ export function UserPage (props) {
             <div className="containerPrincipal">
                 <h1>Hi {user.username}
                 </h1>
-                <p align="center">First name: {user.firstName}</p>
+                <p>First name: {user.firstName}</p>
                 <p>Last name: {user.lastName}</p>
                 <p>Email: {user.email}</p>
                 <p>Password: {user.password}</p>
                 <button id="submit" type="submit" onClick={() => goToTeams()}>Teams</button>
+                <br></br>
+                <br></br>
+                <button onClick={signOut}>Sign Out</button>
+
             </div>
 
             <footer className="footer">

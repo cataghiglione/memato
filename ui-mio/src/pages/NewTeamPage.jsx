@@ -36,6 +36,10 @@ export const NewTeamPage = () => {
     const handleSubmit = async e => {
         console.log("Estoy aca");
         e.preventDefault();
+        if (!name || !zone || !age_group || !sport || !quant_Players) {
+            setErrorMsg('Please fill out all the required fields')
+            return;
+        }
         registerTeam({
             sport: sport,
             quantity: quant_Players,
@@ -94,7 +98,7 @@ export const NewTeamPage = () => {
     return (
         <div>
             <MenuSidebarWrapper/>
-            <div className={"containerPrincipal"}>
+            <div className={"containerPrincipalNewTeam"}>
                 {errorMsg && <div className="alert alert-danger" role="alert">{errorMsg}</div>}
                 {isOk && <div className="alert alert-success" role="alert">Team created</div>}
 
@@ -115,7 +119,7 @@ export const NewTeamPage = () => {
                         <input
                             type="zone"
                             id="zone"
-                            placeholder="Pilar"
+                            placeholder="Zone"
                             name="zone"
                             value={zone}
                             onChange={zoneChange}/>
