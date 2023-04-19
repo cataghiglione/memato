@@ -46,6 +46,10 @@ export const UserPage = () => {
                 <p>Email: {user.email}</p>
                 <p>Password: {user.password}</p>
                 <button id="submit" type="submit" onClick={() => goToTeams()}>Teams</button>
+                <br></br>
+                <br></br>
+                <button onClick={signOut}>Sign Out</button>
+
             </div>
 
             <footer className="footer">
