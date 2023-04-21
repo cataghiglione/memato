@@ -8,7 +8,7 @@ export class BingMap extends Component {
         this.state = {
             isVisible : true,
             bingmapKey: "ApqYZq8IsmnPRxOON1m_mY9eGEZqjDawW2cleubNdcVT5CbVMU8snXUF4qku9DcW", //Don't use this key in your environment.
-            infoboxesWithPushPins: "",
+            infoboxesWithPushPins: [],
             searchInput: "", // Future implementation
             getLocationHandledData: "",
         };
@@ -33,27 +33,24 @@ export class BingMap extends Component {
         }
         event.preventDefault();
     }
-    GetLocationHandled(location){
+    GetLocationHandled(location) {
+        const newInfoboxesWithPushPins = [{
+            "location": [location.latitude, location.longitude],
+            "addHandler":"mouseover",
+            "infoboxOption": { title: 'Your location'},
+            "pushPinOption":{ title: 'Your location', description: 'Pushpin' },
+            "infoboxAddHandler": {"type" : "click", callback: this.callBackMethod },
+            "pushPinAddHandler": {"type" : "click", callback: this.callBackMethod }
+        }];
+
         this.setState({
+            infoboxesWithPushPins: newInfoboxesWithPushPins,
             getLocationHandledData: JSON.stringify(location),
+        }, () => {
+            if (this.props.onInfoboxesWithPushPinsChange) {
+                this.props.onInfoboxesWithPushPinsChange(this.state.infoboxesWithPushPins);
+            }
         });
-        if(this.state.infoboxesWithPushPins === ""){
-            this.setState({infoboxesWithPushPins: [
-                    {
-                        "location": [location.latitude, location.longitude],
-                        "addHandler":"mouseover", //on mouseover the pushpin, infobox shown
-                        "infoboxOption": { title: 'Your location'},
-                        "pushPinOption":{ title: 'Your location', description: 'Pushpin' },
-                        "infoboxAddHandler": {"type" : "click", callback: this.callBackMethod },
-                        "pushPinAddHandler": {"type" : "click", callback: this.callBackMethod }
-                    }
-                ]},() => {
-                if (this.props.onInfoboxesWithPushPinsChange) {
-                    this.props.onInfoboxesWithPushPinsChange(this.state.infoboxesWithPushPins);
-                }
-            });
-        }
-        else{console.log("Pin selected already")}
     }
     GetEventHandled(callbackData){
         console.log(callbackData);
@@ -61,7 +58,7 @@ export class BingMap extends Component {
 
     UndoPinSelected(){
         //it works, you can move the pin if you click anywhere else but it doesnt erase the pin until you click
-        this.setState({infoboxesWithPushPins: ""});
+        this.setState({infoboxesWithPushPins: []});
     }
 
     render() {

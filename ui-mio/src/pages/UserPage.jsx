@@ -2,10 +2,10 @@ import * as React from 'react'
 import {useEffect, useState} from 'react'
 import {useNavigate} from "react-router";
 import {useAuthProvider} from "../auth/auth";
-import {useMySystem} from "../service/mySystem";
+import {signOut, getUser} from "../service/mySystem";
 import {HomePage} from "./HomePage";
 import "../css/Home.css"
-import MenuSidebarWrapper from "./MenuDropdown";
+import {TeamDropdown} from "./TeamDropdown";
 
 function goToHome() {
     window.location.href = "/user"
@@ -14,29 +14,29 @@ function goToTeams() {
     window.location.href = "/pickTeam"
 }
 
-export const UserPage = () => {
+export function UserPage (props) {
     const navigate = useNavigate()
-    const mySystem = useMySystem()
     const auth = useAuthProvider()
     const token = auth.getToken();
     const [user, setUser] = useState('')
     const [once, setOnce] = useState(true);
 
-    const signOut = () => {
-        mySystem.signOut(token, navigate("/"))
+    const signOutMethod = () => {
+        signOut(token, navigate("/"))
         auth.removeToken();
     }
-    const getUser = () => {
+    const getUserMethod = () => {
         console.log(token)
-        mySystem.getUser(token, (user) => setUser(user))
+        getUser(token, (user) => setUser(user))
         console.log(user)
         setOnce(false);
     }
 
+
     return (
         <div>
-            {once && getUser()}
-            <MenuSidebarWrapper/>
+            {once && getUserMethod()}
+            <TeamDropdown getTeamId={props.getTeamId} toggleTeamId={props.toggleTeamId}/>
 
             <div className="containerPrincipal">
                 <h1>Hi {user.username}
@@ -46,6 +46,10 @@ export const UserPage = () => {
                 <p>Email: {user.email}</p>
                 <p>Password: {user.password}</p>
                 <button id="submit" type="submit" onClick={() => goToTeams()}>Teams</button>
+                <br></br>
+                <br></br>
+                <button onClick={signOut}>Sign Out</button>
+
             </div>
 
             <footer className="footer">
