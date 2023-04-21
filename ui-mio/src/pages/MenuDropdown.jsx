@@ -27,7 +27,6 @@ class MenuSideBar extends Component{
                         <option className={"custom-select-option"} value="/user">User</option>
                         <option className={"custom-select-option"} value="/pickTeam">Pick Team</option>
                         <option className={"custom-select-option"} value="/newTeam">New Team</option>
-                        <option className={"custom-select-option"} value="/findRival">Find Rival</option>
                     </select>
                 </div>
             )

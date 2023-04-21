@@ -72,5 +72,15 @@ public class Search {
         setSearching(true);
     }
 
+    public String getLatitude() {
+        return latitude;
+    }
 
+    public String getLongitude() {
+        return longitude;
+    }
+
+    public Team getTeam() {
+        return team;
+    }
 }

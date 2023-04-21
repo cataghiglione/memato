@@ -36,6 +36,7 @@ public class Routes {
     public static final String FIND_RIVAL_ROUTE = "/findRival";
     public static final String GET_TEAM_BY_ID_ROUTE = "/getTeamById";
     public static final String NEW_SEARCH_ROUTE = "/newSearch";
+    public static final String GET_ACTIVE_SEARCHES="/currentSearches";
 
 
     private MySystem system;
@@ -219,7 +220,7 @@ public class Routes {
                         );
                         if (user.isPresent()){
                             String user_id = user.get().getId().toString();
-                            List<Team> candidates =searches.findCandidates(user_id,searchForm.getTime(),searchForm.getDate(),team.getSport(),team.getQuantity());
+                            List<Team> candidates =searches.findCandidates(user_id,searchForm.getTime(),searchForm.getDate(),team.getSport(),team.getQuantity(),searchForm.getLatitude(),searchForm.getLongitude());
                             res.body(JsonParser.toJson(candidates));
 
                         }
@@ -227,6 +228,26 @@ public class Routes {
                     }
             );
             return res.body();
+        });
+        get(GET_ACTIVE_SEARCHES,(req,res)->{
+            final EntityManager entityManager = entityManagerFactory.createEntityManager();
+            final Searches searches = new Searches(entityManager);
+            getUser(req).ifPresentOrElse(
+                    (user) -> {
+                        Long user_id = user.getId();
+                        List<Search> active_searches = searches.findActiveSearchesByUserId(user_id);
+                        res.body(JsonParser.toJson(active_searches));
+                        res.status(200);
+
+                    },
+                    ()->{
+                        res.status(400);
+                    }
+            );
+            return res.body();
+
+
+
         });
     }
 
