@@ -2,7 +2,7 @@ import * as React from 'react'
 import {useEffect, useState} from 'react'
 import {useNavigate} from "react-router";
 import {useAuthProvider} from "../auth/auth";
-import {signOut, getUser} from "../service/mySystem";
+import {signOut, getUser, getTeam, listTeams} from "../service/mySystem";
 import {HomePage} from "./HomePage";
 import "../css/Home.css"
 import {TeamDropdown} from "./TeamDropdown";
@@ -31,13 +31,10 @@ export function UserPage (props) {
         console.log(user)
         setOnce(false);
     }
-
-
     return (
         <div>
             {once && getUserMethod()}
             <TeamDropdown getTeamId={props.getTeamId} toggleTeamId={props.toggleTeamId}/>
-
             <div className="containerPrincipal">
                 <h1>Hi {user.username}
                 </h1>

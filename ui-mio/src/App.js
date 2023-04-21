@@ -9,13 +9,33 @@ import { UserPage } from "./pages/UserPage";
 import { NewTeamPage } from "./pages/NewTeamPage";
 import { FindRivalPage } from "./pages/FindRivalPage";
 import { RequireAuth } from "./components/RequireAuth";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 
-const App=() =>{
-    const [teamId, setTeamId] = useState(0)
+
+const App = () =>{
+    /*  the initial state of the teamId variable is set to the value retrieved
+        from the localStorage using the getItem method. If the value is not
+        found in localStorage, the initial state is set to 0.*/
+    const [teamId, setTeamId] = useState(() => {
+        const storedTeamId = localStorage.getItem('teamId');
+        return storedTeamId !== null ? JSON.parse(storedTeamId) : 0;
+    });
+
+
+    /*  To save the state in localStorage whenever it changes,
+        an effect is used with a dependency array containing
+        the count variable. This effect calls the setItem method
+        of localStorage with the current value of count.*/
+    useEffect(() => {
+        localStorage.setItem('teamId', JSON.stringify(teamId));
+    }, [teamId]);
+
+
     const toggleTeamId = (value) => {
         setTeamId(value);
     }
+
+
     return (
         <Routes>
             <Route path="/" element={<PublicPage />} />
