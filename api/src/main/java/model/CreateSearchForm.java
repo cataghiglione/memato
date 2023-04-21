@@ -3,6 +3,9 @@ package model;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.TemporalAccessor;
 import java.util.Date;
 
 import static json.JsonParser.fromJson;
@@ -24,6 +27,7 @@ public class CreateSearchForm {
     public CreateSearchForm(Team team, boolean isSearching, Date date, String time, String latitude,String longitude) {
         this.team = team;
         this.isSearching = isSearching;
+//        LocalDate localDate = LocalDate.parse(date, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
         this.date = date;
         this.time = time;
         this.latitude=latitude;

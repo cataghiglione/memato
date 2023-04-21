@@ -94,7 +94,6 @@ export function FindRivalPage(props){
 
     const openAndFindRivals = async e => {
         setRivalMenuOpen(true);
-        console.log(teams.length)
     }
 
 
@@ -195,7 +194,6 @@ export function FindRivalPage(props){
                     )}
 
 
-                    {/*ferpa aca iria el mapa*/}
                 </div>
                 <div>
                     <div className={"title"}>

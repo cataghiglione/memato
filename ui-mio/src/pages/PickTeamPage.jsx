@@ -11,6 +11,23 @@ import MenuSidebarWrapper from "./MenuSideBar";
 function goToNewTeam(){
     window.location.href = "/newTeam"
 }
+function goToHome(){
+    window.location.href = "/user"
+}
+function showTeam(team){
+    window.location.href = "/pickTeam"
+}
+function goToFindRival(team){
+    window.location.href = "/findRival"
+}
+function sleep(milliseconds) {
+    var start = new Date().getTime();
+    for (var i = 0; i < 1e7; i++) {
+        if ((new Date().getTime() - start) > milliseconds){
+            break;
+        }
+    }
+}
 export const PickTeamPage = () => {
     const navigate = useNavigate()
     const auth = useAuthProvider()
@@ -35,6 +52,7 @@ export const PickTeamPage = () => {
 
     return (
         <div>
+            <MenuSidebarWrapper/>
             <div className="containerPrincipal">
                 <h1 style={{textAlign:"center"}}>Teams</h1>
                 <button className={"newTeamButton"} onClick={goToNewTeam}>New Team</button>
@@ -50,7 +68,7 @@ export const PickTeamPage = () => {
                     </select>
                 }
                 {teams.length === 0 &&
-                    <p className={"noTeamPick"}>You haven't created any team yet</p>
+                    <p className={"noTeamPick"}>You haven't created any teams yet</p>
                 }
             </div>
         </div>

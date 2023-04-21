@@ -2,6 +2,26 @@ import {PickTeamPage} from "../pages/PickTeamPage";
 
 const restApiEndpoint = "http://localhost:4326"
 
+
+export const currentSearches=(token,okCallback,errorCallback)=>{
+    fetch(`${restApiEndpoint}/currentSearch`,{
+        method: 'GET',
+        headers:{
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token
+        }
+    }).then(resp=>{
+        if (resp.status===200){
+            resp.json().then(teams => okCallback(teams))
+        }
+        else {
+            errorCallback("Not able to fetch searches")
+        }
+    })
+
+
+}
+
 export const login = (credentials, okCallback, errorCallback) =>{
     fetch(`${restApiEndpoint}/auth`, {
         method: 'POST',
@@ -107,19 +127,23 @@ export const getUser = (token, okCallback, errorCallback) => {
     })
 }
 
-export const findRival = (token,id, okCallback, errorCallback) => {
-    fetch(`${restApiEndpoint}/findRival?id=${id}`, {
-        method: 'GET',
+export const findRival= (token, id,form, okCallback, errorCallback) => {
+    fetch(`${restApiEndpoint}/newSearch?id=${id}`, {
+        method: 'POST',
         headers: {
             'Content-Type': 'application/json',
             'Authorization': 'Bearer ' + token
+
         },
-    }).then(resp => {
-        if (resp.status === 200) {
-            resp.json().then(teams => okCallback(teams))
+
+        body: JSON.stringify({id,...form})
+    }).then(resp=>{
+        if (resp.status === 201 || resp.status===200) {
+            resp.json().then(teams=>okCallback(teams))
         } else {
             errorCallback()
         }
+
     })
 }
 
@@ -146,3 +170,5 @@ export const getTeam = (token, id, okCallback, errorCallback) => {
         return resp.body;
     })
 }
+
+
