@@ -60,6 +60,9 @@ export function FindRivalPage(props){
         else
             setShowPopup(false);
     }
+    const playMatch = () => {
+    //     to do
+    }
 
     const handleInfoboxesWithPushPins = (infoboxesWithPushPinsData) => {
         setChangeLocationButton('Change Location');

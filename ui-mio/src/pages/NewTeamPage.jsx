@@ -22,7 +22,6 @@ export const NewTeamPage = () => {
 
     const [errorMsg, setErrorMsg] = useState(undefined)
     const navigate = useNavigate();
-    const mySystem = useMySystem();
     const [searchParams, setSearchParams] = useSearchParams();
     const isOk = searchParams.get("ok")
 

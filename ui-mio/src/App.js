@@ -9,8 +9,13 @@ import { UserPage } from "./pages/UserPage";
 import { NewTeamPage } from "./pages/NewTeamPage";
 import { FindRivalPage } from "./pages/FindRivalPage";
 import { RequireAuth } from "./components/RequireAuth";
+import {useState} from "react";
 
-function App() {
+const App=() =>{
+    const [teamId, setTeamId] = useState(0)
+    const toggleTeamId = (value) => {
+        setTeamId(value);
+    }
     return (
         <Routes>
             <Route path="/" element={<PublicPage />} />
@@ -21,10 +26,10 @@ function App() {
                 path="/*"
                 element={<RequireAuth>
                     <Routes>
-                        <Route path="/home" element={<HomePage />} />
+                        <Route path="/home" element={<HomePage toggleTeamId = {toggleTeamId}    getTeamId={teamId}/>} />
                         <Route path="/pickTeam" element={<PickTeamPage />} />
                         <Route path="/newTeam" element={<NewTeamPage />} />
-                        <Route path="/user" element={<UserPage />} />
+                        <Route path="/user" element={<UserPage toggleTeamId = {toggleTeamId}    getTeamId={teamId}/>} />
                         <Route path="/findRival" element={<FindRivalPage />} />
                     </Routes>
                 </RequireAuth>}

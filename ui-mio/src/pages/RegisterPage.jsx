@@ -19,7 +19,6 @@ export const RegisterPage = () => {
 
     const [errorMsg, setErrorMsg] = useState(undefined)
     const navigate = useNavigate();
-    const mySystem = useMySystem();
 
     const handleSubmit = async e => {
         console.log("Estoy aca");
