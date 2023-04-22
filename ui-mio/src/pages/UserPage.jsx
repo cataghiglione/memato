@@ -2,7 +2,7 @@ import * as React from 'react'
 import {useState} from 'react'
 import {useNavigate} from "react-router";
 import {useAuthProvider} from "../auth/auth";
-import {signOut, getUser} from "../service/mySystem";
+import {signOut, getUser, deleteAccount} from "../service/mySystem";
 import "../css/Home.css"
 import {TeamDropdown} from "./TeamDropdown";
 
@@ -15,6 +15,10 @@ export function UserPage (props) {
 
     const signOutMethod = () => {
         signOut(token, navigate("/"))
+        auth.removeToken();
+    }
+    const deleteMethod = () => {
+        deleteAccount(token, navigate("/"))
         auth.removeToken();
     }
     const getUserMethod = () => {
@@ -38,7 +42,7 @@ export function UserPage (props) {
                 <br/>
                 <br/>
                 <button className={"common-button"} onClick={signOutMethod}>Sign Out</button>
-
+                <button className={"common-button"} onClick={deleteMethod}>Delete Account</button>
             </div>
         </div>
     )

@@ -87,6 +87,22 @@ export const signOut = (token, okCallback, errorCallback) => {
     })
 }
 
+export const deleteAccount = (token, okCallback, errorCallback) => {
+    fetch(`${restApiEndpoint}/deleteAccount`, {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token
+        }
+    }).then(resp => {
+        if (resp.status === 200) {
+            okCallback();
+        } else {
+            errorCallback("Could not delete the account")
+        }
+    })
+}
+
 export const listTeams = (token, okCallback, errorCallback) => {
     fetch('http://localhost:4326/pickTeam', {
         method: 'GET',

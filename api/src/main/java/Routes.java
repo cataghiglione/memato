@@ -37,6 +37,7 @@ public class Routes {
     public static final String GET_TEAM_BY_ID_ROUTE = "/getTeamById";
     public static final String NEW_SEARCH_ROUTE = "/newSearch";
     public static final String GET_ACTIVE_SEARCHES="/currentSearches";
+    public static final String DELETE_ACCOUNT="/deleteAccount";
 
 
     private MySystem system;
@@ -125,6 +126,42 @@ public class Routes {
                     }, () -> {
                         res.status(404);
                     });
+            return "";
+
+        });
+        authorizedDelete(DELETE_ACCOUNT, (req, res) -> {
+            final EntityManager entityManager = entityManagerFactory.createEntityManager();
+            final Users users = new Users(entityManager);
+            EntityTransaction transaction = entityManager.getTransaction();
+            getUser(req).ifPresentOrElse(
+                    (user) -> {
+                        res.status(200);
+                        getToken(req)
+                                .ifPresentOrElse(token -> {
+                                    emailByToken.invalidate(token);
+                                    res.status(204);
+                                }, () -> {
+                                    res.status(404);
+                                    res.body("Invalid token");
+                                });
+                        try {
+                            transaction.begin();
+                            users.deleteAccount(user.getId());
+                            transaction.commit();
+                            res.status(200);
+                        } catch (Exception e) {
+                            transaction.rollback();
+                            res.status(400);
+                            res.body("no se pudo hacer el delete account");
+                        } finally {
+                            entityManager.close();
+                        }
+                    },
+                    () -> {
+                        res.status(404);
+                        res.body("Invalid Token");
+                    }
+            );
             return "";
 
         });

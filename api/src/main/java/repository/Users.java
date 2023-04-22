@@ -62,4 +62,9 @@ public class Users {
         entityManager.persist(user);
         return user;
     }
+    public void deleteAccount(Long id){
+        entityManager.createQuery("DELETE FROM User WHERE id =: id")
+                .setParameter("id", id)
+                .executeUpdate();
+    }
 }
