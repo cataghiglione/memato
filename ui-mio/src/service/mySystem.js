@@ -1,20 +1,20 @@
 import {PickTeamPage} from "../pages/PickTeamPage";
+import {useHistory} from 'react-router-dom';
 
 const restApiEndpoint = "http://localhost:4326"
 
 
-export const currentSearches=(token,okCallback,errorCallback)=>{
-    fetch(`${restApiEndpoint}/currentSearch`,{
+export const currentSearches = (token, okCallback, errorCallback) => {
+    fetch(`${restApiEndpoint}/currentSearch`, {
         method: 'GET',
-        headers:{
+        headers: {
             'Content-Type': 'application/json',
             'Authorization': 'Bearer ' + token
         }
-    }).then(resp=>{
-        if (resp.status===200){
+    }).then(resp => {
+        if (resp.status === 200) {
             resp.json().then(teams => okCallback(teams))
-        }
-        else {
+        } else {
             errorCallback("Not able to fetch searches")
         }
     })
@@ -22,7 +22,7 @@ export const currentSearches=(token,okCallback,errorCallback)=>{
 
 }
 
-export const login = (credentials, okCallback, errorCallback) =>{
+export const login = (credentials, okCallback, errorCallback) => {
     fetch(`${restApiEndpoint}/auth`, {
         method: 'POST',
         headers: {
@@ -52,7 +52,7 @@ export const register = (user, okCallback, errorCallback) => {
         }
     })
 }
-export const newTeam = (token,user, okCallback, errorCallback) => {
+export const newTeam = (token, user, okCallback, errorCallback) => {
     console.log("estoy en mysistem")
     fetch(`${restApiEndpoint}/newTeam`, {
         method: 'POST',
@@ -98,7 +98,7 @@ export const listTeams = (token, okCallback, errorCallback) => {
         if (resp.status === 200) {
             resp.json().then(teams => okCallback(teams))
         } else {
-            errorCallback("Could not load teams")
+            errorCallback()
         }
     })
 }
@@ -127,7 +127,7 @@ export const getUser = (token, okCallback, errorCallback) => {
     })
 }
 
-export const findRival= (token, id,form, okCallback, errorCallback) => {
+export const findRival = (token, id, form, okCallback, errorCallback) => {
     fetch(`${restApiEndpoint}/newSearch?id=${id}`, {
         method: 'POST',
         headers: {
@@ -136,10 +136,10 @@ export const findRival= (token, id,form, okCallback, errorCallback) => {
 
         },
 
-        body: JSON.stringify({id,...form})
-    }).then(resp=>{
-        if (resp.status === 201 || resp.status===200) {
-            resp.json().then(teams=>okCallback(teams))
+        body: JSON.stringify({id, ...form})
+    }).then(resp => {
+        if (resp.status === 201 || resp.status === 200) {
+            resp.json().then(teams => okCallback(teams))
         } else {
             errorCallback()
         }
@@ -168,6 +168,40 @@ export const getTeam = (token, id, okCallback, errorCallback) => {
             errorCallback()
         }
         return resp.body;
+    })
+}
+export const updateTeam = (token, id, form, okCallback, errorCallback) => {
+    fetch(`${restApiEndpoint}/updateTeam?id=${id}`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token
+        },
+        body: JSON.stringify({id, ...form})
+    }).then(resp => {
+        if (resp.status === 200) {
+            okCallback()
+        } else errorCallback()
+    })
+
+}
+export const deleteTeam = (token, id, okCallback, errorCallback) => {
+    fetch(`${restApiEndpoint}/deleteTeam?id=${id}`, {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token
+        },
+        body: JSON.stringify({id})
+    }).then(resp => {
+        if (resp.status === 203) {
+            okCallback();
+
+        }
+        else if(resp.status===200){
+            window.location.href="/newTeam";
+        }
+        else errorCallback()
     })
 }
 

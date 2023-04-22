@@ -2,7 +2,7 @@ package model;
 
 import javax.persistence.*;
 
-
+@Table
 @Entity
 public class Team {
     @Id
@@ -19,7 +19,7 @@ public class Team {
     private String quantity;
 
     @Column(name = "AGE_GROUP")
-    private String group;
+    private String age_group;
 
     @Column(name = "PUNTUALITY")
     private int puntuality;
@@ -35,12 +35,12 @@ public class Team {
     public Team() {
     }
 
-    private Team(String name, String sport, String quantity, int puntuality, String group, String zone, User user) {
+    private Team(String name, String sport, String quantity, int puntuality, String age_group, String zone, User user) {
         this.name = name;
         this.sport = sport;
         this.quantity = quantity;
         this.puntuality = puntuality;
-        this.group = group;
+        this.age_group = age_group;
         this.zone = zone;
         this.user = user;
     }
@@ -61,8 +61,8 @@ public class Team {
         return name;
     }
 
-    public String getGroup() {
-        return group;
+    public String getAge_group() {
+        return age_group;
     }
 
     public String getSport() {

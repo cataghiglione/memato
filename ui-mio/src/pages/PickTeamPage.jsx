@@ -46,7 +46,7 @@ export const PickTeamPage = () => {
     const changeNextTeam = (event) => {
         setNextTeam(event.target.value);
         if(event.target.value != null){
-            navigate('/findRival?id='+ event.target.value)
+            navigate('/editTeam?id='+ event.target.value)
         }
     }
 

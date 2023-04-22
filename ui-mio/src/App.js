@@ -6,6 +6,7 @@ import { RegisterPage } from "./pages/RegisterPage";
 import { HomePage } from "./pages/HomePage";
 import { PickTeamPage } from "./pages/PickTeamPage";
 import { UserPage } from "./pages/UserPage";
+import{EditTeamPage} from "./pages/EditTeamPage";
 import { NewTeamPage } from "./pages/NewTeamPage";
 import { FindRivalPage } from "./pages/FindRivalPage";
 import { RequireAuth } from "./components/RequireAuth";
@@ -31,6 +32,7 @@ const App=() =>{
                         <Route path="/newTeam" element={<NewTeamPage />} />
                         <Route path="/user" element={<UserPage toggleTeamId = {toggleTeamId}    getTeamId={teamId}/>} />
                         <Route path="/findRival" element={<FindRivalPage />} />
+                        <Route path = "/editTeam" element = {<EditTeamPage/>}/>
                     </Routes>
                 </RequireAuth>}
             />
