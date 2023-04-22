@@ -13,13 +13,11 @@ import spark.Response;
 import spark.Route;
 import spark.Spark;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.EntityTransaction;
-import javax.persistence.Persistence;
+import javax.persistence.*;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static java.util.concurrent.TimeUnit.MINUTES;
 import static json.JsonParser.toJson;
@@ -60,6 +58,8 @@ public class Routes {
             resp.header("Access-Control-Allow-Headers", "*");
             resp.header("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT, PATCH, OPTIONS");
         });
+        storedBasicUser(entityManagerFactory);
+        storedBasicTeam(entityManagerFactory);
         options("/*", (req, resp) -> {
             resp.status(200);
             return "ok";
@@ -88,8 +88,6 @@ public class Routes {
             return res.body();
 
         });
-        storedBasicUser(entityManagerFactory);
-        storedBasicTeam(entityManagerFactory);
 
         post(REGISTER_ROUTE, (req, res) -> {
             final RegistrationUserForm form = RegistrationUserForm.createFromJson(req.body());
@@ -133,10 +131,14 @@ public class Routes {
             return "";
 
         });
-        authorizedDelete(DELETE_ACCOUNT, (req, res) -> {
+        delete(DELETE_ACCOUNT, (req, res) -> {
             final EntityManager entityManager = entityManagerFactory.createEntityManager();
             final Users users = new Users(entityManager);
-            EntityTransaction transaction = entityManager.getTransaction();
+            final EntityManager entityManager2 = entityManagerFactory.createEntityManager();
+            final Teams teams = new Teams(entityManager2);
+            EntityTransaction transaction_user = entityManager.getTransaction();
+            EntityTransaction transaction_team = entityManager2.getTransaction();
+            AtomicInteger i = new AtomicInteger();
             getUser(req).ifPresentOrElse(
                     (user) -> {
                         res.status(200);
@@ -149,12 +151,25 @@ public class Routes {
                                     res.body("Invalid token");
                                 });
                         try {
-                            transaction.begin();
-                            users.deleteAccount(user.getId());
-                            transaction.commit();
-                            res.status(200);
+                            transaction_team.begin();
+                            teams.deleteAllTeams(user.getId());
+                            i.set(teams.getNumberOfTeamsForUser(user.getId()));
+                            transaction_team.commit();
                         } catch (Exception e) {
-                            transaction.rollback();
+                            transaction_team.rollback();
+                            res.status(400);
+                            res.body("no se pudo hacer el delete all teams");
+                        } finally {
+                            entityManager2.close();
+                        }
+                        try {
+                            transaction_user.begin();
+                            users.deleteAccount(user.getId());
+                            transaction_user.commit();
+                            res.status(200);
+                            res.body(String.valueOf(i));
+                        } catch (Exception e) {
+                            transaction_user.rollback();
                             res.status(400);
                             res.body("no se pudo hacer el delete account");
                         } finally {
@@ -166,7 +181,7 @@ public class Routes {
                         res.body("Invalid Token");
                     }
             );
-            return "";
+            return res.body();
 
         });
         authorizedGet(USERS_ROUTE, (req, res) -> {
