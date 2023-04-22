@@ -36,11 +36,15 @@ public class Routes {
     public static final String FIND_RIVAL_ROUTE = "/findRival";
     public static final String GET_TEAM_BY_ID_ROUTE = "/getTeamById";
     public static final String NEW_SEARCH_ROUTE = "/newSearch";
+    public static final String GET_ACTIVE_SEARCHES_ROUTE = "/currentSearches";
+    public static final String UPDATE_TEAM_ROUTE = "/updateTeam";
+    public static final String DELETE_TEAM_ROUTE = "/deleteTeam";
     public static final String GET_ACTIVE_SEARCHES="/currentSearches";
     public static final String DELETE_ACCOUNT="/deleteAccount";
 
 
     private MySystem system;
+
     private static final Gson gson = new Gson();
     private final EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("rmatch");
 
@@ -177,7 +181,7 @@ public class Routes {
                 String id = user.get().getId().toString();
                 List<Team> teamList = teams.findTeamsByUserId(id);
                 if (teamList.isEmpty()) {
-                    res.status(204);
+                    res.status(404);
                     res.body("no teams yet");
                     return res.body();
                 } else return gson.toJson(teamList);
@@ -246,18 +250,18 @@ public class Routes {
             teams.findTeamsById(id).ifPresent(
                     (team) -> {
                         final CreateSearchForm searchForm = CreateSearchForm.createFromJson(req.body());
-                        system.findOrCreateSearch(searchForm,team).ifPresentOrElse(
-                                (search) ->{
+                        system.findOrCreateSearch(searchForm, team).ifPresentOrElse(
+                                (search) -> {
                                     res.status(201);
                                 },
-                                ()->{
+                                () -> {
                                     res.status(200);
                                 }
 
                         );
-                        if (user.isPresent()){
+                        if (user.isPresent()) {
                             String user_id = user.get().getId().toString();
-                            List<Team> candidates =searches.findCandidates(user_id,searchForm.getTime(),searchForm.getDate(),team.getSport(),team.getQuantity(),searchForm.getLatitude(),searchForm.getLongitude());
+                            List<Team> candidates = searches.findCandidates(user_id, searchForm.getTime(), searchForm.getDate(), team.getSport(), team.getQuantity(), searchForm.getLatitude(), searchForm.getLongitude());
                             res.body(JsonParser.toJson(candidates));
 
                         }
@@ -266,7 +270,7 @@ public class Routes {
             );
             return res.body();
         });
-        get(GET_ACTIVE_SEARCHES,(req,res)->{
+        get(GET_ACTIVE_SEARCHES_ROUTE, (req, res) -> {
             final EntityManager entityManager = entityManagerFactory.createEntityManager();
             final Searches searches = new Searches(entityManager);
             getUser(req).ifPresentOrElse(
@@ -277,15 +281,66 @@ public class Routes {
                         res.status(200);
 
                     },
-                    ()->{
+                    () -> {
                         res.status(400);
                     }
             );
             return res.body();
 
 
+        });
+        post(UPDATE_TEAM_ROUTE, (req, res) -> {
+            final EntityManager entityManager = entityManagerFactory.createEntityManager();
+            final Teams teams = new Teams(entityManager);
+            final String id = (req.queryParams("id"));
+            teams.findTeamsById(id).ifPresentOrElse(
+                    (team) -> {
+                        final CreateTeamForm teamForm = CreateTeamForm.createFromJson(req.body());
+                        EntityTransaction transaction = entityManager.getTransaction();
+                        transaction.begin();
+                        teams.updateTeam(teamForm.getName(), teamForm.getSport(), teamForm.getQuantity(), teamForm.getAgeGroup(), teamForm.getZone(), Long.valueOf(id));
+                        transaction.commit();
+                        res.status(200);
+                    },
+                    () -> {
+                        res.status(400);
+                    }
+            );
+            return res.status();
+
 
         });
+        delete(DELETE_TEAM_ROUTE, (req, res) -> {
+            final EntityManager entityManager = entityManagerFactory.createEntityManager();
+            final Teams teams = new Teams(entityManager);
+            final String id = (req.queryParams("id"));
+            Optional<User> user = getUser(req);
+            EntityTransaction transaction = entityManager.getTransaction();
+            if (user.isPresent()) {
+                Long user_id = user.get().getId();
+                try {
+                    transaction.begin();
+                    teams.deleteTeam(Long.valueOf(id));
+                    transaction.commit();
+                    if (teams.getNumberOfTeamsForUser(user_id) == 0) {
+                        res.status(200);
+                    } else {
+                        res.status(203);
+                    }
+                } catch (Exception e) {
+                    transaction.rollback();
+                    res.status(400);
+                } finally {
+                    entityManager.close();
+                }
+
+
+            }
+            else res.status(400);
+            return res.status();
+        });
+
+
     }
 
     private void authorizedGet(final String path, final Route route) {

@@ -1,0 +1,81 @@
+.team_name {
+    position: absolute;
+    left: 50%;
+    top: 16%;
+    transform: translate(-50%, -50%);
+    background-color: transparent;
+    font-family: "Times New Roman", sans-serif;
+    font-size: xxx-large;
+
+
+}
+.sport_and_quantity{
+    position: absolute;
+    left: 50%;
+    top: 20%;
+    transform: translate(-50%, -50%);
+    background-color: transparent;
+    font-family: "Times New Roman", sans-serif;
+    font-size: large;
+
+}
+
+.logo {
+    position: absolute;
+    left: 50%;
+    top: 4%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+
+}
+.form{
+    position: absolute;
+    left: 42%;
+    top: 28%;
+
+}
+.saveChangesButton {
+    position: absolute;
+    background-color: white;
+    left: 60%;
+    bottom: -30%;
+    color: black;
+    border: 1px solid #4CAF50;
+    border-radius: 1px;
+    transition-duration: 0.4s;
+    width: 60%;
+}
+
+.saveChangesButton:hover {
+    background-color: #4CAF50;
+    color: white;
+}
+.goBackButton{
+    position: absolute;
+    background-color: white;
+    left: -50%;
+    bottom: -30%;
+    color: black;
+    border: 1px solid rebeccapurple;
+    border-radius: 1px;
+    transition-duration: 0.4s;
+    width: 60%;
+}
+.goBackButton:hover{
+    background-color: rebeccapurple;
+    color: white;
+}
+.delete-button {
+    background-color: white;
+    color: #f44336;
+    border: 1px solid #da190b;
+    padding: 8px 16px;
+    border-radius: 1px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.delete-button:hover {
+    background-color: #da190b;
+    color: white;
+}
