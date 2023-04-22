@@ -1,18 +1,10 @@
 import * as React from 'react'
-import {useEffect, useState} from 'react'
+import {useState} from 'react'
 import {useNavigate} from "react-router";
 import {useAuthProvider} from "../auth/auth";
-import {signOut, getUser, getTeam, listTeams} from "../service/mySystem";
-import {HomePage} from "./HomePage";
+import {signOut, getUser} from "../service/mySystem";
 import "../css/Home.css"
 import {TeamDropdown} from "./TeamDropdown";
-
-function goToHome() {
-    window.location.href = "/user"
-}
-function goToTeams() {
-    window.location.href = "/pickTeam"
-}
 
 export function UserPage (props) {
     const navigate = useNavigate()
@@ -42,16 +34,12 @@ export function UserPage (props) {
                 <p>Last name: {user.lastName}</p>
                 <p>Email: {user.email}</p>
                 <p>Password: {user.password}</p>
-                <button id="submit" type="submit" onClick={() => goToTeams()}>Teams</button>
-                <br></br>
-                <br></br>
-                <button onClick={signOut}>Sign Out</button>
+                <button className={"common-button"} onClick={() => window.location.href = "/pickTeam"}>Teams</button>
+                <br/>
+                <br/>
+                <button className={"common-button"} onClick={signOutMethod}>Sign Out</button>
 
             </div>
-
-            <footer className="footer">
-                <a href="" onClick={goToHome}>Home</a>
-            </footer>
         </div>
     )
 }
