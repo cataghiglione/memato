@@ -8,7 +8,7 @@ import "../images/RivalMatch_logoRecortado.png"
 import {useSearchParams} from "react-router-dom";
 import {render} from "@testing-library/react";
 import {useAuthProvider} from "../auth/auth";
-import MenuSidebarWrapper from "./MenuSideBar";
+import MenuSidebarWrapper from "./TopDropdown/MenuSideBar";
 
 export const NewTeamPage = () => {
 

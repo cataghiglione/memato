@@ -136,7 +136,7 @@ export const EditTeamPage = () => {
             {errorMsg && <div className="alert alert-danger" role="alert">{errorMsg}</div>}
             {isOk && <div className="alert alert-success" role="alert">Changes saved</div>}
             <div className={"logo"}>
-                <img style={{width: 218, height: "auto"}} src={require("../images/logo_solo_letras.png")} alt={"Logo"}/>
+                <img style={{width: 150, height: "auto"}} src={require("../images/logo_solo_letras.png")} alt={"Logo"}/>
             </div>
             <div className={"team_name"} style={teamNameStyle}>
                 {team.name}

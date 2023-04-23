@@ -4,7 +4,7 @@ import {useNavigate} from "react-router";
 import {useAuthProvider} from "../auth/auth";
 import {signOut, getUser, deleteAccount} from "../service/mySystem";
 import "../css/Home.css"
-import {TeamDropdown} from "./TeamDropdown";
+import {TeamDropdown} from "./TopDropdown/TeamDropdown";
 
 export function UserPage (props) {
     const navigate = useNavigate()
@@ -38,11 +38,7 @@ export function UserPage (props) {
                 <p>Last name: {user.lastName}</p>
                 <p>Email: {user.email}</p>
                 <p>Password: {user.password}</p>
-                <button className={"common-button"} onClick={() => window.location.href = "/pickTeam"}>Teams</button>
-                <br/>
-                <br/>
-                <button className={"common-button"} onClick={signOutMethod}>Sign Out</button>
-                <button className={"common-button"} onClick={deleteMethod}>Delete Account</button>
+                <button className={"common-button"} onClick={() => window.location.href = "/settings"}>Go back</button>
             </div>
         </div>
     )

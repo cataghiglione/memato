@@ -72,15 +72,52 @@
     transition-duration: 0.4s;
     width: 100%;
 }
+.top-bar {
+    background-color: #ccc;
+    color: #fff;
+    height: 50px;
+    padding: 10px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 9999; /* set a high z-index to ensure it appears above other elements */
+}
 .Menu{
     position: absolute;
-    right: 0px;
-    background-color: #E2E2E2;
-    color: black;
-    border: 1px solid #E2E2E2;
+    /*background-color: #E2E2E2;*/
+    /*color: black;*/
+    /*border: 1px solid #E2E2E2;*/
+    background-color: #ccc;
     border-radius: 1px;
     transition-duration: 0.4s;
-
+    top: -3px;
+    right: 7px;
+}
+.Logo{
+    position: absolute;
+    /*background-color: #E2E2E2;*/
+    /*color: black;*/
+    /*border: 1px solid #E2E2E2;*/
+    border-radius: 1px;
+    transition-duration: 0.4s;
+    left: 10px;
+}
+.your-team{
+    left: 50%;
+}
+.delete-button {
+    background-color: white;
+    color: #f44336;
+    border: 1px solid #da190b;
+    padding: 8px 16px;
+    border-radius: 1px;
+    font-size: 16px;
+    cursor: pointer;
+}
+.delete-button:hover {
+    background-color: #da190b;
+    color: white;
 }
 .showTeamButton:hover {
     background-color: #4CAF50;
@@ -122,7 +159,7 @@ lable{
     align-items: center;
     overflow: hidden;
     background: white;
-    box-shadow: 0 10px 25px rgba(42, 179, 248, 0.4);
+    box-shadow: 0 10px 25px rgba(162, 162, 162, 0.4);
 }
 .custom-select-option{
     padding: 16px;
@@ -132,8 +169,8 @@ lable{
 }
 .custom-select-option:hover{
     color: white;
-    background: #5bc5fa;
-    box-shadow: 0 10px 25px rgba(42, 179, 248, 0.4);
+    background: #9b9a9a;
+    box-shadow: 0 10px 25px rgba(162, 162, 162, 0.4);
 }
 
 .custom-select select {
@@ -141,7 +178,7 @@ lable{
 }
 
 .select-selected {
-    background-color: DodgerBlue;
+    background-color: #505050;
 }
 
 /* Style the arrow inside the select element: */
@@ -172,14 +209,14 @@ lable{
 }
 .dropdown {
     position: absolute;
-
+    top: -10px;
     left: 50%;
     transform: translateX(-50%);
     display: inline-block;
 }
 
 .dropdown-btn {
-    background-color: #D8D8D8;
+    background-color: #ccc;
     color: black;
     padding: 12px;
     font-size: 16px;

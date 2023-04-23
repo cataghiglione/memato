@@ -4,39 +4,19 @@ import "../css/PickTeam.css"
 import {useNavigate} from "react-router";
 import {listTeams} from "../service/mySystem";
 import {useAuthProvider} from "../auth/auth";
-import {useSearchParams} from "react-router-dom";
-import {HomePage} from "./HomePage";
-import MenuSidebarWrapper from "./MenuSideBar";
+import {TeamDropdown} from "./TopDropdown/TeamDropdown";
 
 function goToNewTeam(){
     window.location.href = "/newTeam"
 }
-function goToHome(){
-    window.location.href = "/user"
-}
-function showTeam(team){
-    window.location.href = "/pickTeam"
-}
-function goToFindRival(team){
-    window.location.href = "/findRival"
-}
-function sleep(milliseconds) {
-    var start = new Date().getTime();
-    for (var i = 0; i < 1e7; i++) {
-        if ((new Date().getTime() - start) > milliseconds){
-            break;
-        }
-    }
-}
-export const PickTeamPage = () => {
+
+export function PickTeamPage(props) {
     const navigate = useNavigate()
     const auth = useAuthProvider()
 
     const token = auth.getToken();
     const [teams, setTeams] = useState([]);
 
-    const [searchParams, setSearchParams] = useSearchParams();
-    const isOk = searchParams.get("ok")
 
     const [nextTeam, setNextTeam] = useState('')
     useEffect(() => {
@@ -52,7 +32,7 @@ export const PickTeamPage = () => {
 
     return (
         <div>
-            <MenuSidebarWrapper/>
+            <TeamDropdown getTeamId={props.getTeamId} toggleTeamId={props.toggleTeamId}/>
             <div className="containerPrincipal">
                 <h1 style={{textAlign:"center"}}>Teams</h1>
                 <button className={"newTeamButton"} onClick={goToNewTeam}>New Team</button>

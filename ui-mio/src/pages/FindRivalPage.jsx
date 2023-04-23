@@ -8,7 +8,7 @@ import {useSearchParams} from "react-router-dom";
 import DatePicker, {CalendarContainer} from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import {Dropdown} from "bootstrap";
-import {TeamDropdown} from "./TeamDropdown";
+import {TeamDropdown} from "./TopDropdown/TeamDropdown";
 import {BingMap} from "./BingMap";
 import {forEach} from "react-bootstrap/ElementChildren";
 
