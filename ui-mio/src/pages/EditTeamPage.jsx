@@ -45,11 +45,7 @@ export function EditTeamPage(props) {
 
     const handleSubmit = async e => {
         e.preventDefault();
-        // if (!name || !zone ) {
-        //     console.log("estoy en un error")
-        //     setErrorMsg('Please fill out all the required fields')
-        //     return;
-        // }
+
         if (isEmpty(name)){setName(team.name)
         console.log("entre a este if")}
         if (isEmpty(zone)){setZone(team.zone)}
