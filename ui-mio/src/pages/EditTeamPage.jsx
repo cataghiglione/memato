@@ -27,6 +27,7 @@ export const EditTeamPage = () => {
     const [zone, setZone] = useState('')
     const [name, setName] = useState('')
     const [team, setTeam] = useState('');
+
     useEffect(() => {
         getTeam(token, id, (team) => setTeam(team));
     }, [])
@@ -66,12 +67,13 @@ export const EditTeamPage = () => {
     }
 
     const resetForm = () => {
-        setSport('')
-        setZone('')
-        setAge_group('')
-        setQuant_player('')
-        setName('')
-    }
+        setName(team.name);
+        setZone(team.zone);
+        setAge_group(team.age_group);
+        setSport(team.sport);
+        setQuant_player(team.quantity);
+    };
+
 
     const saveChanges = (form) => {
         console.log("estoy en save changes")
@@ -94,6 +96,10 @@ export const EditTeamPage = () => {
             goToPickTeam()
         }
     }
+    const handleGoToPickTeam = () => {
+        resetForm();
+        goToPickTeam();
+    };
 
 
     const sportChange = (event) => {
@@ -213,7 +219,7 @@ export const EditTeamPage = () => {
                         <button id="submit" type="submit" className={"saveChangesButton"} onClick={() => newTeamRequest()}>Save Changes</button>
                     </div>
                     <div>
-                        <button className={"goBackButton"} onClick={goToPickTeam}>Return to Pick Team</button>
+                        <button className={"goBackButton"} onClick={handleGoToPickTeam}>Return to Pick Team</button>
                     </div>
                 </form>
                     <br/>
