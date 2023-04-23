@@ -5,13 +5,11 @@ import {useAuthProvider} from "../auth/auth";
 import {getUser, updateUser} from "../service/mySystem";
 import "../css/Home.css"
 import {TeamDropdown} from "./TopDropdown/TeamDropdown";
-import {useSearchParams} from "react-router-dom";
 
 export function UserPage(props) {
     const navigate = useNavigate()
     const auth = useAuthProvider()
     const token = auth.getToken();
-    const [searchParams, setSearchParams] = useSearchParams();
     const [errorMsg, setErrorMsg] = useState(undefined)
 
     const [user, setUser] = useState('')
@@ -64,14 +62,6 @@ export function UserPage(props) {
             password: password || user.password,
             username: username || user.username
         })
-    }
-
-    const resetForm = () => {
-        setFirst_name('')
-        setLast_name('')
-        setEmail('')
-        setPassword('')
-        setUsername('')
     }
 
     const saveChanges = (form) => {

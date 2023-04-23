@@ -80,8 +80,7 @@ export function FindRivalPage(props){
     const [teams, setTeams] = useState([]);
     const [team, setTeam] = useState('');
     const location = useLocation();
-    const params = new URLSearchParams(location.search)
-    const id = params.get("id");
+    const id = props.getTeamId;
 
 
     // con esto lee los params
@@ -138,9 +137,9 @@ export function FindRivalPage(props){
 
         <div>
             <TeamDropdown getTeamId={props.getTeamId} toggleTeamId={props.toggleTeamId}/>
-            <div className={"logo"}>
-                <img style={{width: 218, height: "auto"}} src={require("../images/logo_solo_letras.png")} alt={"Logo"}/>
-            </div>
+            {/*<div className={"logo"}>*/}
+            {/*    <img style={{width: 218, height: "auto"}} src={require("../images/logo_solo_letras.png")} alt={"Logo"}/>*/}
+            {/*</div>*/}
             <div className={"sports_image"}>
                 <img style={{width: 218, height: "auto"}} src={require("../images/varios_deportes.png")}
                      alt={"deportes"}/>

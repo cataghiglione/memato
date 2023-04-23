@@ -26,7 +26,7 @@ export function PickTeamPage(props) {
     const changeNextTeam = (event) => {
         setNextTeam(event.target.value);
         if(event.target.value != null){
-            navigate('/editTeam?id='+ event.target.value)
+            navigate('/editTeam')
         }
     }
 

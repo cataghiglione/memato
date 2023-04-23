@@ -56,8 +56,8 @@ const App = () =>{
                         <Route path="/newTeam" element={<NewTeamPage />} />
                         <Route path="/user" element={<UserPage toggleTeamId = {toggleTeamId}    getTeamId={teamId}/>} />
                         <Route path="/settings" element={<SettingsPage toggleTeamId = {toggleTeamId}    getTeamId={teamId}/>} />
-                        <Route path="/findRival" element={<FindRivalPage />} />
-                        <Route path = "/editTeam" element = {<EditTeamPage/>}/>
+                        <Route path="/findRival" element={<FindRivalPage toggleTeamId = {toggleTeamId}    getTeamId={teamId}/>} />
+                        <Route path = "/editTeam" element = {<EditTeamPage toggleTeamId = {toggleTeamId}    getTeamId={teamId}/>} />
                     </Routes>
                 </RequireAuth>}
             />

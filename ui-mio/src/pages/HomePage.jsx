@@ -39,7 +39,7 @@ export function HomePage(props){
             <div className="containerPrincipal">
                 {onceOpen && getUserMethod()}
                 <div>
-                    <h1>Hi {user.firstName}
+                    <h1>Welcome {user.firstName}!
                     </h1>
                 </div>
                 <h1>My teams</h1>
