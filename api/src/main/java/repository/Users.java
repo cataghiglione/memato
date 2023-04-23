@@ -67,4 +67,19 @@ public class Users {
                 .setParameter("id", id)
                 .executeUpdate();
     }
+    public void updateUser(String first_name, String last_name, String email, String password, String username, Long user_id) {
+        try {
+            entityManager.createQuery("UPDATE User set firstName =:first_name, lastName=:last_name, email =:email, password =:password, username =:username where id =:user_id")
+                    .setParameter("first_name", first_name)
+                    .setParameter("last_name", last_name)
+                    .setParameter("email", email)
+                    .setParameter("password", password)
+                    .setParameter("username", username)
+                    .setParameter("user_id", user_id)
+                    .executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
 }

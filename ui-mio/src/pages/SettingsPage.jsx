@@ -1,9 +1,10 @@
 import * as React from 'react'
 import {useNavigate} from "react-router";
 import {useAuthProvider} from "../auth/auth";
-import {signOut, deleteAccount} from "../service/mySystem";
+import {signOut, deleteAccount, getUser, updateUser} from "../service/mySystem";
 import "../css/Home.css"
 import {TeamDropdown} from "./TopDropdown/TeamDropdown";
+import {useEffect, useState} from "react";
 
 export function SettingsPage (props) {
     const navigate = useNavigate()

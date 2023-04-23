@@ -201,6 +201,21 @@ export const updateTeam = (token, id, form, okCallback, errorCallback) => {
     })
 
 }
+export const updateUser = (token, form, okCallback, errorCallback) => {
+    fetch(`${restApiEndpoint}/updateUser`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token
+        },
+        body: JSON.stringify({...form})
+    }).then(resp => {
+        if (resp.status === 200) {
+            okCallback()
+        } else errorCallback()
+    })
+
+}
 export const deleteTeam = (token, id, okCallback, errorCallback) => {
     fetch(`${restApiEndpoint}/deleteTeam?id=${id}`, {
         method: 'DELETE',

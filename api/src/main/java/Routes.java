@@ -39,6 +39,7 @@ public class Routes {
     public static final String DELETE_TEAM_ROUTE = "/deleteTeam";
     public static final String GET_ACTIVE_SEARCHES="/currentSearches";
     public static final String DELETE_ACCOUNT="/deleteAccount";
+    public static final String UPDATE_USER_ROUTE = "/updateUser";
 
 
     private MySystem system;
@@ -314,6 +315,26 @@ public class Routes {
                         EntityTransaction transaction = entityManager.getTransaction();
                         transaction.begin();
                         teams.updateTeam(teamForm.getName(), teamForm.getSport(), teamForm.getQuantity(), teamForm.getAgeGroup(), teamForm.getZone(), Long.valueOf(id));
+                        transaction.commit();
+                        res.status(200);
+                    },
+                    () -> {
+                        res.status(400);
+                    }
+            );
+            return res.status();
+
+
+        });
+        post(UPDATE_USER_ROUTE, (req, res) -> {
+            final EntityManager entityManager = entityManagerFactory.createEntityManager();
+            final Users users = new Users(entityManager);
+            getUser(req).ifPresentOrElse(
+                    (user) -> {
+                        final CreateUserForm userForm = CreateUserForm.createFromJson(req.body());
+                        EntityTransaction transaction = entityManager.getTransaction();
+                        transaction.begin();
+                        users.updateUser(userForm.getFirst_name(), userForm.getLast_name(), userForm.getEmail(), userForm.getPassword(), userForm.getUsername(), user.getId());
                         transaction.commit();
                         res.status(200);
                     },
