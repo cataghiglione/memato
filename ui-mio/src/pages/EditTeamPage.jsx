@@ -5,18 +5,18 @@ import "../css/EditTeam.css"
 import { getTeam, updateTeam, deleteTeam} from "../service/mySystem";
 import {useLocation} from "react-router";
 import {useNavigate} from "react-router";
+import {TeamDropdown} from "./TopDropdown/TeamDropdown";
 
 function goToPickTeam() {
     window.location.href = "/pickTeam"
 }
-export const EditTeamPage = () => {
+export function EditTeamPage(props) {
     const auth = useAuthProvider()
     const token = auth.getToken();
     const location = useLocation();
-    const params = new URLSearchParams(location.search)
-    const id = params.get("id");
+    const id = props.getTeamId;
     const navigate = useNavigate();
-    const [searchParams, setSearchParams] = useSearchParams();
+    const [searchParams] = useSearchParams();
     const [errorMsg, setErrorMsg] = useState(undefined)
     const isOk = searchParams.get("ok")
 
@@ -141,9 +141,9 @@ export const EditTeamPage = () => {
         <div>
             {errorMsg && <div className="alert alert-danger" role="alert">{errorMsg}</div>}
             {isOk && <div className="alert alert-success" role="alert">Changes saved</div>}
-            <div className={"logo"}>
-                <img style={{width: 218, height: "auto"}} src={require("../images/logo_solo_letras.png")} alt={"Logo"}/>
-            </div>
+            {/*<div className={"logo"}>*/}
+            {/*    <img style={{width: 150, height: "auto"}} src={require("../images/logo_solo_letras.png")} alt={"Logo"}/>*/}
+            {/*</div>*/}
             <div className={"team_name"} style={teamNameStyle}>
                 {team.name}
             </div>
@@ -151,6 +151,7 @@ export const EditTeamPage = () => {
                 {team.sport} {team.quantity}
             </div>
 
+            <TeamDropdown getTeamId={props.getTeamId} toggleTeamId={props.toggleTeamId}/>
             <div className={"form"}>
 
 

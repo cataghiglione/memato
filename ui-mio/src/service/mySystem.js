@@ -87,6 +87,22 @@ export const signOut = (token, okCallback, errorCallback) => {
     })
 }
 
+export const deleteAccount = (token, okCallback, errorCallback) => {
+    fetch(`${restApiEndpoint}/deleteAccount`, {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token
+        }
+    }).then(resp => {
+        if (resp.status === 200) {
+            okCallback();
+        } else {
+            errorCallback("Could not delete the account")
+        }
+    })
+}
+
 export const listTeams = (token, okCallback, errorCallback) => {
     fetch('http://localhost:4326/pickTeam', {
         method: 'GET',
@@ -178,6 +194,21 @@ export const updateTeam = (token, id, form, okCallback, errorCallback) => {
             'Authorization': 'Bearer ' + token
         },
         body: JSON.stringify({id, ...form})
+    }).then(resp => {
+        if (resp.status === 200) {
+            okCallback()
+        } else errorCallback()
+    })
+
+}
+export const updateUser = (token, form, okCallback, errorCallback) => {
+    fetch(`${restApiEndpoint}/updateUser`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token
+        },
+        body: JSON.stringify({...form})
     }).then(resp => {
         if (resp.status === 200) {
             okCallback()

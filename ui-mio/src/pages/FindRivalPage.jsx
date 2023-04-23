@@ -8,7 +8,7 @@ import {useSearchParams} from "react-router-dom";
 import DatePicker, {CalendarContainer} from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import {Dropdown} from "bootstrap";
-import {TeamDropdown} from "./TeamDropdown";
+import {TeamDropdown} from "./TopDropdown/TeamDropdown";
 import {BingMap} from "./BingMap";
 import {forEach} from "react-bootstrap/ElementChildren";
 
@@ -80,8 +80,7 @@ export function FindRivalPage(props){
     const [teams, setTeams] = useState([]);
     const [team, setTeam] = useState('');
     const location = useLocation();
-    const params = new URLSearchParams(location.search)
-    const id = params.get("id");
+    const id = props.getTeamId;
 
 
     // con esto lee los params
@@ -138,9 +137,9 @@ export function FindRivalPage(props){
 
         <div>
             <TeamDropdown getTeamId={props.getTeamId} toggleTeamId={props.toggleTeamId}/>
-            <div className={"logo"}>
-                <img style={{width: 218, height: "auto"}} src={require("../images/logo_solo_letras.png")} alt={"Logo"}/>
-            </div>
+            {/*<div className={"logo"}>*/}
+            {/*    <img style={{width: 218, height: "auto"}} src={require("../images/logo_solo_letras.png")} alt={"Logo"}/>*/}
+            {/*</div>*/}
             <div className={"sports_image"}>
                 <img style={{width: 218, height: "auto"}} src={require("../images/varios_deportes.png")}
                      alt={"deportes"}/>

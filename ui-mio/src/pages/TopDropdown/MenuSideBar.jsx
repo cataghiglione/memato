@@ -1,4 +1,4 @@
-import "../css/Home.css";
+import "../../css/Home.css";
 import {Component} from "react";
 import * as React from "react";
 import {useNavigate} from "react-router";
@@ -23,10 +23,11 @@ class MenuSideBar extends Component{
             return(
                 <div>
                     <select className={"custom-select"} id="Menu" multiple={true} value={this.state.pageChange} onChange={this.togglePage}>
-                        <option className={"custom-select-option"} value="/home">Home</option>
-                        <option className={"custom-select-option"} value="/user">User</option>
+                        <option className={"custom-select-option"} value="/editTeam">Team specs</option>
+                        <option className={"custom-select-option"} value="/findRival">Find Rival</option>
                         <option className={"custom-select-option"} value="/pickTeam">Pick Team</option>
                         <option className={"custom-select-option"} value="/newTeam">New Team</option>
+                        <option className={"custom-select-option"} value="/settings">Settings</option>
                     </select>
                 </div>
             )
@@ -34,10 +35,10 @@ class MenuSideBar extends Component{
     }
 
     render() {
-        return (
-            <div className="menu-sidebar">
+        return(
+            <div>
                 <button className={"Menu"} onClick={this.toggleMenu}>
-                    <img style={{ width: 22, height: "auto"}} src={require("../images/sideBarIcon.png")} alt={"Logo"}/>
+                    <img style={{ width: 22, height: "auto"}} src={require("../../images/sideBarIcon.png")}/>
                 </button>
                 {this.state.visible &&
                     this.menuForm()

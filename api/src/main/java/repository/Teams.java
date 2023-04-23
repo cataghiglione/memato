@@ -95,6 +95,12 @@ public class Teams {
                 .executeUpdate();
     }
 
+    public void deleteAllTeams(Long user_id) {
+        entityManager.createQuery("DELETE FROM Team WHERE user.id = :user_id")
+                .setParameter("user_id", user_id)
+                .executeUpdate();
+    }
+
     public int getNumberOfTeamsForUser(Long userId) {
         Query query = entityManager.createQuery("SELECT COUNT(t) FROM Team t WHERE t.user.id = :userId");
         query.setParameter("userId", userId);

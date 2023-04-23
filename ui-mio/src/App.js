@@ -11,6 +11,8 @@ import { NewTeamPage } from "./pages/NewTeamPage";
 import { FindRivalPage } from "./pages/FindRivalPage";
 import { RequireAuth } from "./components/RequireAuth";
 import {useEffect, useState} from "react";
+import {SettingsPage} from "./pages/SettingsPage";
+import {useNavigate} from "react-router";
 
 
 const App = () =>{
@@ -21,6 +23,7 @@ const App = () =>{
         const storedTeamId = localStorage.getItem('teamId');
         return storedTeamId !== null ? JSON.parse(storedTeamId) : 0;
     });
+    const navigate = useNavigate();
 
 
     /*  To save the state in localStorage whenever it changes,
@@ -34,6 +37,7 @@ const App = () =>{
 
     const toggleTeamId = (value) => {
         setTeamId(value);
+        navigate("editTeam")
     }
 
 
@@ -48,11 +52,12 @@ const App = () =>{
                 element={<RequireAuth>
                     <Routes>
                         <Route path="/home" element={<HomePage toggleTeamId = {toggleTeamId}    getTeamId={teamId}/>} />
-                        <Route path="/pickTeam" element={<PickTeamPage />} />
+                        <Route path="/pickTeam" element={<PickTeamPage toggleTeamId = {toggleTeamId}    getTeamId={teamId}/>} />
                         <Route path="/newTeam" element={<NewTeamPage />} />
                         <Route path="/user" element={<UserPage toggleTeamId = {toggleTeamId}    getTeamId={teamId}/>} />
-                        <Route path="/findRival" element={<FindRivalPage />} />
-                        <Route path = "/editTeam" element = {<EditTeamPage/>}/>
+                        <Route path="/settings" element={<SettingsPage toggleTeamId = {toggleTeamId}    getTeamId={teamId}/>} />
+                        <Route path="/findRival" element={<FindRivalPage toggleTeamId = {toggleTeamId}    getTeamId={teamId}/>} />
+                        <Route path = "/editTeam" element = {<EditTeamPage toggleTeamId = {toggleTeamId}    getTeamId={teamId}/>} />
                     </Routes>
                 </RequireAuth>}
             />

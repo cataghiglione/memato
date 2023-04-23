@@ -38,18 +38,6 @@
     z-index: -1;
 }
 
-.Menu {
-    position: absolute;
-    right: 0px;
-    background-color: #E2E2E2;
-    color: black;
-    border: 1px solid #E2E2E2;
-    border-radius: 1px;
-    transition-duration: 0.4s;
-    z-index: 999;
-
-
-}
 
 .popup {
     position: fixed;
