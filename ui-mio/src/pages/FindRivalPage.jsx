@@ -187,7 +187,7 @@ export function FindRivalPage(props){
                 <div className={"zone"}>
                     <p>Select your preferred zone: </p>
                     <p>{selectedLocation}</p>
-                    <button onClick={handleSelectLocation}>{changeLocationButton}</button>
+                    <button className={"greenButton"} onClick={handleSelectLocation}>{changeLocationButton}</button>
                     {showPopup && (
                         <div className="popup">
                             <BingMap
@@ -212,7 +212,7 @@ export function FindRivalPage(props){
                     Rival!
                 </button>
             </form>
-            {(rivalMenuOpen & teams.length>0) &&
+            {(rivalMenuOpen && teams.length>0) &&
                 <select className={"team-select"} multiple={true} onChange={playMatch}>
                     {teams.map(team =>
                             <option className={"team-select-option"} style={{ textTransform: 'capitalize'}} value={team.id}>

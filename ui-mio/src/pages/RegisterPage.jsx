@@ -133,7 +133,7 @@ export const RegisterPage = () => {
                 <br/>
                 <div>
                     {/*<button type="submit" className={"signUpButton"}>Sign up</button>*/}
-                    <button id="submit" type="submit" onClick={() => RegisterRequest()}>Register</button>
+                    <button id="submit" type="submit" className={"greenButton"} onClick={() => RegisterRequest()}>Register</button>
                 </div>
                 <br/>
                 <div>
