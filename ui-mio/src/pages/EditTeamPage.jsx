@@ -27,6 +27,7 @@ export function EditTeamPage(props) {
     const [zone, setZone] = useState('')
     const [name, setName] = useState('')
     const [team, setTeam] = useState('');
+
     useEffect(() => {
         getTeam(token, id, (team) => setTeam(team));
     }, [])
@@ -44,11 +45,7 @@ export function EditTeamPage(props) {
 
     const handleSubmit = async e => {
         e.preventDefault();
-        // if (!name || !zone ) {
-        //     console.log("estoy en un error")
-        //     setErrorMsg('Please fill out all the required fields')
-        //     return;
-        // }
+
         if (isEmpty(name)){setName(team.name)
         console.log("entre a este if")}
         if (isEmpty(zone)){setZone(team.zone)}
@@ -66,12 +63,13 @@ export function EditTeamPage(props) {
     }
 
     const resetForm = () => {
-        setSport('')
-        setZone('')
-        setAge_group('')
-        setQuant_player('')
-        setName('')
-    }
+        setName(team.name);
+        setZone(team.zone);
+        setAge_group(team.age_group);
+        setSport(team.sport);
+        setQuant_player(team.quantity);
+    };
+
 
     const saveChanges = (form) => {
         console.log("estoy en save changes")
@@ -94,6 +92,10 @@ export function EditTeamPage(props) {
             goToPickTeam()
         }
     }
+    const handleGoToPickTeam = () => {
+        resetForm();
+        goToPickTeam();
+    };
 
 
     const sportChange = (event) => {
@@ -214,7 +216,7 @@ export function EditTeamPage(props) {
                         <button id="submit" type="submit" className={"saveChangesButton"} onClick={() => newTeamRequest()}>Save Changes</button>
                     </div>
                     <div>
-                        <button className={"goBackButton"} onClick={goToPickTeam}>Return to Pick Team</button>
+                        <button className={"goBackButton"} onClick={handleGoToPickTeam}>Return to Pick Team</button>
                     </div>
                 </form>
                     <br/>
