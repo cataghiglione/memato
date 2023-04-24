@@ -101,14 +101,14 @@ export function FindRivalPage(props){
 
     const handleSubmit = async e => {
         e.preventDefault();
-        findRival(id,{
+        findRivalMethod(id,{
             date:date,
             time:time,
             latitude: zone[0].toString(),
             longitude: zone[1].toString()
         })
     }
-    const findRival = (id, search) => {
+    const findRivalMethod = (id, search) => {
         findRival(token, id, search, (teams) => {
                 setTeams(teams)
             },
@@ -136,7 +136,7 @@ export function FindRivalPage(props){
     return (
 
         <div>
-            <TeamDropdown getTeamId={props.getTeamId} toggleTeamId={props.toggleTeamId}/>
+            {/*<TeamDropdown getTeamId={props.getTeamId} toggleTeamId={props.toggleTeamId}/>*/}
             {/*<div className={"logo"}>*/}
             {/*    <img style={{width: 218, height: "auto"}} src={require("../images/logo_solo_letras.png")} alt={"Logo"}/>*/}
             {/*</div>*/}
@@ -218,7 +218,8 @@ export function FindRivalPage(props){
                         // <p>nombre = {team.name}    deporte = {team.sport} </p>
                         // <option>{team.name}</option>
 
-                    )}
+                    )
+                    }
                 </select>}
             {teams.length === 0 &&
                 <p className={"noTeamSearch"}>There are currently no teams searching for rivals with your preferences</p>

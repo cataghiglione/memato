@@ -24,44 +24,19 @@
     border-radius: 10px;
     text-align: center;
 }
-
-/* Base styles for the button */
 .common-button {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 4px;
-    border: none;
-    padding: 12px 24px;
-    font-weight: 500;
-    font-size: 16px;
-    text-transform: uppercase;
-    color: #fff;
-    background-color: #808080;
-    box-shadow: 0 2px 5px 0 rgba(182, 182, 180, 0.5);
-    transition: background-color 0.3s, box-shadow 0.3s;
+    background-color: white;
+    color: #B6B6B4;
+    border: 1px solid #808080;
+    padding: 10px 20px;
+    border-radius: 1px;
+    font-size: 20px;
     cursor: pointer;
 }
-
-/* Hover state for the button */
 .common-button:hover {
-    background-color: #555555;
-    box-shadow: 0 5px 10px 0 rgba(128, 128, 128, 0.5);
+    background-color: #808080;
+    color: white;
 }
-
-/* Active state for the button */
-.common-button:active {
-    background-color: #5C5858;
-    box-shadow: none;
-}
-
-/* Disabled state for the button */
-.common-button:disabled {
-    background-color: #bdbdbd;
-    box-shadow: none;
-    cursor: default;
-}
-
 .showTeamButton{
     position: absolute;
     transform: translate(-50%, -50%);
