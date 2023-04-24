@@ -18,6 +18,7 @@ class MenuSideBar extends Component{
         this.setState({ pageChange: selectedOptions });
         if(this.props.location.pathname===selectedOptions[0]){
             this.toggleMenu();
+            this.setState({ pageChange: [""]});
         }
         this.props.history(selectedOptions[0]).then();
     }
