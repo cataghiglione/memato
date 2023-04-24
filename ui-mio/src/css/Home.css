@@ -37,6 +37,20 @@
     background-color: #808080;
     color: white;
 }
+.greenButton{
+    position: absolute;
+    background-color: white;
+    color: black;
+    border: 1px solid #4CAF50;
+    border-radius: 1px;
+    transition-duration: 0.4s;
+
+
+}
+.greenButton:hover{
+    background-color: #4CAF50;
+    color: white;
+}
 .showTeamButton{
     position: absolute;
     transform: translate(-50%, -50%);

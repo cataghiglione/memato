@@ -1,5 +1,4 @@
 import React, {Component, useEffect, useState} from 'react';
-import "../css/Home.css"
 import "../css/PickTeam.css"
 import {useNavigate} from "react-router";
 import {listTeams} from "../service/mySystem";
@@ -35,19 +34,25 @@ export function PickTeamPage(props) {
         <div>
             <TeamDropdown getTeamId={props.getTeamId} toggleTeamId={props.toggleTeamId}/>
             <div className="containerPrincipal">
-                <h1 style={{textAlign:"center"}}>Teams</h1>
+                <h1 className={"teamTitle"}>Your teams</h1>
+                <div>
                 <button className={"newTeamButton"} onClick={goToNewTeam}>New Team</button>
+                </div>
+                <div>
                 {teams.length > 0 &&
-                    <select className={"team-pick"} multiple={true} onChange={changeNextTeam}>
+                    <select className="team-pick" multiple={true} onChange={changeNextTeam}>
                         {teams.map(team =>
-                                <option className={"team-select-option"} value={team.id} style={{ textTransform: 'capitalize'}}>
-                                    Nombre: {team.name}, Deporte: {team.sport} {team.quantity} </option>
-                            // <p>nombre = {team.name}    deporte = {team.sport} </p>
-                            // <option>{team.name}</option>
-
+                            <option className={"team-select-option"}
+                                    >
+                                Nombre: {team.name}, Deporte: {team.sport} {team.quantity}
+                            </option>
                         )}
                     </select>
+
+
+
                 }
+                </div>
                 {teams.length === 0 &&
                     <p className={"noTeamPick"}>You haven't created any teams yet</p>
                 }

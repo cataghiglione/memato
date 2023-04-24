@@ -1,5 +1,4 @@
 import React, {Component, useEffect, useState} from 'react';
-import {useMySystem} from "../service/mySystem";
 import {useAuthProvider} from "../auth/auth";
 import {useSearchParams} from "react-router-dom";
 import "../css/FindRival.css"
