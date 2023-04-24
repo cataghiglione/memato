@@ -43,7 +43,7 @@ export function PickTeamPage(props) {
                     <select className="team-pick" multiple={true} onChange={changeNextTeam}>
                         {teams.map(team =>
                             <option className={"team-select-option"}
-                                    >
+                                   key={team.id} value={team.id}>
                                 Nombre: {team.name}, Deporte: {team.sport} {team.quantity}
                             </option>
                         )}
