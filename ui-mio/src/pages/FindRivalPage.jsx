@@ -109,12 +109,13 @@ export function FindRivalPage(props){
         })
     }
     const findRivalMethod = (id, search) => {
+        if(rivalMenuOpen){
         findRival(token, id, search, (teams) => {
                 setTeams(teams)
             },
             () => {
                 setErrorMsg('Search already exists!')
-            })
+            })}
     }
     const requestRivals = (user) => {
 
