@@ -43,7 +43,7 @@
     border: 2px solid #b95de3;
     border-radius: 4px;
 
-    transition-duration: 0.4s;
+    /*transition-duration: 0.4s;*/
     width: 300px;
 }
 .newTeamButton:hover {

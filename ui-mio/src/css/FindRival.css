@@ -7,7 +7,14 @@
     font-family: "Times New Roman", sans-serif;
 
 }
-
+.datePicker{
+    position: absolute;
+    background-color: white;
+    z-index: 999;
+    top: 20%;
+    left: 40%;
+    font-family: "Times New Roman", sans-serif;
+}
 .team_name {
     position: absolute;
     left: 50%;
