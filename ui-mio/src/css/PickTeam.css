@@ -13,6 +13,10 @@
     background: white;
     /*box-shadow: 0 10px 25px rgba(42, 179, 248, 0.4);*/
 }
+.teamTitle{
+    position:relative;
+    left:48%;
+}
 .noTeamPick {
     position: fixed;
     width: 100%;

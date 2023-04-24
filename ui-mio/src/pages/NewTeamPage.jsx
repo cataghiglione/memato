@@ -164,8 +164,9 @@ export const NewTeamPage = () => {
                         )
                     }
                     <div>
+                        <br/>
                         {/*<button type="submit" className={"signUpButton"}>Sign up</button>*/}
-                        <button id="submit" type="submit" onClick={() => newTeamRequest()}>Create Team</button>
+                        <button id="submit" type="submit" className={"greenButton"} onClick={() => newTeamRequest()}>Create Team</button>
                     </div>
                     <br/>
                 </form>

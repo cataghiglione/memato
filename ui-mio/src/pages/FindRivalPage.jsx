@@ -1,5 +1,6 @@
 import React, {Component, useEffect, useState} from 'react';
 import "../css/FindRival.css"
+import"../css/Home.css"
 import {useLocation, useNavigate} from "react-router";
 import {findRival, getTeam} from "../service/mySystem";
 import {useAuthProvider} from "../auth/auth";
