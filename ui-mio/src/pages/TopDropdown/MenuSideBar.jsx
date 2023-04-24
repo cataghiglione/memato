@@ -1,7 +1,7 @@
 import "../../css/Home.css";
 import {Component} from "react";
 import * as React from "react";
-import {useNavigate} from "react-router";
+import {useLocation, useNavigate} from "react-router";
 
 class MenuSideBar extends Component{
     constructor(props) {
@@ -16,6 +16,9 @@ class MenuSideBar extends Component{
     togglePage(event){
         const selectedOptions = Array.from(event.target.selectedOptions, option => option.value);
         this.setState({ pageChange: selectedOptions });
+        if(this.props.location.pathname===selectedOptions[0]){
+            this.toggleMenu();
+        }
         this.props.history(selectedOptions[0]).then();
     }
     menuForm(){
@@ -50,5 +53,6 @@ class MenuSideBar extends Component{
 
 export default function MenuSidebarWrapper() {
     const history = useNavigate();
-    return <MenuSideBar history={history} />;
+    const location = useLocation();
+    return <MenuSideBar history={history} location={location}/>;
 }
