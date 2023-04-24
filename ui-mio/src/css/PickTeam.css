@@ -1,14 +1,3 @@
-.containerPrincipal{
-    position: relative;
-    transform: translate(-100%, 0%);
-    background-color: white;
-    text-align-all: center;
-}
-.teamTitle{
-    position:relative;
-    left:50%
-
-}
 .team-pick {
     position: absolute;
     left: 30%;

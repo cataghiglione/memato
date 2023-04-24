@@ -136,7 +136,7 @@ export function FindRivalPage(props){
     return (
 
         <div>
-            {/*<TeamDropdown getTeamId={props.getTeamId} toggleTeamId={props.toggleTeamId}/>*/}
+            <TeamDropdown getTeamId={props.getTeamId} toggleTeamId={props.toggleTeamId}/>
             {/*<div className={"logo"}>*/}
             {/*    <img style={{width: 218, height: "auto"}} src={require("../images/logo_solo_letras.png")} alt={"Logo"}/>*/}
             {/*</div>*/}
@@ -144,11 +144,12 @@ export function FindRivalPage(props){
                 <img style={{width: 218, height: "auto"}} src={require("../images/varios_deportes.png")}
                      alt={"deportes"}/>
             </div>
+            <br/>
             <div className={"mirror_sports_image"}>
                 <img style={{width: 218, height: "auto"}} src={require("../images/varios_deportes.png")}
                      alt={"deportes"}/>
             </div>
-
+            <br/>
             <div className="team_name">
                 You've chosen {team.name}
                 <br/>
@@ -157,7 +158,7 @@ export function FindRivalPage(props){
             <form onSubmit={handleSubmit}>
 
 
-                <div className={"containerPrincipal"}>
+                <div className={"datePicker"}>
                     Choose a day to play:
                     <DatePicker
                         showIcon
