@@ -4,7 +4,7 @@ import "../../css/PickTeam.css"
 import {getTeam, listTeams} from "../../service/mySystem";
 import {useAuthProvider} from "../../auth/auth";
 import MenuSidebarWrapper from "./MenuSideBar";
-import {useNavigate} from "react-router";
+import {useLocation, useNavigate} from "react-router";
 
 function goToNewTeam(){
     window.location.href = "/newTeam"
@@ -13,6 +13,7 @@ export function TeamDropdown(props) {
     const auth = useAuthProvider()
     const token = auth.getToken()
     const navigate = useNavigate()
+    const location = useLocation();
 
     const [teams, setTeams] = useState([])
     const [actualTeam, setActualTeam] = useState('')
@@ -30,7 +31,8 @@ export function TeamDropdown(props) {
     }
 
     const goToPickTeam = () => {
-        navigate("/pickTeam")
+        if(location.pathname==="/pickTeam"){}
+        else{navigate("/pickTeam")}
     }
     return (
         <div>
