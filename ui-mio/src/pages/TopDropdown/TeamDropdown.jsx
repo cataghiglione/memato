@@ -41,11 +41,12 @@ export function TeamDropdown(props) {
                 <img style={{width: 280, height: "auto"}} src={require("../../images/logo_solo_letras.png")} alt={"Logo"} className={"Logo"}/>
                 <MenuSidebarWrapper/>
                 <div className={"dropdown"}>
+                    {location.pathname!=="/newTeam"&&
                     <button className={"dropdown-btn"} onClick={toggleMenu}>
                         {actualTeam.sport} {actualTeam.quantity}: {actualTeam.name}
                         <img style={{width: 22, height: "auto"}} src={require("../../images/dropdown-1.png")}
                              alt={"Logo"}/>
-                    </button>
+                    </button>}
                     {visible && goToPickTeam()}
                 </div>
             </div>

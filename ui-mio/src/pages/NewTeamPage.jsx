@@ -9,6 +9,7 @@ import {useSearchParams} from "react-router-dom";
 import {render} from "@testing-library/react";
 import {useAuthProvider} from "../auth/auth";
 import MenuSidebarWrapper from "./TopDropdown/MenuSideBar";
+import {TeamDropdown} from "./TopDropdown/TeamDropdown";
 
 export const NewTeamPage = () => {
 
@@ -96,7 +97,7 @@ export const NewTeamPage = () => {
 
     return (
         <div>
-            <MenuSidebarWrapper/>
+            <TeamDropdown/>
             <div className={"containerPrincipalNewTeam"}>
                 {errorMsg && <div className="alert alert-danger" role="alert">{errorMsg}</div>}
                 {isOk && <div className="alert alert-success" role="alert">Team created</div>}
