@@ -17,6 +17,10 @@
     position:relative;
     left:48%;
 }
+.teamSubtitle{
+    position:relative;
+    left:30%;
+}
 .noTeamPick {
     position: absolute;
     width: 100%;

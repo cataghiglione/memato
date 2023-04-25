@@ -80,54 +80,59 @@ export const RegisterPage = () => {
         <div className={"mainContainer"}>
             {errorMsg && <div className="alert alert-danger" role="alert">{errorMsg}</div>}
 
-            <img style={{ width: 218, height: "auto"}} src={require("../images/RivalMatch_logoRecortado.png")} alt={"Logo"}/>
+            <img style={{ width: 218, height: "auto"}} src={require("../images/logo_solo_letras.png")} alt={"Logo"}/>
             <form onSubmit={handleSubmit}>
                 <br/>
                 <div>
-                    <input type="email"
+                    {/*<label>*/}
+                    {/*    Mail:*/}
+                    <p>Email: <input type="email"
                            placeholder="name@example.com"
                            value={mail}
                            name="email"
-                           onChange={mailChange}/>
+                           id={"email"}
+                           onChange={mailChange}/></p>
+                    {/*</label>*/}
+
                 </div>
 
                 <br/>
                 <div>
-                    <input type="Name"
+                    <p>Name: <input type="Name"
                     id="Name"
                     placeholder="Name"
                     name ="Name"
                     value={name}
-                    onChange={nameChange}/>
+                    onChange={nameChange}/></p>
                 </div>
                 <br/>
                 <div>
-                    <input
+                   <p>Last name:  <input
                         type="lastName"
                         id="lastName"
                         placeholder="Last Name"
                         name="lastName"
                         value={lastName}
-                        onChange={lastNameChange}/>
+                        onChange={lastNameChange}/></p>
                 </div>
                 <br/>
                 <div>
-                    <input
+                    <p>Username: <input
                         type="username"
                         id="username"
                         placeholder="username"
                         name="username"
                         value={username}
-                        onChange={usernameChange}/>
+                        onChange={usernameChange}/></p>
                 </div>
                 <br/>
                 <div>
-                    <input type="password"
+                    <p>Password: <input type="password"
                            id="floatingPassword"
                            placeholder="Password"
                            name="password"
                            value={password}
-                           onChange={passwordChange}/>
+                           onChange={passwordChange}/></p>
                 </div>
                 <br/>
                 <br/>

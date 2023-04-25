@@ -13,10 +13,10 @@ import {TopBar} from "./TopBar/TopBar";
 
 export const NewTeamPage = () => {
 
-    const [sport, setSport] = useState('')
-    const [quant_Players, setQuant_player] = useState('')
-    const [age_group, setAge_group] = useState('')
-    const [zone, setZone] = useState('')
+    const [sport, setSport] = useState("")
+    const [quant_Players, setQuant_player] = useState("")
+    const [age_group, setAge_group] = useState("")
+    // const [zone, setZone] = useState('')
     const [name, setName] = useState('')
     const auth = useAuthProvider()
     const token = auth.getToken();
@@ -36,7 +36,8 @@ export const NewTeamPage = () => {
     const handleSubmit = async e => {
         console.log("Estoy aca");
         e.preventDefault();
-        if (!name || !zone || !age_group || !sport || !quant_Players) {
+        //falta poner uno con zone, si se vuelve a agregar
+        if (!name || !age_group || !sport || !quant_Players) {
             setErrorMsg('Please fill out all the required fields')
             return;
         }
@@ -44,14 +45,14 @@ export const NewTeamPage = () => {
             sport: sport,
             quantity: quant_Players,
             age_group: age_group,
-            zone: zone,
+            // zone: zone,
             name: name
         })
     }
 
     const resetForm = () => {
         setSport('')
-        setZone('')
+        // setZone('')
         setAge_group('')
         setQuant_player('')
         setName('')
@@ -78,9 +79,9 @@ export const NewTeamPage = () => {
     const groupChange = (event) => {
         setAge_group(event.target.value)
     }
-    const zoneChange = (event) => {
-        setZone(event.target.value)
-    }
+    // const zoneChange = (event) => {
+    //     setZone(event.target.value)
+    // }
 
     const nameChange = (event) => {
         setName(event.target.value)
@@ -93,6 +94,13 @@ export const NewTeamPage = () => {
     if (isOk) {
         resetForm();
     }
+    const handleFootballQuantChange=()=>{
+        setQuant_player("11")
+    }
+    const handlePadellQuantChange=()=>{
+        setQuant_player("2")
+    }
+
 
 
     return (
@@ -115,34 +123,37 @@ export const NewTeamPage = () => {
                                onChange={nameChange}/></p>
                     </div>
 
+                    {/*<div>*/}
+                    {/*    <p>Zone:<input*/}
+                    {/*        type="zone"*/}
+                    {/*        id="zone"*/}
+                    {/*        placeholder="Zone"*/}
+                    {/*        name="zone"*/}
+                    {/*        value={zone}*/}
+                    {/*        onChange={zoneChange}/></p>*/}
+                    {/*</div>*/}
                     <div>
-                        <p>Zone:<input
-                            type="zone"
-                            id="zone"
-                            placeholder="Zone"
-                            name="zone"
-                            value={zone}
-                            onChange={zoneChange}/></p>
-                    </div>
-                    <div>
-                    <p>Group:<select id="age_group" required onChange={groupChange}>
-                        <option value="Group">Group</option>
+                    <p>Group:<select id="age_group"  onChange={groupChange}>
+                        <option  value=""></option>
                         <option value="Young">Young</option>
                         <option value="Adults">Adults</option>
                     </select></p>
                     </div>
 
-                    <p>Sport:<select id="sport" required onChange={sportChange}>
-                        <option value="Sport">Sport</option>
+                    <p>Sport:<select id="sport"  onChange={sportChange}>
+                        <option  value=""></option>
                         <option value="Football">Football</option>
                         <option value="Padel">Padel</option>
                     </select></p>
                         <br/>
                     {sport === "Football" &&
                         (
+
                             <div>
-                                <p>Quantity<select id="Quantity" required onChange={quant_PlayersChange}>
-                                    <option value="Quantity">Quantity</option>
+                                {/*{handleFootballQuantChange()}*/}
+
+                                <p>Quantity<select id="Quantity"  onChange={quant_PlayersChange}>
+                                    <option value=""></option>
                                     <option value="11">11</option>
                                     <option value="7">7</option>
                                     <option value="5">5</option>
@@ -153,8 +164,10 @@ export const NewTeamPage = () => {
                     {sport === "Padel" &&
                         (
                             <div>
-                                <p>Quantity:<select id="Quantity" required onChange={quant_PlayersChange}>
-                                    <option value="Quantity">Quantity</option>
+                                {/*{handlePadellQuantChange()}*/}
+                                {/*{setQuant_player("2")}*/}
+                                <p>Quantity:<select id="Quantity"  onChange={quant_PlayersChange}>
+                                    <option  value=""></option>
                                     <option value="2">2</option>
                                     <option value="1">1</option>
                                 </select></p>

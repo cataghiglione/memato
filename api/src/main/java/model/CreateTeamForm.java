@@ -11,12 +11,12 @@ public class CreateTeamForm {
 
     private final String quantity;
     private  final String age_group;
-    private final String zone;
+//    private final String zone;
 
     public String getName() {
         return name;
     }
-    public String getZone(){return zone;}
+//    public String getZone(){return zone;}
 
     public String getAgeGroup() {
         return age_group;
@@ -36,13 +36,13 @@ public class CreateTeamForm {
 
     private final int puntuality;
 
-    public CreateTeamForm(String name, String sport, String quantity, int puntuality, String group, String zone){
+    public CreateTeamForm(String name, String sport, String quantity, int puntuality, String group){
         this.name=name;
         this.sport=sport;
         this.quantity=quantity;
         this.puntuality=puntuality;
         this.age_group=group;
-        this.zone=zone;
+//        this.zone=zone;
     }
 
     public static CreateTeamForm createFromJson(String body){

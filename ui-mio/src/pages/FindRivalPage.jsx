@@ -1,6 +1,6 @@
 import React, {Component, useEffect, useState} from 'react';
 import "../css/FindRival.css"
-import"../css/Home.css"
+import "../css/Home.css"
 import {useLocation, useNavigate} from "react-router";
 import {findRival, getTeam} from "../service/mySystem";
 import {useAuthProvider} from "../auth/auth";
@@ -39,7 +39,8 @@ function sleep(milliseconds) {
         }
     }
 }
-export function FindRivalPage(props){
+
+export function FindRivalPage(props) {
     const auth = useAuthProvider()
     const token = auth.getToken();
     const navigate = useNavigate();
@@ -56,13 +57,14 @@ export function FindRivalPage(props){
     const [selectedLocation, setSelectedLocation] = useState("")
 
     function handleSelectLocation() {
-        if(showPopup === false)
+        if (showPopup === false)
             setShowPopup(true);
         else
             setShowPopup(false);
     }
+
     const playMatch = () => {
-    //     to do
+        //     to do
     }
 
     const handleInfoboxesWithPushPins = (infoboxesWithPushPinsData) => {
@@ -102,21 +104,22 @@ export function FindRivalPage(props){
 
     const handleSubmit = async e => {
         e.preventDefault();
-        findRivalMethod(id,{
-            date:date,
-            time:time,
+        findRivalMethod(id, {
+            date: date,
+            time: time,
             latitude: zone[0].toString(),
             longitude: zone[1].toString()
         })
     }
     const findRivalMethod = (id, search) => {
-        if(rivalMenuOpen){
-        findRival(token, id, search, (teams) => {
-                setTeams(teams)
-            },
-            () => {
-                setErrorMsg('Search already exists!')
-            })}
+        if (rivalMenuOpen) {
+            findRival(token, id, search, (teams) => {
+                    setTeams(teams)
+                },
+                () => {
+                    setErrorMsg('Search already exists!')
+                })
+        }
     }
     const requestRivals = (user) => {
 
@@ -200,32 +203,36 @@ export function FindRivalPage(props){
 
 
                 </div>
-                <div>
-                    <div className={"title"}>
-                        Teams searching for rivals:
-                    </div>
-
-
-                </div>
 
 
                 <button className={"findRivalButton"} id="submit" type="submit" onClick={openAndFindRivals}> Find
                     Rival!
                 </button>
             </form>
-            {(rivalMenuOpen && teams.length>0) &&
-                <select className={"team-select"} multiple={true} onChange={playMatch}>
-                    {teams.map(team =>
-                            <option className={"team-select-option"} style={{ textTransform: 'capitalize'}} value={team.id}>
-                                nombre: {team.name}, deporte: {team.sport}, categoria: {team.group} </option>
-                        // <p>nombre = {team.name}    deporte = {team.sport} </p>
-                        // <option>{team.name}</option>
+            {(rivalMenuOpen && teams.length > 0) &&
+                <div>
+                <div className={"title"}>
+                    Teams searching for rivals:
+                </div>
 
-                    )
+
+
+                <select className={"team-select"} multiple={true} onChange={playMatch}>
+            {teams.map(team =>
+                <option className={"team-select-option"} style={{textTransform: 'capitalize'}} value={team.id}>
+                nombre: {team.name}, deporte: {team.sport}, categoria: {team.group} </option>
+                // <p>nombre = {team.name}    deporte = {team.sport} </p>
+                // <option>{team.name}</option>
+
+                )
+            }
+                </select>
+                </div>
                     }
-                </select>}
-            {teams.length === 0 &&
-                <p className={"noTeamSearch"}>There are currently no teams searching for rivals with your preferences</p>
+            {(rivalMenuOpen && teams.length === 0) &&
+
+                <p className={"noTeamSearch"}>There are currently no teams searching for rivals with your
+                    preferences</p>
             }
 
 

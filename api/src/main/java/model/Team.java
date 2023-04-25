@@ -24,8 +24,8 @@ public class Team {
     @Column(name = "PUNTUALITY")
     private int puntuality;
 
-    @Column(name = "ZONE")
-    private String zone;
+//    @Column(name = "ZONE")
+//    private String zone;
 
 
     @ManyToOne(cascade = CascadeType.MERGE)
@@ -35,23 +35,23 @@ public class Team {
     public Team() {
     }
 
-    private Team(String name, String sport, String quantity, int puntuality, String age_group, String zone, User user) {
+    private Team(String name, String sport, String quantity, int puntuality, String age_group,  User user) {
         this.name = name;
         this.sport = sport;
         this.quantity = quantity;
         this.puntuality = puntuality;
         this.age_group = age_group;
-        this.zone = zone;
+//        this.zone = zone;
         this.user = user;
     }
 
-    public static Team create(String name, String sport, String quantity, int puntuality, String group, String zone, User user) {
-        return new Team(name, sport, quantity, puntuality, group, zone, user);
+    public static Team create(String name, String sport, String quantity, int puntuality, String group,  User user) {
+        return new Team(name, sport, quantity, puntuality, group, user);
     }
 
-    public String getZone() {
-        return zone;
-    }
+//    public String getZone() {
+//        return zone;
+//    }
 
     public long getId() {
         return id;

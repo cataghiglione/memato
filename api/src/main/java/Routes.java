@@ -314,7 +314,8 @@ public class Routes {
                         final CreateTeamForm teamForm = CreateTeamForm.createFromJson(req.body());
                         EntityTransaction transaction = entityManager.getTransaction();
                         transaction.begin();
-                        teams.updateTeam(teamForm.getName(), teamForm.getSport(), teamForm.getQuantity(), teamForm.getAgeGroup(), teamForm.getZone(), Long.valueOf(id));
+                        //por las dudas, aca en el form habia un teamForm.getTeam en la query
+                        teams.updateTeam(teamForm.getName(), teamForm.getSport(), teamForm.getQuantity(), teamForm.getAgeGroup(),  Long.valueOf(id));
                         transaction.commit();
                         res.status(200);
                     },
@@ -472,9 +473,9 @@ public class Routes {
         tx.begin();
         if (teams.listAll().isEmpty()) {
             final Team kateTeam =
-                    Team.create("river", "Football", "11", 0, "Young", "Pilar", userList.get(0));
+                    Team.create("river", "Football", "11", 0, "Young",  userList.get(0));
             final Team cocaTeam =
-                    Team.create("depo", "Football", "11", 0, "Young", "Pilar", userList.get(1));
+                    Team.create("depo", "Football", "11", 0, "Young",  userList.get(1));
             teams.persist(kateTeam);
             teams.persist(cocaTeam);
         }

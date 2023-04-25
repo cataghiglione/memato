@@ -24,7 +24,7 @@ export function EditTeamPage(props) {
     const [sport, setSport] = useState('')
     const [quant_Players, setQuant_player] = useState('')
     const [age_group, setAge_group] = useState('')
-    const [zone, setZone] = useState('')
+    // const [zone, setZone] = useState('')
     const [name, setName] = useState('')
     const [team, setTeam] = useState('');
 
@@ -35,7 +35,7 @@ export function EditTeamPage(props) {
         setSport(team.sport);
         setQuant_player(team.quantity);
         setName(team.name);
-        setZone(team.zone)
+        // setZone(team.zone)
         setAge_group(team.age_group)
     }, [team]);
 
@@ -48,7 +48,7 @@ export function EditTeamPage(props) {
 
         if (isEmpty(name)){setName(team.name)
         console.log("entre a este if")}
-        if (isEmpty(zone)){setZone(team.zone)}
+        // if (isEmpty(zone)){setZone(team.zone)}
         if (isEmpty(sport)){setSport( team.sport)}
         if(isEmpty(quant_Players)){setQuant_player(team.quantity)}
         if(isEmpty(age_group)){setAge_group(team.age_group)}
@@ -57,14 +57,14 @@ export function EditTeamPage(props) {
             sport: sport || team.sport,
             quantity: quant_Players || team.quantity,
             age_group: age_group || team.age_group,
-            zone: zone || team.zone,
+            // zone: zone || team.zone,
             name: name || team.name
         })
     }
 
     const resetForm = () => {
         setName(team.name);
-        setZone(team.zone);
+        // setZone(team.zone);
         setAge_group(team.age_group);
         setSport(team.sport);
         setQuant_player(team.quantity);
@@ -107,9 +107,9 @@ export function EditTeamPage(props) {
     const groupChange = (event) => {
         setAge_group(event.target.value)
     }
-    const zoneChange = (event) => {
-        setZone(event.target.value)
-    }
+    // const zoneChange = (event) => {
+    //     setZone(event.target.value)
+    // }
 
     const nameChange = (event) => {
         setName(event.target.value)
@@ -154,60 +154,59 @@ export function EditTeamPage(props) {
                 <form onSubmit={handleSubmit}>
                     <br/>
                     <div>
-                        <input type="Name"
+                        <p>Team name: <input type="Name"
                                id="Name"
                                placeholder="Name"
                                name="Name"
                                value={name}
-                               onChange={nameChange}/>
+                               onChange={nameChange}/></p>
                     </div>
-                    <br/>
-                    <div>
-                        <input
-                            type="zone"
-                            id="zone"
-                            placeholder="Zone"
-                            name="zone"
-                            value={zone}
-                            onChange={zoneChange}/>
-                    </div>
+                    {/*<div>*/}
+                    {/*    <input*/}
+                    {/*        type="zone"*/}
+                    {/*        id="zone"*/}
+                    {/*        placeholder="Zone"*/}
+                    {/*        name="zone"*/}
+                    {/*        value={zone}*/}
+                    {/*        onChange={zoneChange}/>*/}
+                    {/*</div>*/}
                     <div>
                         <br/>
-                        <select id="age_group" required onChange={groupChange} value={age_group}>
+                       <p>Group:  <select id="age_group" required onChange={groupChange} value={age_group}>
                             <option disabled = {true} value="Group">Group</option>
                             <option value="Young">Young</option>
                             <option value="Adults">Adults</option>
-                        </select>
+                        </select></p>
                     </div>
 
 
                     <br/>
-                    <select id="sport" required onChange={sportChange} value={sport}>
+                    <p>Sport: <select id="sport" required onChange={sportChange} value={sport}>
                         <option disabled={true} value="Sport">Sport</option>
                         <option value="Football">Football</option>
                         <option value="Padel">Padel</option>
-                    </select>
+                    </select></p>
                     <br/>
                     {sport === "Football" &&
                         (
                             <div>
-                                <select id="Quantity" required onChange={quant_PlayersChange} value={quant_Players}>
+                                <p>Quantity<select id="Quantity" required onChange={quant_PlayersChange} value={quant_Players}>
                                     <option disabled = {true} value="Quantity">Quantity</option>
                                     <option value="11">11</option>
                                     <option value="7">7</option>
                                     <option value="5">5</option>
-                                </select>
+                                </select></p>
                             </div>
                         )
                     }
                     {sport === "Padel" &&
                         (
                             <div>
-                                <select id="Quantity" required onChange={quant_PlayersChange} defaultValue={team.quantity}>
+                                <p>Quantity: <select id="Quantity" required onChange={quant_PlayersChange} defaultValue={team.quantity}>
                                     <option disabled = {true} value="Quantity">Quantity</option>
                                     <option value="2">2</option>
                                     <option value="1">1</option>
-                                </select>
+                                </select></p>
                             </div>
                         )
                     }

@@ -27,7 +27,7 @@ class MenuSideBar extends Component{
             return(
                 <div>
                     <select className={"custom-select"} id="Menu" multiple={true} value={this.state.pageChange} onChange={this.togglePage}>
-                        <option className={"custom-select-option"} value="/editTeam">Team specs</option>
+                        <option className={"custom-select-option"} value="/editTeam">Team Settings</option>
                         <option className={"custom-select-option"} value="/findRival">Find Rival</option>
                         <option className={"custom-select-option"} value="/newTeam">New Team</option>
                         <option className={"custom-select-option"} value="/settings">Settings</option>
