@@ -9,7 +9,7 @@ import {useSearchParams} from "react-router-dom";
 import DatePicker, {CalendarContainer} from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import {Dropdown} from "bootstrap";
-import {TeamDropdown} from "./TopDropdown/TeamDropdown";
+import {TopBar} from "./TopBar/TopBar";
 import {BingMap} from "./BingMap";
 import {forEach} from "react-bootstrap/ElementChildren";
 
@@ -138,7 +138,7 @@ export function FindRivalPage(props){
     return (
 
         <div>
-            <TeamDropdown getTeamId={props.getTeamId} toggleTeamId={props.toggleTeamId}/>
+            <TopBar getTeamId={props.getTeamId} toggleTeamId={props.toggleTeamId}/>
             {/*<div className={"logo"}>*/}
             {/*    <img style={{width: 218, height: "auto"}} src={require("../images/logo_solo_letras.png")} alt={"Logo"}/>*/}
             {/*</div>*/}

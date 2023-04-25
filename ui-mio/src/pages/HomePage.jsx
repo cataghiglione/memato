@@ -43,7 +43,9 @@ export function HomePage(props){
                     </h1>
                 </div>
                 <h1>My teams</h1>
-                <button className={"newTeamButton"} onClick={goToNewTeam}>New Team</button>
+                <button className={"newTeamButton"} onClick={goToNewTeam}>
+                    {teams.length===0 ? 'Create your first team' : 'New Team'}
+                </button>
                 {teams.length > 0 &&
                     <select className={"team-pick"} multiple={true} onChange={changeNextTeam}>
                         {teams.map(team =>
@@ -55,11 +57,9 @@ export function HomePage(props){
                         )}
                     </select>
                 }
-                <div>
-                {teams.length === 0 &&
-                    <p  className={"noTeamPick"}>You haven't created any teams yet</p>
-                }
-                </div>
+                {/*{teams.length === 0 &&*/}
+                {/*    <p className={"noTeamPick"}>You haven't created any teams yet</p>*/}
+                {/*}*/}
             </div>
         </div>
     )

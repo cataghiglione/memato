@@ -3,7 +3,7 @@ import "../css/PickTeam.css"
 import {useNavigate} from "react-router";
 import {listTeams} from "../service/mySystem";
 import {useAuthProvider} from "../auth/auth";
-import {TeamDropdown} from "./TopDropdown/TeamDropdown";
+import {TopBar} from "./TopBar/TopBar";
 
 function goToNewTeam(){
     window.location.href = "/newTeam"
@@ -15,12 +15,14 @@ export function PickTeamPage(props) {
 
     const token = auth.getToken();
     const [teams, setTeams] = useState([]);
+    const [noTeams, setNoTeams] = useState(true);
 
 
     const [nextTeam, setNextTeam] = useState('')
     useEffect(() => {
         listTeams(token, (teams) => setTeams(teams));
-    }, [token])
+        if(teams.length !== 0){setNoTeams(false)}
+    }, [teams.length, token])
 
     const changeNextTeam = (event) => {
         setNextTeam(event.target.value);
@@ -29,17 +31,16 @@ export function PickTeamPage(props) {
             navigate('/editTeam')
         }
     }
-
     return (
         <div>
-            <TeamDropdown getTeamId={props.getTeamId} toggleTeamId={props.toggleTeamId}/>
+            <TopBar getTeamId={props.getTeamId} toggleTeamId={props.toggleTeamId} noTeams={noTeams}/>
             <div className="containerPrincipal">
                 <h1 className={"teamTitle"}>Your teams</h1>
                 <div>
                 <button className={"newTeamButton"} onClick={goToNewTeam}>New Team</button>
                 </div>
                 <div>
-                {teams.length > 0 &&
+                {!noTeams &&
                     <select className="team-pick" multiple={true} onChange={changeNextTeam}>
                         {teams.map(team =>
                             <option className={"team-select-option"}
@@ -53,7 +54,7 @@ export function PickTeamPage(props) {
 
                 }
                 </div>
-                {teams.length === 0 &&
+                {noTeams &&
                     <p className={"noTeamPick"}>You haven't created any teams yet</p>
                 }
             </div>
