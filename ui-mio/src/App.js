@@ -20,9 +20,9 @@ const App = () =>{
         from the localStorage using the getItem method. If the value is not
         found in localStorage, the initial state is set to 0.*/
     const [teamId, setTeamId] = useState(() => {
-        const storedTeamId = localStorage.getItem('teamId');
-        return storedTeamId !== null ? JSON.parse(storedTeamId) : 0;
+        return 0;
     });
+
     const navigate = useNavigate();
 
 

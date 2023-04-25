@@ -5,7 +5,7 @@ import "../css/EditTeam.css"
 import { getTeam, updateTeam, deleteTeam} from "../service/mySystem";
 import {useLocation} from "react-router";
 import {useNavigate} from "react-router";
-import {TeamDropdown} from "./TopDropdown/TeamDropdown";
+import {TopBar} from "./TopBar/TopBar";
 
 function goToPickTeam() {
     window.location.href = "/pickTeam"
@@ -147,7 +147,7 @@ export function EditTeamPage(props) {
                 {team.sport} {team.quantity}
             </div>
 
-            <TeamDropdown getTeamId={props.getTeamId} toggleTeamId={props.toggleTeamId}/>
+            <TopBar getTeamId={props.getTeamId} toggleTeamId={props.toggleTeamId}/>
             <div className={"form"}>
 
 

@@ -3,7 +3,7 @@ import {useNavigate} from "react-router";
 import {useAuthProvider} from "../auth/auth";
 import {signOut, deleteAccount, getUser, updateUser} from "../service/mySystem";
 import "../css/Home.css"
-import {TeamDropdown} from "./TopDropdown/TeamDropdown";
+import {TopBar} from "./TopBar/TopBar";
 import {useEffect, useState} from "react";
 
 export function SettingsPage (props) {
@@ -21,7 +21,7 @@ export function SettingsPage (props) {
     }
     return (
         <div>
-            <TeamDropdown getTeamId={props.getTeamId} toggleTeamId={props.toggleTeamId}/>
+            <TopBar getTeamId={props.getTeamId} toggleTeamId={props.toggleTeamId}/>
             <div className="containerPrincipal">
                 <h1 style={{textAlign:"center"}}>Settings</h1>
                 <button className={"common-button"} onClick={() => window.location.href = "/user"}>Profile</button>

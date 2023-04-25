@@ -4,7 +4,7 @@ import {useNavigate} from "react-router";
 import {useAuthProvider} from "../auth/auth";
 import {getUser, updateUser} from "../service/mySystem";
 import "../css/Home.css"
-import {TeamDropdown} from "./TopDropdown/TeamDropdown";
+import {TopBar} from "./TopBar/TopBar";
 
 export function UserPage(props) {
     const navigate = useNavigate()
@@ -101,7 +101,7 @@ export function UserPage(props) {
         <div>
             {errorMsg && <div className="alert alert-danger" role="alert">{errorMsg}</div>}
             {once && getUserMethod()}
-            <TeamDropdown getTeamId={props.getTeamId} toggleTeamId={props.toggleTeamId}/>
+            <TopBar getTeamId={props.getTeamId} toggleTeamId={props.toggleTeamId}/>
             <div>
                 <br/>
                 <br/>

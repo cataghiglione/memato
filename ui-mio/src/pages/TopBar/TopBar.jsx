@@ -9,7 +9,7 @@ import {useLocation, useNavigate} from "react-router";
 function goToNewTeam(){
     window.location.href = "/newTeam"
 }
-export function TeamDropdown(props) {
+export function TopBar(props) {
     const auth = useAuthProvider()
     const token = auth.getToken()
     const navigate = useNavigate()
@@ -39,9 +39,9 @@ export function TeamDropdown(props) {
             {once && getTeamMethod()}
             <div className={"top-bar"}>
                 <img style={{width: 280, height: "auto"}} src={require("../../images/logo_solo_letras.png")} alt={"Logo"} className={"Logo"}/>
-                <MenuSidebarWrapper/>
+                {!(props.getTeamId === 0) && <MenuSidebarWrapper/>}
                 <div className={"dropdown"}>
-                    {location.pathname!=="/newTeam"&&
+                    {!(props.getTeamId === 0 || props.youAreInTeams) &&
                     <button className={"dropdown-btn"} onClick={toggleMenu}>
                         {actualTeam.sport} {actualTeam.quantity}: {actualTeam.name}
                         <img style={{width: 22, height: "auto"}} src={require("../../images/dropdown-1.png")}
