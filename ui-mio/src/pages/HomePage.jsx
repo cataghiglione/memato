@@ -55,9 +55,11 @@ export function HomePage(props){
                         )}
                     </select>
                 }
+                <div>
                 {teams.length === 0 &&
-                    <p className={"noTeamPick"}>You haven't created any teams yet</p>
+                    <p  className={"noTeamPick"}>You haven't created any teams yet</p>
                 }
+                </div>
             </div>
         </div>
     )

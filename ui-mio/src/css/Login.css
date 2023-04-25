@@ -77,12 +77,14 @@ lable {
     background-color: #4CAF50;
     color: white;
 }
-
-.signUpButton {
+.inputContainer{
     position: relative;
-    top : 105%;
-    left:90%;
-    transform: translate(-50%, -50%);
+}
+
+.signUpButtonLogin {
+    position: relative;
+    top : 1%;
+    left: 0%;
     background-color: white;
     color: black;
     border: 2px solid #b95de3;
@@ -90,16 +92,24 @@ lable {
     transition-duration: 0.4s;
 }
 
-.signUpButton:hover {
+.signUpButtonLogin:hover {
     background-color: #b95de3;
     color: white;
 }
 
 .goToSignUp {
+    position: relative;
+    right: 1%;
     background-color: white;
     padding: 10px 20px;
-    color: blue;
-    font-weight: bold;
+    color: black;
+    border: 2px solid #b95de3;
+    border-radius: 4px;
+    transition-duration: 0.4s;
+}
+.goToSignUp:hover{
+    background-color: #b95de3;
+    color: white;
 }
 
 .forgotPasswordImage {
