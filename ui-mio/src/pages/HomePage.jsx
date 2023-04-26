@@ -4,6 +4,7 @@ import {useAuthProvider} from "../auth/auth";
 import {listTeams, getUser} from "../service/mySystem";
 import "../css/Home.css";
 import {useNavigate} from "react-router";
+import {TopBar} from "./TopBar/TopBar";
 
 function goToNewTeam(){
     window.location.href = "/newTeam"
@@ -25,7 +26,7 @@ export function HomePage(props){
         setNextTeam(event.target.value);
         if(event.target.value != null){
             props.toggleTeamId(event.target.value)
-            navigate('/user')
+            navigate('/editTeam')
         }
     }
     const getUserMethod = () => {
@@ -36,6 +37,7 @@ export function HomePage(props){
     }
     return (
         <div>
+            <TopBar toggleTeamId={props.toggleTeamId} getTeamId={props.getTeamId}/>
             <div className="containerPrincipal">
                 {onceOpen && getUserMethod()}
                 <div>
