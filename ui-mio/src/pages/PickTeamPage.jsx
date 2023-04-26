@@ -34,7 +34,7 @@ export function PickTeamPage(props) {
     return (
         <div>
             <TopBar getTeamId={props.getTeamId} toggleTeamId={props.toggleTeamId} noTeams={noTeams}/>
-            <div className="containerPrincipal">
+            <div className="containerPrincipal" style={{marginLeft: '7%'}}>
                 <h1 className={"teamTitle"}>Your teams</h1>
                 <h2 className={"teamSubtitle"}>Click on a team to edit it</h2>
                 <div>

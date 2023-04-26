@@ -38,7 +38,7 @@ export function HomePage(props){
     return (
         <div>
             <TopBar toggleTeamId={props.toggleTeamId} getTeamId={props.getTeamId}/>
-            <div className="containerPrincipal">
+            <div className="containerPrincipal" style={{marginLeft: '7%'}}>
                 {onceOpen && getUserMethod()}
                 <div>
                     <h1>Welcome {user.firstName}!

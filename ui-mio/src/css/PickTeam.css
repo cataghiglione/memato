@@ -1,6 +1,5 @@
 .team-pick {
     position: absolute;
-    left: 30%;
     top: 110%;
     height: 40vh;
     width: 100%;
@@ -15,11 +14,10 @@
 }
 .teamTitle{
     position:relative;
-    left:48%;
+    left: 20%;
 }
 .teamSubtitle{
     position:relative;
-    left:30%;
 }
 .noTeamPick {
     position: absolute;
@@ -52,8 +50,8 @@
     border: 2px solid #b95de3;
     border-radius: 4px;
     transition-duration: 0.4s;
-    width: 300px;
-    left:30%;
+    width: 100%;
+    left:0;
     position: relative;
 
 }
