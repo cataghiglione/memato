@@ -3,7 +3,7 @@ import "../../css/Home.css"
 import "../../css/PickTeam.css"
 import {getTeam, listTeams} from "../../service/mySystem";
 import {useAuthProvider} from "../../auth/auth";
-import MenuSidebarWrapper from "./MenuSideBar";
+import MenuSidebarWrapper, {MenuSideBar} from "./MenuSideBar";
 import {useLocation, useNavigate} from "react-router";
 
 function goToNewTeam(){
@@ -39,7 +39,7 @@ export function TopBar(props) {
             {once && getTeamMethod()}
             <div className={"top-bar"}>
                 <img style={{width: 280, height: "auto"}} src={require("../../images/logo_solo_letras.png")} alt={"Logo"} className={"Logo"}/>
-                {!(props.getTeamId === 0) && <MenuSidebarWrapper/>}
+                <MenuSideBar getTeamId={props.getTeamId}/>
                 <div className={"dropdown"}>
                     {!(props.getTeamId === 0 || props.youAreInTeams) &&
                     <button className={"dropdown-btn"} onClick={toggleMenu}>
