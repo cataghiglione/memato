@@ -4,14 +4,41 @@
     height: 40vh;
     width: 100%;
     background: radial-gradient(circle, rgb(255, 255, 255) 70%, rgb(243, 243, 243) 100%);
-    display: flex;
     text-align: center;
+
     justify-content: center;
     align-items: center;
     overflow: hidden;
     background: white;
-    /*box-shadow: 0 10px 25px rgba(42, 179, 248, 0.4);*/
 }
+
+.delete-option {
+    display: inline-block;
+    margin-left: 10px; /* adjust this as needed */
+}
+
+.team-member {
+    width: 100%;
+    text-align: center;
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    appearance: none; /* Remove default appearance */
+    background-color: white;
+}
+
+
+.modify-team-button {
+    position: absolute;
+    top: 325%;
+    margin: auto;
+    background-color: white;
+    color: red;
+    width: 100%;
+    text-decoration: underline;
+}
+
 .teamTitle{
     position:relative;
     left: 20%;
@@ -32,17 +59,31 @@
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
-.team-select-option{
+.team-select-option {
     text-transform: capitalize;
     padding: 16px;
     border-radius: 9px;
     transition: all 0.2s ease;
     color: #292d34;
+    width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 .team-select-option:hover{
     color: white;
     background: #5bc5fa;
     box-shadow: 0 10px 25px rgba(42, 179, 248, 0.4);
+}
+.editing .team-select-option {
+    width: 80%;
+}
+
+
+.team-select-wrapper {
+    display: flex;
+    align-items: center;
+    width: 100%;
 }
 .newTeamButton{
     background-color: white;
@@ -59,3 +100,5 @@
     background-color: #b95de3;
     color: white;
 }
+
+

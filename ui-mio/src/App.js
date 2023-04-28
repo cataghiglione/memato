@@ -14,7 +14,6 @@ import {useEffect, useState} from "react";
 import {SettingsPage} from "./pages/SettingsPage";
 import {useNavigate} from "react-router";
 
-
 const App = () =>{
     /*  the initial state of the teamId variable is set to the value retrieved
         from the localStorage using the getItem method. If the value is not
@@ -58,6 +57,7 @@ const App = () =>{
                         <Route path="/settings" element={<SettingsPage toggleTeamId = {toggleTeamId}    getTeamId={teamId}/>} />
                         <Route path="/findRival" element={<FindRivalPage toggleTeamId = {toggleTeamId}    getTeamId={teamId}/>} />
                         <Route path = "/editTeam" element = {<EditTeamPage toggleTeamId = {toggleTeamId}    getTeamId={teamId}/>} />
+
                     </Routes>
                 </RequireAuth>}
             />

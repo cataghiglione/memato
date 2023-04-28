@@ -17,6 +17,7 @@ export function PickTeamPage(props) {
     const [teams, setTeams] = useState([]);
     const [noTeams, setNoTeams] = useState(true);
 
+    const [editing, setEditing] = useState(false);
 
     const [nextTeam, setNextTeam] = useState('')
     useEffect(() => {
@@ -24,7 +25,11 @@ export function PickTeamPage(props) {
         if(teams.length !== 0){setNoTeams(false)}
     }, [teams.length, token])
 
-    const changeNextTeam = (event) => {
+    const getType = (event) => {
+        console.log(typeof teams)
+    }
+
+        const changeNextTeam = (event) => {
         setNextTeam(event.target.value);
         props.toggleTeamId(event.target.value)
         if(event.target.value != null){
@@ -34,7 +39,7 @@ export function PickTeamPage(props) {
     return (
         <div>
             <TopBar getTeamId={props.getTeamId} toggleTeamId={props.toggleTeamId} noTeams={noTeams}/>
-            <div className="containerPrincipal" style={{marginLeft: '7%'}}>
+            <div className="containerPrincipal" style={{marginLeft: '7%', marginTop: "-5%"}}>
                 <h1 className={"teamTitle"}>Your teams</h1>
                 <h2 className={"teamSubtitle"}>Click on a team to edit it</h2>
                 <div>
@@ -42,17 +47,17 @@ export function PickTeamPage(props) {
                 </div>
                 <div>
                 {!noTeams &&
-                    <select className="team-pick" multiple={true} onChange={changeNextTeam}>
-                        {teams.map(team =>
-                            <option className={"team-select-option"}
-                                   key={team.id} value={team.id}>
-                                Nombre: {team.name}, Deporte: {team.sport} {team.quantity}
-                            </option>
-                        )}
-                    </select>
+                    <div>
+                        <select className={`team-pick ${editing ? 'editing' : ''}`} multiple={true} onChange={changeNextTeam}>
+                            {teams.map((team) => (
+                                <option className={"team-select-option"} key={team.id} value={team.id}>
+                                    Nombre: {team.name}, Deporte: {team.sport} {team.quantity}
+                                </option>
+                            ))}
+                        </select>
+                        <button className="modify-team-button" onClick={() => setEditing(!editing)}>Edit Team</button>
 
-
-
+                    </div>
                 }
                 </div>
                 {noTeams &&
