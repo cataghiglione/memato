@@ -4,6 +4,7 @@ import {useNavigate} from "react-router";
 import {listTeams} from "../service/mySystem";
 import {useAuthProvider} from "../auth/auth";
 import {TopBar} from "./TopBar/TopBar";
+import "../css/Home.css";
 
 function goToNewTeam(){
     window.location.href = "/newTeam"
@@ -46,19 +47,27 @@ export function PickTeamPage(props) {
                 <button className={"newTeamButton"} onClick={goToNewTeam}>New Team</button>
                 </div>
                 <div>
-                {!noTeams &&
-                    <div>
-                        <select className={`team-pick ${editing ? 'editing' : ''}`} multiple={true} onChange={changeNextTeam}>
-                            {teams.map((team) => (
-                                <option className={"team-select-option"} key={team.id} value={team.id}>
-                                    Nombre: {team.name}, Deporte: {team.sport} {team.quantity}
-                                </option>
-                            ))}
-                        </select>
-                        <button className="modify-team-button" onClick={() => setEditing(!editing)}>Edit Team</button>
+                    {!noTeams &&
+                        <div>
+                            <select className={`team-pick ${editing ? 'editing' : ''}`} multiple={true} onChange={changeNextTeam}>
+                                {teams.map((team) => (
+                                        <option className={"team-select-option-pick"} key={team.id} value={team.id}>
+                                        Nombre: {team.name}, Deporte: {team.sport} {team.quantity}
+                                        </option>
+                                ))}
+                            </select>
+                            <select className={`team-edit ${editing ? 'editing' : ''}`} multiple={true} onChange={changeNextTeam}>
+                                {teams.map((team) => (
+                                    <option className={"team-edit-option"} key={team.id} value={team.id}>
+                                        X
+                                    </option>
+                                ))}
+                            </select>
+                            <button className="modify-team-button" onClick={() => setEditing(!editing)}>Edit Team</button>
+                        </div>
 
-                    </div>
-                }
+                    }
+
                 </div>
                 {noTeams &&
                     <p className={"noTeamPick"}>You haven't created any teams yet</p>

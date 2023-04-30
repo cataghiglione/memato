@@ -5,11 +5,25 @@
     width: 100%;
     background: radial-gradient(circle, rgb(255, 255, 255) 70%, rgb(243, 243, 243) 100%);
     text-align: center;
-
     justify-content: center;
     align-items: center;
     overflow: hidden;
     background: white;
+}
+.team-edit{
+    position: absolute;
+    top: 110%;
+    left: 70%;
+    width: 30%;
+    height: 40vh;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    background: white;
+    border-left: 0;
+    border-bottom-left-radius: 0;
+    border-top-left-radius: 0;
+    outline:0;
 }
 
 .delete-option {
@@ -59,7 +73,7 @@
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
-.team-select-option {
+.team-select-option-pick {
     text-transform: capitalize;
     padding: 16px;
     border-radius: 9px;
@@ -69,15 +83,38 @@
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+
 }
-.team-select-option:hover{
+.team-select-option-pick:hover{
     color: white;
     background: #5bc5fa;
-    box-shadow: 0 10px 25px rgba(42, 179, 248, 0.4);
+    box-shadow: 0 5px 12.5px rgba(42, 179, 248, 0.4);
 }
-.editing .team-select-option {
-    width: 80%;
+.editing .team-select-option-pick {
+    width: 70%;
 }
+
+.team-edit-option {
+    text-transform: capitalize;
+    padding: 16px;
+    border-radius: 9px;
+
+    color: #292d34;
+    width: 100%;
+
+
+}
+.team-edit-option:hover{
+    color: white;
+    background: red;
+}
+.team-edit.editing {
+    z-index: 100;
+}
+.team-edit:not(.editing) {
+    z-index: -1;
+}
+
 
 
 .team-select-wrapper {
