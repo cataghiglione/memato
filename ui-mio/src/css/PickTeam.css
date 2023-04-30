@@ -13,8 +13,8 @@
 .team-edit{
     position: absolute;
     top: 110%;
-    left: 70%;
-    width: 30%;
+    transition: all 0.2s ease;
+
     height: 40vh;
     text-align: center;
     justify-content: center;
@@ -24,6 +24,19 @@
     border-bottom-left-radius: 0;
     border-top-left-radius: 0;
     outline:0;
+    white-space: nowrap;
+}
+.team-edit.editing {
+    z-index: 100;
+    left: 70%;
+    width: 30%;
+    opacity: 1;
+}
+.team-edit:not(.editing) {
+    z-index: -1;
+    left: 80%;
+    width: 20%;
+    opacity: 0;
 }
 
 .delete-option {
@@ -98,22 +111,15 @@
     text-transform: capitalize;
     padding: 16px;
     border-radius: 9px;
-
     color: #292d34;
-    width: 100%;
-
 
 }
 .team-edit-option:hover{
     color: white;
     background: red;
 }
-.team-edit.editing {
-    z-index: 100;
-}
-.team-edit:not(.editing) {
-    z-index: -1;
-}
+
+
 
 
 
