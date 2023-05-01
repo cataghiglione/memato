@@ -111,16 +111,12 @@
     text-transform: capitalize;
     padding: 16px;
     border-radius: 9px;
-    color: #292d34;
-
+    /*background-image: url("../images/Modify_team_pencil.jpg");*/
 }
 .team-edit-option:hover{
     color: white;
     background: red;
 }
-
-
-
 
 
 .team-select-wrapper {

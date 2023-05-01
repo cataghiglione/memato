@@ -30,11 +30,20 @@ export function PickTeamPage(props) {
         console.log(typeof teams)
     }
 
-        const changeNextTeam = (event) => {
+    const changeNextTeam = (event) => {
         setNextTeam(event.target.value);
         props.toggleTeamId(event.target.value)
         if(event.target.value != null){
             navigate('/editTeam')
+        }
+    }
+    //todo Fijate que en changeNextTeam como que va dos veces a /editTeam, findRival te lleva primero a /editTeam y dps a /findRival
+    // si haces volver atrás en el buscador de findTeam te lleva a /editTeam
+    const findRival = (event) => {
+        setNextTeam(event.target.value);
+        props.toggleTeamId(event.target.value)
+        if(event.target.value != null){
+            navigate('/findRival')
         }
     }
     return (
@@ -49,7 +58,7 @@ export function PickTeamPage(props) {
                 <div>
                     {!noTeams &&
                         <div>
-                            <select className={`team-pick ${editing ? 'editing' : ''}`} multiple={true} onChange={changeNextTeam}>
+                            <select className={`team-pick ${editing ? 'editing' : ''}`} multiple={true} onChange={findRival}>
                                 {teams.map((team) => (
                                         <option className={"team-select-option-pick"} key={team.id} value={team.id}>
                                         Nombre: {team.name}, Deporte: {team.sport} {team.quantity}
@@ -58,7 +67,7 @@ export function PickTeamPage(props) {
                             </select>
                             <select className={`team-edit ${editing ? 'editing' : ''}`} multiple={true} onChange={changeNextTeam}>
                                 {teams.map((team) => (
-                                    <option className={"team-edit-option"} key={team.id} value={team.id}>
+                                    <option className={"team-edit-option"} key={team.id} value={team.id} style={{backgroundImage: "../images/Modify_team_pencil.jpg"}}>
                                         X
                                     </option>
                                 ))}
