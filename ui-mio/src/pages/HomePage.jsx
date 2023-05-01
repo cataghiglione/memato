@@ -45,11 +45,11 @@ export function HomePage(props){
                     </h1>
                 </div>
                 <h1>My teams</h1>
-                <button className={"newTeamButton"} onClick={goToNewTeam}>
+                <button className={"newTeamButton"} onClick={goToNewTeam} style={{width:"325px"}}>
                     {teams.length===0 ? 'Create your first team' : 'New Team'}
                 </button>
                 {teams.length > 0 &&
-                    <select className={"team-pick"} multiple={true} onChange={changeNextTeam}>
+                    <select className={"team-pick"} multiple={true} onChange={changeNextTeam} style={{width:"325px"}}>
                         {teams.map(team =>
                                 <option className={"team-select-option"} value={team.id} style={{ textTransform: 'capitalize'}}>
                                     Nombre: {team.name}, Deporte: {team.sport} {team.quantity} </option>
