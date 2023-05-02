@@ -35,7 +35,7 @@ export function MenuSideBar(props){
                             {props.getTeamId !== 0 && <option className={"custom-select-option"} value="/editTeam">Team Settings</option>}
                             {props.getTeamId !== 0 && <option className={"custom-select-option"} value="/findRival">Find Rival</option>}
                             {props.getTeamId !== 0 && <option className={"custom-select-option"} value="/newTeam">New Team</option>}
-                            <option className={"custom-select-option"} value="/profile">Profile</option>
+                            <option className={"custom-select-option"} value="/user">Profile</option>
                         </select>
                         <br/><br/>
                         <button className={"signOut-option"} value="Sign Out">Sign Out</button>

@@ -10,6 +10,9 @@ import Sidebar from "./MenuSideBar";
 function goToNewTeam(){
     window.location.href = "/newTeam"
 }
+function goToHome() {
+    window.location.href = "/home"
+}
 export function TopBar(props) {
     const auth = useAuthProvider()
     const token = auth.getToken()
@@ -39,7 +42,7 @@ export function TopBar(props) {
         <div>
             {once && getTeamMethod()}
             <div className={"top-bar"}>
-                <img style={{width: 280, height: "auto"}} src={require("../../images/logo_solo_letras.png")} alt={"Logo"} className={"Logo"}/>
+                <img onClick={goToHome} style={{width: 280, height: "auto"}} src={require("../../images/logo_solo_letras.png")} alt={"Logo"} className={"Logo"}/>
                 <MenuSideBar getTeamId={props.getTeamId}/>
 
                 <div className={"dropdown"}>
