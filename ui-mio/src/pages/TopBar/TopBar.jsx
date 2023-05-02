@@ -5,6 +5,7 @@ import {getTeam, listTeams} from "../../service/mySystem";
 import {useAuthProvider} from "../../auth/auth";
 import MenuSidebarWrapper, {MenuSideBar} from "./MenuSideBar";
 import {useLocation, useNavigate} from "react-router";
+import Sidebar from "./MenuSideBar";
 
 function goToNewTeam(){
     window.location.href = "/newTeam"
@@ -40,8 +41,9 @@ export function TopBar(props) {
             <div className={"top-bar"}>
                 <img style={{width: 280, height: "auto"}} src={require("../../images/logo_solo_letras.png")} alt={"Logo"} className={"Logo"}/>
                 <MenuSideBar getTeamId={props.getTeamId}/>
+
                 <div className={"dropdown"}>
-                    {!(props.getTeamId === 0 || props.youAreInTeams) &&
+                    {!(props.getTeamId === 0) &&
                     <button className={"dropdown-btn"} onClick={toggleMenu}>
                         {actualTeam.sport} {actualTeam.quantity}: {actualTeam.name}
                         <img style={{width: 22, height: "auto"}} src={require("../../images/dropdown-1.png")}

@@ -105,7 +105,7 @@ export function NewTeamPage (props){
 
     return (
         <div>
-            <TopBar youAreInTeams={true} getTeamId = {props.getTeamId}/>
+            <TopBar getTeamId = {props.getTeamId}/>
             <div className={"containerPrincipalNewTeam"}>
                 {errorMsg && <div className="alert alert-danger" role="alert">{errorMsg}</div>}
                 {isOk && <div className="alert alert-success" role="alert">Team created</div>}
