@@ -138,6 +138,40 @@ export function FindRivalPage(props) {
             </div>
         );
     };
+    function Box (name, puntuality) {
+        return(
+            <div
+                style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    // justifyContent: 'flex-end',
+                    // alignItems: 'flex-end',
+                    height: 'auto',
+                    padding: '10px',
+                    border: '1px solid black',
+                    borderRadius: '5px',
+                    margin: '5px',
+                    backgroundColor: 'white',
+                    position: 'absolute'
+                }}
+            >
+                <span style={{fontWeight: 'bold', marginBottom: '5px'}}>{name}</span>
+                <p style={{marginBottom: '10px'}}>{puntuality}</p>
+                <button
+                    style={{
+                        border: '1px solid black',
+                        borderRadius: '5px',
+                        padding: '5px',
+                        margin: '5px',
+                        backgroundColor: 'white',
+                        color: 'black',
+                    }}
+                >
+                    Play
+                </button>
+            </div>
+        )
+    };
     return (
 
         <div>
@@ -217,16 +251,37 @@ export function FindRivalPage(props) {
 
 
 
-                <select className={"team-select"} multiple={true} onChange={playMatch}>
-            {teams.map(team =>
-                <option className={"team-select-option"} style={{textTransform: 'capitalize'}} value={team.id}>
-                nombre: {team.name}, deporte: {team.sport}, categoria: {team.group} </option>
-                // <p>nombre = {team.name}    deporte = {team.sport} </p>
-                // <option>{team.name}</option>
+            {/*    <select className={"team-select"} multiple={true} onChange={playMatch}>*/}
+            {/*{teams.map(team =>*/}
+            {/*    <option className={"team-select-option"} style={{textTransform: 'capitalize'}} value={team.id}>*/}
+            {/*    nombre: {team.name}, deporte: {team.sport}, categoria: {team.group} </option>*/}
+            {/*    // <p>nombre = {team.name}    deporte = {team.sport} </p>*/}
+            {/*    // <option>{team.name}</option>*/}
 
-                )
-            }
-                </select>
+            {/*    )*/}
+            {/*}*/}
+            {/*    </select>*/}
+
+
+                    {/*<div style={{display: 'flex', flexWrap: 'wrap', position: "relative"}}>*/}
+                    <div>
+                        {teams.map((team) => (
+                            <div>
+                                <div className={"team-select"}>
+                                    <div className={"info"}>
+                                        <span style={{fontWeight: 'bold', marginBottom: '15px'}}> Team name: {team.name}</span>
+                                        <p style={{marginBottom: '15px'}}> Team puntuality: {team.puntuality}</p>
+                                    </div>
+                                    <br/><br/>
+                                    <button className={"button-play"}>
+                                        Play
+                                    </button>
+                                </div>
+                                <br/>
+                            </div>
+                        ))}
+                        {/*<TextWithButton text = {team.name}/>))}*/}
+                    </div>
                 </div>
                     }
             {(rivalMenuOpen && teams.length === 0) &&
