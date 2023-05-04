@@ -84,19 +84,7 @@
 .your-team{
     left: 50%;
 }
-.delete-button {
-    background-color: white;
-    color: #f44336;
-    border: 1px solid #da190b;
-    padding: 8px 16px;
-    border-radius: 1px;
-    font-size: 16px;
-    cursor: pointer;
-}
-.delete-button:hover {
-    background-color: #da190b;
-    color: white;
-}
+
 .showTeamButton:hover {
     background-color: #4CAF50;
     color: white;

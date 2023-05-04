@@ -2,7 +2,7 @@ import * as React from 'react'
 import {useEffect, useState} from 'react'
 import {useNavigate} from "react-router";
 import {useAuthProvider} from "../auth/auth";
-import {getUser, updateUser} from "../service/mySystem";
+import {getUser, updateUser, deleteAccount} from "../service/mySystem";
 import "../css/Home.css"
 import {TopBar} from "./TopBar/TopBar";
 
@@ -96,6 +96,10 @@ export function UserPage(props) {
         console.log("Im requesting an edit on a User!");
         setSubmit(true);
     }
+    function deleteMethod(){
+        deleteAccount(token, navigate("/"))
+        auth.removeToken()
+    }
 
     return (
         <div>
@@ -161,8 +165,8 @@ export function UserPage(props) {
                             </button>
                         </div>
                         <div>
-                            <button className={"goBackButton"} onClick={() => navigate("/settings")}>Return to
-                                Settings
+                            <br/>
+                            <button className={"delete-button"} onClick={() => deleteMethod()}>Delete Account
                             </button>
                         </div>
                     </form>

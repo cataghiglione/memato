@@ -11,7 +11,6 @@ import { NewTeamPage } from "./pages/NewTeamPage";
 import { FindRivalPage } from "./pages/FindRivalPage";
 import { RequireAuth } from "./components/RequireAuth";
 import {useEffect, useState} from "react";
-import {SettingsPage} from "./pages/SettingsPage";
 import {useNavigate} from "react-router";
 
 const App = () =>{
@@ -54,7 +53,6 @@ const App = () =>{
                         <Route path="/pickTeam" element={<PickTeamPage toggleTeamId = {toggleTeamId}    getTeamId={teamId}/>} />
                         <Route path="/newTeam" element={<NewTeamPage toggleTeamId = {toggleTeamId}    getTeamId={teamId}/>} />
                         <Route path="/user" element={<UserPage toggleTeamId = {toggleTeamId}    getTeamId={teamId}/>} />
-                        <Route path="/settings" element={<SettingsPage toggleTeamId = {toggleTeamId}    getTeamId={teamId}/>} />
                         <Route path="/findRival" element={<FindRivalPage toggleTeamId = {toggleTeamId}    getTeamId={teamId}/>} />
                         <Route path = "/editTeam" element = {<EditTeamPage toggleTeamId = {toggleTeamId}    getTeamId={teamId}/>} />
 

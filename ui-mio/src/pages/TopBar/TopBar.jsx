@@ -43,7 +43,6 @@ export function TopBar(props) {
             {once && getTeamMethod()}
             <div className={"top-bar"}>
                 <img onClick={goToHome} style={{width: 280, height: "auto"}} src={require("../../images/logo_solo_letras.png")} alt={"Logo"} className={"Logo"}/>
-                <MenuSideBar getTeamId={props.getTeamId}/>
 
                 <div className={"dropdown"}>
                     {!(props.getTeamId === 0) &&
@@ -54,6 +53,7 @@ export function TopBar(props) {
                     </button>}
                     {visible && goToPickTeam()}
                 </div>
+                <MenuSideBar getTeamId={props.getTeamId}/>
             </div>
         </div>
     )

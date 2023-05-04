@@ -2,12 +2,16 @@ import "../../css/sideBar.css";
 import {useState} from "react";
 import * as React from "react";
 import {useLocation, useNavigate} from "react-router";
+import {useAuthProvider} from "../../auth/auth";
+import {signOut} from "../../service/mySystem";
 
 export function MenuSideBar(props){
     const [visible, setVisible] = useState(false);
     const [pageChange, setPageChange] = useState(['']);
-    const history = useNavigate();
+    const navigate = useNavigate();
     const location = useLocation();
+    const auth = useAuthProvider();
+    const token = auth.getToken();
 
     const toggleMenu = () =>{
         setVisible(!visible);
@@ -19,9 +23,14 @@ export function MenuSideBar(props){
             toggleMenu();
             setPageChange([""]);
         }
-        history(selectedOptions[0]).then();
+        navigate(selectedOptions[0]).then();
     }
 
+
+    function signOutMethod(){
+        signOut(token, navigate("/"))
+        auth.removeToken();
+    }
 
     return(
         <div>
@@ -30,15 +39,15 @@ export function MenuSideBar(props){
             </button>
             {visible &&
                 (
-                    <div>
-                        <select className={"custom-select"} id="Menu" multiple={true} value={pageChange} onChange={togglePage}>
-                            {props.getTeamId !== 0 && <option className={"custom-select-option"} value="/editTeam">Team Settings</option>}
-                            {props.getTeamId !== 0 && <option className={"custom-select-option"} value="/findRival">Find Rival</option>}
-                            {props.getTeamId !== 0 && <option className={"custom-select-option"} value="/newTeam">New Team</option>}
-                            <option className={"custom-select-option"} value="/user">Profile</option>
+                    <div className={"side-bar"}>
+                        <select id="Menu" multiple={true} className={"select"} value={pageChange} onChange={togglePage}>
+                            {props.getTeamId !== 0 && <option className={"option"} key={"/editTeam"} value="/editTeam">Team Settings</option>}
+                            {props.getTeamId !== 0 && <option className={"option"} key={"/findRival"} value="/findRival">Find Rival</option>}
+                            {props.getTeamId !== 0 && <option className={"option"} key={"/newTeam"} value="/newTeam">New Team</option>}
+                            <option className={"option"} key={"/user"} value="/user">Profile</option>
                         </select>
-                        <br/><br/>
-                        <button className={"signOut-option"} value="Sign Out">Sign Out</button>
+                        {/*<br/><br/>*/}
+                        <button className={"signOut-option"} onClick={signOutMethod} value="Sign Out">Sign Out</button>
                     </div>
                 )
             }
