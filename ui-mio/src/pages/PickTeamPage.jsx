@@ -5,6 +5,7 @@ import {listTeams} from "../service/mySystem";
 import {useAuthProvider} from "../auth/auth";
 import {TopBar} from "./TopBar/TopBar";
 import "../css/Home.css";
+import {Pencil, PencilSquare} from "react-bootstrap-icons";
 
 function goToNewTeam(){
     window.location.href = "/newTeam"
@@ -51,14 +52,15 @@ export function PickTeamPage(props) {
             <TopBar getTeamId={props.getTeamId} toggleTeamId={props.toggleTeamId} noTeams={noTeams}/>
             <div className="containerPrincipal" style={{marginLeft: '7%', marginTop: "-5%"}}>
                 <h1 className={"teamTitle"}>Your teams</h1>
-                <h2 className={"teamSubtitle"}>Click on a team to edit it</h2>
+                <h2 className={"teamSubtitle"}>Click on a team to use it</h2>
                 <div>
                 <button className={"newTeamButton"} onClick={goToNewTeam}>New Team</button>
                 </div>
                 <div>
                     {!noTeams &&
                         <div>
-                            <select className={`team-pick ${editing ? 'editing' : ''}`} multiple={true} onChange={findRival}>
+
+                           {/* <select className={`team-pick ${editing ? 'editing' : ''}`} multiple={true} onChange={findRival}>
                                 {teams.map((team) => (
                                         <option className={"team-select-option-pick"} key={team.id} value={team.id}>
                                         Nombre: {team.name}, Deporte: {team.sport} {team.quantity}
@@ -67,12 +69,30 @@ export function PickTeamPage(props) {
                             </select>
                             <select className={`team-edit ${editing ? 'editing' : ''}`} multiple={true} onChange={changeNextTeam}>
                                 {teams.map((team) => (
-                                    <option className={"team-edit-option"} key={team.id} value={team.id} style={{backgroundImage: "../images/Modify_team_pencil.jpg"}}>
+                                    <option className={"team-edit-option"} key={team.id} value={team.id} >
                                         X
                                     </option>
                                 ))}
-                            </select>
-                            <button className="modify-team-button" onClick={() => setEditing(!editing)}>Edit Team</button>
+                            </select>*/}
+                            <div className={`team-pick`} multiple={true} onChange={findRival}>
+                                {teams.map((team) => (
+                                    <button className={"team-select-option-pick"} key={team.id} value={team.id} >
+                                        {team.sport} {team.quantity}: {team.name}
+                                    </button>
+                                ))}
+                            </div>
+                            <div className={`team-edit`} multiple={true} onChange={changeNextTeam}>
+                                {teams.map((team) => (
+                                    <button className={"team-edit-option"} key={team.id} value={team.id} >
+                                        <PencilSquare style={{color:"black"}} />
+                                    </button>
+                                ))}
+                            </div>
+
+
+
+
+                        <button className="modify-team-button" onClick={() => setEditing(!editing)}>Edit Team</button>
                         </div>
 
                     }
