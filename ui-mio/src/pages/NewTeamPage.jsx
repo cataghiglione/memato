@@ -11,7 +11,7 @@ import {useAuthProvider} from "../auth/auth";
 import MenuSidebarWrapper from "./TopBar/MenuSideBar";
 import {TopBar} from "./TopBar/TopBar";
 
-export const NewTeamPage = () => {
+export function NewTeamPage (props){
 
     const [sport, setSport] = useState("")
     const [quant_Players, setQuant_player] = useState("")
@@ -105,7 +105,7 @@ export const NewTeamPage = () => {
 
     return (
         <div>
-            <TopBar youAreInTeams={true}/>
+            <TopBar getTeamId = {props.getTeamId}/>
             <div className={"containerPrincipalNewTeam"}>
                 {errorMsg && <div className="alert alert-danger" role="alert">{errorMsg}</div>}
                 {isOk && <div className="alert alert-success" role="alert">Team created</div>}

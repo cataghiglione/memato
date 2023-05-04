@@ -55,12 +55,12 @@ const App = () =>{
                     <Routes>
                         <Route path="/home" element={<HomePage toggleTeamId = {toggleTeamId}    getTeamId={teamId}/>} />
                         <Route path="/pickTeam" element={<PickTeamPage toggleTeamId = {toggleTeamId}    getTeamId={teamId}/>} />
-                        <Route path="/newTeam" element={<NewTeamPage />} />
+                        <Route path="/newTeam" element={<NewTeamPage toggleTeamId = {toggleTeamId}    getTeamId={teamId}/>} />
                         <Route path="/user" element={<UserPage toggleTeamId = {toggleTeamId}    getTeamId={teamId}/>} />
                         <Route path="/settings" element={<SettingsPage toggleTeamId = {toggleTeamId}    getTeamId={teamId}/>} />
                         <Route path="/findRival" element={<FindRivalPage toggleTeamId = {toggleTeamId}    getTeamId={teamId}/>} />
                         <Route path = "/editTeam" element = {<EditTeamPage toggleTeamId = {toggleTeamId}    getTeamId={teamId}/>} />
-
+                        <Route path = "/currentSearches" element = {<CurrentSearchesPage toggleTeamId = {toggleTeamId}    getTeamId={teamId}/>} />
 
                     </Routes>
                 </RequireAuth>}

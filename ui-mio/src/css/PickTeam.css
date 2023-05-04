@@ -1,25 +1,67 @@
 .team-pick {
     position: absolute;
-    left: 30%;
     top: 110%;
     height: 40vh;
     width: 100%;
+    padding: 10px;
+    left: 0;
     background: radial-gradient(circle, rgb(255, 255, 255) 70%, rgb(243, 243, 243) 100%);
-    display: flex;
+    overflow: hidden;
+    background: white;
+    border: 1px solid #ccc; /* grey border */
+    border-radius: 7px;
+}
+.team-edit{
+    position: absolute;
+    top: 110%;
+    padding: 10px;
+    transition: all 0.2s ease;
+    height: 40vh;
+    left: 78%;
     text-align: center;
     justify-content: center;
     align-items: center;
-    overflow: hidden;
     background: white;
-    /*box-shadow: 0 10px 25px rgba(42, 179, 248, 0.4);*/
+    border: 1px solid #ccc;
+    border-left: none;
+    border-radius: 0 7px 7px 0;
+    outline:0;
+    white-space: nowrap;
+    background-color: white;
 }
+/*
+.team-edit.editing {
+    z-index: 100;
+    left: 70%;
+    width: 30%;
+    opacity: 1;
+}
+.team-edit:not(.editing) {
+    z-index: -1;
+    left: 80%;
+    width: 20%;
+    opacity: 0;
+}
+*/
+
+
+
+.modify-team-button {
+    position: absolute;
+    top: 325%;
+    margin: auto;
+    background-color: white;
+    color: red;
+    width: 100%;
+    text-decoration: underline;
+}
+
 .teamTitle{
     position:relative;
-    left:48%;
+    left: 20%;
 }
 .teamSubtitle{
     position:relative;
-    left:30%;
 }
 .noTeamPick {
     position: absolute;
@@ -34,17 +76,55 @@
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
-.team-select-option{
+.team-select-option-pick {
     text-transform: capitalize;
+    text-align: left;
     padding: 16px;
     border-radius: 9px;
     transition: all 0.2s ease;
+    background-color: white;
     color: #292d34;
+    /*width: 100%;*/
+    width: 70%;
+    left: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    margin-bottom: 3px;
 }
-.team-select-option:hover{
+
+.team-select-option-pick:hover
+{
     color: white;
     background: #5bc5fa;
-    box-shadow: 0 10px 25px rgba(42, 179, 248, 0.4);
+    /*box-shadow: 0 5px 12.5px rgba(42, 179, 248, 0.4);*/
+}
+/*Esto de abajo era para la implementación anterior y la animación (queda bien para celu pero para compu es muy apretado al dope)*/
+/*.editing .team-select-option-pick {
+    width: 70%;
+}
+*/
+
+.team-edit-option {
+    text-transform: capitalize;
+    padding: 16px;
+    border-radius: 9px;
+    display: block;
+    background: white;
+    margin-bottom: 3px;
+    /*background-image: url("../images/Modify_team_pencil.jpg");*/
+}
+.team-edit-option:hover{
+    color: white;
+    background: lightgray;
+
+}
+
+
+.team-select-wrapper {
+    display: flex;
+    align-items: center;
+    width: 100%;
 }
 .newTeamButton{
     padding: 12px 20px;
@@ -53,8 +133,8 @@
     border: 2px solid #b95de3;
     border-radius: 4px;
     transition-duration: 0.4s;
-    width: 300px;
-    left:30%;
+    width: 100%;
+    left:0;
     position: relative;
 
 }
@@ -62,3 +142,5 @@
     background-color: #b95de3;
     color: white;
 }
+
+
