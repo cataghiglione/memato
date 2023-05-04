@@ -10,6 +10,7 @@ import{EditTeamPage} from "./pages/EditTeamPage";
 import { NewTeamPage } from "./pages/NewTeamPage";
 import { FindRivalPage } from "./pages/FindRivalPage";
 import { RequireAuth } from "./components/RequireAuth";
+import{CurrentSearchesPage} from "./pages/CurrentSearchesPage";
 import {useEffect, useState} from "react";
 import {SettingsPage} from "./pages/SettingsPage";
 import {useNavigate} from "react-router";
@@ -46,6 +47,7 @@ const App = () =>{
             <Route path="/" element={<PublicPage />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/register" element={<RegisterPage />} />
+            <Route path="/currentSearches" element={<CurrentSearchesPage/>}/>
             {/* Use RequireAuth to protect all other routes */}
             <Route
                 path="/*"
@@ -58,6 +60,8 @@ const App = () =>{
                         <Route path="/settings" element={<SettingsPage toggleTeamId = {toggleTeamId}    getTeamId={teamId}/>} />
                         <Route path="/findRival" element={<FindRivalPage toggleTeamId = {toggleTeamId}    getTeamId={teamId}/>} />
                         <Route path = "/editTeam" element = {<EditTeamPage toggleTeamId = {toggleTeamId}    getTeamId={teamId}/>} />
+
+
                     </Routes>
                 </RequireAuth>}
             />

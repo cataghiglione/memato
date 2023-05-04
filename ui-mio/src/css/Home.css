@@ -38,6 +38,7 @@
     color: white;
 }
 .greenButton{
+    padding: 12px 20px;
     position: absolute;
     background-color: white;
     color: black;
@@ -74,6 +75,7 @@
 }
 .Menu{
     position: absolute;
+    border: none;
     /*background-color: #E2E2E2;*/
     /*color: black;*/
     /*border: 1px solid #E2E2E2;*/

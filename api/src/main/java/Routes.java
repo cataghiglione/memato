@@ -37,9 +37,10 @@ public class Routes {
     public static final String GET_ACTIVE_SEARCHES_ROUTE = "/currentSearches";
     public static final String UPDATE_TEAM_ROUTE = "/updateTeam";
     public static final String DELETE_TEAM_ROUTE = "/deleteTeam";
-    public static final String GET_ACTIVE_SEARCHES="/currentSearches";
-    public static final String DELETE_ACCOUNT="/deleteAccount";
+    public static final String DELETE_ACCOUNT = "/deleteAccount";
     public static final String UPDATE_USER_ROUTE = "/updateUser";
+    public static final String GET_TEAM_BY_TEAMID = "/getTeamByOwnId";
+    public static final String DEACTIVATE_SEARCH_ROUTE="/deactivateSearch";
 
 
     private MySystem system;
@@ -291,10 +292,14 @@ public class Routes {
             final Searches searches = new Searches(entityManager);
             getUser(req).ifPresentOrElse(
                     (user) -> {
+                        try{
                         Long user_id = user.getId();
                         List<Search> active_searches = searches.findActiveSearchesByUserId(user_id);
                         res.body(JsonParser.toJson(active_searches));
-                        res.status(200);
+                        res.status(200);}
+                        catch (Exception e) {
+                            res.status(400);
+                        }
 
                     },
                     () -> {
@@ -315,7 +320,7 @@ public class Routes {
                         EntityTransaction transaction = entityManager.getTransaction();
                         transaction.begin();
                         //por las dudas, aca en el form habia un teamForm.getTeam en la query
-                        teams.updateTeam(teamForm.getName(), teamForm.getSport(), teamForm.getQuantity(), teamForm.getAgeGroup(),  Long.valueOf(id));
+                        teams.updateTeam(teamForm.getName(), teamForm.getSport(), teamForm.getQuantity(), teamForm.getAgeGroup(), Long.valueOf(id));
                         transaction.commit();
                         res.status(200);
                     },
@@ -372,9 +377,35 @@ public class Routes {
                 }
 
 
+            } else res.status(400);
+            return res.status();
+        });
+        get(GET_TEAM_BY_TEAMID, (req, res) -> {
+            final EntityManager entityManager = entityManagerFactory.createEntityManager();
+            final Teams teams = new Teams(entityManager);
+            final String id = (req.queryParams("teamId"));
+            Optional<Team> team = teams.getTeamByTeamId(Long.valueOf(id));
+            if (team.isPresent()) {
+                res.body(JsonParser.toJson(team));
+                res.status(200);
+            } else {
+                res.status(400);
+            }
+            return res.body();
+
+
+        });
+        post(DEACTIVATE_SEARCH_ROUTE,(req,res)->{
+            final EntityManager entityManager = entityManagerFactory.createEntityManager();
+            final Searches searches=new Searches(entityManager);
+            final Long id = Long.valueOf(req.body());
+            boolean state = searches.deactivateSearchBySearchId(id);
+            if (state){
+                res.status(200);
             }
             else res.status(400);
             return res.status();
+
         });
 
 
@@ -473,9 +504,9 @@ public class Routes {
         tx.begin();
         if (teams.listAll().isEmpty()) {
             final Team kateTeam =
-                    Team.create("river", "Football", "11", 0, "Young",  userList.get(0));
+                    Team.create("river", "Football", "11", 0, "Young", userList.get(0));
             final Team cocaTeam =
-                    Team.create("depo", "Football", "11", 0, "Young",  userList.get(1));
+                    Team.create("depo", "Football", "11", 0, "Young", userList.get(1));
             teams.persist(kateTeam);
             teams.persist(cocaTeam);
         }

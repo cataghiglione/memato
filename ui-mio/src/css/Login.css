@@ -18,17 +18,17 @@
     text-align: center;
 }
 
-button {
-    background-color: #4CAF50; /* Green */
-    border: none;
-    color: white;
-    padding: 12px 20px;
-    text-align: center;
-    text-decoration: none;
-    font-size: 16px;
-    transition-duration: 0.4s;
-    cursor: pointer;
-}
+/*button {*/
+/*    background-color: #4CAF50; !* Green *!*/
+/*    border: none;*/
+/*    color: white;*/
+/*    padding: 12px 20px;*/
+/*    text-align: center;*/
+/*    text-decoration: none;*/
+/*    font-size: 16px;*/
+/*    transition-duration: 0.4s;*/
+/*    cursor: pointer;*/
+/*}*/
 
 .showTeamButton {
     position: absolute;
@@ -86,6 +86,7 @@ lable {
     top : 1%;
     left: 0%;
     background-color: white;
+    padding: 12px 20px;
     color: black;
     border: 2px solid #b95de3;
     border-radius: 4px;

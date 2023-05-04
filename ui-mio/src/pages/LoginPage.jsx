@@ -79,10 +79,10 @@ export const LoginPage = () => {
                 </div>
                 <br></br>
                 <br></br>
-                <button id="submit" type="submit" className={"greenButton"} onClick={() => LoginRequest()}>Login</button>
+                <button id="submit" type="submit" className={"greenButton "} onClick={() => LoginRequest()}>Login</button>
             </form>
             <br></br>
-                      <button   className={"signUpButtonLogin"} onClick={goToRegister}>Go to sign up</button>
+                      <button   className={"signUpButtonLogin "} onClick={goToRegister}>Go to sign up</button>
 
         </div>
     )

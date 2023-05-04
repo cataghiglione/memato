@@ -5,7 +5,7 @@ const restApiEndpoint = "http://localhost:4326"
 
 
 export const currentSearches = (token, okCallback, errorCallback) => {
-    fetch(`${restApiEndpoint}/currentSearch`, {
+    fetch(`${restApiEndpoint}/currentSearches`, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
@@ -19,6 +19,40 @@ export const currentSearches = (token, okCallback, errorCallback) => {
         }
     })
 
+
+}
+export const deleteSearch=(token, searchId, okCallback, errorCallback)=>{
+    fetch(`${restApiEndpoint}/deactivateSearch`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token
+        },
+        body:JSON.stringify(searchId)
+
+    }).then(resp=>{
+        if (resp.status===200){
+            okCallback()
+        }
+        else errorCallback()
+    })
+}
+export const teamById = (token, teamId, okCallback, errorCallback) => {
+    fetch(`${restApiEndpoint}/getTeamByOwnId`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token
+        },
+        body: JSON.stringify(teamId)
+
+    }).then(resp=>{
+        if (resp.status ===200){
+            resp.json().then(team => okCallback(team))
+        }
+        else errorCallback()
+
+    })
 
 }
 
@@ -228,11 +262,9 @@ export const deleteTeam = (token, id, okCallback, errorCallback) => {
         if (resp.status === 203) {
             okCallback();
 
-        }
-        else if(resp.status===200){
-            window.location.href="/newTeam";
-        }
-        else errorCallback()
+        } else if (resp.status === 200) {
+            window.location.href = "/newTeam";
+        } else errorCallback()
     })
 }
 
