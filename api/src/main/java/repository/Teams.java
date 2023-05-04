@@ -108,5 +108,11 @@ public class Teams {
         entityManager.close();
         return result;
     }
+    public Optional<Team> getTeamByTeamId(Long teamId){
+        return entityManager.createQuery("SELECT t FROM Team T WHERE t.id = :teamId")
+                .setParameter("teamId",teamId)
+                .getResultList().stream()
+                .findFirst();
+    }
 
 }

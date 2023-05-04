@@ -106,6 +106,8 @@
     border-radius: 1px;
     transition-duration: 0.4s;
     width: 10%;
+    padding: 12px 20px;
+
 }
 
 .findRivalButton:hover {
@@ -114,6 +116,8 @@
 }
 
 .goToPickTeamButton {
+    padding: 12px 20px;
+
     position: absolute;
     background-color: white;
     left: 25%;

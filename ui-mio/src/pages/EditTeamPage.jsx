@@ -173,7 +173,7 @@ export function EditTeamPage(props) {
                     <div>
                         <br/>
                        <p>Group:  <select id="age_group" required onChange={groupChange} value={age_group}>
-                            <option disabled = {true} value="Group">Group</option>
+                            <option  value=""></option>
                             <option value="Young">Young</option>
                             <option value="Adults">Adults</option>
                         </select></p>
@@ -182,7 +182,7 @@ export function EditTeamPage(props) {
 
                     <br/>
                     <p>Sport: <select id="sport" required onChange={sportChange} value={sport}>
-                        <option disabled={true} value="Sport">Sport</option>
+                        <option value=""></option>
                         <option value="Football">Football</option>
                         <option value="Padel">Padel</option>
                     </select></p>
@@ -191,7 +191,7 @@ export function EditTeamPage(props) {
                         (
                             <div>
                                 <p>Quantity<select id="Quantity" required onChange={quant_PlayersChange} value={quant_Players}>
-                                    <option disabled = {true} value="Quantity">Quantity</option>
+                                    <option  value=""></option>
                                     <option value="11">11</option>
                                     <option value="7">7</option>
                                     <option value="5">5</option>
@@ -203,7 +203,7 @@ export function EditTeamPage(props) {
                         (
                             <div>
                                 <p>Quantity: <select id="Quantity" required onChange={quant_PlayersChange} defaultValue={team.quantity}>
-                                    <option disabled = {true} value="Quantity">Quantity</option>
+                                    <option value=""></option>
                                     <option value="2">2</option>
                                     <option value="1">1</option>
                                 </select></p>

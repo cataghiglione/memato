@@ -3,29 +3,33 @@
     top: 110%;
     height: 40vh;
     width: 100%;
+    padding: 10px;
+    left: 0;
     background: radial-gradient(circle, rgb(255, 255, 255) 70%, rgb(243, 243, 243) 100%);
-    text-align: center;
-    justify-content: center;
-    align-items: center;
     overflow: hidden;
     background: white;
+    border: 1px solid #ccc; /* grey border */
+    border-radius: 7px;
 }
 .team-edit{
     position: absolute;
     top: 110%;
+    padding: 10px;
     transition: all 0.2s ease;
-
     height: 40vh;
+    left: 78%;
     text-align: center;
     justify-content: center;
     align-items: center;
     background: white;
-    border-left: 0;
-    border-bottom-left-radius: 0;
-    border-top-left-radius: 0;
+    border: 1px solid #ccc;
+    border-left: none;
+    border-radius: 0 7px 7px 0;
     outline:0;
     white-space: nowrap;
+    background-color: white;
 }
+/*
 .team-edit.editing {
     z-index: 100;
     left: 70%;
@@ -38,22 +42,8 @@
     width: 20%;
     opacity: 0;
 }
+*/
 
-.delete-option {
-    display: inline-block;
-    margin-left: 10px; /* adjust this as needed */
-}
-
-.team-member {
-    width: 100%;
-    text-align: center;
-    padding: 10px;
-    font-size: 16px;
-    border-radius: 4px;
-    border: 1px solid #ccc;
-    appearance: none; /* Remove default appearance */
-    background-color: white;
-}
 
 
 .modify-team-button {
@@ -88,34 +78,46 @@
 
 .team-select-option-pick {
     text-transform: capitalize;
+    text-align: left;
     padding: 16px;
     border-radius: 9px;
     transition: all 0.2s ease;
+    background-color: white;
     color: #292d34;
-    width: 100%;
+    /*width: 100%;*/
+    width: 70%;
+    left: 100%;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-
+    margin-bottom: 3px;
 }
-.team-select-option-pick:hover{
+
+.team-select-option-pick:hover
+{
     color: white;
     background: #5bc5fa;
-    box-shadow: 0 5px 12.5px rgba(42, 179, 248, 0.4);
+    /*box-shadow: 0 5px 12.5px rgba(42, 179, 248, 0.4);*/
 }
-.editing .team-select-option-pick {
+/*Esto de abajo era para la implementación anterior y la animación (queda bien para celu pero para compu es muy apretado al dope)*/
+/*.editing .team-select-option-pick {
     width: 70%;
 }
+*/
 
 .team-edit-option {
     text-transform: capitalize;
     padding: 16px;
     border-radius: 9px;
+    display: block;
+    background: white;
+    margin-bottom: 3px;
     /*background-image: url("../images/Modify_team_pencil.jpg");*/
 }
 .team-edit-option:hover{
     color: white;
-    background: red;
+    background: lightgray;
+
 }
 
 
@@ -125,6 +127,7 @@
     width: 100%;
 }
 .newTeamButton{
+    padding: 12px 20px;
     background-color: white;
     color: black;
     border: 2px solid #b95de3;

@@ -10,8 +10,10 @@ import{EditTeamPage} from "./pages/EditTeamPage";
 import { NewTeamPage } from "./pages/NewTeamPage";
 import { FindRivalPage } from "./pages/FindRivalPage";
 import { RequireAuth } from "./components/RequireAuth";
+import{CurrentSearchesPage} from "./pages/CurrentSearchesPage";
 import {useEffect, useState} from "react";
 import {useNavigate} from "react-router";
+
 
 const App = () =>{
     /*  the initial state of the teamId variable is set to the value retrieved
@@ -44,6 +46,7 @@ const App = () =>{
             <Route path="/" element={<PublicPage />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/register" element={<RegisterPage />} />
+            <Route path="/currentSearches" element={<CurrentSearchesPage/>}/>
             {/* Use RequireAuth to protect all other routes */}
             <Route
                 path="/*"
@@ -55,6 +58,7 @@ const App = () =>{
                         <Route path="/user" element={<UserPage toggleTeamId = {toggleTeamId}    getTeamId={teamId}/>} />
                         <Route path="/findRival" element={<FindRivalPage toggleTeamId = {toggleTeamId}    getTeamId={teamId}/>} />
                         <Route path = "/editTeam" element = {<EditTeamPage toggleTeamId = {toggleTeamId}    getTeamId={teamId}/>} />
+                        <Route path = "/currentSearches" element = {<CurrentSearchesPage toggleTeamId = {toggleTeamId}    getTeamId={teamId}/>} />
 
                     </Routes>
                 </RequireAuth>}

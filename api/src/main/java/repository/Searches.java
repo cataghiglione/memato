@@ -48,9 +48,20 @@ public class Searches {
                 .findFirst();
     }
     public List<Search> findActiveSearchesByUserId(Long user_id){
-        return entityManager.createQuery("SELECT s FROM Search s WHERE(s.team.user.id =:user_id AND s.isSearching  =:true)",Search.class)
+        return entityManager.createQuery("SELECT s FROM Search s WHERE(s.team.user.id =:user_id AND s.isSearching  =true)",Search.class)
                 .setParameter("user_id",user_id)
                 .getResultList();
+    }
+    public boolean deactivateSearchBySearchId(Long search_id){
+        List<Search> searches = entityManager.createQuery("SELECT s FROM Search s WHERE s.id =:search_id",Search.class)
+                .setParameter("search_id",search_id)
+                .getResultList();
+        if (!searches.isEmpty()){
+            Search search = searches.get(0);
+            search.cancelSearching();
+            return true;
+        }
+        else return false;
     }
 
     public Optional<Search> reactivateSearch(Team team, String time, Date date, String latitude, String longitude) {

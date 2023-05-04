@@ -37,6 +37,7 @@
 .saveChangesButton {
     position: absolute;
     background-color: white;
+    padding: 12px 20px;
     left: 60%;
     bottom: -30%;
     color: black;
@@ -52,6 +53,7 @@
 }
 .goBackButton{
     position: absolute;
+    padding: 12px 20px;
     background-color: white;
     left: -50%;
     bottom: -30%;
