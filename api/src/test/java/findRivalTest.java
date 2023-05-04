@@ -4,6 +4,5 @@ public class findRivalTest {
     @Test
     public void testFindRival(){
 
-        assertTrue()
     }
 }
