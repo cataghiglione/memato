@@ -74,16 +74,16 @@ export function PickTeamPage(props) {
                                     </option>
                                 ))}
                             </select>*/}
-                            <div className={`team-pick`} multiple={true} onChange={findRival}>
+                            <div className={`team-pick`} multiple={true} >
                                 {teams.map((team) => (
-                                    <button className={"team-select-option-pick"} key={team.id} value={team.id} >
+                                    <button className={"team-select-option-pick"} key={team.id} value={team.id} onClick={findRival}>
                                         {team.sport} {team.quantity}: {team.name}
                                     </button>
                                 ))}
                             </div>
-                            <div className={`team-edit`} multiple={true} onChange={changeNextTeam}>
+                            <div className={`team-edit`} multiple={true} >
                                 {teams.map((team) => (
-                                    <button className={"team-edit-option"} key={team.id} value={team.id} >
+                                    <button className={"team-edit-option"} key={team.id} value={team.id} onClick={changeNextTeam}>
                                         <PencilSquare style={{color:"black"}} />
                                     </button>
                                 ))}
