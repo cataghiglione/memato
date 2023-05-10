@@ -89,10 +89,11 @@ export function PickTeamPage(props) {
                                 ))}
                             </div>
 
+    {/*SI borro todos mis equipos confundo todo: arreglar
+    jaja el to-do de arriba tiene doble sentido, épico
+    */}
 
-
-
-                        <button className="modify-team-button" onClick={() => setEditing(!editing)}>Edit Team</button>
+                        {/*<button className="modify-team-button" onClick={() => setEditing(!editing)}>Edit Team</button>*/}
                         </div>
 
                     }
