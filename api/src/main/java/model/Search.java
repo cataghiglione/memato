@@ -83,4 +83,32 @@ public class Search {
     public Team getTeam() {
         return team;
     }
+
+    public void isSearching() {
+        isSearching = true;
+    }
+
+    public void isNotSearching(){
+        isSearching = false;
+    }
+
+    public boolean searching(){
+        return isSearching;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public int getMonth() {
+        return month;
+    }
+
+    public int getDay() {
+        return day;
+    }
+
+    public int getYear() {
+        return year;
+    }
 }

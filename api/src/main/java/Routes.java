@@ -5,6 +5,7 @@ import com.google.common.cache.CacheBuilder;
 import com.google.gson.Gson;
 import json.JsonParser;
 import model.*;
+import repository.Matches;
 import repository.Searches;
 import repository.Teams;
 import repository.Users;
@@ -14,6 +15,8 @@ import spark.Route;
 import spark.Spark;
 
 import javax.persistence.*;
+import java.time.Instant;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -41,6 +44,8 @@ public class Routes {
     public static final String UPDATE_USER_ROUTE = "/updateUser";
     public static final String GET_TEAM_BY_TEAMID = "/getTeamByOwnId";
     public static final String DEACTIVATE_SEARCH_ROUTE="/deactivateSearch";
+    public static final String NEW_MATCH ="/newMatch";
+    public static final String CONFIRM_MATCH = "/confirmMatch";
 
 
     private MySystem system;
@@ -62,6 +67,7 @@ public class Routes {
         });
         storedBasicUser(entityManagerFactory);
         storedBasicTeam(entityManagerFactory);
+        storedBasicSearch(entityManagerFactory);
         options("/*", (req, resp) -> {
             resp.status(200);
             return "ok";
@@ -89,6 +95,25 @@ public class Routes {
             );
             return res.body();
 
+        });
+
+        post(NEW_MATCH, (req, res) -> {
+            final EntityManager entityManager = entityManagerFactory.createEntityManager();
+            final Searches searches = new Searches(entityManager);
+            final CreateMatchForm form = CreateMatchForm.createFromJson(req.body());
+            Optional<Search> search1 = searches.getSearchById(Long.parseLong(form.getSearch1()));
+            Optional<Search> search2 = searches.getSearchById(Long.parseLong(form.getSearch2()));
+            system.createMatch(form, search1, search2).ifPresentOrElse(
+                    (team) -> {
+                        res.status(201);
+                        res.body("match created");
+                    },
+                    () -> {
+                        res.status(409);
+                        res.body("A match with this searches already exists");
+                    }
+            );
+            return res.body();
         });
 
         post(REGISTER_ROUTE, (req, res) -> {
@@ -352,6 +377,39 @@ public class Routes {
 
 
         });
+        // The idea is that req has the MatchId and the TeamId of the team that want to confirm
+        post(CONFIRM_MATCH, (req, res) -> {
+            return req.body();
+            //to doo
+//            final EntityManager entityManager = entityManagerFactory.createEntityManager();
+//            final Matches matches = new Matches(entityManager);
+//            final EntityManager entityManager1 = entityManagerFactory.createEntityManager();
+//            final Teams teams = new Teams(entityManager1);
+//            final CreateConfirmMatchForm form = CreateConfirmMatchForm.createFromJson(req.body());
+//            teams.findTeamsById(form.getTeamId()).ifPresentOrElse(
+//                    (team) -> {
+//                        matches.findMatch(form.getMatchId(), form.getTeamId()).ifPresentOrElse(
+//                                (match) -> {
+//                                    EntityTransaction transaction = entityManager.getTransaction();
+//                                    transaction.begin();
+//                                    matches.confirmByTeam(form.getMatchId(), form.getTeamId(), match);
+//                                    transaction.commit();
+//                                    res.body("The match is confirmed by one team");
+//                                    res.status(200);
+//                                },
+//                                () -> {
+//                                    res.body("The match doesn't exist or the team is not one of the teams of the match");
+//                                    res.status(400);
+//                                }
+//                        );
+//                    },
+//                    () -> {
+//                        res.body("The team doesn't exist");
+//                        res.status(404);
+//                    }
+//            );
+//            return res.body();
+        });
         delete(DELETE_TEAM_ROUTE, (req, res) -> {
             final EntityManager entityManager = entityManagerFactory.createEntityManager();
             final Teams teams = new Teams(entityManager);
@@ -384,7 +442,7 @@ public class Routes {
             final EntityManager entityManager = entityManagerFactory.createEntityManager();
             final Teams teams = new Teams(entityManager);
             final String id = (req.queryParams("teamId"));
-            Optional<Team> team = teams.getTeamByTeamId(Long.valueOf(id));
+            Optional<Team> team = teams.findTeamsById(id);
             if (team.isPresent()) {
                 res.body(JsonParser.toJson(team));
                 res.status(200);
@@ -507,6 +565,25 @@ public class Routes {
                     Team.create("depo", "Football", "11",  "Young", userList.get(1));
             teams.persist(kateTeam);
             teams.persist(cocaTeam);
+        }
+        tx.commit();
+        entityManager.close();
+    }
+
+    private static void storedBasicSearch(EntityManagerFactory entityManagerFactory) {
+        final EntityManager entityManager = entityManagerFactory.createEntityManager();
+        final Teams teams = new Teams(entityManager);
+        final Searches searches = new Searches(entityManager);
+        List<Team> teamList = teams.listAll();
+        EntityTransaction tx = entityManager.getTransaction();
+        tx.begin();
+        if (searches.listAll().isEmpty()) {
+            final Search kateSearch =
+                    Search.create(teamList.get(0), Date.from(Instant.now()), "Afternoon", "-34.456884", "-58.858952");
+            final Search cocaSearch =
+                    Search.create(teamList.get(1), Date.from(Instant.now()), "Afternoon", "-36.456884", "-58.858952");
+            searches.persist(kateSearch);
+            searches.persist(cocaSearch);
         }
         tx.commit();
         entityManager.close();

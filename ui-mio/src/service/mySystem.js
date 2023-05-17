@@ -197,6 +197,8 @@ export const findRival = (token, id, form, okCallback, errorCallback) => {
     })
 }
 
+
+
 export const getTeam = (token, id, okCallback, errorCallback) => {
     //                                aca agregas al path del *back* el id
     fetch(`${restApiEndpoint}/getTeamById?id=${id}`, {
