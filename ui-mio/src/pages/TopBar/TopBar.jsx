@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import "../../css/Home.css"
-import "../../css/PickTeam.css"
+import "../../css/PickTeam.scss"
 import {getTeam, listTeams} from "../../service/mySystem";
 import {useAuthProvider} from "../../auth/auth";
 import MenuSidebarWrapper, {MenuSideBar} from "./MenuSideBar";

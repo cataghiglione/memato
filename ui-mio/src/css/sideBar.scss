@@ -1,3 +1,4 @@
+@import "Login";
 .Menu{
     position: absolute;
     /*background-color: #E2E2E2;*/
@@ -28,6 +29,8 @@
     border-color: white;
 }
 .side-bar .option{
+    text-align: left;
+    @extend .button;
     padding: 16px;
     border-radius: 9px;
     transition: all 0.2s ease;
@@ -40,6 +43,7 @@
 }
 
 .side-bar .signOut-option {
+    @extend .button;
     /*padding: 16px;*/
     /*border-radius: 9px;*/
     /*margin: 20px;*/

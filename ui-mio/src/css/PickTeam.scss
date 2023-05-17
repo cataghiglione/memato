@@ -1,7 +1,8 @@
+@import "Login";
 .team-pick {
     position: absolute;
     top: 110%;
-    height: 40vh;
+    height: max-content;
     width: 100%;
     padding: 10px;
     left: 0;
@@ -16,7 +17,7 @@
     top: 110%;
     padding: 10px;
     transition: all 0.2s ease;
-    height: 40vh;
+    height: max-content;
     left: 78%;
     text-align: center;
     justify-content: center;
@@ -77,6 +78,7 @@
 }
 
 .team-select-option-pick {
+    @extend .button;
     text-transform: capitalize;
     text-align: left;
     padding: 16px;
@@ -106,6 +108,7 @@
 */
 
 .team-edit-option {
+    @extend .button;
     text-transform: capitalize;
     padding: 16px;
     border-radius: 9px;
