@@ -1,13 +1,16 @@
 import React, {Component, useEffect, useState} from 'react';
 import {useAuthProvider} from "../auth/auth";
 import {useSearchParams} from "react-router-dom";
+import {useNavigate} from "react-router";
+
 
 
 import "../css/CurrentSearches.css"
 import {currentSearches, deleteSearch} from "../service/mySystem";
+import {TopBar} from "./TopBar/TopBar";
 
 
-export const CurrentSearchesPage = () => {
+export function CurrentSearchesPage(props) {
     // const fetchTeams=(search)=>{
     //     useEffect(()=>{
     //         getTeam(token,search.teamId,()=>)
@@ -17,32 +20,85 @@ export const CurrentSearchesPage = () => {
     const auth = useAuthProvider()
     const token = auth.getToken();
     const [popupMsg, setPopupMsg] = useState('');
+    const [deleted, setDeleted] = useState(false);
     function goToHome() {
         window.location.href = "/home"
     }
-
-
     const [searches, setSearches] = useState([]);
+    const[selectedSearch, setSelectedSearch]=useState('');
+
     useEffect(() => {
         currentSearches(token, (searches) => setSearches(searches));
     }, [])
+
+
+    const ConfirmationDialog = ({ message, onConfirm, onCancel }) => {
+        return (
+            <div>
+                <p>{message}</p>
+                <button className={"confirmationButton"} onClick={onConfirm}>Confirm</button>
+                <button className={"cancelDeleteButton"} onClick={onCancel}>Cancel</button>
+            </div>
+        );
+    };
+    const [showConfirmation, setShowConfirmation] = useState(false);
+
+
     const handleDeleteClick = (search) => {
-        if (window.confirm('Are you sure you want to delete this search?')) {
-            console.log("entre a delete")
-            deleteSearch(token, search.id, ()=>{
-                setPopupMsg('Delete succesfull')
+        setShowConfirmation(true);
+        setSelectedSearch(search);
+    };
+    const handleCancel = () => {
+        setShowConfirmation(false);
+    };
+    const handleConfirm = () => {
+        deleteSearch(
+            token,
+            selectedSearch.id,
+            () => {
+                setPopupMsg('Delete successful');
                 setTimeout(() => {
                     setPopupMsg('');
-                }, 3000);
-                }, setPopupMsg('Error')
-            )
-        }
-    }
+                }, 180);
+                currentSearches(token, (searches) => setSearches(searches));
+            },
+            (error) => {
+                setPopupMsg('Error');
+                setTimeout(() => {
+                    setPopupMsg('');
+                }, 180);
+            }
+        );
+        setShowConfirmation(false);
+    };
+
+
+    // const handleDeleteClick = (search) => {
+    //     if (window.confirm('Are you sure you want to delete this search?')) {
+    //         deleteSearch(
+    //             token,
+    //             search.id,
+    //             () => {
+    //                 setPopupMsg('Delete succesfull')
+    //                 setTimeout(() => {
+    //                     setPopupMsg('');
+    //                 }, 180);
+    //                 currentSearches(token, (searches)=>setSearches(searches));
+    //             },
+    //             (error) => {
+    //                 setPopupMsg('Error')
+    //                 setTimeout(() => {
+    //                     setPopupMsg('');
+    //                 }, 180);
+    //             }
+    //         )
+    //     }
+    // }
+
     const handleGoBackClick=()=>{
         goToHome()
 
     }
-
 
     return (
         <div>
@@ -50,13 +106,23 @@ export const CurrentSearchesPage = () => {
                 <img style={{width: 218, height: "auto"}} src={require("../images/logo_solo_letras.png")} alt={"Logo"}/>
             </div>
             <div>
-                {popupMsg && <div className="searches-popup">{popupMsg}</div>}
+                {popupMsg !=="" && <div className="searches-popup">{popupMsg}</div>}
 
+            </div>
+            <div className={"confirmationMenu"}>
+                {showConfirmation && (
+                    <ConfirmationDialog
+                        message="Are you sure you want to delete this search?"
+                        onConfirm={handleConfirm}
+                        onCancel={handleCancel}
+                    />
+                )}
             </div>
 
 
+            <TopBar toggleTeamId = {props.toggleTeamId}    getTeamId={props.getTeamId}/>} />
+
             <div className={"containerPrincipal"}>
-                {console.log(searches.length)}
                 <div>
                     {searches.length > 0 && (
                         <div>

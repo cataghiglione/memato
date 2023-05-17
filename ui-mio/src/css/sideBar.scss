@@ -1,3 +1,4 @@
+@import "Login";
 .Menu{
     position: absolute;
     /*background-color: #E2E2E2;*/
@@ -28,6 +29,8 @@
     border-color: white;
 }
 .side-bar .option{
+    text-align: left;
+    @extend .button;
     padding: 16px;
     border-radius: 9px;
     transition: all 0.2s ease;
@@ -40,8 +43,9 @@
 }
 
 .side-bar .signOut-option {
+    @extend .button;
     /*padding: 16px;*/
-    border-radius: 9px;
+    /*border-radius: 9px;*/
     /*margin: 20px;*/
     width: 26vh;
     justify-content: center;
@@ -51,6 +55,7 @@
     color: #f44336;
     position: absolute;
     bottom: 0;
+    border: none;
     /*right: 0;*/
     /*border: 1px solid #da190b;*/
     /*top: 800px;*/

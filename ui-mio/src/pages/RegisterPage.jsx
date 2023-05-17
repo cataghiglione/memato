@@ -3,7 +3,7 @@ import {Link} from "react-router-dom";
 import {useState} from "react";
 import {useNavigate} from "react-router";
 import {register} from "../service/mySystem";
-import "../css/Login.css"
+import "../css/Login.scss"
 import "../images/RivalMatch_logoRecortado.png"
 
 function goToLogin() {

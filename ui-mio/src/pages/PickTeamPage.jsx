@@ -1,5 +1,5 @@
 import React, {Component, useEffect, useState} from 'react';
-import "../css/PickTeam.css"
+import "../css/PickTeam.scss"
 import {useNavigate} from "react-router";
 import {listTeams} from "../service/mySystem";
 import {useAuthProvider} from "../auth/auth";
@@ -89,10 +89,11 @@ export function PickTeamPage(props) {
                                 ))}
                             </div>
 
+    {/*SI borro todos mis equipos confundo todo: arreglar
+    jaja el to-do de arriba tiene doble sentido, épico
+    */}
 
-
-
-                        <button className="modify-team-button" onClick={() => setEditing(!editing)}>Edit Team</button>
+                        {/*<button className="modify-team-button" onClick={() => setEditing(!editing)}>Edit Team</button>*/}
                         </div>
 
                     }

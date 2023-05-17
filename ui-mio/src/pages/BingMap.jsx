@@ -7,15 +7,17 @@ export class BingMap extends Component {
         super(props);
         this.state = {
             isVisible : true,
-            bingmapKey: "ApqYZq8IsmnPRxOON1m_mY9eGEZqjDawW2cleubNdcVT5CbVMU8snXUF4qku9DcW", //Don't use this key in your environment.
+            bingmapKey: "ApqYZq8IsmnPRxOON1m_mY9eGEZqjDawW2cleubNdcVT5CbVMU8snXUF4qku9DcW",
             infoboxesWithPushPins: [],
-            searchInput: "", // Future implementation
+            searchInput: "", // Future implementation (NOW MOTHERFUCKER)
             getLocationHandledData: "",
+            searchForm: false,
         };
         this.UndoPinSelected = this.UndoPinSelected.bind(this);
     }
 
     handleSubmit(event){
+        event.preventDefault();
         if(this.state.searchInput !== null && this.state.searchInput !== ""){
             this.setState({
                 boundary: {
@@ -31,7 +33,6 @@ export class BingMap extends Component {
                 }
             })
         }
-        event.preventDefault();
     }
     GetLocationHandled(location) {
         const newInfoboxesWithPushPins = [{
@@ -52,6 +53,7 @@ export class BingMap extends Component {
             }
         });
     }
+
     GetEventHandled(callbackData){
         console.log(callbackData);
     }
@@ -71,15 +73,28 @@ export class BingMap extends Component {
                         <button onClick={this.UndoPinSelected}>Change location</button>
                         <br></br>
                         (By pressing "change location" the current location mantains itself until you press on the new location)
+                        <span style={{'display':'inline-block'}}>
+
+                                <div onSubmit={this.state.searchForm && this.handleSubmit.bind(this)}>
+                                    <input type="text" placeholder="search place, pin, city"
+                                           onChange={(event)=>{this.setState({searchInput:event.target.value})}}
+                                           value={this.state.searchInput}>
+                                    </input>
+                                    <button type="submit" value="Search" onClick={() => {
+                                        if (this.state.searchForm) this.handleSubmit.bind(this)
+                                        this.setState({searchForm: true})}}> Submit</button>
+                                </div>
+                            </span>
                         <ReactBingmaps
                             id = "seven"
                             className = "customClass"
-                            center = {[13.0827, 80.2707]}
+                            center = {[-34.45676114698318, -58.85862904287449]}
                             bingmapKey = {this.state.bingmapKey}
                             getLocation = {
                                 {addHandler: "click", callback:this.GetLocationHandled.bind(this), }
                             }
                             infoboxesWithPushPins={this.state.infoboxesWithPushPins}
+                            boundary = {this.state.boundary}
                         >
                         </ReactBingmaps>
                         {/*<button onClick={goToFindRival}>Confirm location</button>*/}
