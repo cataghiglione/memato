@@ -109,7 +109,7 @@ public class Teams {
         return result;
     }
     public Optional<Team> getTeamByTeamId(Long teamId){
-        return entityManager.createQuery("SELECT t FROM Team T WHERE t.id = :teamId")
+        return entityManager.createQuery("SELECT T FROM Team T WHERE T.id = :teamId")
                 .setParameter("teamId",teamId)
                 .getResultList().stream()
                 .findFirst();

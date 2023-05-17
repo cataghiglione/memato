@@ -1,4 +1,5 @@
 import model.*;
+import repository.Matches;
 import repository.Searches;
 import repository.Teams;
 import repository.Users;
@@ -38,6 +39,13 @@ public class MySystem {
             return teams.exists(form.getName(), user) ? Optional.empty() : Optional.of(teams.createTeam(form, user));
         });
 
+    }
+
+    public Optional<Match> createMatch(CreateMatchForm form, Optional<Search> search1, Optional<Search> search2) {
+        return runInTransaction(datasource -> {
+            final Matches matches = datasource.matches();
+            return matches.createMatch(form, search1, search2);
+        });
     }
 
     public Optional<Search> findOrCreateSearch(CreateSearchForm form, Team team) {

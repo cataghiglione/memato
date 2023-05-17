@@ -1,3 +1,4 @@
+import repository.Matches;
 import repository.Searches;
 import repository.Teams;
 import repository.Users;
@@ -9,11 +10,13 @@ public class MySystemRepository {
     private final Users users;
     private final Teams teams;
     private final Searches searches;
+    private final Matches matches;
 
     public MySystemRepository(EntityManager entityManager) {
         this.users = new Users(entityManager);
         this.teams=new Teams(entityManager);
         this.searches = new Searches(entityManager);
+        this.matches = new Matches(entityManager);
     }
 
     public static MySystemRepository create(EntityManager entityManager) {
@@ -29,5 +32,8 @@ public class MySystemRepository {
 
     public Searches searches() {
         return searches;
+    }
+    public Matches matches() {
+        return matches;
     }
 }

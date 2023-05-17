@@ -112,5 +112,20 @@ public class Searches {
 
     }
 
+    public Optional<Search> getSearchById(Long searchId){
+        return entityManager.createQuery("SELECT S FROM Search S WHERE S.id = :searchId")
+                .setParameter("searchId", searchId)
+                .getResultList().stream()
+                .findFirst();
+    }
+
+    public Search persist(Search search) {
+        entityManager.persist(search);
+        return search;
+    }
+
+    public List<Search> listAll() {
+        return entityManager.createQuery("SELECT u FROM Search u", Search.class).getResultList();
+    }
 
 }

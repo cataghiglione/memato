@@ -172,6 +172,12 @@ export function FindRivalPage(props) {
             </div>
         )
     };
+
+    function playButton() {
+        
+        return undefined;
+    }
+
     return (
 
         <div>
@@ -194,7 +200,7 @@ export function FindRivalPage(props) {
                 <br/>
                 Sport: {team.sport}
             </div>
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={rivalMenuOpen && handleSubmit}>
 
 
                 <div className={"datePicker"}>
@@ -273,7 +279,7 @@ export function FindRivalPage(props) {
                                         <p style={{marginBottom: '15px'}}> Team puntuality: {team.puntuality}</p>
                                     </div>
                                     <br/><br/>
-                                    <button className={"button-play"}>
+                                    <button className={"button-play"} onClick={playButton()}>
                                         Play
                                     </button>
                                 </div>
