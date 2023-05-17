@@ -36,6 +36,9 @@ const App = () =>{
     useEffect(() => {
         localStorage.setItem('teamId', JSON.stringify(teamId));
     }, [teamId]);
+    useEffect(() => {
+        localStorage.setItem('teamId', 0);
+    })
 
 
     const toggleTeamId = (value) => {
