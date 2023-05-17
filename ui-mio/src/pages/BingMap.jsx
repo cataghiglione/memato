@@ -70,11 +70,7 @@ export class BingMap extends Component {
                     <div className = "map-one">
                         SELECT THE LOCATION OF YOUR TEAM
                         <br></br>
-                        <button onClick={this.UndoPinSelected}>Change location</button>
-                        <br></br>
-                        (By pressing "change location" the current location mantains itself until you press on the new location)
                         <span style={{'display':'inline-block'}}>
-
                                 <div onSubmit={this.state.searchForm && this.handleSubmit.bind(this)}>
                                     <input type="text" placeholder="search place, pin, city"
                                            onChange={(event)=>{this.setState({searchInput:event.target.value})}}
