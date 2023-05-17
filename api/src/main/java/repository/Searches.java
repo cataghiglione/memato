@@ -53,7 +53,7 @@ public class Searches {
                 .getResultList();
     }
     public boolean deactivateSearchBySearchId(Long search_id){
-        int updatedCount = entityManager.createQuery("delete Search  WHERE id = :search_id")
+        int updatedCount = entityManager.createQuery("UPDATE Search  set isSearching =false WHERE id = :search_id")
                 .setParameter("search_id", search_id)
                 .executeUpdate();
         return updatedCount == 1;

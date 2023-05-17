@@ -93,7 +93,7 @@
 }
 .confirmationMenu{
     position: fixed;
-    border: 2px solid black;
+    /*border: 2px solid black;*/
     top: 15%;
     left: 50%;
     transform: translate(-50%, -50%);

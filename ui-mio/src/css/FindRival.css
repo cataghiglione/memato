@@ -153,7 +153,7 @@
 
 .team-select {
     left: 39%;
-    top: 300px;
+    top: 350px;
     height: auto;
     width: 48vh;
     background: radial-gradient(circle, rgb(255, 255, 255) 70%, rgb(243, 243, 243) 100%);
@@ -169,8 +169,7 @@
     justify-content: flex-start;
     flex-direction: column;
     align-items: flex-start;
-    position: absolute;
-    margin: 15px;
+    position: fixed;
 }
 .team-select .button-play{
     position: absolute;
@@ -185,9 +184,15 @@
     /*display: flex;*/
     background-color: white;
     color: black;
+    transition-duration: 0.4s;
+
     /*right: 0;*/
     /*justify-content: flex-end;*/
     /*align-items: flex-end;*/
+}
+.team-select .button-play:hover{
+    background-color: #4CAF50;
+    color: white;
 }
 .title{
     position: absolute;

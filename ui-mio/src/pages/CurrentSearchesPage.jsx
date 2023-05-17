@@ -120,12 +120,14 @@ export function CurrentSearchesPage(props) {
             </div>
 
 
+
             <TopBar toggleTeamId = {props.toggleTeamId}    getTeamId={props.getTeamId}/>} />
 
             <div className={"containerPrincipal"}>
                 <div>
                     {searches.length > 0 && (
                         <div>
+
                             <div className={"searchesTitle"}>
                                 Your current searches
                             </div>

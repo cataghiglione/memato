@@ -268,9 +268,9 @@ export function FindRivalPage(props) {
                         {teams.map((team) => (
                             <div>
                                 <div className={"team-select"}>
-                                    <div className={"info"}>
-                                        <span style={{fontWeight: 'bold', marginBottom: '15px'}}> Team name: {team.name}</span>
-                                        <p style={{marginBottom: '15px'}}> Team puntuality: {team.puntuality}</p>
+                                    <div className={"team-select.info"}>
+                                        <span style={{fontWeight: 'bold', marginLeft:'5px',marginBottom: '15px'}}> Team name: {team.name}</span>
+                                        <p style={{marginLeft:'5px',marginBottom: '15px'}}> Age group: {team.age_group}</p>
                                     </div>
                                     <br/><br/>
                                     <button className={"button-play"}>
