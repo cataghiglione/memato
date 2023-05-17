@@ -41,7 +41,7 @@
 
 .side-bar .signOut-option {
     /*padding: 16px;*/
-    border-radius: 9px;
+    /*border-radius: 9px;*/
     /*margin: 20px;*/
     width: 26vh;
     justify-content: center;
@@ -51,6 +51,7 @@
     color: #f44336;
     position: absolute;
     bottom: 0;
+    border: none;
     /*right: 0;*/
     /*border: 1px solid #da190b;*/
     /*top: 800px;*/

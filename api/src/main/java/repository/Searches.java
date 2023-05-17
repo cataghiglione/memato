@@ -53,15 +53,16 @@ public class Searches {
                 .getResultList();
     }
     public boolean deactivateSearchBySearchId(Long search_id){
-        List<Search> searches = entityManager.createQuery("SELECT s FROM Search s WHERE s.id =:search_id",Search.class)
-                .setParameter("search_id",search_id)
-                .getResultList();
-        if (!searches.isEmpty()){
-            Search search = searches.get(0);
-            search.cancelSearching();
-            return true;
-        }
-        else return false;
+        int updatedCount = entityManager.createQuery("delete Search  WHERE id = :search_id")
+                .setParameter("search_id", search_id)
+                .executeUpdate();
+        return updatedCount == 1;
+
+        //        if (!searches.isEmpty()){
+        //            Search search = searches.get(0);
+        //            search.cancelSearching();
+        //            return true;
+        //        }
     }
 
     public Optional<Search> reactivateSearch(Team team, String time, Date date, String latitude, String longitude) {

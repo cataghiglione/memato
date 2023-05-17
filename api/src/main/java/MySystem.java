@@ -51,6 +51,17 @@ public class MySystem {
         });
 
     }
+    public boolean deactivateSearch(Long id){
+        return runInTransaction(datasource ->{
+            final Searches searches = datasource.searches();
+            try{
+                return searches.deactivateSearchBySearchId(id);
+            }
+            catch (Exception e){
+                throw new RuntimeException(e);
+            }
+        });
+    }
 
 
     public Optional<User> findUserByEmail(String email) {

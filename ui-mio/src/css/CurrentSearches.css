@@ -50,20 +50,15 @@
 }
 .searches-popup {
     position: fixed;
-    top: 0;
-    left: 0;
+    top: 8%;
+    left: 45%;
     z-index: 9999;
     background-color: #fff;
     border: 1px solid #000;
     padding: 10px;
-    display: none;
     transition: opacity 0.3s ease-in-out;
-    opacity: 1;
 }
 
-.searches-popup.hidden {
-    opacity: 0;
-}
 .noActiveSearches{
     position: absolute;
     font-size: xx-large;
@@ -95,6 +90,40 @@
 .goToUserButton:hover{
     background-color: rebeccapurple;
     color: white;
+}
+.confirmationMenu{
+    position: fixed;
+    border: 2px solid black;
+    top: 15%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 9999;
+    background: white;
+
+}
+.confirmationButton{
+    background-color: #26489a;
+    color: white;
+    border: 1px solid #26489a;
+    border-radius: 9px;
+    margin-right: 10px;
+    margin-left: 5px;
+}
+.cancelDeleteButton{
+    background-color: white;
+    color: #26489a;
+    border: 1px solid #ccc;
+    border-radius: 9px;
+    margin-right: 10px;
+    margin-left: 5px;
+}
+.confirmationButton:hover{
+    background: red;
+    color: white;
+}
+.cancelDeleteButton:hover{
+    background-color: white;
+    color: green;
 }
 
 

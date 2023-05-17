@@ -44,6 +44,7 @@ export function MenuSideBar(props){
                             {props.getTeamId !== 0 && <option className={"option"} key={"/editTeam"} value="/editTeam">Team Settings</option>}
                             {props.getTeamId !== 0 && <option className={"option"} key={"/findRival"} value="/findRival">Find Rival</option>}
                             {props.getTeamId !== 0 && <option className={"option"} key={"/newTeam"} value="/newTeam">New Team</option>}
+                            {props.getTeamId !== 0 && <option className={"option"} key={"/currentSearches"} value="/currentSearches">Current Searches</option>}
                             <option className={"option"} key={"/user"} value="/user">Profile</option>
                         </select>
                         {/*<br/><br/>*/}

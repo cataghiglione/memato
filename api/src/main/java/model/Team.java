@@ -35,18 +35,18 @@ public class Team {
     public Team() {
     }
 
-    private Team(String name, String sport, String quantity, int puntuality, String age_group,  User user) {
+    private Team(String name, String sport, String quantity,  String age_group,  User user) {
         this.name = name;
         this.sport = sport;
         this.quantity = quantity;
-        this.puntuality = puntuality;
+//        this.puntuality = puntuality;
         this.age_group = age_group;
 //        this.zone = zone;
         this.user = user;
     }
 
-    public static Team create(String name, String sport, String quantity, int puntuality, String group,  User user) {
-        return new Team(name, sport, quantity, puntuality, group, user);
+    public static Team create(String name, String sport, String quantity, String group,  User user) {
+        return new Team(name, sport, quantity, group, user);
     }
 
 //    public String getZone() {

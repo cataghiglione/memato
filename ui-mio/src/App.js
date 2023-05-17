@@ -13,6 +13,7 @@ import { RequireAuth } from "./components/RequireAuth";
 import{CurrentSearchesPage} from "./pages/CurrentSearchesPage";
 import {useEffect, useState} from "react";
 import {useNavigate} from "react-router";
+import {ConfirmationsPage} from "./pages/ConfirmationsPage";
 
 
 const App = () =>{
@@ -20,7 +21,8 @@ const App = () =>{
         from the localStorage using the getItem method. If the value is not
         found in localStorage, the initial state is set to 0.*/
     const [teamId, setTeamId] = useState(() => {
-        return 0;
+        const storedTeamId = localStorage.getItem('teamId');
+        return storedTeamId !== null ? JSON.parse(storedTeamId) : 0;
     });
 
     const navigate = useNavigate();
@@ -46,7 +48,6 @@ const App = () =>{
             <Route path="/" element={<PublicPage />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/register" element={<RegisterPage />} />
-            <Route path="/currentSearches" element={<CurrentSearchesPage/>}/>
             {/* Use RequireAuth to protect all other routes */}
             <Route
                 path="/*"
@@ -59,6 +60,7 @@ const App = () =>{
                         <Route path="/findRival" element={<FindRivalPage toggleTeamId = {toggleTeamId}    getTeamId={teamId}/>} />
                         <Route path = "/editTeam" element = {<EditTeamPage toggleTeamId = {toggleTeamId}    getTeamId={teamId}/>} />
                         <Route path = "/currentSearches" element = {<CurrentSearchesPage toggleTeamId = {toggleTeamId}    getTeamId={teamId}/>} />
+                        <Route path = "/pendingConfirmations" element={<ConfirmationsPage toggleTeamId = {toggleTeamId} getTeamId={teamId}/>}/>
 
                     </Routes>
                 </RequireAuth>}

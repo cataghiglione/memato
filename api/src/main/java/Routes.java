@@ -396,10 +396,8 @@ public class Routes {
 
         });
         post(DEACTIVATE_SEARCH_ROUTE,(req,res)->{
-            final EntityManager entityManager = entityManagerFactory.createEntityManager();
-            final Searches searches=new Searches(entityManager);
             final Long id = Long.valueOf(req.body());
-            boolean state = searches.deactivateSearchBySearchId(id);
+            boolean state = system.deactivateSearch(id);
             if (state){
                 res.status(200);
             }
@@ -504,9 +502,9 @@ public class Routes {
         tx.begin();
         if (teams.listAll().isEmpty()) {
             final Team kateTeam =
-                    Team.create("river", "Football", "11", 0, "Young", userList.get(0));
+                    Team.create("river", "Football", "11",  "Young", userList.get(0));
             final Team cocaTeam =
-                    Team.create("depo", "Football", "11", 0, "Young", userList.get(1));
+                    Team.create("depo", "Football", "11",  "Young", userList.get(1));
             teams.persist(kateTeam);
             teams.persist(cocaTeam);
         }
