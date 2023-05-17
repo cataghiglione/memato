@@ -1,4 +1,4 @@
-import "../../css/sideBar.css";
+import "../../css/sideBar.scss";
 import {useState} from "react";
 import * as React from "react";
 import {useLocation, useNavigate} from "react-router";

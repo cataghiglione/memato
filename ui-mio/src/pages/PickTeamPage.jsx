@@ -1,5 +1,5 @@
 import React, {Component, useEffect, useState} from 'react';
-import "../css/PickTeam.css"
+import "../css/PickTeam.scss"
 import {useNavigate} from "react-router";
 import {listTeams} from "../service/mySystem";
 import {useAuthProvider} from "../auth/auth";

@@ -9,6 +9,7 @@ import { UserPage } from "./pages/UserPage";
 import{EditTeamPage} from "./pages/EditTeamPage";
 import { NewTeamPage } from "./pages/NewTeamPage";
 import { FindRivalPage } from "./pages/FindRivalPage";
+import {BingMap} from "./pages/BingMap";
 import { RequireAuth } from "./components/RequireAuth";
 import{CurrentSearchesPage} from "./pages/CurrentSearchesPage";
 import {useEffect, useState} from "react";
@@ -59,7 +60,7 @@ const App = () =>{
                         <Route path="/findRival" element={<FindRivalPage toggleTeamId = {toggleTeamId}    getTeamId={teamId}/>} />
                         <Route path = "/editTeam" element = {<EditTeamPage toggleTeamId = {toggleTeamId}    getTeamId={teamId}/>} />
                         <Route path = "/currentSearches" element = {<CurrentSearchesPage toggleTeamId = {toggleTeamId}    getTeamId={teamId}/>} />
-
+                        <Route path = "/ReactMap" element = {<BingMap toggleTeamId = {toggleTeamId}    getTeamId={teamId}/>} />
                     </Routes>
                 </RequireAuth>}
             />
