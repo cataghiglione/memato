@@ -34,19 +34,6 @@ public class Searches {
         }
     }
 
-    private Optional<Search> findSearchByTeam(String team_id, String time, int month, int day, int year,String latitude, String longitude) {
-        return entityManager.createQuery("SELECT s FROM Search s WHERE (cast(s.team.id as string) LIKE :team_id AND s.time LIKE :time AND s.day = :day AND s.month = :month AND s.year = :year AND s.latitude LIKE :latitude AND s.longitude LIKE :longitude)", Search.class)
-                .setParameter("team_id", team_id)
-                .setParameter("month", month)
-                .setParameter("year", year)
-                .setParameter("day", day)
-                .setParameter("time", time)
-                .setParameter("latitude",latitude)
-                .setParameter("longitude",longitude)
-                .getResultList()
-                .stream()
-                .findFirst();
-    }
     public List<Search> findActiveSearchesByUserId(Long user_id){
         return entityManager.createQuery("SELECT s FROM Search s WHERE(s.team.user.id =:user_id AND s.isSearching  =true)",Search.class)
                 .setParameter("user_id",user_id)
@@ -73,23 +60,6 @@ public class Searches {
     public boolean exists(String id, String time, Date date,String latitude, String longitude){
         return findSearchByTeam(id,time,date.getMonth(),date.getDate(), date.getYear(),latitude,longitude).isPresent();
     }
-    private static boolean isInA5KmRadius(double lat1, double lon1, double lat2, double lon2) {
-        //Haversine formula
-        final int earthRadius = 6371; //
-
-        double distLat = Math.toRadians(lat2 - lat1);
-        double distLon = Math.toRadians(lon2 - lon1);
-
-        double a = Math.sin(distLat/2) * Math.sin(distLat/2) +
-                Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2)) *
-                        Math.sin(distLon/2) * Math.sin(distLon/2);
-
-        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-
-        double distance = earthRadius * c;
-
-        return distance <= 5;
-    }
 
 
     public List<Team> findCandidates(String id, String time, Date date, String sport, String quantity, String latitude, String longitude){
@@ -114,7 +84,7 @@ public class Searches {
     }
 
     public Optional<Search> getSearchById(Long searchId){
-        return entityManager.createQuery("SELECT S FROM Search S WHERE S.id = :searchId")
+        return entityManager.createQuery("SELECT s FROM Search s WHERE s.id = :searchId", Search.class)
                 .setParameter("searchId", searchId)
                 .getResultList().stream()
                 .findFirst();
@@ -127,6 +97,66 @@ public class Searches {
 
     public List<Search> listAll() {
         return entityManager.createQuery("SELECT u FROM Search u", Search.class).getResultList();
+    }
+
+
+    /**
+     * It gets an alike search of the search that it gets as a parameter, but it has to be part of the team
+     * @param search
+     * @param team_id
+     * @return
+     */
+    public Optional<Search> getSearchBySearchAndTeam(Search search, String team_id){
+        Optional<Search> search1 = findSearchByTeam(team_id, search.getTime(), search.getMonth(), search.getDay(), search.getYear());
+        if(search1.isPresent())
+            if(isInA5KmRadius(Double.parseDouble(search1.get().getLatitude()), Double.parseDouble(search1.get().getLongitude()), Double.parseDouble(search.getLatitude()), Double.parseDouble(search.getLongitude()))){
+                return search1;
+            }
+        return Optional.empty();
+    }
+
+    private Optional<Search> findSearchByTeam(String team_id, String time, int month, int day, int year) {
+        return entityManager.createQuery("SELECT s FROM Search s WHERE (cast(s.team.id as string) LIKE :team_id AND s.time LIKE :time AND s.day = :day AND s.month = :month AND s.year = :year)", Search.class)
+                .setParameter("team_id", team_id)
+                .setParameter("month", month)
+                .setParameter("year", year)
+                .setParameter("day", day)
+                .setParameter("time", time)
+                .getResultList()
+                .stream()
+                .findFirst();
+    }
+
+    private Optional<Search> findSearchByTeam(String team_id, String time, int month, int day, int year,String latitude, String longitude) {
+        return entityManager.createQuery("SELECT s FROM Search s WHERE (cast(s.team.id as string) LIKE :team_id AND s.time LIKE :time AND s.day = :day AND s.month = :month AND s.year = :year AND s.latitude LIKE :latitude AND s.longitude LIKE :longitude)", Search.class)
+                .setParameter("team_id", team_id)
+                .setParameter("month", month)
+                .setParameter("year", year)
+                .setParameter("day", day)
+                .setParameter("time", time)
+                .setParameter("latitude",latitude)
+                .setParameter("longitude",longitude)
+                .getResultList()
+                .stream()
+                .findFirst();
+    }
+
+    private static boolean isInA5KmRadius(double lat1, double lon1, double lat2, double lon2) {
+        //Haversine formula
+        final int earthRadius = 6371; //
+
+        double distLat = Math.toRadians(lat2 - lat1);
+        double distLon = Math.toRadians(lon2 - lon1);
+
+        double a = Math.sin(distLat/2) * Math.sin(distLat/2) +
+                Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2)) *
+                        Math.sin(distLon/2) * Math.sin(distLon/2);
+
+        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+
+        double distance = earthRadius * c;
+
+        return distance <= 5;
     }
 
 }

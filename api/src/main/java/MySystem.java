@@ -41,10 +41,10 @@ public class MySystem {
 
     }
 
-    public Optional<Match> createMatch(CreateMatchForm form, Optional<Search> search1, Optional<Search> search2) {
+    public Optional<Match> createMatch(Search search1, Search search2) {
         return runInTransaction(datasource -> {
             final Matches matches = datasource.matches();
-            return matches.createMatch(form, search1, search2);
+            return matches.createMatch(search1, search2);
         });
     }
 

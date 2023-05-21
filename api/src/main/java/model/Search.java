@@ -111,4 +111,8 @@ public class Search {
     public int getYear() {
         return year;
     }
+
+    public long getId() {
+        return id;
+    }
 }

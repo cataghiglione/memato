@@ -2,7 +2,7 @@ import React, {Component, useEffect, useState} from 'react';
 import "../css/FindRival.css"
 import "../css/Home.css"
 import {useLocation, useNavigate} from "react-router";
-import {findRival, getTeam} from "../service/mySystem";
+import {findRival, getTeam, newMatch} from "../service/mySystem";
 import {useAuthProvider} from "../auth/auth";
 import {useSearchParams} from "react-router-dom";
 
@@ -82,6 +82,7 @@ export function FindRivalPage(props) {
 
     const [teams, setTeams] = useState([]);
     const [team, setTeam] = useState('');
+    const [searchId, setSearchId] = useState(0)
     const location = useLocation();
     const id = props.getTeamId;
 
@@ -113,17 +114,33 @@ export function FindRivalPage(props) {
     }
     const findRivalMethod = (id, search) => {
         if (rivalMenuOpen) {
-            findRival(token, id, search, (teams) => {
-                    setTeams(teams)
+            findRival(token, id, search, (res) => {
+                    console.log(res)
+                    setTeams(res.teams)
+                    setSearchId(res.searchId)
                 },
                 () => {
                     setErrorMsg('Search already exists!')
                 })
         }
     }
-    const requestRivals = (user) => {
 
+    function playButton(id) {
+        newMatch(token, {
+                teamId: id,
+                searchId: searchId
+            }, (res)=>{
+                console.log(res)
+            },
+            ()=>{
+                console.log('A match with this searches already exists!')
+            }
+        )
     }
+
+    // const requestRivals = (user) => {
+    //
+    // }
     const timeChange = (event) => {
         setTime(event.target.value)
     }
@@ -172,11 +189,6 @@ export function FindRivalPage(props) {
             </div>
         )
     };
-
-    function playButton() {
-        
-        return undefined;
-    }
 
     return (
 
@@ -279,7 +291,7 @@ export function FindRivalPage(props) {
                                         <p style={{marginBottom: '15px'}}> Team puntuality: {team.puntuality}</p>
                                     </div>
                                     <br/><br/>
-                                    <button className={"button-play"} onClick={playButton()}>
+                                    <button className={"button-play"} onClick={()=>playButton(team.id)}>
                                         Play
                                     </button>
                                 </div>

@@ -12,11 +12,10 @@ public class Matches {
         this.entityManager = entityManager;
     }
 
-    public Optional<Match> createMatch(CreateMatchForm creationValues, Optional<Search> search1, Optional<Search> search2) {
-        if(!(search1.isPresent() && search2.isPresent())) return Optional.empty();
-        if (findMatchByTeamId(creationValues.getSearch1(), creationValues.getSearch2()).isPresent())
+    public Optional<Match> createMatch(Search search1, Search search2) {
+        if (findMatchByTeamId(Long.toString(search1.getId()), Long.toString(search2.getId())).isPresent())
             return Optional.empty();
-        final Match newMatch = Match.create(search1.get(), search2.get());
+        final Match newMatch = Match.create(search1, search2);
         entityManager.persist(newMatch);
         return Optional.of(newMatch);
     }

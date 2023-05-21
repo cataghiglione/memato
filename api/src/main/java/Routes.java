@@ -5,7 +5,6 @@ import com.google.common.cache.CacheBuilder;
 import com.google.gson.Gson;
 import json.JsonParser;
 import model.*;
-import repository.Matches;
 import repository.Searches;
 import repository.Teams;
 import repository.Users;
@@ -21,6 +20,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
 
 import static java.util.concurrent.TimeUnit.MINUTES;
 import static json.JsonParser.toJson;
@@ -97,20 +97,34 @@ public class Routes {
 
         });
 
-        post(NEW_MATCH, (req, res) -> {
+        authorizedPost(NEW_MATCH, (req, res) -> {
             final EntityManager entityManager = entityManagerFactory.createEntityManager();
             final Searches searches = new Searches(entityManager);
             final CreateMatchForm form = CreateMatchForm.createFromJson(req.body());
-            Optional<Search> search1 = searches.getSearchById(Long.parseLong(form.getSearch1()));
-            Optional<Search> search2 = searches.getSearchById(Long.parseLong(form.getSearch2()));
-            system.createMatch(form, search1, search2).ifPresentOrElse(
-                    (team) -> {
-                        res.status(201);
-                        res.body("match created");
+            getUser(req).ifPresentOrElse(
+                    (user) -> {
+                        searches.getSearchById(Long.parseLong(form.getSearchId())).ifPresent(
+                                (search1) -> {
+                                    searches.getSearchBySearchAndTeam(search1, form.getTeamId()).ifPresent(
+                                            (search2) -> {
+                                                system.createMatch(search1, search2).ifPresentOrElse(
+                                                        (match) -> {
+                                                            res.status(201);
+                                                            res.body("match created");
+                                                        },
+                                                        () -> {
+                                                            res.status(409);
+                                                            res.body("A match with this searches already exists");
+                                                        }
+                                                );
+                                            }
+                                    );
+                                }
+                        );
                     },
                     () -> {
-                        res.status(409);
-                        res.body("A match with this searches already exists");
+                        res.status(404);
+                        res.body("Invalid Token");
                     }
             );
             return res.body();
@@ -288,12 +302,14 @@ public class Routes {
             final Teams teams = new Teams(entityManager);
             final String id = (req.queryParams("id"));
             Optional<User> user = getUser(req);
+            AtomicLong searchId = new AtomicLong();
 
             teams.findTeamsById(id).ifPresent(
                     (team) -> {
                         final CreateSearchForm searchForm = CreateSearchForm.createFromJson(req.body());
                         system.findOrCreateSearch(searchForm, team).ifPresentOrElse(
                                 (search) -> {
+                                    searchId.set(search.getId());
                                     res.status(201);
                                 },
                                 () -> {
@@ -304,8 +320,8 @@ public class Routes {
                         if (user.isPresent()) {
                             String user_id = user.get().getId().toString();
                             List<Team> candidates = searches.findCandidates(user_id, searchForm.getTime(), searchForm.getDate(), team.getSport(), team.getQuantity(), searchForm.getLatitude(), searchForm.getLongitude());
-                            res.body(JsonParser.toJson(candidates));
-
+                            NewSearchResponse newSearchResponse = new NewSearchResponse(searchId.get(), candidates);
+                            res.body(JsonParser.toJson(newSearchResponse));
                         }
 
                     }

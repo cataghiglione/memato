@@ -3,59 +3,9 @@ import {useHistory} from 'react-router-dom';
 
 const restApiEndpoint = "http://localhost:4326"
 
-
-export const currentSearches = (token, okCallback, errorCallback) => {
-    fetch(`${restApiEndpoint}/currentSearches`, {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' + token
-        }
-    }).then(resp => {
-        if (resp.status === 200) {
-            resp.json().then(teams => okCallback(teams))
-        } else {
-            errorCallback("Not able to fetch searches")
-        }
-    })
-
-
-}
-export const deleteSearch=(token, searchId, okCallback, errorCallback)=>{
-    fetch(`${restApiEndpoint}/deactivateSearch`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' + token
-        },
-        body:JSON.stringify(searchId)
-
-    }).then(resp=>{
-        if (resp.status===200){
-            okCallback()
-        }
-        else errorCallback()
-    })
-}
-export const teamById = (token, teamId, okCallback, errorCallback) => {
-    fetch(`${restApiEndpoint}/getTeamByOwnId`, {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' + token
-        },
-        body: JSON.stringify(teamId)
-
-    }).then(resp=>{
-        if (resp.status ===200){
-            resp.json().then(team => okCallback(team))
-        }
-        else errorCallback()
-
-    })
-
-}
-
+/*
+    POST
+ */
 export const login = (credentials, okCallback, errorCallback) => {
     fetch(`${restApiEndpoint}/auth`, {
         method: 'POST',
@@ -105,36 +55,155 @@ export const newTeam = (token, user, okCallback, errorCallback) => {
     })
 }
 
-export const signOut = (token, okCallback, errorCallback) => {
-    fetch(`${restApiEndpoint}/auth`, {
-        method: 'DELETE',
+export const updateTeam = (token, id, form, okCallback, errorCallback) => {
+    fetch(`${restApiEndpoint}/updateTeam?id=${id}`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token
+        },
+        body: JSON.stringify({id, ...form})
+    }).then(resp => {
+        if (resp.status === 200) {
+            okCallback()
+        } else errorCallback()
+    })
+
+}
+export const updateUser = (token, form, okCallback, errorCallback) => {
+    fetch(`${restApiEndpoint}/updateUser`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token
+        },
+        body: JSON.stringify({...form})
+    }).then(resp => {
+        if (resp.status === 200) {
+            okCallback()
+        } else errorCallback()
+    })
+}
+
+export const deleteSearch=(token, searchId, okCallback, errorCallback)=>{
+    fetch(`${restApiEndpoint}/deactivateSearch`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token
+        },
+        body:JSON.stringify(searchId)
+
+    }).then(resp=>{
+        if (resp.status===200){
+            okCallback()
+        }
+        else errorCallback()
+    })
+}
+
+
+export const findRival = (token, id, form, okCallback, errorCallback) => {
+    fetch(`${restApiEndpoint}/newSearch?id=${id}`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token
+
+        },
+
+        body: JSON.stringify({id, ...form})
+    }).then(resp => {
+        if (resp.status === 201 || resp.status === 200) {
+            console.log(resp.body)
+             return resp.json().then(response => okCallback(response))
+            // okCallback(resp)
+        } else {
+            errorCallback()
+        }
+
+    })
+}
+
+export const newMatch = (token, form, okCallback, errorCallback) => {
+    fetch(`${restApiEndpoint}/newMatch`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token
+        },
+
+        body: JSON.stringify({...form})
+    }).then(resp => {
+        if (resp.status === 201 || resp.status === 200) {
+            okCallback(resp)
+        } else {
+            errorCallback()
+        }
+
+    })
+}
+/*
+    GET
+ */
+
+export const getTeam = (token, id, okCallback, errorCallback) => {
+    //                                aca agregas al path del *back* el id
+    fetch(`${restApiEndpoint}/getTeamById?id=${id}`, {
+        method: 'GET',
         headers: {
             'Content-Type': 'application/json',
             'Authorization': 'Bearer ' + token
         }
     }).then(resp => {
         if (resp.status === 200) {
-            okCallback();
+            // var mydata = JSON.parse(resp);
+            // okCallback(mydata)
+            resp.json().then(value => {
+                okCallback(JSON.parse(value));
+            }).catch(err => {
+                console.log(err);
+            });
         } else {
-            errorCallback("Could not sign out")
+            errorCallback()
+        }
+        return resp.body;
+    })
+}
+
+export const currentSearches = (token, okCallback, errorCallback) => {
+    fetch(`${restApiEndpoint}/currentSearches`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token
+        }
+    }).then(resp => {
+        if (resp.status === 200) {
+            resp.json().then(teams => okCallback(teams))
+        } else {
+            errorCallback("Not able to fetch searches")
         }
     })
 }
 
-export const deleteAccount = (token, okCallback, errorCallback) => {
-    fetch(`${restApiEndpoint}/deleteAccount`, {
-        method: 'DELETE',
+export const teamById = (token, teamId, okCallback, errorCallback) => {
+    fetch(`${restApiEndpoint}/getTeamByOwnId`, {
+        method: 'GET',
         headers: {
             'Content-Type': 'application/json',
             'Authorization': 'Bearer ' + token
+        },
+        body: JSON.stringify(teamId)
+
+    }).then(resp=>{
+        if (resp.status ===200){
+            resp.json().then(team => okCallback(team))
         }
-    }).then(resp => {
-        if (resp.status === 200) {
-            okCallback();
-        } else {
-            errorCallback("Could not delete the account")
-        }
+        else errorCallback()
+
     })
+
 }
 
 export const listTeams = (token, okCallback, errorCallback) => {
@@ -177,81 +246,42 @@ export const getUser = (token, okCallback, errorCallback) => {
     })
 }
 
-export const findRival = (token, id, form, okCallback, errorCallback) => {
-    fetch(`${restApiEndpoint}/newSearch?id=${id}`, {
-        method: 'POST',
+
+/*
+    DELETE
+ */
+export const signOut = (token, okCallback, errorCallback) => {
+    fetch(`${restApiEndpoint}/auth`, {
+        method: 'DELETE',
         headers: {
             'Content-Type': 'application/json',
             'Authorization': 'Bearer ' + token
-
-        },
-
-        body: JSON.stringify({id, ...form})
+        }
     }).then(resp => {
-        if (resp.status === 201 || resp.status === 200) {
-            resp.json().then(teams => okCallback(teams))
+        if (resp.status === 200) {
+            okCallback();
         } else {
-            errorCallback()
+            errorCallback("Could not sign out")
         }
-
     })
 }
 
-
-
-export const getTeam = (token, id, okCallback, errorCallback) => {
-    //                                aca agregas al path del *back* el id
-    fetch(`${restApiEndpoint}/getTeamById?id=${id}`, {
-        method: 'GET',
+export const deleteAccount = (token, okCallback, errorCallback) => {
+    fetch(`${restApiEndpoint}/deleteAccount`, {
+        method: 'DELETE',
         headers: {
             'Content-Type': 'application/json',
             'Authorization': 'Bearer ' + token
         }
     }).then(resp => {
         if (resp.status === 200) {
-            // var mydata = JSON.parse(resp);
-            // okCallback(mydata)
-            resp.json().then(value => {
-                okCallback(JSON.parse(value));
-            }).catch(err => {
-                console.log(err);
-            });
+            okCallback();
         } else {
-            errorCallback()
+            errorCallback("Could not delete the account")
         }
-        return resp.body;
     })
 }
-export const updateTeam = (token, id, form, okCallback, errorCallback) => {
-    fetch(`${restApiEndpoint}/updateTeam?id=${id}`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' + token
-        },
-        body: JSON.stringify({id, ...form})
-    }).then(resp => {
-        if (resp.status === 200) {
-            okCallback()
-        } else errorCallback()
-    })
 
-}
-export const updateUser = (token, form, okCallback, errorCallback) => {
-    fetch(`${restApiEndpoint}/updateUser`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' + token
-        },
-        body: JSON.stringify({...form})
-    }).then(resp => {
-        if (resp.status === 200) {
-            okCallback()
-        } else errorCallback()
-    })
-
-}
 export const deleteTeam = (token, id, okCallback, errorCallback) => {
     fetch(`${restApiEndpoint}/deleteTeam?id=${id}`, {
         method: 'DELETE',
