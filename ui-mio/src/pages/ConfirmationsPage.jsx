@@ -2,7 +2,7 @@ import React, {Component, useEffect, useState} from 'react';
 import {useAuthProvider} from "../auth/auth";
 import {useSearchParams} from "react-router-dom";
 import {useNavigate} from "react-router";
-import {getPendingConfirmations} from "../service/mySystem";
+import {getPendingConfirmations, isTeamOneOrTeamTwo} from "../service/mySystem";
 import {TopBar} from "./TopBar/TopBar";
 import "../css/Confirmations.css"
 
@@ -11,20 +11,26 @@ export function ConfirmationsPage(props) {
     const token = auth.getToken();
     const id = props.getTeamId;
     const [matches, setMatches] = useState([]);
+    let [teamName, setTeamName] = useState("");
 
     useEffect(() => {
         getPendingConfirmations(token, id, (matches) =>
             setMatches(matches))
-    }, [matches])
-
-
-    const getTeamNumber = (match) => {
-        if (match.search1.team.id === id) {
-            return match.search2.team.name;
-        } else return match.search1.team.name;
-
-
     }
+    , [matches],
+        console.log(matches.length)
+    )
+
+
+
+    const getRivalName = (match) => {
+        if (match.search1.id === id) {
+            return match.search1.team.name;
+        } else {
+            return match.search2.team.name;
+        }
+    };
+
 
 
     return (
@@ -35,15 +41,15 @@ export function ConfirmationsPage(props) {
             <TopBar toggleTeamId={props.toggleTeamId} getTeamId={props.getTeamId}/>
             <div className={"containerPrincipal"}>
                 <div>
-                    {matches.length> 0 && (
+                    {matches.length > 0 && (
                         <div>
                             <div className={"searchesTitle"}>
-                                Your team's current searches
+                                Your team's pending confirmations
                             </div>
                             {matches.map((match) => (
                                 <div className={"searchesContainer"}>
                                     <div key={match.id}>
-                                        <p className={"search-info"}>Team: {getTeamNumber(match)}</p>
+                                        <p className={"search-info"}>Rival: { getRivalName(match)}</p>
                                         <p className={"search-info"}>Time: {match.search1.time}</p>
                                         <p className={"search-info"}>Day: {match.search1.day}/{
                                             match.search1.month + 1}</p>

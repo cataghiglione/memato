@@ -13,12 +13,18 @@ public class Matches {
     public Matches(EntityManager entityManager) {
         this.entityManager = entityManager;
     }
+    public Optional<Match> getMatchById(Long id){
+        return entityManager.createQuery("SELECT m FROM Match m WHERE m.id =:id",Match.class)
+                .setParameter("id",id)
+                .getResultList()
+                .stream()
+                .findFirst();
+    }
 
-    public Optional<Match> createMatch(CreateMatchForm creationValues, Optional<Search> search1, Optional<Search> search2) {
-        if(!(search1.isPresent() && search2.isPresent())) return Optional.empty();
-        if (findMatchBySearchId(creationValues.getSearch1(), creationValues.getSearch2()).isPresent())
+    public Optional<Match> createMatch(Search search1, Search search2) {
+        if (findMatchBySearchId(Long.toString(search1.getId()), Long.toString(search2.getId())).isPresent())
             return Optional.empty();
-        final Match newMatch = Match.create(search1.get(), search2.get());
+        final Match newMatch = Match.create(search1, search2);
         entityManager.persist(newMatch);
         return Optional.of(newMatch);
     }
@@ -56,7 +62,7 @@ public class Matches {
                 .stream()
                 .findFirst();
     }
-    private boolean teamOneOrTeam2(Long matchId, Long teamId){
+    public boolean teamOneOrTeam2(Long matchId, Long teamId){
         List<Match> matches =entityManager.createQuery("select m from Match m where m.id =: matchId",Match.class)
                 .setParameter("matchId",matchId)
                 .getResultList();

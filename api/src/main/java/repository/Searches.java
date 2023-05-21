@@ -34,19 +34,7 @@ public class Searches {
         }
     }
 
-    private Optional<Search> findSearchByTeam(String team_id, String time, int month, int day, int year,String latitude, String longitude) {
-        return entityManager.createQuery("SELECT s FROM Search s WHERE (cast(s.team.id as string) LIKE :team_id AND s.time LIKE :time AND s.day = :day AND s.month = :month AND s.year = :year AND s.latitude LIKE :latitude AND s.longitude LIKE :longitude)", Search.class)
-                .setParameter("team_id", team_id)
-                .setParameter("month", month)
-                .setParameter("year", year)
-                .setParameter("day", day)
-                .setParameter("time", time)
-                .setParameter("latitude",latitude)
-                .setParameter("longitude",longitude)
-                .getResultList()
-                .stream()
-                .findFirst();
-    }
+
     public List<Search> findActiveSearchesByTeamId(Long team_id){
         return entityManager.createQuery("SELECT s FROM Search s WHERE(s.team.id =:team_id AND s.isSearching  =true)",Search.class)
                 .setParameter("team_id",team_id)
@@ -64,6 +52,11 @@ public class Searches {
         //            return true;
         //        }
     }
+    public List<Search> findActiveSearchesByUserId(Long user_id){
+        return entityManager.createQuery("SELECT s FROM Search s WHERE(s.team.user.id =:user_id AND s.isSearching  =true)",Search.class)
+                .setParameter("user_id",user_id)
+                .getResultList();
+    }
 
     public Optional<Search> reactivateSearch(Team team, String time, Date date, String latitude, String longitude) {
         Optional<Search> search = findSearchByTeam(Long.toString(team.getId()), time, date.getMonth(),date.getDay(),date.getYear(), latitude,longitude);
@@ -72,6 +65,82 @@ public class Searches {
     }
     public boolean exists(String id, String time, Date date,String latitude, String longitude){
         return findSearchByTeam(id,time,date.getMonth(),date.getDate(), date.getYear(),latitude,longitude).isPresent();
+    }
+
+
+    public List<Search> findCandidates(String id, String time, Date date, String sport, String quantity, String latitude, String longitude){
+        List<Search> possibleCandidates = entityManager.createQuery("SELECT s FROM Search s WHERE (s.time like :time AND s.month =: month AND s.day =: day AND s.year=: year AND cast(s.team.user.id as string) not LIKE :id AND s.team.sport LIKE :sport AND s.team.quantity LIKE :quantity)", Search.class)
+                .setParameter("time",time)
+                .setParameter("month", date.getMonth())
+                .setParameter("day",date.getDate())
+                .setParameter("year",date.getYear())
+                .setParameter("sport",sport )
+                .setParameter("id",id)
+                .setParameter("quantity",quantity)
+                .getResultList();
+        List<Search> candidates=new ArrayList<>(possibleCandidates.size());
+        for (Search possibleCandidate : possibleCandidates) {
+            if (isInA5KmRadius(Double.parseDouble(latitude), Double.parseDouble(longitude), Double.parseDouble(possibleCandidate.getLatitude()), Double.parseDouble(possibleCandidate.getLongitude()))) {
+                candidates.add(possibleCandidate);
+            }
+
+        }
+        return candidates;
+
+    }
+
+    public Optional<Search> getSearchById(Long searchId){
+        return entityManager.createQuery("SELECT s FROM Search s WHERE s.id = :searchId", Search.class)
+                .setParameter("searchId", searchId)
+                .getResultList().stream()
+                .findFirst();
+    }
+
+    public Search persist(Search search) {
+        entityManager.persist(search);
+        return search;
+    }
+
+    public List<Search> listAll() {
+        return entityManager.createQuery("SELECT u FROM Search u", Search.class).getResultList();
+    }
+    /**
+     * It gets an alike search of the search that it gets as a parameter, but it has to be part of the team
+     * @param search
+     * @param team_id
+     * @return
+     */
+    public Optional<Search> getSearchBySearchAndTeam(Search search, String team_id){
+        Optional<Search> search1 = findSearchByTeam(team_id, search.getTime(), search.getMonth(), search.getDay(), search.getYear());
+        if(search1.isPresent())
+            if(isInA5KmRadius(Double.parseDouble(search1.get().getLatitude()), Double.parseDouble(search1.get().getLongitude()), Double.parseDouble(search.getLatitude()), Double.parseDouble(search.getLongitude()))){
+                return search1;
+            }
+        return Optional.empty();
+    }
+    private Optional<Search> findSearchByTeam(String team_id, String time, int month, int day, int year) {
+        return entityManager.createQuery("SELECT s FROM Search s WHERE (cast(s.team.id as string) LIKE :team_id AND s.time LIKE :time AND s.day = :day AND s.month = :month AND s.year = :year)", Search.class)
+                .setParameter("team_id", team_id)
+                .setParameter("month", month)
+                .setParameter("year", year)
+                .setParameter("day", day)
+                .setParameter("time", time)
+                .getResultList()
+                .stream()
+                .findFirst();
+    }
+    private Optional<Search> findSearchByTeam(String team_id, String time, int month, int day, int year,String latitude, String longitude) {
+        return entityManager.createQuery("SELECT s FROM Search s WHERE (cast(s.team.id as string) LIKE :team_id AND s.time LIKE :time AND s.day = :day AND s.month = :month AND s.year = :year AND s.latitude LIKE :latitude AND s.longitude LIKE :longitude)", Search.class)
+                .setParameter("team_id", team_id)
+                .setParameter("month", month)
+                .setParameter("year", year)
+                .setParameter("day", day)
+                .setParameter("time", time)
+                .setParameter("latitude",latitude)
+                .setParameter("longitude",longitude)
+                .getResultList()
+                .stream()
+                .findFirst();
     }
     private static boolean isInA5KmRadius(double lat1, double lon1, double lat2, double lon2) {
         //Haversine formula
@@ -89,44 +158,6 @@ public class Searches {
         double distance = earthRadius * c;
 
         return distance <= 5;
-    }
-
-
-    public List<Team> findCandidates(String id, String time, Date date, String sport, String quantity, String latitude, String longitude){
-        List<Search> possibleCandidates = entityManager.createQuery("SELECT s FROM Search s WHERE (s.time like :time AND s.month =: month AND s.day =: day AND s.year=: year AND cast(s.team.user.id as string) not LIKE :id AND s.team.sport LIKE :sport AND s.team.quantity LIKE :quantity)", Search.class)
-                .setParameter("time",time)
-                .setParameter("month", date.getMonth())
-                .setParameter("day",date.getDate())
-                .setParameter("year",date.getYear())
-                .setParameter("sport",sport )
-                .setParameter("id",id)
-                .setParameter("quantity",quantity)
-                .getResultList();
-        List<Team> candidates=new ArrayList<>(possibleCandidates.size());
-        for (Search possibleCandidate : possibleCandidates) {
-            if (isInA5KmRadius(Double.parseDouble(latitude), Double.parseDouble(longitude), Double.parseDouble(possibleCandidate.getLatitude()), Double.parseDouble(possibleCandidate.getLongitude()))) {
-                candidates.add(possibleCandidate.getTeam());
-            }
-
-        }
-        return candidates;
-
-    }
-
-    public Optional<Search> getSearchById(Long searchId){
-        return entityManager.createQuery("SELECT S FROM Search S WHERE S.id = :searchId")
-                .setParameter("searchId", searchId)
-                .getResultList().stream()
-                .findFirst();
-    }
-
-    public Search persist(Search search) {
-        entityManager.persist(search);
-        return search;
-    }
-
-    public List<Search> listAll() {
-        return entityManager.createQuery("SELECT u FROM Search u", Search.class).getResultList();
     }
 
 }

@@ -2,7 +2,7 @@ import React, {Component, useEffect, useState} from 'react';
 import "../css/FindRival.css"
 import "../css/Home.css"
 import {useLocation, useNavigate} from "react-router";
-import {findRival, getTeam} from "../service/mySystem";
+import {findRival, getTeam, newMatch} from "../service/mySystem";
 import {useAuthProvider} from "../auth/auth";
 import {useSearchParams} from "react-router-dom";
 
@@ -82,8 +82,9 @@ export function FindRivalPage(props) {
         }
     };
 
-    const [teams, setTeams] = useState([]);
+    const [searches, setSearches] = useState([]);
     const [team, setTeam] = useState('');
+    const [searchId, setSearchId] = useState(0)
     const location = useLocation();
     const id = props.getTeamId;
 
@@ -115,17 +116,34 @@ export function FindRivalPage(props) {
     }
     const findRivalMethod = (id, search) => {
         if (rivalMenuOpen) {
-            findRival(token, id, search, (teams) => {
-                    setTeams(teams)
+            findRival(token, id, search, (res) => {
+                    console.log(res)
+                    setSearches(res.searches)
+                    setSearchId(res.searchId)
                 },
                 () => {
                     setErrorMsg('Search already exists!')
                 })
         }
     }
-    const requestRivals = (user) => {
 
+    function playButton(id) {
+        newMatch(token, {
+                // teamId: id,
+            candidate_search_id:id,
+                searchId: searchId
+            }, (res)=>{
+                console.log(res)
+            },
+            ()=>{
+                console.log('A match with this searches already exists!')
+            }
+        )
     }
+
+    // const requestRivals = (user) => {
+    //
+    // }
     const timeChange = (event) => {
         setTime(event.target.value)
     }
@@ -174,11 +192,6 @@ export function FindRivalPage(props) {
             </div>
         )
     };
-
-    function playButton() {
-        
-        return undefined;
-    }
 
     return (
 
@@ -248,7 +261,7 @@ export function FindRivalPage(props) {
                     Rival!
                 </button>
             </form>
-            {(rivalMenuOpen && teams.length > 0) &&
+            {(rivalMenuOpen && searches.length > 0) &&
                 <div>
                 <div className={"title"}>
                     Teams searching for rivals:
@@ -270,15 +283,15 @@ export function FindRivalPage(props) {
 
                     {/*<div style={{display: 'flex', flexWrap: 'wrap', position: "relative"}}>*/}
                     <div>
-                        {teams.map((team) => (
+                        {searches.map((search) => (
                             <div>
                                 <div className={"team-select"}>
                                     <div className={"team-select.info"}>
-                                        <span style={{fontWeight: 'bold', marginLeft:'5px',marginBottom: '15px'}}> Team name: {team.name}</span>
-                                        <p style={{marginLeft:'5px',marginBottom: '15px'}}> Age group: {team.age_group}</p>
+                                        <span style={{fontWeight: 'bold', marginLeft:'5px',marginBottom: '15px'}}> Team name: {search.team.name}</span>
+                                        <p style={{marginLeft:'5px',marginBottom: '15px'}}> Age group: {search.team.age_group}</p>
                                     </div>
                                     <br/><br/>
-                                    <button className={"button-play"} onClick={playButton()}>
+                                    <button className={"button-play"} onClick={()=>playButton(search.id)}>
                                         Play
                                     </button>
                                 </div>
@@ -289,7 +302,7 @@ export function FindRivalPage(props) {
                     </div>
                 </div>
                     }
-            {(rivalMenuOpen && teams.length === 0) &&
+            {(rivalMenuOpen && searches.length === 0) &&
 
                 <p className={"noTeamSearch"}>There are currently no teams searching for rivals with your
                     preferences</p>

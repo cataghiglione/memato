@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
 
 import static java.util.concurrent.TimeUnit.MINUTES;
 import static json.JsonParser.fromJson;
@@ -44,10 +45,11 @@ public class Routes {
     public static final String DELETE_ACCOUNT_ROUTE = "/deleteAccount";
     public static final String UPDATE_USER_ROUTE = "/updateUser";
     public static final String GET_TEAM_BY_TEAMID_ROUTE = "/getTeamByOwnId";
-    public static final String DEACTIVATE_SEARCH_ROUTE="/deactivateSearch";
-    public static final String NEW_MATCH_ROUTE ="/newMatch";
+    public static final String DEACTIVATE_SEARCH_ROUTE = "/deactivateSearch";
+    public static final String NEW_MATCH_ROUTE = "/newMatch";
     public static final String CONFIRM_MATCH_ROUTE = "/confirmMatch";
-    public static final String GET_MATCHES_BY_TEAMID_ROUTE="/getMatchesByTeamId";
+    public static final String GET_MATCHES_BY_TEAMID_ROUTE = "/getMatchesByTeamId";
+    public static final String IS_TEAM_1_OR_2_ROUTE = "/isTeamOneOrTwo";
 
 
     private MySystem system;
@@ -103,16 +105,31 @@ public class Routes {
             final EntityManager entityManager = entityManagerFactory.createEntityManager();
             final Searches searches = new Searches(entityManager);
             final CreateMatchForm form = CreateMatchForm.createFromJson(req.body());
-            Optional<Search> search1 = searches.getSearchById(Long.parseLong(form.getSearch1()));
-            Optional<Search> search2 = searches.getSearchById(Long.parseLong(form.getSearch2()));
-            system.createMatch(form, search1, search2).ifPresentOrElse(
-                    (match) -> {
-                        res.status(201);
-                        res.body("match created");
+            getUser(req).ifPresentOrElse(
+                    (user) -> {
+                        searches.getSearchById(Long.parseLong(form.getSearchId())).ifPresent(
+                                (search1) -> {
+                                    //searches.getSearchBySearchAndTeam(search1, form.getTeamId()).ifPresent(
+                                    searches.getSearchById(Long.parseLong(form.getCandidate_search_id())).ifPresent(
+                                            (search2) -> {
+                                                system.createMatch(search1, search2).ifPresentOrElse(
+                                                        (match) -> {
+                                                            res.status(201);
+                                                            res.body("match created");
+                                                        },
+                                                        () -> {
+                                                            res.status(409);
+                                                            res.body("A match with this searches already exists");
+                                                        }
+                                                );
+                                            }
+                                    );
+                                }
+                        );
                     },
                     () -> {
-                        res.status(409);
-                        res.body("A match with this searches already exists");
+                        res.status(404);
+                        res.body("Invalid Token");
                     }
             );
             return res.body();
@@ -290,12 +307,14 @@ public class Routes {
             final Teams teams = new Teams(entityManager);
             final String id = (req.queryParams("id"));
             Optional<User> user = getUser(req);
+            AtomicLong searchId = new AtomicLong();
 
             teams.findTeamsById(id).ifPresent(
                     (team) -> {
                         final CreateSearchForm searchForm = CreateSearchForm.createFromJson(req.body());
                         system.findOrCreateSearch(searchForm, team).ifPresentOrElse(
                                 (search) -> {
+                                    searchId.set(search.getId());
                                     res.status(201);
                                 },
                                 () -> {
@@ -305,9 +324,9 @@ public class Routes {
                         );
                         if (user.isPresent()) {
                             String user_id = user.get().getId().toString();
-                            List<Team> candidates = searches.findCandidates(user_id, searchForm.getTime(), searchForm.getDate(), team.getSport(), team.getQuantity(), searchForm.getLatitude(), searchForm.getLongitude());
-                            res.body(JsonParser.toJson(candidates));
-
+                            List<Search> candidates = searches.findCandidates(user_id, searchForm.getTime(), searchForm.getDate(), team.getSport(), team.getQuantity(), searchForm.getLatitude(), searchForm.getLongitude());
+                            NewSearchResponse newSearchResponse = new NewSearchResponse(searchId.get(), candidates);
+                            res.body(JsonParser.toJson(newSearchResponse));
                         }
 
                     }
@@ -319,32 +338,13 @@ public class Routes {
             final Searches searches = new Searches(entityManager);
             final Long team_id = Long.valueOf(req.queryParams("teamid"));
             List<Search> active_searches = searches.findActiveSearchesByTeamId(team_id);
-            if (!active_searches.isEmpty()){
+            if (!active_searches.isEmpty()) {
                 res.body(JsonParser.toJson(active_searches));
                 res.status(200);
-            }
-            else {
+            } else {
                 res.status(404);
             }
             return res.body();
-
-//            getUser(req).ifPresentOrElse(
-//                    (user) -> {
-//                        try{
-//                        Long user_id = user.getId();
-//                        List<Search> active_searches = searches.findActiveSearchesByUserId(user_id);
-//                        res.body(JsonParser.toJson(active_searches));
-//                        res.status(200);}
-//                        catch (Exception e) {
-//                            res.status(400);
-//                        }
-//
-//                    },
-//                    () -> {
-//                        res.status(400);
-//                    }
-//            );
-//            return res.body();
 
 
         });
@@ -397,11 +397,10 @@ public class Routes {
             //`${restApiEndpoint}/updateTeam?teamid=${teamid}&matchid=${matchid}`
             final Long team_id = Long.valueOf(req.queryParams("teamid"));
             final Long match_id = Long.valueOf(req.queryParams("matchid"));
-            boolean state = system.confirmMatch(match_id,team_id);
-            if (state){
+            boolean state = system.confirmMatch(match_id, team_id);
+            if (state) {
                 res.status(200);
-            }
-            else res.status(400);
+            } else res.status(400);
             return res.status();
             //to doo
 //            final EntityManager entityManager = entityManagerFactory.createEntityManager();
@@ -476,29 +475,45 @@ public class Routes {
 
 
         });
-        post(DEACTIVATE_SEARCH_ROUTE,(req,res)->{
+        post(DEACTIVATE_SEARCH_ROUTE, (req, res) -> {
             final Long id = Long.valueOf(req.body());
             boolean state = system.deactivateSearch(id);
-            if (state){
+            if (state) {
                 res.status(200);
-            }
-            else res.status(400);
+            } else res.status(400);
             return res.status();
 
         });
-        authorizedGet(GET_MATCHES_BY_TEAMID_ROUTE,(req,res)->{
-            final EntityManager entityManager=entityManagerFactory.createEntityManager();
+        authorizedGet(GET_MATCHES_BY_TEAMID_ROUTE, (req, res) -> {
+            final EntityManager entityManager = entityManagerFactory.createEntityManager();
             final Long team_id = Long.valueOf(req.queryParams("teamid"));
-            final Matches matches=new Matches(entityManager);
+            final Matches matches = new Matches(entityManager);
             List<Match> matchesList = matches.findMatchesByTeamId(team_id);
-            if (!matchesList.isEmpty()){
+            if (!matchesList.isEmpty()) {
                 res.status(200);
                 res.body(JsonParser.toJson(matchesList));
-            }
-            else {
+            } else {
                 res.status(404);
             }
             return res.body();
+        });
+        authorizedGet(IS_TEAM_1_OR_2_ROUTE, (req, res) -> {
+            final EntityManager entityManager = entityManagerFactory.createEntityManager();
+            final Long matchId = Long.valueOf(req.queryParams("matchid"));
+            final Long teamId = Long.valueOf(req.queryParams("teamid"));
+            final Matches matches = new Matches(entityManager);
+            final Optional<Match> match = matches.getMatchById(matchId);
+            if (match.isPresent()) {
+                if (matches.teamOneOrTeam2(matchId, teamId)) {
+                    res.body(JsonParser.toJson(match.get().getTeam2().getName()));
+                } else res.body(JsonParser.toJson(match.get().getTeam1().getName()));
+                res.status(200);
+
+            }
+            else res.status(404);
+            return res.body();
+
+
         });
 
 
@@ -597,9 +612,9 @@ public class Routes {
         tx.begin();
         if (teams.listAll().isEmpty()) {
             final Team kateTeam =
-                    Team.create("river", "Football", "11",  "Young", userList.get(0));
+                    Team.create("river", "Football", "11", "Young", userList.get(0));
             final Team cocaTeam =
-                    Team.create("depo", "Football", "11",  "Young", userList.get(1));
+                    Team.create("depo", "Football", "11", "Young", userList.get(1));
             teams.persist(kateTeam);
             teams.persist(cocaTeam);
         }
