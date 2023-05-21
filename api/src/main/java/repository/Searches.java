@@ -47,9 +47,9 @@ public class Searches {
                 .stream()
                 .findFirst();
     }
-    public List<Search> findActiveSearchesByUserId(Long user_id){
-        return entityManager.createQuery("SELECT s FROM Search s WHERE(s.team.user.id =:user_id AND s.isSearching  =true)",Search.class)
-                .setParameter("user_id",user_id)
+    public List<Search> findActiveSearchesByTeamId(Long team_id){
+        return entityManager.createQuery("SELECT s FROM Search s WHERE(s.team.id =:team_id AND s.isSearching  =true)",Search.class)
+                .setParameter("team_id",team_id)
                 .getResultList();
     }
     public boolean deactivateSearchBySearchId(Long search_id){

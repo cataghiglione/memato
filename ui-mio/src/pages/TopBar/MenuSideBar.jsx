@@ -23,7 +23,7 @@ export function MenuSideBar(props){
             toggleMenu();
             setPageChange([""]);
         }
-        navigate(selectedOptions[0]).then();
+        navigate(selectedOptions[0]);
     }
 
 

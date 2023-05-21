@@ -23,6 +23,7 @@ import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static java.util.concurrent.TimeUnit.MINUTES;
+import static json.JsonParser.fromJson;
 import static json.JsonParser.toJson;
 import static spark.Spark.*;
 
@@ -40,12 +41,13 @@ public class Routes {
     public static final String GET_ACTIVE_SEARCHES_ROUTE = "/currentSearches";
     public static final String UPDATE_TEAM_ROUTE = "/updateTeam";
     public static final String DELETE_TEAM_ROUTE = "/deleteTeam";
-    public static final String DELETE_ACCOUNT = "/deleteAccount";
+    public static final String DELETE_ACCOUNT_ROUTE = "/deleteAccount";
     public static final String UPDATE_USER_ROUTE = "/updateUser";
-    public static final String GET_TEAM_BY_TEAMID = "/getTeamByOwnId";
+    public static final String GET_TEAM_BY_TEAMID_ROUTE = "/getTeamByOwnId";
     public static final String DEACTIVATE_SEARCH_ROUTE="/deactivateSearch";
-    public static final String NEW_MATCH ="/newMatch";
-    public static final String CONFIRM_MATCH = "/confirmMatch";
+    public static final String NEW_MATCH_ROUTE ="/newMatch";
+    public static final String CONFIRM_MATCH_ROUTE = "/confirmMatch";
+    public static final String GET_MATCHES_BY_TEAMID_ROUTE="/getMatchesByTeamId";
 
 
     private MySystem system;
@@ -97,14 +99,14 @@ public class Routes {
 
         });
 
-        post(NEW_MATCH, (req, res) -> {
+        post(NEW_MATCH_ROUTE, (req, res) -> {
             final EntityManager entityManager = entityManagerFactory.createEntityManager();
             final Searches searches = new Searches(entityManager);
             final CreateMatchForm form = CreateMatchForm.createFromJson(req.body());
             Optional<Search> search1 = searches.getSearchById(Long.parseLong(form.getSearch1()));
             Optional<Search> search2 = searches.getSearchById(Long.parseLong(form.getSearch2()));
             system.createMatch(form, search1, search2).ifPresentOrElse(
-                    (team) -> {
+                    (match) -> {
                         res.status(201);
                         res.body("match created");
                     },
@@ -158,7 +160,7 @@ public class Routes {
             return "";
 
         });
-        delete(DELETE_ACCOUNT, (req, res) -> {
+        delete(DELETE_ACCOUNT_ROUTE, (req, res) -> {
             final EntityManager entityManager = entityManagerFactory.createEntityManager();
             final Users users = new Users(entityManager);
             final EntityManager entityManager2 = entityManagerFactory.createEntityManager();
@@ -315,23 +317,34 @@ public class Routes {
         get(GET_ACTIVE_SEARCHES_ROUTE, (req, res) -> {
             final EntityManager entityManager = entityManagerFactory.createEntityManager();
             final Searches searches = new Searches(entityManager);
-            getUser(req).ifPresentOrElse(
-                    (user) -> {
-                        try{
-                        Long user_id = user.getId();
-                        List<Search> active_searches = searches.findActiveSearchesByUserId(user_id);
-                        res.body(JsonParser.toJson(active_searches));
-                        res.status(200);}
-                        catch (Exception e) {
-                            res.status(400);
-                        }
-
-                    },
-                    () -> {
-                        res.status(400);
-                    }
-            );
+            final Long team_id = Long.valueOf(req.queryParams("teamid"));
+            List<Search> active_searches = searches.findActiveSearchesByTeamId(team_id);
+            if (!active_searches.isEmpty()){
+                res.body(JsonParser.toJson(active_searches));
+                res.status(200);
+            }
+            else {
+                res.status(404);
+            }
             return res.body();
+
+//            getUser(req).ifPresentOrElse(
+//                    (user) -> {
+//                        try{
+//                        Long user_id = user.getId();
+//                        List<Search> active_searches = searches.findActiveSearchesByUserId(user_id);
+//                        res.body(JsonParser.toJson(active_searches));
+//                        res.status(200);}
+//                        catch (Exception e) {
+//                            res.status(400);
+//                        }
+//
+//                    },
+//                    () -> {
+//                        res.status(400);
+//                    }
+//            );
+//            return res.body();
 
 
         });
@@ -377,9 +390,19 @@ public class Routes {
 
 
         });
+
         // The idea is that req has the MatchId and the TeamId of the team that want to confirm
-        post(CONFIRM_MATCH, (req, res) -> {
-            return req.body();
+        authorizedPost(CONFIRM_MATCH_ROUTE, (req, res) -> {
+            //supongo que el team id y el match id estan en el query params
+            //`${restApiEndpoint}/updateTeam?teamid=${teamid}&matchid=${matchid}`
+            final Long team_id = Long.valueOf(req.queryParams("teamid"));
+            final Long match_id = Long.valueOf(req.queryParams("matchid"));
+            boolean state = system.confirmMatch(match_id,team_id);
+            if (state){
+                res.status(200);
+            }
+            else res.status(400);
+            return res.status();
             //to doo
 //            final EntityManager entityManager = entityManagerFactory.createEntityManager();
 //            final Matches matches = new Matches(entityManager);
@@ -438,7 +461,7 @@ public class Routes {
             } else res.status(400);
             return res.status();
         });
-        get(GET_TEAM_BY_TEAMID, (req, res) -> {
+        get(GET_TEAM_BY_TEAMID_ROUTE, (req, res) -> {
             final EntityManager entityManager = entityManagerFactory.createEntityManager();
             final Teams teams = new Teams(entityManager);
             final String id = (req.queryParams("teamId"));
@@ -462,6 +485,20 @@ public class Routes {
             else res.status(400);
             return res.status();
 
+        });
+        authorizedGet(GET_MATCHES_BY_TEAMID_ROUTE,(req,res)->{
+            final EntityManager entityManager=entityManagerFactory.createEntityManager();
+            final Long team_id = Long.valueOf(req.queryParams("teamid"));
+            final Matches matches=new Matches(entityManager);
+            List<Match> matchesList = matches.findMatchesByTeamId(team_id);
+            if (!matchesList.isEmpty()){
+                res.status(200);
+                res.body(JsonParser.toJson(matchesList));
+            }
+            else {
+                res.status(404);
+            }
+            return res.body();
         });
 
 

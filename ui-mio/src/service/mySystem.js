@@ -4,8 +4,8 @@ import {useHistory} from 'react-router-dom';
 const restApiEndpoint = "http://localhost:4326"
 
 
-export const currentSearches = (token, okCallback, errorCallback) => {
-    fetch(`${restApiEndpoint}/currentSearches`, {
+export const currentSearches = (token,team_id, okCallback, errorCallback) => {
+    fetch(`${restApiEndpoint}/currentSearches?teamid=${team_id}`, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
@@ -267,6 +267,16 @@ export const deleteTeam = (token, id, okCallback, errorCallback) => {
         } else if (resp.status === 200) {
             window.location.href = "/newTeam";
         } else errorCallback()
+    })
+}
+export const getPendingConfirmations=(token,teamId,okCallback,errorCallback)=>{
+    fetch(`${restApiEndpoint}/getMatchesByTeamId?teamid=${teamId}`,{
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token
+        },
+
     })
 }
 

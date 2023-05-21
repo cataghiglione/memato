@@ -70,6 +70,17 @@ public class MySystem {
             }
         });
     }
+    public boolean confirmMatch(Long matchid, Long teamId){
+        return runInTransaction(datasource ->{
+            final Matches matches = datasource.matches();
+            try{
+                return matches.confirmMatchByTeam(matchid,teamId);
+            }
+            catch (Exception e){
+                throw new RuntimeException(e);
+            }
+        });
+    }
 
 
     public Optional<User> findUserByEmail(String email) {

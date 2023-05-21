@@ -19,8 +19,8 @@ export function CurrentSearchesPage(props) {
     // }
     const auth = useAuthProvider()
     const token = auth.getToken();
+    const team_id = props.getTeamId;
     const [popupMsg, setPopupMsg] = useState('');
-    const [deleted, setDeleted] = useState(false);
     function goToHome() {
         window.location.href = "/home"
     }
@@ -28,7 +28,7 @@ export function CurrentSearchesPage(props) {
     const[selectedSearch, setSelectedSearch]=useState('');
 
     useEffect(() => {
-        currentSearches(token, (searches) => setSearches(searches));
+        currentSearches(token,team_id, (searches) => setSearches(searches));
     }, [])
 
 
@@ -121,7 +121,7 @@ export function CurrentSearchesPage(props) {
 
 
 
-            <TopBar toggleTeamId = {props.toggleTeamId}    getTeamId={props.getTeamId}/>} />
+            <TopBar toggleTeamId = {props.toggleTeamId}    getTeamId={props.getTeamId}/>
 
             <div className={"containerPrincipal"}>
                 <div>
@@ -129,7 +129,7 @@ export function CurrentSearchesPage(props) {
                         <div>
 
                             <div className={"searchesTitle"}>
-                                Your current searches
+                                Your team's current searches
                             </div>
                             {searches.map((search) => (
                                 <div className={"searchesContainer"}>
