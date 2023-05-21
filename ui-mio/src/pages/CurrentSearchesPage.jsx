@@ -21,8 +21,8 @@ export function CurrentSearchesPage(props) {
     const token = auth.getToken();
     const [popupMsg, setPopupMsg] = useState('');
     const [deleted, setDeleted] = useState(false);
-    function goToHome() {
-        window.location.href = "/home"
+    function goToPickTeam() {
+        window.location.href = "/pickTeam"
     }
     const [searches, setSearches] = useState([]);
     const[selectedSearch, setSelectedSearch]=useState('');
@@ -96,7 +96,7 @@ export function CurrentSearchesPage(props) {
     // }
 
     const handleGoBackClick=()=>{
-        goToHome()
+        goToPickTeam()
 
     }
 

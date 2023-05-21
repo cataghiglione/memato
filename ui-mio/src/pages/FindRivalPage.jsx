@@ -56,12 +56,14 @@ export function FindRivalPage(props) {
     const [changeLocationButton, setChangeLocationButton] = useState('Select location');
     const [selectedLocation, setSelectedLocation] = useState("")
 
-    function handleSelectLocation() {
+    function handleSelectLocation(e) {
+        e.preventDefault(); // Prevent form submission
         if (showPopup === false)
             setShowPopup(true);
         else
             setShowPopup(false);
     }
+
 
     const playMatch = () => {
         //     to do
@@ -214,7 +216,6 @@ export function FindRivalPage(props) {
             </div>
             <form onSubmit={rivalMenuOpen && handleSubmit}>
 
-
                 <div className={"datePicker"}>
                     Choose a day to play:
                     <DatePicker
@@ -222,11 +223,9 @@ export function FindRivalPage(props) {
                         selected={date}
                         onChange={date => setDate(date)}
                         calendarContainer={MyContainer}
-
                     />
-
-
                 </div>
+
                 <div className={"time_select"}>
                     <p>Select your time of preference!</p>
                     <select id="time" required onChange={timeChange} value={time}>
