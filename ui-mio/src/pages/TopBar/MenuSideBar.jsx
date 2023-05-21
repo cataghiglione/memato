@@ -30,6 +30,7 @@ export function MenuSideBar(props){
     function signOutMethod(){
         signOut(token, navigate("/"))
         auth.removeToken();
+        props.toggleTeamId(0);
     }
 
     return(

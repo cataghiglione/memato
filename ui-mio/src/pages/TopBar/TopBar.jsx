@@ -53,7 +53,7 @@ export function TopBar(props) {
                     </button>}
                     {visible && goToPickTeam()}
                 </div>
-                <MenuSideBar getTeamId={props.getTeamId}/>
+                <MenuSideBar getTeamId={props.getTeamId} toggleTeamId={props.toggleTeamId}/>
             </div>
         </div>
     )

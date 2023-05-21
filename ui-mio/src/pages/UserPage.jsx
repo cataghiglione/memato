@@ -109,7 +109,7 @@ export function UserPage(props) {
             <div>
                 <br/>
                 <br/>
-                <h1> Profile
+                <h1 style={{top: "50%"}}> Profile
                 </h1>
                 <div className={"form"}>
 
