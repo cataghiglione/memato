@@ -17,9 +17,7 @@ export function ConfirmationsPage(props) {
         getPendingConfirmations(token, id, (matches) =>
             setMatches(matches))
     }
-    , [matches],
-        console.log(matches.length)
-    )
+    , [id, token])
 
 
 
@@ -32,6 +30,15 @@ export function ConfirmationsPage(props) {
     };
 
 
+    function confirmMatch(match_id){
+        // CALL BACK to confirm the match and then call pending confirmations again
+        return undefined;
+    }
+
+    function declineMatch(match_id) {
+        // CALL BACK to decline the match and then call pending confirmations again
+        return undefined;
+    }
 
     return (
         <div>
@@ -53,6 +60,10 @@ export function ConfirmationsPage(props) {
                                         <p className={"search-info"}>Time: {match.search1.time}</p>
                                         <p className={"search-info"}>Day: {match.search1.day}/{
                                             match.search1.month + 1}</p>
+                                        {/* tendriamos que poner una condicion, ya que si el team ya confirmo,
+                                            no tendria que tener la opcion de confirmar de vuelta*/}
+                                        <button className={"confirmButton"} onClick={confirmMatch(match.id)}> Confirmar </button>
+                                        <button className={"declineButton"} onClick={declineMatch(match.id)}> Rechazar </button>
                                     </div>
                                     {/*<button className={"delete-search-button"} onClick={() => handleDeleteClick(search)}>*/}
                                     {/*    <i className="bi bi-trash"></i>*/}

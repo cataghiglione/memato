@@ -21,3 +21,27 @@
     width: 200px;
 
 }
+
+.confirmButton{
+    position: absolute;
+    background-color: white;
+
+    left: 55%;
+    bottom: 5%;
+    color: black;
+    border: 1px solid #4CAF50;
+    border-radius: 1px;
+    transition-duration: 0.4s;
+}
+
+.declineButton{
+    position: absolute;
+    background-color: white;
+
+    left: 5%;
+    bottom: 5%;
+    color: black;
+    border: 1px solid #af4c4c;
+    border-radius: 1px;
+    transition-duration: 0.4s;
+}

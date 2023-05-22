@@ -129,8 +129,7 @@ export function FindRivalPage(props) {
 
     function playButton(id) {
         newMatch(token, {
-                // teamId: id,
-            candidate_search_id:id,
+                candidate_search_id:id,
                 searchId: searchId
             }, (res)=>{
                 console.log(res)

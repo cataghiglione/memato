@@ -402,35 +402,6 @@ public class Routes {
                 res.status(200);
             } else res.status(400);
             return res.status();
-            //to doo
-//            final EntityManager entityManager = entityManagerFactory.createEntityManager();
-//            final Matches matches = new Matches(entityManager);
-//            final EntityManager entityManager1 = entityManagerFactory.createEntityManager();
-//            final Teams teams = new Teams(entityManager1);
-//            final CreateConfirmMatchForm form = CreateConfirmMatchForm.createFromJson(req.body());
-//            teams.findTeamsById(form.getTeamId()).ifPresentOrElse(
-//                    (team) -> {
-//                        matches.findMatch(form.getMatchId(), form.getTeamId()).ifPresentOrElse(
-//                                (match) -> {
-//                                    EntityTransaction transaction = entityManager.getTransaction();
-//                                    transaction.begin();
-//                                    matches.confirmByTeam(form.getMatchId(), form.getTeamId(), match);
-//                                    transaction.commit();
-//                                    res.body("The match is confirmed by one team");
-//                                    res.status(200);
-//                                },
-//                                () -> {
-//                                    res.body("The match doesn't exist or the team is not one of the teams of the match");
-//                                    res.status(400);
-//                                }
-//                        );
-//                    },
-//                    () -> {
-//                        res.body("The team doesn't exist");
-//                        res.status(404);
-//                    }
-//            );
-//            return res.body();
         });
         delete(DELETE_TEAM_ROUTE, (req, res) -> {
             final EntityManager entityManager = entityManagerFactory.createEntityManager();
