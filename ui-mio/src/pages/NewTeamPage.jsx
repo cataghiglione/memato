@@ -133,15 +133,15 @@ export function NewTeamPage (props){
                     {/*        onChange={zoneChange}/></p>*/}
                     {/*</div>*/}
                     <div>
-                    <p>Group:<select id="age_group"  onChange={groupChange}>
+                    <p>Group:<select id="age_group"  onChange={groupChange} value={age_group}>
                         <option  value=""></option>
                         <option value="Young">Young</option>
                         <option value="Adults">Adults</option>
                     </select></p>
                     </div>
 
-                    <p>Sport:<select id="sport"  onChange={sportChange}>
-                        <option  value=""></option>
+                    <p>Sport:<select id="sport"  onChange={sportChange} value={sport}>
+                        <option value=""></option>
                         <option value="Football">Football</option>
                         <option value="Padel">Padel</option>
                     </select></p>
@@ -152,7 +152,7 @@ export function NewTeamPage (props){
                             <div>
                                 {/*{handleFootballQuantChange()}*/}
 
-                                <p>Quantity<select id="Quantity"  onChange={quant_PlayersChange}>
+                                <p>Quantity<select id="Quantity"  onChange={quant_PlayersChange} value={quant_Players}>
                                     <option value=""></option>
                                     <option value="11">11</option>
                                     <option value="7">7</option>
@@ -166,7 +166,7 @@ export function NewTeamPage (props){
                             <div>
                                 {/*{handlePadellQuantChange()}*/}
                                 {/*{setQuant_player("2")}*/}
-                                <p>Quantity:<select id="Quantity"  onChange={quant_PlayersChange}>
+                                <p>Quantity:<select id="Quantity"  onChange={quant_PlayersChange} value={quant_Players}>
                                     <option  value=""></option>
                                     <option value="2">2</option>
                                     <option value="1">1</option>

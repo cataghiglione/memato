@@ -80,15 +80,18 @@ public class Match {
         return search2.getTeam();
     }
 
-    public void isConfirmed_by_1() {
-        confirmed_by_1 = true;
+    public boolean isConfirmed_by_1() {
+        return confirmed_by_1;
     }
 
-    public void isConfirmed_by_2() {
-        confirmed_by_2 = true;
+    public boolean isConfirmed_by_2() {
+        return confirmed_by_2;
+    }
+    public Long getId(){
+        return id;
     }
 
     public boolean isPossible(){
-        return ((search1.searching() && search2.searching()) || (confirmed_by_1 && search1.searching()) || (confirmed_by_2 && search2.searching())) && declined_by_1 && declined_by_2;
+        return ((search1.searching() && search2.searching()) || (confirmed_by_1 && search2.searching()) || (confirmed_by_2 && search1.searching())) && declined_by_1 && declined_by_2;
     }
 }

@@ -461,7 +461,11 @@ public class Routes {
             final Matches matches = new Matches(entityManager);
             List<Match> matchesList = matches.findMatchesByTeamId(team_id);
             if (!matchesList.isEmpty()) {
-                res.status(200);
+                if (matches.isAlreadyConfirmed(matchesList.get(0).getId(),team_id)){
+                    res.status(202);
+                }
+                else
+                {res.status(200);}
                 res.body(JsonParser.toJson(matchesList));
             } else {
                 res.status(404);
@@ -586,8 +590,11 @@ public class Routes {
                     Team.create("river", "Football", "11", "Young", userList.get(0));
             final Team cocaTeam =
                     Team.create("depo", "Football", "11", "Young", userList.get(1));
+            final Team ferpaTeam =
+                    Team.create("pincha", "Football", "11", "Young", userList.get(2));
             teams.persist(kateTeam);
             teams.persist(cocaTeam);
+            teams.persist(ferpaTeam);
         }
         tx.commit();
         entityManager.close();

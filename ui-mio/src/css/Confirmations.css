@@ -33,6 +33,10 @@
     border-radius: 1px;
     transition-duration: 0.4s;
 }
+.confirmButton:hover{
+    background: #4CAF50;
+    color: white;
+}
 
 .declineButton{
     position: absolute;
@@ -44,4 +48,8 @@
     border: 1px solid #af4c4c;
     border-radius: 1px;
     transition-duration: 0.4s;
+}
+.declineButton:hover{
+    background:#af4c4c ;
+    color: white;
 }
