@@ -41,7 +41,7 @@ export function MenuSideBar(props){
             {visible &&
                 (
                     <div className={"side-bar"}>
-                        <select id="Menu" multiple={true} className={"select"} value={pageChange} onChange={togglePage}>
+                        <select id="Menu" multiple={true} className={"select"} value={pageChange} onChange={togglePage} style={{width: "100%"}}>
                             {props.getTeamId !== 0 && <option className={"option"} key={"/editTeam"} value="/editTeam">Team Settings</option>}
                             {props.getTeamId !== 0 && <option className={"option"} key={"/findRival"} value="/findRival">Find Rival</option>}
                             {props.getTeamId !== 0 && <option className={"option"} key={"/newTeam"} value="/newTeam">New Team</option>}
