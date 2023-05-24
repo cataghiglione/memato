@@ -17,6 +17,8 @@ export function HomePage(props){
     const [onceOpen, setOnceOpen] = useState(true);
     const [teams, setTeams] = useState([]);
     const [nextTeam, setNextTeam] = useState('')
+    const containerStyle = teams.length > 0 ? { marginTop: `-${10 * teams.length}px`, marginLeft: '7%'} : {marginLeft: '7%'};
+
 
     useEffect(() => {
         listTeams(token, (teams) => setTeams(teams));
@@ -38,7 +40,7 @@ export function HomePage(props){
     return (
         <div>
             <TopBar toggleTeamId={props.toggleTeamId} getTeamId={props.getTeamId}/>
-            <div className="containerPrincipal" style={{marginLeft: '7%'}}>
+            <div className="containerPrincipal" style={containerStyle}>
                 {onceOpen && getUserMethod()}
                 <div>
                     <h1>Welcome {user.firstName}!
@@ -49,15 +51,13 @@ export function HomePage(props){
                     {teams.length===0 ? 'Create your first team' : 'New Team'}
                 </button>
                 {teams.length > 0 &&
-                    <select className={"team-pick"} multiple={true} onChange={changeNextTeam} style={{width:"325px"}}>
+                    <div className={"team-pick"} multiple={true}  style={{width:"325px"}} onClick={changeNextTeam}>
                         {teams.map(team =>
-                                <option className={"team-select-option"} value={team.id} style={{ textTransform: 'capitalize'}}>
-                                    Nombre: {team.name}, Deporte: {team.sport} {team.quantity} </option>
-                            // <p>nombre = {team.name}    deporte = {team.sport} </p>
-                            // <option>{team.name}</option>
-
+                                <button className={"team-select-option-home"} value={team.id} style={{ textTransform: 'capitalize'}}>
+                                    {team.sport} {team.quantity}: {team.name}
+                                </button>
                         )}
-                    </select>
+                    </div>
                 }
                 {/*{teams.length === 0 &&*/}
                 {/*    <p className={"noTeamPick"}>You haven't created any teams yet</p>*/}
