@@ -5,18 +5,12 @@ import {useNavigate} from "react-router";
 /*import {PinMapFill} from "react-bootstrap-icons";*/
 
 import "../css/CurrentSearches.css"
-import {currentSearches, deleteSearch} from "../service/mySystem";
+import {currentSearches, deleteSearch, getTeam} from "../service/mySystem";
 import {TopBar} from "./TopBar/TopBar";
 /*import {BingMap} from "./BingMap";*/
 
 
 export function CurrentSearchesPage(props) {
-    // const fetchTeams=(search)=>{
-    //     useEffect(()=>{
-    //         getTeam(token,search.teamId,()=>)
-    //
-    //     })
-    // }
     const auth = useAuthProvider()
     const token = auth.getToken();
     const team_id = props.getTeamId;
@@ -25,6 +19,7 @@ export function CurrentSearchesPage(props) {
         window.location.href = "/home"
     }
     const [searches, setSearches] = useState([]);
+    const[team, setTeam]=useState('');
     const[selectedSearch, setSelectedSearch]=useState('');
    /* const [mapState, setMapState] = useState(false) */
   /*  const [teamSelectedLoc, setTeamSelectedLoc] = useState([0,0])
@@ -35,6 +30,9 @@ export function CurrentSearchesPage(props) {
         currentSearches(token,team_id, (searches) => setSearches(searches));
     }, [])
 
+    useEffect(() => {
+        getTeam(token,team_id, (team) => setTeam(team));
+    }, [token, team_id])
 
     const ConfirmationDialog = ({ message, onConfirm, onCancel }) => {
         return (
@@ -55,8 +53,8 @@ export function CurrentSearchesPage(props) {
     const handleCancel = () => {
         setShowConfirmation(false);
     };
-    const handleConfirm = async () => {
-        await deleteSearch(
+    const handleConfirm = () => {
+        deleteSearch(
             token,
             selectedSearch.id,
             () => {
@@ -116,28 +114,29 @@ export function CurrentSearchesPage(props) {
     }*/
     return (
         <div>
-            <div>
-                {popupMsg !=="" && <div className="searches-popup">{popupMsg}</div>}
-
+            <div className={"logo"}>
+                <img style={{width: 218, height: "auto"}} src={require("../images/logo_solo_letras.png")} alt={"Logo"}/>
             </div>
-            <div className={"confirmationMenu"}>
-                {showConfirmation && (
+            {popupMsg !=="" && <div className="searches-popup">{popupMsg}</div>}
+            {showConfirmation === true && (
+                <div>
                     <ConfirmationDialog
                         message="Are you sure you want to delete this search?"
                         onConfirm={handleConfirm}
                         onCancel={handleCancel}
                     />
-                )}
-            </div>
+                </div>
+            )}
 
             <TopBar toggleTeamId = {props.toggleTeamId}    getTeamId={props.getTeamId}/>
 
-            <div className={"containerPrincipal"}>
+            <div className={"containerSearchPage"}>
                 <div>
                     {searches.length > 0 && (
                         <div>
-                            <div className={"searchesTitle"} style={{top: "-20%"}}>
-                                Your team's current searches
+
+                            <div className={"searchesTitle"}>
+                                {team.name}'s current searches
                             </div>
                             {searches.map((search) => (
                                 <div className={"searchesContainer"}>
@@ -159,7 +158,7 @@ export function CurrentSearchesPage(props) {
                 </div>
                 {searches.length===0 && (
                     <div>
-                        <div className={"noActiveSearches"}>
+                        <div className={"searchesTitle"}>
                             You don't have any active searches
                         </div>
                         <button className={"goToUserButton"} onClick={handleGoBackClick}>Select a team</button>

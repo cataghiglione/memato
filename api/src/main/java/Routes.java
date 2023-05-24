@@ -441,12 +441,11 @@ public class Routes {
 
 
         });
-        post(DEACTIVATE_SEARCH_ROUTE, (req, res) -> {
-            final Long id = Long.valueOf(req.body());
+        authorizedPost(DEACTIVATE_SEARCH_ROUTE, (req, res) -> {
+            final Long id = Long.valueOf(req.queryParams("id"));
             boolean state = system.deactivateSearch(id);
-            if (state) {
-                res.status(200);
-            } else res.status(400);
+            if (state) res.status(200);
+            else res.status(400);
             return res.status();
 
         });

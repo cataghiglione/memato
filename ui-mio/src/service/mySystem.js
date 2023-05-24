@@ -86,7 +86,7 @@ export const updateUser = (token, form, okCallback, errorCallback) => {
 }
 
 export const deleteSearch=(token, searchId, okCallback, errorCallback)=>{
-    fetch(`${restApiEndpoint}/deactivateSearch`, {
+    fetch(`${restApiEndpoint}/deactivateSearch?id=${searchId}`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
