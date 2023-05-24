@@ -143,6 +143,21 @@ export const newMatch = (token, form, okCallback, errorCallback) => {
 
     })
 }
+export const confirmMatch=(token, matchId, teamId, okCallback,  errorCallback)=>{
+    fetch(`${restApiEndpoint}/confirmMatch?teamid=${teamId}&matchid=${matchId}`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token
+        },
+    }).then(resp=>{
+        if (resp.status===200){
+            okCallback(resp)
+        }
+
+        else errorCallback()
+    })
+}
 /*
     GET
  */
@@ -248,7 +263,7 @@ export const getUser = (token, okCallback, errorCallback) => {
         return resp.body;
     })
 }
-export const getPendingConfirmations=(token,teamId,okCallback,errorCallback)=>{
+export const getPendingConfirmations=(token,teamId,okCallback,secondOkCallback,errorCallback)=>{
     fetch(`${restApiEndpoint}/getMatchesByTeamId?teamid=${teamId}`,{
         method: 'GET',
         headers: {
@@ -259,6 +274,10 @@ export const getPendingConfirmations=(token,teamId,okCallback,errorCallback)=>{
     }).then(resp =>{
         if (resp.status === 200){
             resp.json().then(matches => okCallback(matches))
+        }
+        if (resp.status ===202){
+            resp.json().then(matches => secondOkCallback(matches))
+
         }
         else {
             errorCallback("Not able to fetch searches")

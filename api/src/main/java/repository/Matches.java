@@ -13,9 +13,10 @@ public class Matches {
     public Matches(EntityManager entityManager) {
         this.entityManager = entityManager;
     }
-    public Optional<Match> getMatchById(Long id){
-        return entityManager.createQuery("SELECT m FROM Match m WHERE m.id =:id",Match.class)
-                .setParameter("id",id)
+
+    public Optional<Match> getMatchById(Long id) {
+        return entityManager.createQuery("SELECT m FROM Match m WHERE m.id =:id", Match.class)
+                .setParameter("id", id)
                 .getResultList()
                 .stream()
                 .findFirst();
@@ -46,9 +47,10 @@ public class Matches {
                 .stream()
                 .findFirst();
     }
-    public List<Match> findMatchesByTeamId(Long teamId){
-        List<Match> pre_matches= entityManager.createQuery("SELECT m FROM Match m WHERE (m.search1.team.id =:teamId OR m.search2.team.id =:teamId)", Match.class)
-                .setParameter("teamId",teamId)
+
+    public List<Match> findMatchesByTeamId(Long teamId) {
+        List<Match> pre_matches = entityManager.createQuery("SELECT m FROM Match m WHERE (m.search1.team.id =:teamId OR m.search2.team.id =:teamId)", Match.class)
+                .setParameter("teamId", teamId)
                 .getResultList();
         return filterMatchesByPossibility(pre_matches);
     }
@@ -62,16 +64,18 @@ public class Matches {
                 .stream()
                 .findFirst();
     }
-    public boolean teamOneOrTeam2(Long matchId, Long teamId){
-        List<Match> matches =entityManager.createQuery("select m from Match m where m.id =: matchId",Match.class)
-                .setParameter("matchId",matchId)
+
+    public boolean teamOneOrTeam2(Long matchId, Long teamId) {
+        List<Match> matches = entityManager.createQuery("select m from Match m where m.id =: matchId", Match.class)
+                .setParameter("matchId", matchId)
                 .getResultList();
-        if (!matches.isEmpty()){
+        if (!matches.isEmpty()) {
             return matches.get(0).getTeam1().getId() == teamId;
         }
         throw new RuntimeException();
     }
-//    public void confirmByTeam(String matchId, String searchId, Match match){
+
+    //    public void confirmByTeam(String matchId, String searchId, Match match){
 //        try {
 //            if(Long.toString(match.getTeam1().getId()).equals(searchId)){
 //                entityManager.createQuery("UPDATE Match m set m.confirmed_by_1 = true where (cast (m.id as string)) =:matchId")
@@ -87,24 +91,34 @@ public class Matches {
 //            e.printStackTrace();
 //        }
 //    }
-    public boolean confirmMatchByTeam(Long matchId, Long teamId){
-        int updated_count = 0;
-        if (teamOneOrTeam2(matchId,teamId)){
-             updated_count = entityManager.createQuery("UPDATE Match set confirmed_by_1 =true, search1.isSearching =false WHERE id = :matchId")
-                    .setParameter("matchId",matchId)
+    public boolean confirmMatchByTeam(Long matchId, Long teamId) {
+        int updatedCount = 0;
+        Long searchId;
+        boolean foundSearch = findSearchId(matchId, teamId).isPresent();
+        if (foundSearch) {
+            searchId = findSearchId(matchId, teamId).get();
+            if (teamOneOrTeam2(matchId, teamId)) {
+                updatedCount = entityManager.createQuery("UPDATE Match SET confirmed_by_1 = true WHERE id = :matchId")
+                        .setParameter("matchId", matchId)
+                        .executeUpdate();
+            } else {
+                updatedCount = entityManager.createQuery("UPDATE Match SET confirmed_by_2 = true WHERE id = :matchId")
+                        .setParameter("matchId", matchId)
+                        .executeUpdate();
+
+            }
+            updatedCount += entityManager.createQuery("UPDATE Search SET isSearching = false WHERE id = :searchId")
+                    .setParameter("searchId", searchId)
                     .executeUpdate();
 
         }
-        else {
-             updated_count = entityManager.createQuery("UPDATE Match set confirmed_by_2 =true, search2.isSearching =false WHERE id = :matchId")
-                    .setParameter("matchId",matchId)
-                    .executeUpdate();
-        }
-        return updated_count>1;
+        return updatedCount > 1;
+
 
     }
 
-    private List<Match> filterMatchesByPossibility(List<Match> pre_matches){
+
+    private List<Match> filterMatchesByPossibility(List<Match> pre_matches) {
         List<Match> final_matches_list = new ArrayList<>();
         for (Match pre_match : pre_matches) {
             if (pre_match.isPossible()) {
@@ -112,6 +126,39 @@ public class Matches {
             }
         }
         return final_matches_list;
+    }
+
+    private Optional<Long> findSearchId(Long matchId, Long teamId) {
+        Optional<Search> search;
+        if (teamOneOrTeam2(matchId, teamId)) {
+            search = entityManager.createQuery("SELECT m.search1 FROM Match m WHERE m.id =: matchId")
+                    .setParameter("matchId", matchId)
+                    .getResultList()
+                    .stream()
+                    .findFirst();
+        } else {
+            search = entityManager.createQuery("SELECT m.search2 FROM Match m WHERE m.id =: matchId")
+                    .setParameter("matchId", matchId)
+                    .getResultList()
+                    .stream()
+                    .findFirst();
+
+        }
+        if (search.isPresent()) {
+            Long searchId = search.get().getId();
+            return Optional.of(searchId);
+        } else return Optional.empty();
+    }
+
+    public boolean isAlreadyConfirmed(Long matchId, Long teamId) {
+        Optional<Match> match = getMatchById(matchId);
+        if (match.isPresent()) {
+            if (teamOneOrTeam2(matchId, teamId)) {
+                return match.get().isConfirmed_by_1();
+            }
+            else return match.get().isConfirmed_by_2();
+        }
+        throw new RuntimeException("Match not found");
     }
 
 

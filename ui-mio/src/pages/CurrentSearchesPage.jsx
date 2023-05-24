@@ -51,8 +51,8 @@ export function CurrentSearchesPage(props) {
     const handleCancel = () => {
         setShowConfirmation(false);
     };
-    const handleConfirm = () => {
-        deleteSearch(
+    const handleConfirm = async () => {
+        await deleteSearch(
             token,
             selectedSearch.id,
             () => {
@@ -60,7 +60,7 @@ export function CurrentSearchesPage(props) {
                 setTimeout(() => {
                     setPopupMsg('');
                 }, 180);
-                currentSearches(token, (searches) => setSearches(searches));
+                currentSearches(token, team_id,(searches) => setSearches(searches));
             },
             (error) => {
                 setPopupMsg('Error');
