@@ -1,57 +1,62 @@
-.delete-search-button {
-    display: flex;
+.containerSearchPage {
+    position: relative;
+    background-color: white;
+    z-index: 999;
     align-items: center;
+    justify-content: center;
+    top: 90px;
+    left: 600px;
+    /*transform: translateX(600px);*/
+    min-height: 100vh;
+    font-family: "Times New Roman", sans-serif;
+}
+
+.searchesTitle {
+    font-size: xx-large;
+    /*top: 50px;*/
+    /*right: 400px;*/
+    white-space:nowrap;
+}
+
+.searchesContainer {
+    position: relative;
+    border: 2px solid black;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    padding: 20px;
+    width: 300px;
+    /*left: 200px;*/
+    /*top: 100px; !* Add a top value to create space for the title *!*/
+}
+
+.search-info {
+    display: block;
+    text-align: left;
+    margin: 5px;
+}
+
+.delete-search-button {
     width: 40px;
     height: 40px;
     padding: 10px;
-    position: relative;
-    left: 80%;
-    top: 2%;
+    position: absolute;
+    right: 5px;
+    bottom: 5px;
     cursor: pointer;
-
-
 }
 .delete-search-button:hover{
     color: white;
     background: #da190b;
 }
-.searchesContainer{
-    justify-content: center;
-    align-items: center;
-    position: relative;
-    left: -10%;
-    transform: translateY(-20%);
-    border: 2px solid black;
-    padding: 20px;
-    margin-bottom: 20px; /* Agrega un espacio entre los contenedores */
-    height: 190px;
-    width: 200px;
-
-}
-.search-info {
-    display: block;
-
-}
-.searchesTitle {
-    position: absolute;
-    font-size: xx-large;
-    font-family: "Times New Roman", sans-serif;
-    bottom: 130%;
-    left: -30%;
-    white-space: nowrap;
-}
 
 
 .delete-search-button img {
-    width: 40px;
-    height: 40px;
-    margin-right: 5px;
     color:black;
 }
 .searches-popup {
     position: fixed;
-    top: 8%;
-    left: 45%;
+    top: 8px;
+    left: 45px;
     z-index: 9999;
     background-color: #fff;
     border: 1px solid #000;
@@ -59,31 +64,17 @@
     transition: opacity 0.3s ease-in-out;
 }
 
-.noActiveSearches{
-    position: absolute;
-    font-size: xx-large;
-    font-family: "Times New Roman", sans-serif;
-    bottom: 230%;
-    left: -55%;
-    white-space: nowrap;
-
-}
 .goToUserButton{
-    position: relative;
-    padding: 12px 39px;
+    position: absolute;
     background-color: white;
-    left: 30%;
-    bottom: -30%;
-    align-items: center;
     color: black;
     border: 1px solid rebeccapurple;
     border-radius: 2px;
-    transition-duration: 0.4s;
-    width: 60%;
+    width: 100px;
+    height: 50px;
+    margin: 20px;
+    left: 100px;
     white-space: nowrap;
-    display: flex;
-    text-align: center;
-    justify-content: center;
 }
 
 
@@ -93,13 +84,13 @@
 }
 .confirmationMenu{
     position: fixed;
-    /*border: 2px solid black;*/
-    top: 15%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    border-radius: 9px;
+    margin-top: 20px;
+    top: 30px;
+    left: 575px;
     z-index: 9999;
     background: white;
-
+    padding: 20px;
 }
 .confirmationButton{
     background-color: #26489a;
@@ -118,12 +109,31 @@
     margin-left: 5px;
 }
 .confirmationButton:hover{
-    background: red;
+    background: rgba(38, 72, 154, 0.56);
     color: white;
 }
 .cancelDeleteButton:hover{
-    background-color: white;
-    color: green;
+    color: white;
+    background: rgb(176, 192, 255);
 }
 
+.popupContainer {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100px;
+    height: 100px;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 9999;
+    align-items: center;
+    justify-content: center;
+}
 
+.popup {
+    background-color: white;
+    padding: 20px;
+    max-width: 400px;
+    text-align: center;
+    border-radius: 5px;
+}
