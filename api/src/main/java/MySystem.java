@@ -81,6 +81,17 @@ public class MySystem {
             }
         });
     }
+    public boolean declineMatch(Long matchid, Long teamid){
+        return runInTransaction(datasource ->{
+            final Matches matches = datasource.matches();
+            try{
+                return matches.declineMatchByTeam(matchid,teamid);
+            }
+            catch (Exception e){
+                throw new RuntimeException(e);
+            }
+        });
+    }
 
 
     public Optional<User> findUserByEmail(String email) {

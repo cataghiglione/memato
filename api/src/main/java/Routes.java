@@ -50,6 +50,7 @@ public class Routes {
     public static final String CONFIRM_MATCH_ROUTE = "/confirmMatch";
     public static final String GET_MATCHES_BY_TEAMID_ROUTE = "/getMatchesByTeamId";
     public static final String IS_TEAM_1_OR_2_ROUTE = "/isTeamOneOrTwo";
+    public static final String DECLINE_MATCH_ROUTE = "/declineMatch";
 
 
     private MySystem system;
@@ -338,15 +339,9 @@ public class Routes {
             final Searches searches = new Searches(entityManager);
             final Long team_id = Long.valueOf(req.queryParams("teamid"));
             List<Search> active_searches = searches.findActiveSearchesByTeamId(team_id);
-            if (!active_searches.isEmpty()) {
-                res.body(JsonParser.toJson(active_searches));
-                res.status(200);
-            } else {
-                res.status(404);
-            }
+            res.body(JsonParser.toJson(active_searches));
+            res.status(200);
             return res.body();
-
-
         });
         post(UPDATE_TEAM_ROUTE, (req, res) -> {
             final EntityManager entityManager = entityManagerFactory.createEntityManager();
@@ -460,16 +455,14 @@ public class Routes {
             final Long team_id = Long.valueOf(req.queryParams("teamid"));
             final Matches matches = new Matches(entityManager);
             List<Match> matchesList = matches.findMatchesByTeamId(team_id);
-            if (!matchesList.isEmpty()) {
-                if (matches.isAlreadyConfirmed(matchesList.get(0).getId(),team_id)){
-                    res.status(202);
-                }
-                else
-                {res.status(200);}
-                res.body(JsonParser.toJson(matchesList));
+
+            if (matches.isAlreadyConfirmed(matchesList.get(0).getId(), team_id)) {
+                res.status(202);
             } else {
-                res.status(404);
+                res.status(200);
             }
+            res.body(JsonParser.toJson(matchesList));
+
             return res.body();
         });
         authorizedGet(IS_TEAM_1_OR_2_ROUTE, (req, res) -> {
@@ -484,12 +477,19 @@ public class Routes {
                 } else res.body(JsonParser.toJson(match.get().getTeam1().getName()));
                 res.status(200);
 
-            }
-            else res.status(404);
+            } else res.status(404);
             return res.body();
 
 
         });
+//        authorizedPost(DECLINE_MATCH_ROUTE, (req,res) ->{
+//            final EntityManager entityManager = entityManagerFactory.createEntityManager();
+//            final Long team_id = Long.valueOf(req.queryParams("teamid"));
+//            final Long match_id = Long.valueOf(req.queryParams("matchid"));
+//            final Matches matches = new Matches(entityManager);
+//
+//
+//        });
 
 
     }

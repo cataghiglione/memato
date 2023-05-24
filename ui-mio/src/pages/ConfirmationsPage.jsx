@@ -29,9 +29,11 @@ export function ConfirmationsPage(props) {
 
 
     const getRivalName = (match) => {
-        if (match.search1.id === id) {
+        if (match.search1.team.id === id) {
+            console.log(match.search1.team.name)
             return match.search1.team.name;
         } else {
+            console.log(match.search2.team.name)
             return match.search2.team.name;
         }
     };
@@ -73,7 +75,8 @@ export function ConfirmationsPage(props) {
                             {matches.map((match) => (
                                 <div className={"searchesContainer"}>
                                     <div key={match.id}>
-                                        <p className={"search-info"}>Rival: {getRivalName(match)}</p>
+                                        <p className={"search-info"}>Rival: {match.search1.team.id === id ? match.search1.team.name : match.search2.team.name}
+                                            </p>
                                         <p className={"search-info"}>Time: {match.search1.time}</p>
                                         <p className={"search-info"}>Day: {match.search1.day}/{
                                             match.search1.month + 1}</p>
@@ -100,7 +103,8 @@ export function ConfirmationsPage(props) {
                             {matches.map((match) => (
                                 <div className={"searchesContainer"}>
                                     <div key={match.id}>
-                                        <p className={"search-info"}>Rival: {getRivalName(match)}</p>
+                                        <p className={"search-info"}>Rival: {match.search1.team.id === id ? match.search1.team.name : match.search2.team.name}
+                                            </p>
                                         <p className={"search-info"}>Time: {match.search1.time}</p>
                                         <p className={"search-info"}>Day: {match.search1.day}/{
                                             match.search1.month + 1}</p>

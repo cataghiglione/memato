@@ -195,7 +195,7 @@ export const currentSearches = (token,team_id, okCallback, errorCallback) => {
         }
     }).then(resp => {
         if (resp.status === 200) {
-            resp.json().then(teams => okCallback(teams))
+            return resp.json().then(teams => okCallback(teams))
         } else {
             errorCallback("Not able to fetch searches")
         }
@@ -276,6 +276,10 @@ export const getPendingConfirmations=(token,teamId,okCallback,secondOkCallback,e
             resp.json().then(matches => okCallback(matches))
         }
         if (resp.status ===202){
+            resp.json().then(matches => secondOkCallback(matches))
+
+        }
+        if (resp.status ===201){
             resp.json().then(matches => secondOkCallback(matches))
 
         }
