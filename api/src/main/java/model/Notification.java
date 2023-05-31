@@ -32,4 +32,12 @@ public class Notification {
     public static Notification create(User user, String message){
         return new Notification(user, message);
     }
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getMessage() {
+        return message;
+    }
 }

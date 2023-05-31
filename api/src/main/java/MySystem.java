@@ -120,6 +120,11 @@ public class MySystem {
                 ds -> ds.users().list()
         );
     }
+    public List<Notification> listNotifications(User user) {
+        return runInTransaction(
+                ds -> ds.notifications().list(user.getId())
+        );
+    }
 
 
     private <E> E runInTransaction(Function<MySystemRepository, E> closure) {

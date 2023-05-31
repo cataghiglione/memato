@@ -51,6 +51,7 @@ public class Routes {
     public static final String GET_MATCHES_BY_TEAMID_ROUTE = "/getMatchesByTeamId";
     public static final String IS_TEAM_1_OR_2_ROUTE = "/isTeamOneOrTwo";
     public static final String DECLINE_MATCH_ROUTE = "/declineMatch";
+    public static final String GET_NOTIFICATIONS_ROUTE = "/getNotifications";
 
 
     private MySystem system;
@@ -236,6 +237,27 @@ public class Routes {
             final List<User> users = system.listUsers();
             return JsonParser.toJson(users);
         });
+        authorizedGet(GET_NOTIFICATIONS_ROUTE, (req, res) -> {
+            getUser(req).ifPresentOrElse(
+                    (user) -> {
+                        final List<Notification> notificationsList = system.listNotifications(user);
+                        List<dto.Notification> dtoNotifications = notificationsList.stream().map(notification -> {
+                            final dto.Notification dtoNotification = new dto.Notification();
+                            dtoNotification.id = notification.getId();
+                            dtoNotification.message = notification.getMessage();
+                            return dtoNotification;
+                        }).toList();
+
+                        res.status(200);
+                        res.body(toJson(dtoNotifications));
+                    },
+                    () -> {
+                        res.status(404);
+                        res.body("Invalid Token");
+                    }
+            );
+            return res.body();
+        });
         get(PICK_TEAM_ROUTE, (req, res) -> {
             final EntityManager entityManager = entityManagerFactory.createEntityManager();
             final Teams teams = new Teams(entityManager);
@@ -281,28 +303,15 @@ public class Routes {
             );
             return toJson(res.body());
         });
+
         Spark.get("/getAllUsers", "application/json", (req, resp) -> {
             resp.type("application/json");
             resp.status(200);
             final EntityManager entityManager = entityManagerFactory.createEntityManager();
             final Users users = new Users(entityManager);
-
-//            try {
-//
-//            }catch (SQL) {
-//                resp.status(409);
-//                resp.body("ee");
-//            }
             return gson.toJson(users.listAll());
         });
-//        authorizedGet(FIND_RIVAL_ROUTE, (req, res) -> {
-//            final String id = (req.queryParams("id"));
-//            final EntityManager entityManager = entityManagerFactory.createEntityManager();
-//            final Searches searches=new Searches(entityManager);
-//            final CreateSearchForm searchForm = CreateSearchForm.createFromJson(req.body());
-//            List<Team> candidates = searches.findCandidates(id,searchForm.getTime(),searchForm.getDate().toString());
-//            return gson.toJson(candidates);
-//        });
+
         post(NEW_SEARCH_ROUTE, (req, res) -> {
             final EntityManager entityManager = entityManagerFactory.createEntityManager();
             final Searches searches = new Searches(entityManager);
@@ -335,6 +344,7 @@ public class Routes {
             );
             return res.body();
         });
+
         get(GET_ACTIVE_SEARCHES_ROUTE, (req, res) -> {
             final EntityManager entityManager = entityManagerFactory.createEntityManager();
             final Searches searches = new Searches(entityManager);
@@ -344,6 +354,7 @@ public class Routes {
             res.status(200);
             return res.body();
         });
+
         post(UPDATE_TEAM_ROUTE, (req, res) -> {
             final EntityManager entityManager = entityManagerFactory.createEntityManager();
             final Teams teams = new Teams(entityManager);
@@ -363,9 +374,8 @@ public class Routes {
                     }
             );
             return res.status();
-
-
         });
+
         post(UPDATE_USER_ROUTE, (req, res) -> {
             final EntityManager entityManager = entityManagerFactory.createEntityManager();
             final Users users = new Users(entityManager);
