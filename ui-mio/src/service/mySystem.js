@@ -85,20 +85,19 @@ export const updateUser = (token, form, okCallback, errorCallback) => {
     })
 }
 
-export const deleteSearch=(token, searchId, okCallback, errorCallback)=>{
+export const deleteSearch = (token, searchId, okCallback, errorCallback) => {
     fetch(`${restApiEndpoint}/deactivateSearch?id=${searchId}`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
             'Authorization': 'Bearer ' + token
         },
-        body:JSON.stringify(searchId)
+        body: JSON.stringify(searchId)
 
-    }).then(resp=>{
-        if (resp.status===200){
+    }).then(resp => {
+        if (resp.status === 200) {
             okCallback()
-        }
-        else errorCallback()
+        } else errorCallback()
     })
 }
 
@@ -116,7 +115,7 @@ export const findRival = (token, id, form, okCallback, errorCallback) => {
     }).then(resp => {
         if (resp.status === 201 || resp.status === 200) {
             console.log(resp.body)
-             return resp.json().then(response => okCallback(response))
+            return resp.json().then(response => okCallback(response))
             // okCallback(resp)
         } else {
             errorCallback()
@@ -143,19 +142,30 @@ export const newMatch = (token, form, okCallback, errorCallback) => {
 
     })
 }
-export const confirmMatch=(token, matchId, teamId, okCallback,  errorCallback)=>{
+export const confirmMatch = (token, matchId, teamId, okCallback, errorCallback) => {
     fetch(`${restApiEndpoint}/confirmMatch?teamid=${teamId}&matchid=${matchId}`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
             'Authorization': 'Bearer ' + token
         },
-    }).then(resp=>{
-        if (resp.status===200){
+    }).then(resp => {
+        if (resp.status === 200) {
             okCallback(resp)
-        }
-
-        else errorCallback()
+        } else errorCallback()
+    })
+}
+export const declineMatch=(token, matchId, teamId, okCallback, errorCallback)=>{
+    fetch(`${restApiEndpoint}/declineMatch?teamid=${teamId}&matchid=${matchId}`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token
+        },
+    }).then(resp => {
+        if (resp.status === 200) {
+            okCallback()
+        } else errorCallback()
     })
 }
 /*
@@ -186,7 +196,7 @@ export const getTeam = (token, id, okCallback, errorCallback) => {
     })
 }
 
-export const currentSearches = (token,team_id, okCallback, errorCallback) => {
+export const currentSearches = (token, team_id, okCallback, errorCallback) => {
     fetch(`${restApiEndpoint}/currentSearches?teamid=${team_id}`, {
         method: 'GET',
         headers: {
@@ -214,11 +224,10 @@ export const teamById = (token, teamId, okCallback, errorCallback) => {
         },
         body: JSON.stringify(teamId)
 
-    }).then(resp=>{
-        if (resp.status ===200){
+    }).then(resp => {
+        if (resp.status === 200) {
             resp.json().then(team => okCallback(team))
-        }
-        else errorCallback()
+        } else errorCallback()
 
     })
 
@@ -263,49 +272,38 @@ export const getUser = (token, okCallback, errorCallback) => {
         return resp.body;
     })
 }
-export const getPendingConfirmations=(token,teamId,okCallback,secondOkCallback,errorCallback)=>{
-    fetch(`${restApiEndpoint}/getMatchesByTeamId?teamid=${teamId}`,{
+export const getPendingConfirmations = (token, teamId, okCallback, errorCallback) => {
+    fetch(`${restApiEndpoint}/getMatchesByTeamId?teamid=${teamId}`, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
             'Authorization': 'Bearer ' + token
         },
 
-    }).then(resp =>{
-        if (resp.status === 200){
+    }).then(resp => {
+        if (resp.status === 200) {
             resp.json().then(matches => okCallback(matches))
-        }
-        if (resp.status ===202){
-            resp.json().then(matches => secondOkCallback(matches))
-
-        }
-        if (resp.status ===201){
-            resp.json().then(matches => secondOkCallback(matches))
-
-        }
-        else {
+        } else {
             errorCallback("Not able to fetch searches")
         }
     })
 }
-export const isTeamOneOrTeamTwo=(token,matchId,teamId,okCallback,errorCallback)=>{
-    fetch(`${restApiEndpoint}/isTeamOneOrTwo?teamid=${teamId}&matchid=${matchId}`,{
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' + token
-        },
-
-    }).then(resp =>{
-        if (resp.status === 200){
-            resp.json().then(team => okCallback(team))
-        }
-        else {
-            errorCallback("Not able to fetch match")
-        }
-    })
-}
-
+// export const isTeamOneOrTeamTwo = (token, matchId, teamId, okCallback, errorCallback) => {
+//     fetch(`${restApiEndpoint}/isTeamOneOrTwo?teamid=${teamId}&matchid=${matchId}`, {
+//         method: 'GET',
+//         headers: {
+//             'Content-Type': 'application/json',
+//             'Authorization': 'Bearer ' + token
+//         },
+//
+//     }).then(resp => {
+//         if (resp.status === 200) {
+//             resp.json().then(team => okCallback(team))
+//         } else {
+//             errorCallback("Not able to fetch match")
+//         }
+//     })
+// }
 
 
 /*

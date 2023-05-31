@@ -87,6 +87,11 @@ public class Match {
     public boolean isConfirmed_by_2() {
         return confirmed_by_2;
     }
+
+    public boolean isConfirmed() {
+        return confirmed_by_1 && confirmed_by_2;
+    }
+
     public Long getId(){
         return id;
     }

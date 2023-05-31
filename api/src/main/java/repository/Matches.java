@@ -133,13 +133,14 @@ public class Matches {
 
 
     private List<Match> filterMatchesByPossibility(List<Match> pre_matches) {
-        List<Match> final_matches_list = new ArrayList<>();
-        for (Match pre_match : pre_matches) {
-            if (pre_match.isPossible()) {
-                final_matches_list.add(pre_match);
-            }
-        }
-        return final_matches_list;
+        //        List<Match> possibleMatches = new ArrayList<>();
+//        for (Match pre_match : pre_matches) {
+//            if (pre_match.isPossible()) {
+//                possibleMatches.add(pre_match);
+//            }
+//        }
+//
+        return pre_matches.stream().filter(Match::isPossible).toList();
     }
 
     private Optional<Long> findSearchId(Long matchId, Long teamId) {

@@ -1,8 +1,6 @@
 import React, {Component, useEffect, useState} from 'react';
 import {useAuthProvider} from "../auth/auth";
-import {useSearchParams} from "react-router-dom";
-import {useNavigate} from "react-router";
-import {getPendingConfirmations, confirmMatch} from "../service/mySystem";
+import {getPendingConfirmations, confirmMatch, getTeam,declineMatch} from "../service/mySystem";
 import {TopBar} from "./TopBar/TopBar";
 import "../css/Confirmations.css"
 
@@ -11,32 +9,24 @@ export function ConfirmationsPage(props) {
     const token = auth.getToken();
     const id = props.getTeamId;
     let [matches, setMatches] = useState([]);
-    let [confirmed, setConfirmed] = useState(false);
+    const[team, setTeam]=useState('');
+
 
     useEffect(() => {
             getPendingConfirmations(token, id, (matches) => {
                     setMatches(matches)
-                    setConfirmed(false)
                 }, (matches) => {
-                    setMatches(matches)
-                    setConfirmed(true)
+                    // TODO ERROR CALLBACK
                 }
             )
         }
         ,
         [id, token]
     )
+    useEffect(() => {
+        getTeam(token,id, (team) => setTeam(team));
+    }, [token, id])
 
-
-    const getRivalName = (match) => {
-        if (match.search1.team.id === id) {
-            console.log(match.search1.team.name)
-            return match.search1.team.name;
-        } else {
-            console.log(match.search2.team.name)
-            return match.search2.team.name;
-        }
-    };
 
 
     const handleConfirmMatch = async (match_id) => {
@@ -44,19 +34,25 @@ export function ConfirmationsPage(props) {
         await confirmMatch(token, match_id, id, () => {
             getPendingConfirmations(token, id, (matches) => {
                     setMatches(matches)
-                    setConfirmed(false)
                 }, (matches) => {
-                    setMatches(matches)
-                    setConfirmed(true)
+                    // TODO ERROR CALLBACK
                 }
             )
         })
     }
+    const handleDeclineMatch = async (match_id) =>{
+        await declineMatch(token,match_id,id, ()=>{
+            getPendingConfirmations(token, id, (matches) => {
+                    setMatches(matches)
+                }, (matches) => {
+                    // TODO ERROR CALLBACK
+                }
+            )
+        })
 
-    function declineMatch(match_id) {
-        // CALL BACK to decline the match and then call pending confirmations again
-        return undefined;
     }
+
+
 
     return (
         <div>
@@ -67,59 +63,30 @@ export function ConfirmationsPage(props) {
             <TopBar toggleTeamId={props.toggleTeamId} getTeamId={props.getTeamId}/>
             <div className={"containerPrincipal"}>
                 <div>
-                    {(matches.length > 0 && confirmed)&&  (
+                    {(matches.length > 0) && (
                         <div>
-                            <div className={"searchesTitle"}>
-                                Your team's pending confirmations
+                            <div className={"confirmationsTitle"}>
+                                {team.name}'s pending confirmations
                             </div>
                             {matches.map((match) => (
-                                <div className={"searchesContainer"}>
+                                <div className={"matchesContainer"}>
                                     <div key={match.id}>
-                                        <p className={"search-info"}>Rival: {match.search1.team.id === id ? match.search1.team.name : match.search2.team.name}
-                                            </p>
-                                        <p className={"search-info"}>Time: {match.search1.time}</p>
-                                        <p className={"search-info"}>Day: {match.search1.day}/{
-                                            match.search1.month + 1}</p>
-                                        {/* tendriamos que poner una condicion, ya que si el team ya confirmo,
-                                            no tendria que tener la opcion de confirmar de vuelta*/}
-                                        <p>You have confirmed this match, wait for the other team to confirm</p>
-                                    </div>
-                                    {/*<button className={"delete-search-button"} onClick={() => handleDeleteClick(search)}>*/}
-                                    {/*    <i className="bi bi-trash"></i>*/}
-                                    {/*</button>*/}
-                                </div>
+                                        <p className={"match-info"}>Rival: {match.team2.name}
+                                        </p>
+                                        <p className={"match-info"}>Time: {match.time}</p>
+                                        <p className={"match-info"}>Day: {match.day}</p>
+                                        {match.team1Confirmed &&(
+                                            <p>You have confirmed this match, wait for the other team to confirm</p>
+                                        )}
+                                        {!match.team1Confirmed &&(
+                                            <div>
+                                            <button class = {"confirmButton"} onClick={()=>handleConfirmMatch(match.id)}>Confirm</button>
 
-                            ))}
-                        </div>
-
-                    )}
-                </div>
-                <div>
-                    {(matches.length > 0 && !confirmed)&&   (
-                        <div>
-                            <div className={"searchesTitle"}>
-                                Your team's pending confirmations
-                            </div>
-                            {matches.map((match) => (
-                                <div className={"searchesContainer"}>
-                                    <div key={match.id}>
-                                        <p className={"search-info"}>Rival: {match.search1.team.id === id ? match.search1.team.name : match.search2.team.name}
-                                            </p>
-                                        <p className={"search-info"}>Time: {match.search1.time}</p>
-                                        <p className={"search-info"}>Day: {match.search1.day}/{
-                                            match.search1.month + 1}</p>
-                                        {/* tendriamos que poner una condicion, ya que si el team ya confirmo,
-                                            no tendria que tener la opcion de confirmar de vuelta*/}
-                                        <button className={"confirmButton"}
-                                                onClick={() => handleConfirmMatch(match.id)}> Confirm
-                                        </button>
-                                        <button className={"declineButton"}
-                                                onClick={() => declineMatch(match.id)}> Decline
-                                        </button>
+                                            <button className = {"declineButton"} onClick={()=>handleDeclineMatch(match.id)}>Reject</button>
+                                            </div>
+                                            )}
                                     </div>
-                                    {/*<button className={"delete-search-button"} onClick={() => handleDeleteClick(search)}>*/}
-                                    {/*    <i className="bi bi-trash"></i>*/}
-                                    {/*</button>*/}
+
                                 </div>
 
                             ))}
@@ -129,9 +96,5 @@ export function ConfirmationsPage(props) {
                 </div>
             </div>
         </div>
-        // )}
-
-
     )
-
 }

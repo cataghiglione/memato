@@ -3,6 +3,7 @@ import com.google.common.base.Strings;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.google.gson.Gson;
+import dto.PendingMatch;
 import json.JsonParser;
 import model.*;
 import repository.Matches;
@@ -22,6 +23,7 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
+import java.util.stream.Stream;
 
 import static java.util.concurrent.TimeUnit.MINUTES;
 import static json.JsonParser.fromJson;
@@ -235,7 +237,7 @@ public class Routes {
         });
         authorizedGet(USERS_ROUTE, (req, res) -> {
             final List<User> users = system.listUsers();
-            return JsonParser.toJson(users);
+            return toJson(users);
         });
         authorizedGet(GET_NOTIFICATIONS_ROUTE, (req, res) -> {
             getUser(req).ifPresentOrElse(
@@ -294,7 +296,7 @@ public class Routes {
             teams.findTeamsById(id).ifPresentOrElse(
                     (team) -> {
                         res.status(200);
-                        res.body(JsonParser.toJson(team));
+                        res.body(toJson(team));
                     },
                     () -> {
                         res.status(404);
@@ -303,8 +305,7 @@ public class Routes {
             );
             return toJson(res.body());
         });
-
-        Spark.get("/getAllUsers", "application/json", (req, resp) -> {
+        get("/getAllUsers", "application/json", (req, resp) -> {
             resp.type("application/json");
             resp.status(200);
             final EntityManager entityManager = entityManagerFactory.createEntityManager();
@@ -337,7 +338,7 @@ public class Routes {
                             String user_id = user.get().getId().toString();
                             List<Search> candidates = searches.findCandidates(user_id, searchForm.getTime(), searchForm.getDate(), team.getSport(), team.getQuantity(), searchForm.getLatitude(), searchForm.getLongitude());
                             NewSearchResponse newSearchResponse = new NewSearchResponse(searchId.get(), candidates);
-                            res.body(JsonParser.toJson(newSearchResponse));
+                            res.body(toJson(newSearchResponse));
                         }
 
                     }
@@ -350,7 +351,7 @@ public class Routes {
             final Searches searches = new Searches(entityManager);
             final Long team_id = Long.valueOf(req.queryParams("teamid"));
             List<Search> active_searches = searches.findActiveSearchesByTeamId(team_id);
-            res.body(JsonParser.toJson(active_searches));
+            res.body(toJson(active_searches));
             res.status(200);
             return res.body();
         });
@@ -443,7 +444,7 @@ public class Routes {
             final String id = (req.queryParams("teamId"));
             Optional<Team> team = teams.findTeamsById(id);
             if (team.isPresent()) {
-                res.body(JsonParser.toJson(team));
+                res.body(toJson(team));
                 res.status(200);
             } else {
                 res.status(400);
@@ -465,30 +466,62 @@ public class Routes {
             final Long team_id = Long.valueOf(req.queryParams("teamid"));
             final Matches matches = new Matches(entityManager);
             List<Match> matchesList = matches.findMatchesByTeamId(team_id);
+            List<PendingMatch> pendingMatches = matchesList.stream().map(match -> {
+                final PendingMatch pendingMatch = new PendingMatch();
 
-            if (matches.isAlreadyConfirmed(matchesList.get(0).getId(), team_id)) {
-                res.status(202);
-            } else {
-                res.status(200);
-            }
-            res.body(JsonParser.toJson(matchesList));
+                pendingMatch.day = match.getDay() + "/" + match.getMonth();
+                pendingMatch.time = match.getTime();
+                pendingMatch.id = match.getId();
+
+                pendingMatch.isConfirmed = match.isConfirmed();
+
+                if (team_id == match.getTeam1().getId()) {
+                    pendingMatch.team1 =  match.getTeam1().asDto();
+                    pendingMatch.team2 = match.getTeam2().asDto();
+
+                    pendingMatch.team1Confirmed = match.isConfirmed_by_1();
+                    pendingMatch.team2Confirmed = match.isConfirmed_by_2();
+                } else {
+                    pendingMatch.team1 =  match.getTeam2().asDto();
+                    pendingMatch.team2 = match.getTeam1().asDto();
+
+                    pendingMatch.team1Confirmed = match.isConfirmed_by_2();
+                    pendingMatch.team2Confirmed = match.isConfirmed_by_1();
+                }
+
+                return pendingMatch;
+            }).toList();
+
+            res.body(toJson(pendingMatches));
 
             return res.body();
         });
-        authorizedGet(IS_TEAM_1_OR_2_ROUTE, (req, res) -> {
-            final EntityManager entityManager = entityManagerFactory.createEntityManager();
+//        authorizedGet(IS_TEAM_1_OR_2_ROUTE, (req, res) -> {
+//            final EntityManager entityManager = entityManagerFactory.createEntityManager();
+//            final Long matchId = Long.valueOf(req.queryParams("matchid"));
+//            final Long teamId = Long.valueOf(req.queryParams("teamid"));
+//            final Matches matches = new Matches(entityManager);
+//            final Optional<Match> match = matches.getMatchById(matchId);
+//            if (match.isPresent()) {
+//                if (matches.teamOneOrTeam2(matchId, teamId)) {
+//                    res.body(toJson(match.get().getTeam2().getName()));
+//                } else res.body(toJson(match.get().getTeam1().getName()));
+//                res.status(200);
+//
+//            } else res.status(404);
+//            return res.body();
+//
+//
+//        });
+        authorizedPost(DECLINE_MATCH_ROUTE, (req,res)->{
             final Long matchId = Long.valueOf(req.queryParams("matchid"));
             final Long teamId = Long.valueOf(req.queryParams("teamid"));
-            final Matches matches = new Matches(entityManager);
-            final Optional<Match> match = matches.getMatchById(matchId);
-            if (match.isPresent()) {
-                if (matches.teamOneOrTeam2(matchId, teamId)) {
-                    res.body(JsonParser.toJson(match.get().getTeam2().getName()));
-                } else res.body(JsonParser.toJson(match.get().getTeam1().getName()));
+            final boolean status = system.declineMatch(matchId,teamId);
+            if (status){
                 res.status(200);
-
-            } else res.status(404);
-            return res.body();
+            }
+            else res.status(404);
+            return res.status();
 
 
         });

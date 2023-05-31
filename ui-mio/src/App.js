@@ -15,6 +15,7 @@ import{CurrentSearchesPage} from "./pages/CurrentSearchesPage";
 import {useEffect, useState} from "react";
 import {useNavigate} from "react-router";
 import {ConfirmationsPage} from "./pages/ConfirmationsPage";
+import {MyConfirmationsPage} from "./pages/MyConfirmationsPage";
 
 
 const App = () =>{
@@ -66,6 +67,8 @@ const App = () =>{
                         <Route path = "/currentSearches" element = {<CurrentSearchesPage toggleTeamId = {toggleTeamId}    getTeamId={teamId}/>} />
                         <Route path = "/ReactMap" element = {<BingMap toggleTeamId = {toggleTeamId}    getTeamId={teamId}/>} />
                         <Route path = "/pendingConfirmations" element={<ConfirmationsPage toggleTeamId = {toggleTeamId} getTeamId={teamId}/>}/>
+                        <Route path = "/myConfirmations" element={<MyConfirmationsPage toggleTeamId = {toggleTeamId} getTeamId={teamId}/>}/>
+
 
                     </Routes>
                 </RequireAuth>}
