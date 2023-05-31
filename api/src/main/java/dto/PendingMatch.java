@@ -2,7 +2,7 @@ package dto;
 
 public class PendingMatch {
 
-    public Long matchid;
+    public Long id;
 
     public Team team1;
     public Team team2;

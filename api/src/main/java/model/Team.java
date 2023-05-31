@@ -83,4 +83,11 @@ public class Team {
     public void setPuntuality(int value) {
         this.puntuality = value;
     }
+
+    public dto.Team asDto() {
+        dto.Team team = new dto.Team();
+        team.id = this.id;
+        team.name = this.name;
+        return team;
+    }
 }
