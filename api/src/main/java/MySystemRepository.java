@@ -1,7 +1,4 @@
-import repository.Matches;
-import repository.Searches;
-import repository.Teams;
-import repository.Users;
+import repository.*;
 
 import javax.persistence.EntityManager;
 
@@ -11,12 +8,14 @@ public class MySystemRepository {
     private final Teams teams;
     private final Searches searches;
     private final Matches matches;
+    private final Notifications notifications;
 
     public MySystemRepository(EntityManager entityManager) {
         this.users = new Users(entityManager);
         this.teams=new Teams(entityManager);
         this.searches = new Searches(entityManager);
         this.matches = new Matches(entityManager);
+        this.notifications = new Notifications(entityManager);
     }
 
     public static MySystemRepository create(EntityManager entityManager) {
@@ -35,5 +34,8 @@ public class MySystemRepository {
     }
     public Matches matches() {
         return matches;
+    }
+    public Notifications notifications() {
+        return notifications;
     }
 }

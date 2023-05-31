@@ -1,8 +1,5 @@
 import model.*;
-import repository.Matches;
-import repository.Searches;
-import repository.Teams;
-import repository.Users;
+import repository.*;
 import model.Team;
 
 import javax.persistence.EntityManager;
@@ -11,6 +8,7 @@ import javax.persistence.Persistence;
 import java.text.ParseException;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
 
 public class MySystem {
@@ -57,7 +55,23 @@ public class MySystem {
                 throw new RuntimeException(e);
             }
         });
-
+    }
+    public Notification createNotification(Search search2, String message) {
+        return runInTransaction(datasource -> {
+            final Notifications notifications = datasource.notifications();
+            long user_id = search2.getTeam().getUserId();
+            final Users users = datasource.users();
+            AtomicReference<Notification> notification = new AtomicReference<>();
+            users.findById(user_id).ifPresentOrElse(
+                    (user) -> {
+                         notification.set(notifications.createNotification(users.findById(user_id).get(), message));
+                    },
+                    () -> {
+                        notification.set(new Notification());
+                    }
+            );
+            return notification.get();
+        });
     }
     public boolean deactivateSearch(Long id){
         return runInTransaction(datasource ->{
