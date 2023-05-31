@@ -117,6 +117,7 @@ public class Routes {
                                                         (match) -> {
                                                             res.status(201);
                                                             res.body("match created");
+                                                            system.createNotification(search2, String.format("Good news! %s wants to play with %s", search1.getTeam().getName(), search2.getTeam().getName()));
                                                         },
                                                         () -> {
                                                             res.status(409);
@@ -611,8 +612,11 @@ public class Routes {
                     Search.create(teamList.get(0), Date.from(Instant.now()), "Afternoon", "-34.456884", "-58.858952");
             final Search cocaSearch =
                     Search.create(teamList.get(1), Date.from(Instant.now()), "Afternoon", "-36.456884", "-58.858952");
+            final Search ferpaSearch =
+                    Search.create(teamList.get(2), Date.from(Instant.now()), "Afternoon", "-35.456884", "-58.858952");
             searches.persist(kateSearch);
             searches.persist(cocaSearch);
+            searches.persist(ferpaSearch);
         }
         tx.commit();
         entityManager.close();
