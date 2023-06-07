@@ -56,7 +56,7 @@ public class MySystem {
             }
         });
     }
-    public Notification createNotification(Search search2, String message) {
+    public Notification createNotification(Search search2, String message, int code_id) {
         return runInTransaction(datasource -> {
             final Notifications notifications = datasource.notifications();
             long user_id = search2.getTeam().getUserId();
@@ -64,7 +64,7 @@ public class MySystem {
             AtomicReference<Notification> notification = new AtomicReference<>();
             users.findById(user_id).ifPresentOrElse(
                     (user) -> {
-                         notification.set(notifications.createNotification(users.findById(user_id).get(), message));
+                         notification.set(notifications.createNotification(users.findById(user_id).get(), message, code_id));
                     },
                     () -> {
                         notification.set(new Notification());
@@ -118,6 +118,11 @@ public class MySystem {
     public List<User> listUsers() {
         return runInTransaction(
                 ds -> ds.users().list()
+        );
+    }
+    public List<Notification> listNotifications(User user) {
+        return runInTransaction(
+                ds -> ds.notifications().list(user.getId())
         );
     }
 

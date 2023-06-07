@@ -56,6 +56,7 @@ public class Routes {
     public static final String IS_TEAM_1_OR_2_ROUTE = "/isTeamOneOrTwo";
     public static final String DECLINE_MATCH_ROUTE = "/declineMatch";
     public static final String GET_CONFIRMED_MATCHES_BY_TEAM_ROUTE = "/getConfirmedMatches";
+    public static final String GET_NOTIFICATIONS_ROUTE = "/getNotifications";
 
 
     private MySystem system;
@@ -122,7 +123,7 @@ public class Routes {
                                                         (match) -> {
                                                             res.status(201);
                                                             res.body("match created");
-                                                            system.createNotification(search2, String.format("Good news! %s wants to play with %s", search1.getTeam().getName(), search2.getTeam().getName()));
+                                                            system.createNotification(search2, String.format("Good news! %s wants to play with %s on %d/%d", search1.getTeam().getName(), search2.getTeam().getName(), search2.getDay(), search2.getMonth() + 1), 0);
                                                         },
                                                         () -> {
                                                             res.status(409);
@@ -241,6 +242,27 @@ public class Routes {
             final List<User> users = system.listUsers();
             return toJson(users);
         });
+        authorizedGet(GET_NOTIFICATIONS_ROUTE, (req, res) -> {
+            getUser(req).ifPresentOrElse(
+                    (user) -> {
+                        final List<Notification> notificationsList = system.listNotifications(user);
+                        List<dto.Notification> dtoNotifications = notificationsList.stream().map(notification -> {
+                            final dto.Notification dtoNotification = new dto.Notification();
+                            dtoNotification.code_id = notification.getCode_id();
+                            dtoNotification.message = notification.getMessage();
+                            return dtoNotification;
+                        }).toList();
+
+                        res.status(200);
+                        res.body(toJson(dtoNotifications));
+                    },
+                    () -> {
+                        res.status(404);
+                        res.body("Invalid Token");
+                    }
+            );
+            return res.body();
+        });
         get(PICK_TEAM_ROUTE, (req, res) -> {
             final EntityManager entityManager = entityManagerFactory.createEntityManager();
             final Teams teams = new Teams(entityManager);
@@ -300,14 +322,7 @@ public class Routes {
 //            }
             return gson.toJson(users.listAll());
         });
-//        authorizedGet(FIND_RIVAL_ROUTE, (req, res) -> {
-//            final String id = (req.queryParams("id"));
-//            final EntityManager entityManager = entityManagerFactory.createEntityManager();
-//            final Searches searches=new Searches(entityManager);
-//            final CreateSearchForm searchForm = CreateSearchForm.createFromJson(req.body());
-//            List<Team> candidates = searches.findCandidates(id,searchForm.getTime(),searchForm.getDate().toString());
-//            return gson.toJson(candidates);
-//        });
+
         post(NEW_SEARCH_ROUTE, (req, res) -> {
             final EntityManager entityManager = entityManagerFactory.createEntityManager();
             final Searches searches = new Searches(entityManager);
@@ -398,9 +413,24 @@ public class Routes {
             //`${restApiEndpoint}/updateTeam?teamid=${teamid}&matchid=${matchid}`
             final Long team_id = Long.valueOf(req.queryParams("teamid"));
             final Long match_id = Long.valueOf(req.queryParams("matchid"));
+            final EntityManager entityManager = entityManagerFactory.createEntityManager();
+            final EntityManager entityManager1 = entityManagerFactory.createEntityManager();
+            final Matches matches = new Matches(entityManager);
+            final Teams teams = new Teams(entityManager1);
             boolean state = system.confirmMatch(match_id, team_id);
             if (state) {
                 res.status(200);
+                matches.findMatch(match_id).ifPresent(
+                    (match) -> {
+                        teams.getTeamByTeamId(team_id).ifPresent(
+                            (team) -> {
+                                system.createNotification(match.getTeam1().equals(team) ? match.getSearch2() : match.getSearch1(),
+                                        String.format("%s has confirmed the match for %d/%d", team.getName(), match.getDay(), match.getMonth() + 1),
+                                        match.isConfirmed() ? 3 : 1);
+                            }
+                        );
+                    }
+                );
             } else res.status(400);
             return res.status();
         });

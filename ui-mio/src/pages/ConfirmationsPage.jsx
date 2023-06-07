@@ -19,8 +19,7 @@ export function ConfirmationsPage(props) {
                     // TODO ERROR CALLBACK
                 }
             )
-        }
-        ,
+        },
         [id, token]
     )
     useEffect(() => {
@@ -30,7 +29,6 @@ export function ConfirmationsPage(props) {
 
 
     const handleConfirmMatch = async (match_id) => {
-        // CALL BACK to confirm the match and then call pending confirmations again
         await confirmMatch(token, match_id, id, () => {
             getPendingConfirmations(token, id, (matches) => {
                     setMatches(matches)
@@ -56,10 +54,6 @@ export function ConfirmationsPage(props) {
 
     return (
         <div>
-            <div className={"logo"}>
-                <img style={{width: 218, height: "auto"}} src={require("../images/logo_solo_letras.png")}
-                     alt={"Logo"}/>
-            </div>
             <TopBar toggleTeamId={props.toggleTeamId} getTeamId={props.getTeamId}/>
             <div className={"containerPrincipal"}>
                 <div>

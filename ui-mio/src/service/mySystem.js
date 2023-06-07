@@ -304,6 +304,22 @@ export const getConfirmedMatches = (token, teamId, okCallback, errorCallback)=>{
         }
     })
 }
+export const getNotifications = (token, okCallback, errorCallback) => {
+    fetch(`${restApiEndpoint}/getNotifications`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token
+        },
+
+    }).then(resp => {
+        if (resp.status === 200) {
+            resp.json().then(notifications => okCallback(notifications))
+        } else {
+            errorCallback("Not able to fetch searches")
+        }
+    })
+}
 // export const isTeamOneOrTeamTwo = (token, matchId, teamId, okCallback, errorCallback) => {
 //     fetch(`${restApiEndpoint}/isTeamOneOrTwo?teamid=${teamId}&matchid=${matchId}`, {
 //         method: 'GET',

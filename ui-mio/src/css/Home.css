@@ -67,10 +67,7 @@
     color: #fff;
     height: 50px;
     padding: 10px;
-    position: fixed;
     top: 0;
-    left: 0;
-    right: 0;
     z-index: 9999; /* set a high z-index to ensure it appears above other elements */
 }
 .Menu{

@@ -6,6 +6,7 @@ import {useAuthProvider} from "../../auth/auth";
 import MenuSidebarWrapper, {MenuSideBar} from "./MenuSideBar";
 import {useLocation, useNavigate} from "react-router";
 import Sidebar from "./MenuSideBar";
+import {NotificationsCenter} from "./NotificationsCenter";
 
 function goToNewTeam(){
     window.location.href = "/newTeam"

@@ -1,0 +1,54 @@
+.showCenter{
+    position: absolute;
+    /*background-color: #E2E2E2;*/
+    /*color: black;*/
+    /*border: 1px solid #E2E2E2;*/
+    background-color: #ccc;
+    border-radius: 1px;
+    transition-duration: 0.4s;
+    top: 8px;
+    right: 40px;
+}
+.side-bar-notifications {
+    position: absolute;
+    right: 1px;
+    top: 45px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+.side-bar-notifications .option{
+    height: 12vh;
+    width: 50vh;
+    background: white;
+    border-radius: 9px;
+    box-shadow: 0 10px 25px rgba(162, 162, 162, 0.4);
+    text-align: center;
+    padding: 16px;
+    transition: all 0.2s ease;
+    color: #292d34;
+    margin-top: 10px;
+}
+.side-bar-notifications .option:hover{
+    color: black;
+    background: rgba(239, 239, 239);
+    box-shadow: 0 10px 25px rgba(162, 162, 162, 0.4);
+}
+.side-bar-notifications .option .button {
+    bottom: 5px;
+    left: 5px;
+    /*align-items: start;*/
+    background-color: white;
+    color: #808080;
+    border: 1px solid #808080;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 14px;
+    cursor: pointer;
+    display: inline-block;
+    margin-right: 10px;
+}
+.side-bar-notifications .option .button:hover {
+    background-color: #808080;
+    color: white;
+}
