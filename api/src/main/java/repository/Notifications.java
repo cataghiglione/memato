@@ -15,8 +15,8 @@ public class Notifications {
     public Notifications(EntityManager entityManager) {
         this.entityManager = entityManager;
     }
-    public Notification createNotification(User user, String message) {
-        final Notification newNotification = Notification.create(user, message);
+    public Notification createNotification(User user, String message, int code_id) {
+        final Notification newNotification = Notification.create(user, message, code_id);
         entityManager.persist(newNotification);
         return newNotification;
     }

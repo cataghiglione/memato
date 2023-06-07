@@ -55,11 +55,10 @@ public class Matches {
         return filterMatchesByPossibility(pre_matches);
     }
 
-    public Optional<Match> findMatch(String matchId, String searchId) {
+    public Optional<Match> findMatch(long matchId) {
         return entityManager
-                .createQuery("SELECT m FROM Match m WHERE ((cast (m.id as string) LIKE :matchId and ((cast (m.search1.id as string) LIKE :searchId) OR (cast (m.search2.id as string) LIKE :searchId))))", Match.class)
-                .setParameter("matchId", matchId)
-                .setParameter("searchId", searchId)
+                .createQuery("SELECT m FROM Match m WHERE (cast (m.id as string) LIKE :matchId)", Match.class)
+                .setParameter("matchId", Long.toString(matchId))
                 .getResultList()
                 .stream()
                 .findFirst();
@@ -91,6 +90,7 @@ public class Matches {
 //            e.printStackTrace();
 //        }
 //    }
+
     public boolean confirmMatchByTeam(Long matchId, Long teamId) {
         int updatedCount = 0;
         Long searchId;

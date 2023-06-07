@@ -120,7 +120,7 @@ public class Routes {
                                                         (match) -> {
                                                             res.status(201);
                                                             res.body("match created");
-                                                            system.createNotification(search2, String.format("Good news! %s wants to play with %s", search1.getTeam().getName(), search2.getTeam().getName()));
+                                                            system.createNotification(search2, String.format("Good news! %s wants to play with %s on %d/%d", search1.getTeam().getName(), search2.getTeam().getName(), search2.getDay(), search2.getMonth() + 1), 0);
                                                         },
                                                         () -> {
                                                             res.status(409);
@@ -245,7 +245,7 @@ public class Routes {
                         final List<Notification> notificationsList = system.listNotifications(user);
                         List<dto.Notification> dtoNotifications = notificationsList.stream().map(notification -> {
                             final dto.Notification dtoNotification = new dto.Notification();
-                            dtoNotification.id = notification.getId();
+                            dtoNotification.code_id = notification.getCode_id();
                             dtoNotification.message = notification.getMessage();
                             return dtoNotification;
                         }).toList();
@@ -404,9 +404,24 @@ public class Routes {
             //`${restApiEndpoint}/updateTeam?teamid=${teamid}&matchid=${matchid}`
             final Long team_id = Long.valueOf(req.queryParams("teamid"));
             final Long match_id = Long.valueOf(req.queryParams("matchid"));
+            final EntityManager entityManager = entityManagerFactory.createEntityManager();
+            final EntityManager entityManager1 = entityManagerFactory.createEntityManager();
+            final Matches matches = new Matches(entityManager);
+            final Teams teams = new Teams(entityManager1);
             boolean state = system.confirmMatch(match_id, team_id);
             if (state) {
                 res.status(200);
+                matches.findMatch(match_id).ifPresent(
+                    (match) -> {
+                        teams.getTeamByTeamId(team_id).ifPresent(
+                            (team) -> {
+                                system.createNotification(match.getTeam1().equals(team) ? match.getSearch2() : match.getSearch1(),
+                                        String.format("%s has confirmed the match for %d/%d", team.getName(), match.getDay(), match.getMonth() + 1),
+                                        match.isConfirmed() ? 3 : 1);
+                            }
+                        );
+                    }
+                );
             } else res.status(400);
             return res.status();
         });

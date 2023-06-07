@@ -4,6 +4,7 @@ import * as React from "react";
 import {useLocation, useNavigate} from "react-router";
 import {useAuthProvider} from "../../auth/auth";
 import {signOut} from "../../service/mySystem";
+import {NotificationsCenter} from "./NotificationsCenter";
 
 export function MenuSideBar(props){
     const [visible, setVisible] = useState(false);
@@ -38,6 +39,7 @@ export function MenuSideBar(props){
             <button className={"Menu"} onClick={toggleMenu}>
                 <img style={{ width: 22, height: "auto"}} src={require("../../images/sideBarIcon.png")}/>
             </button>
+            <NotificationsCenter canBeVisible={!visible}/>
             {visible &&
                 (
                     <div className={"side-bar"}>

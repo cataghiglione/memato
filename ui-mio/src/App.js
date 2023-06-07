@@ -15,10 +15,13 @@ import{CurrentSearchesPage} from "./pages/CurrentSearchesPage";
 import {useEffect, useState} from "react";
 import {useNavigate} from "react-router";
 import {ConfirmationsPage} from "./pages/ConfirmationsPage";
-import {MyConfirmationsPage} from "./pages/MyConfirmationsPage";
+import {useAuthProvider} from "./auth/auth";
+// import {MyConfirmationsPage} from "./pages/MyConfirmationsPage";
 
 
 const App = () =>{
+    const auth = useAuthProvider();
+    const token = auth.getToken();
     /*  the initial state of the teamId variable is set to the value retrieved
         from the localStorage using the getItem method. If the value is not
         found in localStorage, the initial state is set to 0.*/
@@ -39,7 +42,7 @@ const App = () =>{
     }, [teamId]);
     useEffect(() => {
         localStorage.setItem('teamId', 0);
-    })
+    }, [token])
 
 
     const toggleTeamId = (value) => {
@@ -67,7 +70,7 @@ const App = () =>{
                         <Route path = "/currentSearches" element = {<CurrentSearchesPage toggleTeamId = {toggleTeamId}    getTeamId={teamId}/>} />
                         <Route path = "/ReactMap" element = {<BingMap toggleTeamId = {toggleTeamId}    getTeamId={teamId}/>} />
                         <Route path = "/pendingConfirmations" element={<ConfirmationsPage toggleTeamId = {toggleTeamId} getTeamId={teamId}/>}/>
-                        <Route path = "/myConfirmations" element={<MyConfirmationsPage toggleTeamId = {toggleTeamId} getTeamId={teamId}/>}/>
+                        {/*<Route path = "/myConfirmations" element={<MyConfirmationsPage toggleTeamId = {toggleTeamId} getTeamId={teamId}/>}/>*/}
 
 
                     </Routes>
