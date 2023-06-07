@@ -92,13 +92,7 @@ public class Match {
         return confirmed_by_1 && confirmed_by_2;
     }
 
-    public Search getSearch1() {
-        return search1;
-    }
 
-    public Search getSearch2() {
-        return search2;
-    }
 
     public Long getId(){
         return id;
