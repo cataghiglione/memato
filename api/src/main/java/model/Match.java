@@ -99,4 +99,11 @@ public class Match {
     public boolean isPossible(){
         return ((search1.searching() && search2.searching()) || (confirmed_by_1 && search2.searching()) || (confirmed_by_2 && search1.searching())) && declined_by_1 && declined_by_2;
     }
+    public Search getSearch1(){
+        return search1;
+    }
+
+    public Search getSearch2() {
+        return search2;
+    }
 }

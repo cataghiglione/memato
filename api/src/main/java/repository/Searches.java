@@ -3,6 +3,7 @@ package repository;
 import model.Search;
 import model.Team;
 
+import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -133,6 +134,26 @@ public class Searches {
         double distance = earthRadius * c;
 
         return distance <= 5;
+    }
+    public  Point2D.Double getMiddlePoint(String latitude1, String longitude1, String latitude2, String longitude2) {
+        // Convertir las coordenadas de grados a radianes
+        double lat1 = Math.toRadians(Double.parseDouble(latitude1));
+        double lon1 = Math.toRadians(Double.parseDouble(longitude1));
+        double lat2 = Math.toRadians(Double.parseDouble(latitude2));
+        double lon2 = Math.toRadians(Double.parseDouble(longitude2));
+
+        // Calcular el punto medio
+        double bx = Math.cos(lat2) * Math.cos(lon2 - lon1);
+        double by = Math.cos(lat2) * Math.sin(lon2 - lon1);
+        double lat3 = Math.atan2(Math.sin(lat1) + Math.sin(lat2), Math.sqrt((Math.cos(lat1) + bx) * (Math.cos(lat1) + bx) + by * by));
+        double lon3 = lon1 + Math.atan2(by, Math.cos(lat1) + bx);
+
+        // Convertir el resultado de radianes a grados
+        double middleLatitude = Math.toDegrees(lat3);
+        double middleLongitude = Math.toDegrees(lon3);
+
+        // Crear y devolver el punto intermedio
+        return new Point2D.Double(middleLatitude, middleLongitude);
     }
 
 }
