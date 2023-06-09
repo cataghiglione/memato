@@ -4,7 +4,6 @@ import * as React from "react";
 import {useLocation, useNavigate} from "react-router";
 import {useAuthProvider} from "../../auth/auth";
 import {signOut} from "../../service/mySystem";
-import {NotificationsCenter} from "./NotificationsCenter";
 
 export function MenuSideBar(props){
     const [pageChange, setPageChange] = useState(['']);
@@ -38,6 +37,8 @@ export function MenuSideBar(props){
                 {props.getTeamId !== 0 && <option className={"option"} key={"/newTeam"} value="/newTeam">New Team</option>}
                 {props.getTeamId !== 0 && <option className={"option"} key={"/currentSearches"} value="/currentSearches">Current Searches</option>}
                 {props.getTeamId !== 0 && <option className={"option"} key={"/pendingConfirmations"} value="/pendingConfirmations">Pending Confirmations</option>}
+                {props.getTeamId !== 0 && <option className={"option"} key={"/myConfirmations"} value="/myConfirmations">My Confirmations</option>}
+
                 <option className={"option"} key={"/user"} value="/user">Profile</option>
             </select>
             {/*<br/><br/>*/}

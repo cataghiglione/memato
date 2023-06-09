@@ -3,6 +3,7 @@ import com.google.common.base.Strings;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.google.gson.Gson;
+import dto.ConfirmedMatch;
 import dto.PendingMatch;
 import json.JsonParser;
 import model.*;
@@ -13,6 +14,7 @@ import spark.Route;
 import spark.Spark;
 
 import javax.persistence.*;
+import java.awt.geom.Point2D;
 import java.time.Instant;
 import java.util.Date;
 import java.util.List;
@@ -50,6 +52,7 @@ public class Routes {
     public static final String GET_MATCHES_BY_TEAMID_ROUTE = "/getMatchesByTeamId";
     public static final String IS_TEAM_1_OR_2_ROUTE = "/isTeamOneOrTwo";
     public static final String DECLINE_MATCH_ROUTE = "/declineMatch";
+    public static final String GET_CONFIRMED_MATCHES_BY_TEAM_ROUTE = "/getConfirmedMatches";
     public static final String GET_NOTIFICATIONS_ROUTE = "/getNotifications";
     public static final String GET_5_PENDING_NOTIFICATIONS_ROUTE = "/getPendingNotifications";
     public static final String UPDATE_NOTIFICATION_STATUS = "/updateNotification";
@@ -336,6 +339,13 @@ public class Routes {
             resp.status(200);
             final EntityManager entityManager = entityManagerFactory.createEntityManager();
             final Users users = new Users(entityManager);
+
+//            try {
+//
+//            }catch (SQL) {
+//                resp.status(409);
+//                resp.body("ee");
+//            }
             return gson.toJson(users.listAll());
         });
 
@@ -371,7 +381,6 @@ public class Routes {
             );
             return res.body();
         });
-
         get(GET_ACTIVE_SEARCHES_ROUTE, (req, res) -> {
             final EntityManager entityManager = entityManagerFactory.createEntityManager();
             final Searches searches = new Searches(entityManager);
@@ -381,7 +390,6 @@ public class Routes {
             res.status(200);
             return res.body();
         });
-
         post(UPDATE_TEAM_ROUTE, (req, res) -> {
             final EntityManager entityManager = entityManagerFactory.createEntityManager();
             final Teams teams = new Teams(entityManager);
@@ -401,8 +409,9 @@ public class Routes {
                     }
             );
             return res.status();
-        });
 
+
+        });
         post(UPDATE_USER_ROUTE, (req, res) -> {
             final EntityManager entityManager = entityManagerFactory.createEntityManager();
             final Users users = new Users(entityManager);
@@ -517,13 +526,13 @@ public class Routes {
                 pendingMatch.isConfirmed = match.isConfirmed();
 
                 if (team_id == match.getTeam1().getId()) {
-                    pendingMatch.team1 =  match.getTeam1().asDto();
+                    pendingMatch.team1 = match.getTeam1().asDto();
                     pendingMatch.team2 = match.getTeam2().asDto();
 
                     pendingMatch.team1Confirmed = match.isConfirmed_by_1();
                     pendingMatch.team2Confirmed = match.isConfirmed_by_2();
                 } else {
-                    pendingMatch.team1 =  match.getTeam2().asDto();
+                    pendingMatch.team1 = match.getTeam2().asDto();
                     pendingMatch.team2 = match.getTeam1().asDto();
 
                     pendingMatch.team1Confirmed = match.isConfirmed_by_2();
@@ -554,16 +563,44 @@ public class Routes {
 //
 //
 //        });
-        authorizedPost(DECLINE_MATCH_ROUTE, (req,res)->{
+        authorizedPost(DECLINE_MATCH_ROUTE, (req, res) -> {
             final Long matchId = Long.valueOf(req.queryParams("matchid"));
             final Long teamId = Long.valueOf(req.queryParams("teamid"));
-            final boolean status = system.declineMatch(matchId,teamId);
-            if (status){
+            final boolean status = system.declineMatch(matchId, teamId);
+            if (status) {
                 res.status(200);
-            }
-            else res.status(404);
+            } else res.status(404);
             return res.status();
 
+
+        });
+        authorizedGet(GET_CONFIRMED_MATCHES_BY_TEAM_ROUTE, (req, res) -> {
+            final EntityManager entityManager = entityManagerFactory.createEntityManager();
+            final Long teamId = Long.valueOf(req.queryParams("teamid"));
+            final Matches matches = new Matches(entityManager);
+            final Searches searches = new Searches(entityManager);
+            List<Match> matchesList = matches.confirmedMatches(teamId);
+            List<ConfirmedMatch> confirmedMatches = matchesList.stream().map(match -> {
+                        final ConfirmedMatch confirmedMatch = new ConfirmedMatch();
+                        confirmedMatch.time = match.getTime();
+                        confirmedMatch.date = match.getSearch1().getDate();
+                        Point2D.Double coordinates = searches.getMiddlePoint(match.getSearch1().getLatitude(), match.getSearch1().getLongitude(), match.getSearch2().getLatitude(), match.getSearch2().getLongitude());
+                        confirmedMatch.latitude = coordinates.x;
+                        confirmedMatch.longitude = coordinates.y;
+                        confirmedMatch.id = match.getId();
+                        if (teamId == match.getTeam1().getId()) {
+                            confirmedMatch.rival = match.getTeam2().asDto();
+                        } else {
+                            confirmedMatch.rival = match.getTeam1().asDto();
+                        }
+
+                    return confirmedMatch;
+            }
+            ).toList();
+            res.status(200);
+
+            res.body(toJson(confirmedMatches));
+            return res.body();
 
         });
 //        authorizedPost(DECLINE_MATCH_ROUTE, (req,res) ->{

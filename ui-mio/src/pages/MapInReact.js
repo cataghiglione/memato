@@ -9,13 +9,77 @@ export class MapInReact extends Component {
             isVisible : true,
             bingmapKey: "ApqYZq8IsmnPRxOON1m_mY9eGEZqjDawW2cleubNdcVT5CbVMU8snXUF4qku9DcW",
             searchInput: "",
+            showDetails: false,
             getLocationHandledData: "",
             polyline: {
                 "location": [[13.0827, 80.2707],[13.0827, 80.1907]],
-                "option": { strokeColor: 'blue', strokeThickness: 10, strokeDashArray: [1, 2, 5, 10] }
+                "option": { strokeColor: 'blue', strokeThickness: 10, strokeDashArray: [1, 2, 5, 10]
+                }
+
             }
         }
     }
+    componentDidMount() {
+        const { confirmedMatches } = this.props;
+        // Utiliza los datos de confirmedMatches para generar los pines en el mapa
+        this.generatePinsForConfirmedMatches(confirmedMatches);
+    }
+    componentDidUpdate(prevProps, prevState) {
+        const { confirmedMatches } = this.props;
+        // Utiliza los datos de confirmedMatches para generar los pines en el mapa
+        if (this.props.confirmedMatches !== prevProps.confirmedMatches ){
+            this.generatePinsForConfirmedMatches(confirmedMatches);
+        }
+
+    }
+    generatePinsForConfirmedMatches(confirmedMatches) {
+        const pushPins = confirmedMatches.map((match) => {
+            const latitude = match.latitude;
+            const longitude = match.longitude;
+            return {
+                location: [latitude, longitude],
+
+                addHandler: "mouseover",
+                infoboxOption: { title: 'Match info', description: `Rival: ${match.rival.name} , Time: ${match.time}` },
+                pushPinOption:{ title: 'Match details', description: 'Pushpin' }
+
+                // infoboxOption: {
+                //     title: 'Match Details',
+                //     description: `Rival: ${match.rival}`,
+                // },
+                // infoboxAddHandler: { type: 'click', callback: this.showMatchDetails },
+                // pushPinAddHandler: { type: 'click', callback: this.showMatchDetails },
+            };
+        });
+
+
+        this.setState({ pushPins });
+    }
+    callBackMethod(event){
+        this.setState({
+            showDetails: true,
+            selectedMatch: event
+        })
+
+    }
+
+    showMatchDetails = (e) => {
+        const matchDetails = e.target.metadata;
+
+        this.setState({
+            showDetails: true,
+            selectedMatch: matchDetails
+        });
+    }
+    closeMatchDetails = () => {
+        this.setState({
+            showDetails: false,
+            selectedMatch: null
+        });
+    }
+
+
+
 
     handleSubmit(event){
         if(this.state.searchInput !== null && this.state.searchInput !== ""){
@@ -64,10 +128,21 @@ GetLocationHandled(location){
                                 center = {[-34.45676114698318, -58.85862904287449]}
                                 bingmapKey = {this.state.bingmapKey}
                                 boundary = {this.state.boundary}
+                                // pushPins = {this.state.pushPins}
+                                infoboxesWithPushPins={this.state.pushPins}
                             >
                             </ReactBingmaps>
+                            {this.state.showDetails && (
+                                <div className="match-details">
+                                    {/* Aquí puedes mostrar los detalles del partido */}
+                                    <p>Match Details:</p>
+                                    <p>{JSON.stringify(this.state.selectedMatch)}</p>
+                                    <button onClick={this.closeMatchDetails}>Close</button>
+                                </div>
+                            )}
                     </div>
                 </div>)}
+
             </div>
         );
     }

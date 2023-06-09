@@ -92,13 +92,7 @@ public class Match {
         return confirmed_by_1 && confirmed_by_2;
     }
 
-    public Search getSearch1() {
-        return search1;
-    }
 
-    public Search getSearch2() {
-        return search2;
-    }
 
     public Long getId(){
         return id;
@@ -106,5 +100,12 @@ public class Match {
 
     public boolean isPossible(){
         return ((search1.searching() && search2.searching()) || (confirmed_by_1 && search2.searching()) || (confirmed_by_2 && search1.searching())) && not_declined_by_1 && not_declined_by_2;
+    }
+    public Search getSearch1(){
+        return search1;
+    }
+
+    public Search getSearch2() {
+        return search2;
     }
 }

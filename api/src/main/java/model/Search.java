@@ -42,6 +42,7 @@ public class Search {
 
     @Column
     private String longitude;
+    private Date date;
 
 
     public Search() {
@@ -56,6 +57,7 @@ public class Search {
         this.time=time;
         this.latitude=latitude;
         this.longitude=longitude;
+        this.date=date;
 
 
     }
@@ -90,6 +92,10 @@ public class Search {
 
     public void isNotSearching(){
         isSearching = false;
+    }
+
+    public Date getDate() {
+        return date;
     }
 
     public boolean searching(){

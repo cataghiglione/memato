@@ -296,7 +296,23 @@ export const getPendingConfirmations = (token, teamId, okCallback, errorCallback
         if (resp.status === 200) {
             resp.json().then(matches => okCallback(matches))
         } else {
-            errorCallback("Not able to fetch searches")
+            errorCallback("Not able to fetch pending confirmations")
+        }
+    })
+}
+export const getConfirmedMatches = (token, teamId, okCallback, errorCallback)=>{
+    fetch(`${restApiEndpoint}/getConfirmedMatches?teamid=${teamId}`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token
+        },
+
+    }).then(resp => {
+        if (resp.status === 200) {
+            resp.json().then(matches => okCallback(matches))
+        } else {
+            errorCallback("Not able to fetch confirmations")
         }
     })
 }

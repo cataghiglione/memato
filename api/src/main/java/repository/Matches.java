@@ -165,15 +165,18 @@ public class Matches {
         } else return Optional.empty();
     }
 
-    public boolean isAlreadyConfirmed(Long matchId, Long teamId) {
-        Optional<Match> match = getMatchById(matchId);
-        if (match.isPresent()) {
-            if (teamOneOrTeam2(matchId, teamId)) {
-                return match.get().isConfirmed_by_1();
+    public List<Match> confirmedMatches(Long teamId){
+        List<Match> totalConfirmedMatches = entityManager.createQuery("SELECT m FROM Match m WHERE m.confirmed_by_1 = true AND m.confirmed_by_2 = true",Match.class)
+                .getResultList();
+        List<Match> confirmedMatchesByTeam = new ArrayList<>();
+        for (Match totalConfirmedMatch : totalConfirmedMatches) {
+            if (totalConfirmedMatch.getTeam1().getId() == teamId || totalConfirmedMatch.getTeam2().getId() == teamId) {
+                confirmedMatchesByTeam.add(totalConfirmedMatch);
             }
-            else return match.get().isConfirmed_by_2();
         }
-        throw new RuntimeException("Match not found");
+        return confirmedMatchesByTeam;
+
+
     }
 
 

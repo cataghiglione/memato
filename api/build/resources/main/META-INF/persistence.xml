@@ -9,6 +9,7 @@
         <class>model.Team</class>
         <class>model.Search</class>
         <class>model.Match</class>
+        <class>model.Notification</class>
 <!--        <class>org.austral.ing.lab1.model.Publication</class>-->
 <!--        aca arriba se pone como la ubicacion de la entity que queres guardar-->
 
