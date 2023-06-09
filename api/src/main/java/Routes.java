@@ -6,10 +6,7 @@ import com.google.gson.Gson;
 import dto.PendingMatch;
 import json.JsonParser;
 import model.*;
-import repository.Matches;
-import repository.Searches;
-import repository.Teams;
-import repository.Users;
+import repository.*;
 import spark.Request;
 import spark.Response;
 import spark.Route;
@@ -54,6 +51,8 @@ public class Routes {
     public static final String IS_TEAM_1_OR_2_ROUTE = "/isTeamOneOrTwo";
     public static final String DECLINE_MATCH_ROUTE = "/declineMatch";
     public static final String GET_NOTIFICATIONS_ROUTE = "/getNotifications";
+    public static final String GET_5_PENDING_NOTIFICATIONS_ROUTE = "/getPendingNotifications";
+    public static final String UPDATE_NOTIFICATION_STATUS = "/updateNotification";
 
 
     private MySystem system;
@@ -243,21 +242,48 @@ public class Routes {
             getUser(req).ifPresentOrElse(
                     (user) -> {
                         final List<Notification> notificationsList = system.listNotifications(user);
-                        List<dto.Notification> dtoNotifications = notificationsList.stream().map(notification -> {
-                            final dto.Notification dtoNotification = new dto.Notification();
-                            dtoNotification.code_id = notification.getCode_id();
-                            dtoNotification.message = notification.getMessage();
-                            return dtoNotification;
-                        }).toList();
-
-                        res.status(200);
-                        res.body(toJson(dtoNotifications));
+                        transformNotifications(res, notificationsList);
                     },
                     () -> {
                         res.status(404);
                         res.body("Invalid Token");
                     }
             );
+            return res.body();
+        });
+
+//        get the last 5 pending notifications
+        authorizedGet(GET_5_PENDING_NOTIFICATIONS_ROUTE, (req, res) -> {
+            getUser(req).ifPresentOrElse(
+                    (user) -> {
+                        final List<Notification> notificationsList = system.listPendingNotifications(user);
+                        transformNotifications(res, notificationsList.subList(0, 5));
+                    },
+                    () -> {
+                        res.status(404);
+                        res.body("Invalid Token");
+                    }
+            );
+            return res.body();
+        });
+        authorizedPost(UPDATE_NOTIFICATION_STATUS, (req, res)-> {
+            final String id = (req.queryParams("id"));
+            final EntityManager entityManager = entityManagerFactory.createEntityManager();
+            final Notifications notifications = new Notifications(entityManager);
+            getUser(req).ifPresentOrElse(
+                (user) -> {
+                    if(notifications.checkUserNotification(Long.toString(user.getId()), id)){
+                        system.updateNotification(id);
+                    }
+                    else {
+                        res.status(404);
+                        res.body("Invalid user permission");
+                    }
+                },
+                () -> {
+                    res.status(404);
+                    res.body("Invalid Token");
+                });
             return res.body();
         });
         get(PICK_TEAM_ROUTE, (req, res) -> {
@@ -550,6 +576,20 @@ public class Routes {
 //        });
 
 
+    }
+
+    private void transformNotifications(Response res, List<Notification> notificationsList) {
+        List<dto.Notification> dtoNotifications = notificationsList.stream().map(notification -> {
+            final dto.Notification dtoNotification = new dto.Notification();
+            dtoNotification.code_id = notification.getCode_id();
+            dtoNotification.message = notification.getMessage();
+            dtoNotification.opened = notification.isOpened();
+            dtoNotification.id = notification.getId();
+            return dtoNotification;
+        }).toList();
+
+        res.status(200);
+        res.body(toJson(dtoNotifications));
     }
 
     private void authorizedGet(final String path, final Route route) {

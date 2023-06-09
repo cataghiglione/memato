@@ -73,6 +73,12 @@ public class MySystem {
             return notification.get();
         });
     }
+    public Optional<Notification> updateNotification(String id){
+        return runInTransaction(datasource -> {
+            final Notifications notifications = datasource.notifications();
+            return notifications.changeStatusOpen(id);
+        });
+    }
     public boolean deactivateSearch(Long id){
         return runInTransaction(datasource ->{
             final Searches searches = datasource.searches();
@@ -125,7 +131,11 @@ public class MySystem {
                 ds -> ds.notifications().list(user.getId())
         );
     }
-
+    public List<Notification> listPendingNotifications(User user) {
+        return runInTransaction(
+                ds -> ds.notifications().listPending(user.getId())
+        );
+    }
 
     private <E> E runInTransaction(Function<MySystemRepository, E> closure) {
         final EntityManager entityManager = factory.createEntityManager();
