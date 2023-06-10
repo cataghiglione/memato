@@ -16,6 +16,7 @@ import {useEffect, useState} from "react";
 import {useNavigate} from "react-router";
 import {ConfirmationsPage} from "./pages/ConfirmationsPage";
 import {useAuthProvider} from "./auth/auth";
+import {NotificationPage} from "./pages/NotificationPage";
 // import {MyConfirmationsPage} from "./pages/MyConfirmationsPage";
 
 
@@ -30,8 +31,6 @@ const App = () =>{
         return storedTeamId !== null ? JSON.parse(storedTeamId) : 0;
     });
 
-    const navigate = useNavigate();
-
 
     /*  To save the state in localStorage whenever it changes,
         an effect is used with a dependency array containing
@@ -41,13 +40,15 @@ const App = () =>{
         localStorage.setItem('teamId', JSON.stringify(teamId));
     }, [teamId]);
     useEffect(() => {
-        localStorage.setItem('teamId', 0);
+        // if the token is empty or null, the teamId will be 0
+        if (!token) {
+            localStorage.setItem('teamId', JSON.stringify(0));
+        }
     }, [token])
 
 
     const toggleTeamId = (value) => {
         setTeamId(value);
-        navigate("editTeam")
     }
 
 
@@ -64,12 +65,13 @@ const App = () =>{
                         <Route path="/home" element={<HomePage toggleTeamId = {toggleTeamId}    getTeamId={teamId}/>} />
                         <Route path="/pickTeam" element={<PickTeamPage toggleTeamId = {toggleTeamId}    getTeamId={teamId}/>} />
                         <Route path="/newTeam" element={<NewTeamPage toggleTeamId = {toggleTeamId}    getTeamId={teamId}/>} />
-                        <Route path="/user" element={<UserPage toggleTeamId = {toggleTeamId}    getTeamId={teamId}/>} />
-                        <Route path="/findRival" element={<FindRivalPage toggleTeamId = {toggleTeamId}    getTeamId={teamId}/>} />
-                        <Route path = "/editTeam" element = {<EditTeamPage toggleTeamId = {toggleTeamId}    getTeamId={teamId}/>} />
-                        <Route path = "/currentSearches" element = {<CurrentSearchesPage toggleTeamId = {toggleTeamId}    getTeamId={teamId}/>} />
-                        <Route path = "/ReactMap" element = {<BingMap toggleTeamId = {toggleTeamId}    getTeamId={teamId}/>} />
-                        <Route path = "/pendingConfirmations" element={<ConfirmationsPage toggleTeamId = {toggleTeamId} getTeamId={teamId}/>}/>
+                        <Route path="/user" element={<UserPage getTeamId={teamId}/>} />
+                        <Route path="/findRival" element={<FindRivalPage getTeamId={teamId}/>} />
+                        <Route path = "/editTeam" element = {<EditTeamPage getTeamId={teamId}/>} />
+                        <Route path = "/currentSearches" element = {<CurrentSearchesPage getTeamId={teamId}/>} />
+                        <Route path = "/ReactMap" element = {<BingMap getTeamId={teamId}/>} />
+                        <Route path = "/pendingConfirmations" element={<ConfirmationsPage getTeamId={teamId}/>}/>
+                        <Route path = "/notificationPage" element={<NotificationPage getTeamId={teamId}/>}/>
                         {/*<Route path = "/myConfirmations" element={<MyConfirmationsPage toggleTeamId = {toggleTeamId} getTeamId={teamId}/>}/>*/}
 
 

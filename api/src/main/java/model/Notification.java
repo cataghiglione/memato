@@ -55,4 +55,12 @@ public class Notification {
     public int getCode_id() {
         return code_id;
     }
+
+    public boolean isOpened() {
+        return opened;
+    }
+
+    public void isOpen() {
+        this.opened = true;
+    }
 }

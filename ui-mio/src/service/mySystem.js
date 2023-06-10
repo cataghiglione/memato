@@ -142,6 +142,18 @@ export const newMatch = (token, form, okCallback, errorCallback) => {
 
     })
 }
+export const updateNotification =(token, notificationId, okCallback, errorCallback) => {
+    fetch(`${restApiEndpoint}/updateNotification?id=${notificationId}`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token
+        },
+    }).then(resp => {
+        if (resp.status === 200) okCallback()
+        else errorCallback()
+    })
+}
 export const confirmMatch = (token, matchId, teamId, okCallback, errorCallback) => {
     fetch(`${restApiEndpoint}/confirmMatch?teamid=${teamId}&matchid=${matchId}`, {
         method: 'POST',
@@ -306,6 +318,22 @@ export const getConfirmedMatches = (token, teamId, okCallback, errorCallback)=>{
 }
 export const getNotifications = (token, okCallback, errorCallback) => {
     fetch(`${restApiEndpoint}/getNotifications`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token
+        },
+
+    }).then(resp => {
+        if (resp.status === 200) {
+            resp.json().then(notifications => okCallback(notifications))
+        } else {
+            errorCallback("Not able to fetch searches")
+        }
+    })
+}
+export const getPendingNotifications = (token, okCallback, errorCallback) => {
+    fetch(`${restApiEndpoint}/getPendingNotifications`, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',

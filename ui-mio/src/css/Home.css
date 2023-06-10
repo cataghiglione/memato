@@ -198,6 +198,7 @@ lable{
     font-size: 16px;
     border: none;
     cursor: pointer;
+    font-family: "Times New Roman", sans-serif;
 }
 
 .dropdown-content {
@@ -235,4 +236,29 @@ lable{
 
 .select-items div:hover, .same-as-selected {
     background-color: rgba(0, 0, 0, 0.1);
+}
+
+.showNotificationCenter{
+    position: absolute;
+    /*background-color: #E2E2E2;*/
+    /*color: black;*/
+    /*border: 1px solid #E2E2E2;*/
+    background-color: #ccc;
+    border-radius: 1px;
+    border-color: #ccc;
+    transition-duration: 0.4s;
+    top: 8px;
+    right: 60px;
+}
+.showMenu{
+    position: absolute;
+    /*background-color: #E2E2E2;*/
+    /*color: black;*/
+    /*border: 1px solid #E2E2E2;*/
+    background-color: #ccc;
+    border-color: #ccc;
+    border-radius: 1px;
+    transition-duration: 0.4s;
+    top: 8px;
+    right: 7px;
 }
