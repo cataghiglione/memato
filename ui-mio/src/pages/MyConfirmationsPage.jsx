@@ -3,16 +3,17 @@ import {useAuthProvider} from "../auth/auth";
 import {TopBar} from "./TopBar/TopBar";
 import {getConfirmedMatches, getPendingConfirmations, getTeam} from "../service/mySystem";
 import {MapInReact} from "./MapInReact";
+import "../css/MyConfirmations.css"
 
-export function MyConfirmationsPage(props){
+export function MyConfirmationsPage(props) {
     const auth = useAuthProvider()
     const token = auth.getToken();
     const id = props.getTeamId;
 
-    const[team, setTeam]=useState('');
+    const [team, setTeam] = useState('');
     let [confirmedMatches, setConfirmedMatches] = useState([]);
     useEffect(() => {
-        getTeam(token,id, (team) => setTeam(team));
+        getTeam(token, id, (team) => setTeam(team));
     }, [token, id])
 
     useEffect(() => {
@@ -27,20 +28,49 @@ export function MyConfirmationsPage(props){
         [id, token]
     )
 
-    return(
+    function goToFindRival() {
+        window.location.href = "/findRival"
+
+    }
+
+    return (
 
         <div>
             <TopBar toggleTeamId={props.toggleTeamId} getTeamId={props.getTeamId}/>
-            {/* Otros elementos del componente */}
-            <MapInReact confirmedMatches={confirmedMatches} />
+            <div>
+                {(confirmedMatches.length > 0) && (
+                    <div className={"map-container"}>
+                        <div className={"map"}>
+                            <MapInReact confirmedMatches={confirmedMatches}/>
+                        </div>
+                    </div>)}
+                {(confirmedMatches.length === 0) && (
+                    <div>
+                        <div className={"noConfirmedMatchesTitle"}>
+                            {team.name}'s confirmations
+                        </div>
+                        <div className={"refereePicture"}>
+                            <img style={{width: 218, height: "auto"}} src={require("../images/referee.png")}
+                                 alt={"referee"}/>
+                        </div>
+                        <div className={"noMatchesTitle"}>
+                            {team.name} does not have any confirmed matches!
+                        </div>
+                        <div className={"findRivalText"}>
+                            Find a new rival now!
+                        </div>
+                        <div>
+                            <button className={"findRivalB"} id="submit" type="submit" onClick={goToFindRival}> Find
+                                Rival!
+                            </button>
+                        </div>
+
+                    </div>
+                )}
+            </div>
         </div>
 
     )
-
-
-
-
-
 
 
 }

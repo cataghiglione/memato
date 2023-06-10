@@ -17,7 +17,7 @@ import {useNavigate} from "react-router";
 import {ConfirmationsPage} from "./pages/ConfirmationsPage";
 import {useAuthProvider} from "./auth/auth";
 import {NotificationPage} from "./pages/NotificationPage";
-// import {MyConfirmationsPage} from "./pages/MyConfirmationsPage";
+import {MyConfirmationsPage} from "./pages/MyConfirmationsPage";
 
 
 const App = () =>{
@@ -72,7 +72,7 @@ const App = () =>{
                         <Route path = "/ReactMap" element = {<BingMap getTeamId={teamId}/>} />
                         <Route path = "/pendingConfirmations" element={<ConfirmationsPage getTeamId={teamId}/>}/>
                         <Route path = "/notificationPage" element={<NotificationPage getTeamId={teamId}/>}/>
-                        {/*<Route path = "/myConfirmations" element={<MyConfirmationsPage toggleTeamId = {toggleTeamId} getTeamId={teamId}/>}/>*/}
+                        <Route path = "/myConfirmations" element={<MyConfirmationsPage toggleTeamId = {toggleTeamId} getTeamId={teamId}/>}/>
 
 
                     </Routes>

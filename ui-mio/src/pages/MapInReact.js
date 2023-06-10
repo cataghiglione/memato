@@ -113,15 +113,15 @@ GetLocationHandled(location){
                 {this.state.isVisible && (
                     <div>
                         <div className = "map-one" style={{height: "800px"}}>
-                            <span style={{'display':'inline-block'}}>
-                                <form onSubmit={this.handleSubmit.bind(this)}>
-                                    <input type="text" placeholder="search place, pin, city"
-                                        onChange={(event)=>{this.setState({searchInput:event.target.value})}}
-                                        value={this.state.searchInput}>
-                                    </input>
-                                    <input type="submit" value="Search" />
-                                </form>
-                            </span>
+                            {/*<span style={{'display':'inline-block'}}>*/}
+                            {/*    <form onSubmit={this.handleSubmit.bind(this)}>*/}
+                            {/*        <input type="text" placeholder="search place, pin, city"*/}
+                            {/*            onChange={(event)=>{this.setState({searchInput:event.target.value})}}*/}
+                            {/*            value={this.state.searchInput}>*/}
+                            {/*        </input>*/}
+                            {/*        <input type="submit" value="Search" />*/}
+                            {/*    </form>*/}
+                            {/*</span>*/}
                             <ReactBingmaps
                                 className = "customClass"
                                 id = "six"

@@ -1,0 +1,61 @@
+.map-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.map {
+    width: 750px; /* ajusta el ancho según tus necesidades */
+    height: 700px; /* ajusta la altura según tus necesidades */
+}
+.noConfirmedMatchesTitle {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: xx-large;
+    font-family: "Tiro Gurmukhi", sans-serif;
+    white-space: nowrap;
+}
+
+.refereePicture{
+    position:fixed;
+    bottom: 390px;
+    left: 420px;
+}
+.noMatchesTitle {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    top: 50%; /* Ajusta la posición vertical según sea necesario */
+    font-size: xx-large;
+    font-family: "Tiro Gurmukhi", sans-serif;
+    white-space: nowrap;
+}
+
+.findRivalText{
+    position: absolute;
+    top: 60%;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: xx-large;
+    font-family: "Tiro Gurmukhi", sans-serif;
+    white-space: nowrap;
+}
+.findRivalB{
+    position: absolute;
+    background-color: white;
+    top:70%;
+    left: 50%;
+    transform: translateX(-50%);
+    color: black;
+    border: 1px solid #b95de3;
+    border-radius: 2px;
+    transition-duration: 0.4s;
+    width: auto;
+    padding: 12px 20px;
+}
+.findRivalB:hover{
+    background-color: #b95de3;
+    color: white;
+}
