@@ -119,12 +119,12 @@ public class Matches {
     public boolean declineMatchByTeam(Long matchId, Long teamId){
         int updatedCount = 0;
         if (teamOneOrTeam2(matchId,teamId)){
-            updatedCount = entityManager.createQuery("UPDATE Match set declined_by_1 = false WHERE id = :matchId")
+            updatedCount = entityManager.createQuery("UPDATE Match set not_declined_by_1 = false WHERE id = :matchId")
                     .setParameter("matchId",matchId)
                     .executeUpdate();
         }
         else {
-            updatedCount = entityManager.createQuery("UPDATE Match set declined_by_2 = false WHERE id = :matchId")
+            updatedCount = entityManager.createQuery("UPDATE Match set not_declined_by_2 = false WHERE id = :matchId")
                     .setParameter("matchId",matchId)
                     .executeUpdate();
         }

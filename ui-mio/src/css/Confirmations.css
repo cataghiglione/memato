@@ -8,6 +8,15 @@
     white-space: nowrap;
 
 }
+.noConfirmationsTitle{
+    position: absolute;
+    top: -50px;
+    left: 190px;
+    transform: translate(-60%, -189%);
+    font-size: xx-large;
+    font-family: "Tiro Gurmukhi", sans-serif;
+    white-space: nowrap;
+}
 .matchesContainer{
     justify-content: center;
     align-items: center;
@@ -59,4 +68,42 @@
 .declineButton:hover{
     background:#af4c4c ;
     color: white;
+}
+.refereeImage{
+    position:relative;
+    bottom: 60px;
+}
+.noPendingConfs{
+    position: absolute;
+    top: 280px;
+    left: 210px;
+    transform: translate(-60%, -189%);
+    font-size: xx-large;
+    font-family: "Tiro Gurmukhi", sans-serif;
+    white-space: nowrap;
+}
+.findRButton{
+    position: absolute;
+    background-color: white;
+    left: 55px;
+    top: 390px;
+    color: black;
+    border: 1px solid #b95de3;
+    border-radius: 2px;
+    transition-duration: 0.4s;
+    width: auto;
+    padding: 12px 20px;
+}
+.findRButton:hover{
+    background-color: #b95de3;
+    color: white;
+}
+.findRText{
+    position: absolute;
+    top: 390px;
+    left: 170px;
+    transform: translate(-60%, -189%);
+    font-size: xx-large;
+    font-family: "Tiro Gurmukhi", sans-serif;
+    white-space: nowrap;
 }

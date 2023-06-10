@@ -49,6 +49,10 @@ export function ConfirmationsPage(props) {
         })
 
     }
+    function goToFindRival(){
+        window.location.href = "/findRival"
+
+    }
 
 
 
@@ -84,6 +88,29 @@ export function ConfirmationsPage(props) {
                                 </div>
 
                             ))}
+                        </div>
+
+                    )}
+                    {(matches.length===0) &&(
+                        <div>
+                            <div className={"noConfirmationsTitle"}>
+                                {team.name}'s pending confirmations
+                            </div>
+                            <div className={"refereeImage"}>
+                                <img style={{width: 218, height: "auto"}} src={require("../images/referee.png")}
+                                     alt={"referee"}/>
+                            </div>
+                            <div className={"noPendingConfs"}>
+                                {team.name} does not have any pending confirmations!
+                            </div>
+                            <div className={"findRText"}>
+                                Find a new rival now!
+                            </div>
+                            <div>
+                                <button className={"findRButton"} id="submit" type="submit" onClick={goToFindRival}> Find
+                                    Rival!
+                                </button>
+                            </div>
                         </div>
 
                     )}
