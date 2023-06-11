@@ -260,7 +260,10 @@ public class Routes {
             getUser(req).ifPresentOrElse(
                     (user) -> {
                         final List<Notification> notificationsList = system.listPendingNotifications(user);
-                        transformNotifications(res, notificationsList.subList(0, 5));
+                        if(notificationsList.size() > 5){
+                            transformNotifications(res, notificationsList.subList(0, 5));
+                        }
+                        transformNotifications(res, notificationsList);
                     },
                     () -> {
                         res.status(404);

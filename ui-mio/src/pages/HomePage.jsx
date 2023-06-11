@@ -3,8 +3,10 @@ import {useEffect, useState} from 'react'
 import {useAuthProvider} from "../auth/auth";
 import {listTeams, getUser} from "../service/mySystem";
 import "../css/Home.css";
+import "../css/PickTeam.scss";
 import {useNavigate} from "react-router";
 import {TopBar} from "./TopBar/TopBar";
+import {PencilSquare} from "react-bootstrap-icons";
 
 function goToNewTeam(){
     window.location.href = "/newTeam"
@@ -22,6 +24,9 @@ export function HomePage(props){
 
     useEffect(() => {
         listTeams(token, (teams) => setTeams(teams));
+        getUser(token, (user) => {
+            setUser(user);
+        })
     }, [token])
 
     const changeNextTeam = (event) => {
@@ -31,34 +36,40 @@ export function HomePage(props){
             navigate('/editTeam')
         }
     }
-    const getUserMethod = () => {
-        getUser(token, (user) => {
-            setUser(user);
-        })
-        setOnceOpen(false);
+    const findRival = (event) => {
+        setNextTeam(event.target.value);
+        props.toggleTeamId(event.target.value)
+        if(event.target.value != null){
+            navigate('/findRival')
+        }
     }
     return (
         <div>
             <TopBar toggleTeamId={props.toggleTeamId} getTeamId={props.getTeamId}/>
             <div className="containerPrincipal" style={containerStyle}>
-                {onceOpen && getUserMethod()}
-                <div>
-                    <h1>Welcome {user.firstName}!
-                    </h1>
-                </div>
-                <h1>My teams</h1>
+                <h1> Welcome {user.firstName}! </h1>
+                <h3> Your teams </h3>
                 <button className={"newTeamButton"} onClick={goToNewTeam} style={{width:"325px"}}>
                     {teams.length===0 ? 'Create your first team' : 'New Team'}
                 </button>
-                {teams.length > 0 &&
-                    <div className={"team-pick"} multiple={true}  style={{width:"325px"}} onClick={changeNextTeam}>
-                        {teams.map(team =>
-                                <button className={"team-select-option-home"} value={team.id} style={{ textTransform: 'capitalize'}}>
-                                    {team.sport} {team.quantity}: {team.name}
-                                </button>
-                        )}
+                {teams.length > 0 && (
+                    <div>
+                        {teams.map((team) => (
+                            <div>
+                                <div className={`team-pick`} multiple={true} key={team.id} onClick={findRival}>
+                                    <button className={"team-select-option-pick"}  value={team.id} >
+                                        {team.sport} {team.quantity}: {team.name}
+                                    </button>
+                                </div>
+                                <div className={`team-edit`}>
+                                    <button onClick={changeNextTeam} className={"team-edit-option"} multiple={true} key={team.id} value={team.id} >
+                                        <PencilSquare style={{color:"black"}} />
+                                    </button>
+                                </div>
+                            </div>
+                        ))}
                     </div>
-                }
+                )}
                 {/*{teams.length === 0 &&*/}
                 {/*    <p className={"noTeamPick"}>You haven't created any teams yet</p>*/}
                 {/*}*/}

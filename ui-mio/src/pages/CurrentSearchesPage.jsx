@@ -114,9 +114,6 @@ export function CurrentSearchesPage(props) {
     }*/
     return (
         <div>
-            <div className={"logo"}>
-                <img style={{width: 218, height: "auto"}} src={require("../images/logo_solo_letras.png")} alt={"Logo"}/>
-            </div>
             {popupMsg !=="" && <div className="searches-popup">{popupMsg}</div>}
             {showConfirmation === true && (
                 <div>

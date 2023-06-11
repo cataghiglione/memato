@@ -28,7 +28,6 @@
     border-radius: 0 7px 7px 0;
     outline:0;
     white-space: nowrap;
-    background-color: white;
 }
 /*
 .team-edit.editing {
@@ -115,6 +114,7 @@
     display: block;
     background: white;
     margin-bottom: 3px;
+    margin-right: 3px;
     /*background-image: url("../images/Modify_team_pencil.jpg");*/
 }
 .team-edit-option:hover{
