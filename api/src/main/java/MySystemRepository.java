@@ -8,6 +8,7 @@ public class MySystemRepository {
     private final Teams teams;
     private final Searches searches;
     private final Matches matches;
+    private final Contacts contacts;
     private final Notifications notifications;
 
     public MySystemRepository(EntityManager entityManager) {
@@ -16,6 +17,7 @@ public class MySystemRepository {
         this.searches = new Searches(entityManager);
         this.matches = new Matches(entityManager);
         this.notifications = new Notifications(entityManager);
+        this.contacts = new Contacts(entityManager);
     }
 
     public static MySystemRepository create(EntityManager entityManager) {
@@ -35,6 +37,7 @@ public class MySystemRepository {
     public Matches matches() {
         return matches;
     }
+    public Contacts contacts(){return contacts;}
     public Notifications notifications() {
         return notifications;
     }

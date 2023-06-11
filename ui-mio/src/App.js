@@ -6,18 +6,20 @@ import { RegisterPage } from "./pages/RegisterPage";
 import { HomePage } from "./pages/HomePage";
 import { PickTeamPage } from "./pages/PickTeamPage";
 import { UserPage } from "./pages/UserPage";
-import{EditTeamPage} from "./pages/EditTeamPage";
+import { EditTeamPage } from "./pages/EditTeamPage";
 import { NewTeamPage } from "./pages/NewTeamPage";
 import { FindRivalPage } from "./pages/FindRivalPage";
-import {BingMap} from "./pages/BingMap";
+import { BingMap } from "./pages/BingMap";
 import { RequireAuth } from "./components/RequireAuth";
-import{CurrentSearchesPage} from "./pages/CurrentSearchesPage";
+import { CurrentSearchesPage } from "./pages/CurrentSearchesPage";
+import { WebSocketChat } from "./pages/WebSocketChatPage";
 import {useEffect, useState} from "react";
 import {useNavigate} from "react-router";
 import {ConfirmationsPage} from "./pages/ConfirmationsPage";
 import {useAuthProvider} from "./auth/auth";
 import {NotificationPage} from "./pages/NotificationPage";
-import {MyConfirmationsPage} from "./pages/MyConfirmationsPage";
+import {ContactsPage} from "./pages/ContactsPage";
+// import {MyConfirmationsPage} from "./pages/MyConfirmationsPage";
 
 
 const App = () =>{
@@ -72,7 +74,9 @@ const App = () =>{
                         <Route path = "/ReactMap" element = {<BingMap getTeamId={teamId}/>} />
                         <Route path = "/pendingConfirmations" element={<ConfirmationsPage getTeamId={teamId}/>}/>
                         <Route path = "/notificationPage" element={<NotificationPage getTeamId={teamId}/>}/>
-                        <Route path = "/myConfirmations" element={<MyConfirmationsPage toggleTeamId = {toggleTeamId} getTeamId={teamId}/>}/>
+                        <Route path = "/chat" element={<WebSocketChat toggleTeamId = {toggleTeamId} getTeamId={teamId}/>}/>
+                        <Route path = "/contacts" element={<ContactsPage toggleTeamId = {toggleTeamId} getTeamId={teamId}/>}/>
+                        {/*<Route path = "/myConfirmations" element={<MyConfirmationsPage toggleTeamId = {toggleTeamId} getTeamId={teamId}/>}/>*/}
 
 
                     </Routes>
