@@ -10,7 +10,7 @@ import DatePicker, {CalendarContainer} from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import {Dropdown} from "bootstrap";
 import {TopBar} from "./TopBar/TopBar";
-import {BingMap} from "./BingMap";
+import {BingMap} from "./BingMap"
 import {forEach} from "react-bootstrap/ElementChildren";
 
 

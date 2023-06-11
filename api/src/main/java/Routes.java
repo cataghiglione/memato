@@ -54,6 +54,10 @@ public class Routes {
     public static final String DECLINE_MATCH_ROUTE = "/declineMatch";
     public static final String GET_CONFIRMED_MATCHES_BY_TEAM_ROUTE = "/getConfirmedMatches";
     public static final String GET_NOTIFICATIONS_ROUTE = "/getNotifications";
+    public static final String NEW_CONTACT_ROUTE = "/newContact";
+    public static final String CONFIRM_CONTACT_ROUTE = "/confirmContact";
+    // en el momento que uno manda un mensaje se crea un contacto, quiera o no el destinatario.
+    public static final String GET_CONTACTS_BY_TEAMID_ROUTE = "/getContactsByTeamId"; // imitar GET_MATCHES_BY_TEAMID_ROUTE
     public static final String GET_5_PENDING_NOTIFICATIONS_ROUTE = "/getPendingNotifications";
     public static final String UPDATE_NOTIFICATION_STATUS = "/updateNotification";
 
@@ -127,6 +131,41 @@ public class Routes {
                                                         () -> {
                                                             res.status(409);
                                                             res.body("A match with this searches already exists");
+                                                        }
+                                                );
+                                            }
+                                    );
+                                }
+                        );
+                    },
+                    () -> {
+                        res.status(404);
+                        res.body("Invalid Token");
+                    }
+            );
+            return res.body();
+        });
+
+        // Copie en NEW_MATCH_ROUTE casi completamente, así que desde ahí debería andar
+        authorizedPost(NEW_CONTACT_ROUTE, (req, res) -> {
+            final EntityManager entityManager = entityManagerFactory.createEntityManager();
+            final Teams teams = new Teams(entityManager);
+            final CreateContactForm form = CreateContactForm.createFromJson(req.body());
+            getUser(req).ifPresentOrElse(
+                    (user) -> {
+                        teams.getTeamByTeamId(Long.parseLong(form.getTeam1_id())).ifPresent(
+                                (team1) -> {
+                                    //searches.getSearchBySearchAndTeam(search1, form.getTeamId()).ifPresent(
+                                    teams.getTeamByTeamId(Long.parseLong(form.getTeam2_id())).ifPresent(
+                                            (team2) -> {
+                                                system.findOrCreateContact(team1.getId(), team2.getId()).ifPresentOrElse(
+                                                        (contact) -> {
+                                                            res.status(201);
+                                                            res.body("Contact Created");
+                                                        },
+                                                        () -> {
+                                                            res.status(409);
+                                                            res.body("Contact already exists");
                                                         }
                                                 );
                                             }
@@ -500,8 +539,6 @@ public class Routes {
                 res.status(400);
             }
             return res.body();
-
-
         });
         authorizedPost(DEACTIVATE_SEARCH_ROUTE, (req, res) -> {
             final Long id = Long.valueOf(req.queryParams("id"));
@@ -546,6 +583,42 @@ public class Routes {
 
             return res.body();
         });
+
+
+// AYUDAAAAAAAAAAAAN LA CONCHA PUTA DE MI MADRE NO ENTIENDO UNA VERGAAAAAAAAA
+
+/*        authorizedGet(GET_CONTACTS_BY_TEAMID_ROUTE, (req, res) -> {
+            final EntityManager entityManager = entityManagerFactory.createEntityManager();
+            final Long team_id = Long.valueOf(req.queryParams("teamid"));
+            final Contacts contacts = new Contacts(entityManager);
+            List<model.Contact> contactsList = contacts.findContactsByTeamId(team_id);
+            List<Contact> contact = contactsList.stream().map(cont -> {
+                final Contact contact = new Contact();
+
+
+                contact.id = cont.getID1();
+
+                if (team_id == cont.getID1()) {
+                    contact.team1 =  cont.getID1().asDto();
+                    contact.team2 = cont.getID2().asDto();
+
+                    pendingMatch.team1Confirmed = match.isConfirmed_by_1();
+                    pendingMatch.team2Confirmed = match.isConfirmed_by_2();
+                } else {
+                    pendingMatch.team1 =  match.getTeam2().asDto();
+                    pendingMatch.team2 = match.getTeam1().asDto();
+
+                    pendingMatch.team1Confirmed = match.isConfirmed_by_2();
+                    pendingMatch.team2Confirmed = match.isConfirmed_by_1();
+                }
+
+                return pendingMatch;
+            }).toList();
+
+            res.body(toJson(pendingMatches));
+
+            return res.body();
+        });*/
 //        authorizedGet(IS_TEAM_1_OR_2_ROUTE, (req, res) -> {
 //            final EntityManager entityManager = entityManagerFactory.createEntityManager();
 //            final Long matchId = Long.valueOf(req.queryParams("matchid"));

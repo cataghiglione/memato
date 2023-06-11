@@ -159,4 +159,14 @@ public class MySystem {
         // Super dummy implementation. Zero security
         return foundUser.getPassword().equals(password);
     }
+
+    public Optional<Contact> findOrCreateContact(long team1_id, long team2_id) {
+        return runInTransaction(datasource -> {
+            final Contacts contacts = datasource.contacts();
+            return contacts.exists(team1_id, team2_id) ? Optional.empty() : contacts.createContact(team1_id, team2_id) ;
+        });
+    }
+
+
+
 }

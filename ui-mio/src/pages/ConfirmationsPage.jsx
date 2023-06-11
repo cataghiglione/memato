@@ -1,16 +1,19 @@
 import React, {Component, useEffect, useState} from 'react';
 import {useAuthProvider} from "../auth/auth";
-import {getPendingConfirmations, confirmMatch, getTeam,declineMatch} from "../service/mySystem";
+import {getPendingConfirmations, confirmMatch, getTeam, declineMatch, newMatch, newContact} from "../service/mySystem";
 import {TopBar} from "./TopBar/TopBar";
-import "../css/Confirmations.css"
+import "../css/Confirmations.scss"
+import {ChatFill} from "react-bootstrap-icons";
+import {useNavigate} from "react-router";
 
 export function ConfirmationsPage(props) {
+    const navigate = useNavigate()
     const auth = useAuthProvider()
     const token = auth.getToken();
     const id = props.getTeamId;
     let [matches, setMatches] = useState([]);
     const[team, setTeam]=useState('');
-
+    let [searches, setSearches] = useState([]);
 
     useEffect(() => {
             getPendingConfirmations(token, id, (matches) => {
@@ -32,8 +35,9 @@ export function ConfirmationsPage(props) {
         await confirmMatch(token, match_id, id, () => {
             getPendingConfirmations(token, id, (matches) => {
                     setMatches(matches)
+                    // and takes you to that contact (hacleo hoy)
                 }, (matches) => {
-                    // TODO ERROR CALLBACK
+                // TODO ERROR CALLBACK
                 }
             )
         })
@@ -42,12 +46,30 @@ export function ConfirmationsPage(props) {
         await declineMatch(token,match_id,id, ()=>{
             getPendingConfirmations(token, id, (matches) => {
                     setMatches(matches)
-                }, (matches) => {
-                    // TODO ERROR CALLBACK
+
+                }, () => {
+                // TODO ERROR CALLBACK
+
                 }
             )
         })
 
+    }
+
+    function findOrCreateContact(id) {
+        newContact(token, {
+                team1_id:props.getTeamId,
+                team2_id:id
+            }, (res)=>{
+                console.log(res)
+                navigate("/chat")
+            },
+            ()=>{
+                // TODO when error callback happens it takes you only to the /chat, without throwing the error on console
+                console.log('Contact already exists!')
+                navigate("/chat")
+            }
+        )
     }
     function goToFindRival(){
         window.location.href = "/findRival"
@@ -78,9 +100,9 @@ export function ConfirmationsPage(props) {
                                         )}
                                         {!match.team1Confirmed &&(
                                             <div>
-                                            <button class = {"confirmButton"} onClick={()=>handleConfirmMatch(match.id)}>Confirm</button>
-
-                                            <button className = {"declineButton"} onClick={()=>handleDeclineMatch(match.id)}>Reject</button>
+                                                <button class = {"confirmButton"} onClick={()=>handleConfirmMatch(match.id)}>Confirm</button>
+                                                <button className = {"declineButton"} onClick={()=>handleDeclineMatch(match.id)}>Reject</button>
+                                                <button className={"chatButton"} onClick={()=>findOrCreateContact(match.team2.id)}> <ChatFill /></button>
                                             </div>
                                             )}
                                     </div>

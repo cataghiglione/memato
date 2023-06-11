@@ -419,4 +419,39 @@ export const deleteTeam = (token, id, okCallback, errorCallback) => {
     })
 }
 
+// Mio
+export const getContacts = (token, teamId, okCallback, errorCallback) => {
+    fetch(`${restApiEndpoint}/getContactsByTeamId?teamid=${teamId}`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token
+        },
 
+    }).then(resp => {
+        if (resp.status === 200) {
+            resp.json().then(contacts => okCallback(contacts))
+        } else {
+            errorCallback("Not able to fetch contacts")
+        }
+    })
+}
+
+export const newContact = (token, form, okCallback, errorCallback) => {
+    fetch(`${restApiEndpoint}/newContact`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token
+        },
+
+        body: JSON.stringify({...form})
+    }).then(resp => {
+        if (resp.status === 201 || resp.status === 200) {
+            okCallback(resp)
+        } else {
+            errorCallback()
+        }
+
+    })
+}
