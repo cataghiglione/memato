@@ -5,6 +5,9 @@ import {TopBar} from "./TopBar/TopBar";
 import "../css/Confirmations.scss"
 import {ChatFill} from "react-bootstrap-icons";
 import {useNavigate} from "react-router";
+import {toast, ToastContainer} from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
+
 
 export function ConfirmationsPage(props) {
     const navigate = useNavigate()
@@ -32,6 +35,7 @@ export function ConfirmationsPage(props) {
 
 
     const handleConfirmMatch = async (match_id) => {
+        toast.success('Confirmation sent!');
         await confirmMatch(token, match_id, id, () => {
             getPendingConfirmations(token, id, (matches) => {
                     setMatches(matches)
@@ -43,6 +47,7 @@ export function ConfirmationsPage(props) {
         })
     }
     const handleDeclineMatch = async (match_id) =>{
+        toast.success('Match rejected!');
         await declineMatch(token,match_id,id, ()=>{
             getPendingConfirmations(token, id, (matches) => {
                     setMatches(matches)
@@ -100,8 +105,32 @@ export function ConfirmationsPage(props) {
                                         )}
                                         {!match.team1Confirmed &&(
                                             <div>
+                                                <div>
                                                 <button class = {"confirmButton"} onClick={()=>handleConfirmMatch(match.id)}>Confirm</button>
+                                                    <ToastContainer position="top-center"
+                                                                    autoClose={5000}
+                                                                    hideProgressBar={false}
+                                                                    newestOnTop={false}
+                                                                    closeOnClick
+                                                                    rtl={false}
+                                                                    pauseOnFocusLoss
+                                                                    draggable
+                                                                    pauseOnHover
+                                                                    theme="light"/>
+                                                </div>
+                                                <div>
                                                 <button className = {"declineButton"} onClick={()=>handleDeclineMatch(match.id)}>Reject</button>
+                                                    <ToastContainer position="top-center"
+                                                                    autoClose={5000}
+                                                                    hideProgressBar={false}
+                                                                    newestOnTop={false}
+                                                                    closeOnClick
+                                                                    rtl={false}
+                                                                    pauseOnFocusLoss
+                                                                    draggable
+                                                                    pauseOnHover
+                                                                    theme="light"/>
+                                                </div>
                                                 <button className={"chatButton"} onClick={()=>findOrCreateContact(match.team2.id)}> <ChatFill /></button>
                                             </div>
                                             )}

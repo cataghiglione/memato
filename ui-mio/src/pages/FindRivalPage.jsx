@@ -11,6 +11,9 @@ import "react-datepicker/dist/react-datepicker.css";
 import {Dropdown} from "bootstrap";
 import {TopBar} from "./TopBar/TopBar";
 import {BingMap} from "./BingMap"
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 import {forEach} from "react-bootstrap/ElementChildren";
 
 
@@ -65,8 +68,17 @@ export function FindRivalPage(props) {
     }
 
 
-    const playMatch = () => {
-        //     to do
+    const popUpMessage = () => {
+        toast.success('Request sent!', {
+            position: "top-center",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+        });
     }
 
     const handleInfoboxesWithPushPins = (infoboxesWithPushPinsData) => {
@@ -128,13 +140,14 @@ export function FindRivalPage(props) {
     }
 
     function playButton(id) {
+        toast.success('Request sent!');
         newMatch(token, {
-                candidate_search_id:id,
+                candidate_search_id: id,
                 searchId: searchId
-            }, (res)=>{
+            }, (res) => {
                 console.log(res)
             },
-            ()=>{
+            () => {
                 console.log('A match with this searches already exists!')
             }
         )
@@ -157,8 +170,9 @@ export function FindRivalPage(props) {
             </div>
         );
     };
-    function Box (name, puntuality) {
-        return(
+
+    function Box(name, puntuality) {
+        return (
             <div
                 style={{
                     display: 'flex',
@@ -262,22 +276,21 @@ export function FindRivalPage(props) {
             </form>
             {(rivalMenuOpen && searches.length > 0) &&
                 <div>
-                <div className={"title"}>
-                    Teams searching for rivals:
-                </div>
+                    <div className={"title"}>
+                        Teams searching for rivals:
+                    </div>
 
 
+                    {/*    <select className={"team-select"} multiple={true} onChange={playMatch}>*/}
+                    {/*{teams.map(team =>*/}
+                    {/*    <option className={"team-select-option"} style={{textTransform: 'capitalize'}} value={team.id}>*/}
+                    {/*    nombre: {team.name}, deporte: {team.sport}, categoria: {team.group} </option>*/}
+                    {/*    // <p>nombre = {team.name}    deporte = {team.sport} </p>*/}
+                    {/*    // <option>{team.name}</option>*/}
 
-            {/*    <select className={"team-select"} multiple={true} onChange={playMatch}>*/}
-            {/*{teams.map(team =>*/}
-            {/*    <option className={"team-select-option"} style={{textTransform: 'capitalize'}} value={team.id}>*/}
-            {/*    nombre: {team.name}, deporte: {team.sport}, categoria: {team.group} </option>*/}
-            {/*    // <p>nombre = {team.name}    deporte = {team.sport} </p>*/}
-            {/*    // <option>{team.name}</option>*/}
-
-            {/*    )*/}
-            {/*}*/}
-            {/*    </select>*/}
+                    {/*    )*/}
+                    {/*}*/}
+                    {/*    </select>*/}
 
 
                     {/*<div style={{display: 'flex', flexWrap: 'wrap', position: "relative"}}>*/}
@@ -286,13 +299,26 @@ export function FindRivalPage(props) {
                             <div>
                                 <div className={"team-select"}>
                                     <div className={"team-select.info"}>
-                                        <span style={{fontWeight: 'bold', marginLeft:'5px',marginBottom: '15px'}}> Team name: {search.team.name}</span>
-                                        <p style={{marginLeft:'5px',marginBottom: '15px'}}> Age group: {search.team.age_group}</p>
+                                        <span style={{fontWeight: 'bold', marginLeft: '5px', marginBottom: '15px'}}> Team name: {search.team.name}</span>
+                                        <p style={{marginLeft: '5px', marginBottom: '15px'}}> Age
+                                            group: {search.team.age_group}</p>
                                     </div>
                                     <br/><br/>
-                                    <button className={"button-play"} onClick={()=>playButton(search.id)}>
-                                        Play
-                                    </button>
+                                    <div>
+                                        <button className={"button-play"} onClick={() => playButton(search.id)}>
+                                            Play
+                                        </button>
+                                        <ToastContainer position="top-center"
+                                                        autoClose={5000}
+                                                        hideProgressBar={false}
+                                                        newestOnTop={false}
+                                                        closeOnClick
+                                                        rtl={false}
+                                                        pauseOnFocusLoss
+                                                        draggable
+                                                        pauseOnHover
+                                                        theme="light"/>
+                                    </div>
                                 </div>
                                 <br/>
                             </div>
@@ -300,7 +326,7 @@ export function FindRivalPage(props) {
                         {/*<TextWithButton text = {team.name}/>))}*/}
                     </div>
                 </div>
-                    }
+            }
             {(rivalMenuOpen && searches.length === 0) &&
 
                 <p className={"noTeamSearch"}>There are currently no teams searching for rivals with your
