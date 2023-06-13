@@ -67,7 +67,7 @@ export function ConfirmationsPage(props) {
                 team2_id:id
             }, (res)=>{
                 console.log(res)
-                navigate("/chat")
+                navigate(`/chat?contactId=${res}`)
             },
             ()=>{
                 // TODO when error callback happens it takes you only to the /chat, without throwing the error on console

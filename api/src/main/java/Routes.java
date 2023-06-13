@@ -164,11 +164,11 @@ public class Routes {
                                                 system.findOrCreateContact(team1, team2).ifPresentOrElse(
                                                         (contact) -> {
                                                             res.status(201);
-                                                            res.body("Contact Created");
+                                                            res.body(Long.toString(contact.getId()));
                                                         },
                                                         () -> {
                                                             res.status(409);
-                                                            res.body("Contact already exists");
+                                                            res.body("An error occurred when creating or finding the contact");
                                                         }
                                                 );
                                             }

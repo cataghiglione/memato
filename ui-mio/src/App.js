@@ -20,7 +20,7 @@ import {useAuthProvider} from "./auth/auth";
 import {NotificationPage} from "./pages/NotificationPage";
 import {ContactsPage} from "./pages/ContactsPage";
 import {MyConfirmationsPage} from "./pages/MyConfirmationsPage";
-// import {MyConfirmationsPage} from "./pages/MyConfirmationsPage";
+import {ChatPage} from "./pages/ChatPage";
 
 
 const App = () =>{
@@ -30,9 +30,8 @@ const App = () =>{
         from the localStorage using the getItem method. If the value is not
         found in localStorage, the initial state is set to 0.*/
     const [teamId, setTeamId] = useState(() => {
-        // const storedTeamId = localStorage.getItem('teamId');
-        // return storedTeamId !== null ? JSON.parse(storedTeamId) : 0;
-        return 0;
+        const storedTeamId = localStorage.getItem('teamId');
+        return storedTeamId !== null ? JSON.parse(storedTeamId) : 0;
     });
 
 
@@ -76,7 +75,7 @@ const App = () =>{
                         <Route path = "/ReactMap" element = {<BingMap toggleTeamId = {toggleTeamId} getTeamId={teamId}/>} />
                         <Route path = "/pendingConfirmations" element={<ConfirmationsPage toggleTeamId = {toggleTeamId} getTeamId={teamId}/>}/>
                         <Route path = "/notificationPage" element={<NotificationPage toggleTeamId = {toggleTeamId} getTeamId={teamId}/>}/>
-                        <Route path = "/chat" element={<WebSocketChat toggleTeamId = {toggleTeamId} getTeamId={teamId}/>}/>
+                        <Route path = "/chat" element={<ChatPage toggleTeamId = {toggleTeamId} getTeamId={teamId}/>}/>
                         <Route path = "/contacts" element={<ContactsPage toggleTeamId = {toggleTeamId} getTeamId={teamId}/>}/>
                         <Route path = "/myConfirmations" element={<MyConfirmationsPage toggleTeamId = {toggleTeamId} getTeamId={teamId}/>}/>
 

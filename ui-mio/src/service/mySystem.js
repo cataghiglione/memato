@@ -491,7 +491,7 @@ export const newContact = (token, form, okCallback, errorCallback) => {
         body: JSON.stringify({...form})
     }).then(resp => {
         if (resp.status === 201 || resp.status === 200) {
-            okCallback(resp)
+            resp.json().then(contact => okCallback(contact))
         } else {
             errorCallback()
         }
