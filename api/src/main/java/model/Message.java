@@ -10,11 +10,13 @@ public class Message {
     @GeneratedValue(generator = "ContactGen", strategy = GenerationType.SEQUENCE)
     private long id;
 
-    @JoinColumn(name = "TEAM1_ID", referencedColumnName = "id")
-    private long team1; // Sender
+    @ManyToOne(cascade = CascadeType.MERGE)
+    @JoinColumn(name = "CONTACT_ID", referencedColumnName = "id")
+    private Contact contact; // Sender
 
-    @JoinColumn(name = "TEAM2_ID", referencedColumnName = "id")
-    private long team2; // Receiver
+    @ManyToOne(cascade = CascadeType.MERGE)
+    @JoinColumn(name = "TEAM_ID", referencedColumnName = "id")
+    private Team team; // Receiver
 
     @Column
     private int minute;
@@ -34,14 +36,14 @@ public class Message {
     @Column
     private String text;
 
-    public static Message create(long team1, long team2, Date date, String text){
-        return new Message(team1, team2, date, text);
+    public static Message create(Contact contact, Team team, Date date, String text){
+        return new Message(contact, team, date, text);
     }
 
     public Message(){}
-    private Message(long team1, long team2, Date date, String text){
-        this.team1=team1;
-        this.team2=team2;
+    private Message(Contact contact, Team team, Date date, String text){
+        this.contact = contact;
+        this.team = team;
         this.month=date.getMonth();
         this.day=date.getDate();
         this.year=date.getYear();
@@ -49,12 +51,14 @@ public class Message {
         this.hour=date.getHours();
         this.text = text;
     }
-    public long getID1() {
-        return team1;
+    public long getTeamID() {
+        return this.team.getId();
     }
-
-    public long getID2() {
-        return team2;
+    public String getTeamName() {
+        return this.team.getName();
+    }
+    public long getIDContact() {
+        return contact.getId();
     }
 
     public int getMonth() {
@@ -75,5 +79,11 @@ public class Message {
         return id;
     }
 
+    public int getMinute() {
+        return minute;
+    }
 
+    public int getHour() {
+        return hour;
+    }
 }

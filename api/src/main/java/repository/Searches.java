@@ -41,6 +41,15 @@ public class Searches {
                 .setParameter("team_id",team_id)
                 .getResultList();
     }
+    public List<Search> findCompatibleSearches(Long search_id){
+        Optional<Search> search = entityManager.createQuery("SELECT s FROM Search s WHERE s.id =:search_id",Search.class)
+                .setParameter("search_id",search_id)
+                .getResultList()
+                .stream()
+                .findFirst();
+
+        return findCandidates(Long.toString(search.get().getTeam().getUserId()), search.get().getTime(), search.get().getDate(), search.get().getTeam().getSport(), search.get().getTeam().getQuantity(), search.get().getLatitude(), search.get().getLongitude());
+    }
     public boolean deactivateSearchBySearchId(Long search_id){
         int updatedCount = entityManager.createQuery("UPDATE Search  set isSearching =false WHERE id = :search_id")
                 .setParameter("search_id", search_id)

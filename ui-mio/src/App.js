@@ -29,8 +29,9 @@ const App = () =>{
         from the localStorage using the getItem method. If the value is not
         found in localStorage, the initial state is set to 0.*/
     const [teamId, setTeamId] = useState(() => {
-        const storedTeamId = localStorage.getItem('teamId');
-        return storedTeamId !== null ? JSON.parse(storedTeamId) : 0;
+        // const storedTeamId = localStorage.getItem('teamId');
+        // return storedTeamId !== null ? JSON.parse(storedTeamId) : 0;
+        return 0;
     });
 
 
@@ -67,13 +68,13 @@ const App = () =>{
                         <Route path="/home" element={<HomePage toggleTeamId = {toggleTeamId}    getTeamId={teamId}/>} />
                         <Route path="/pickTeam" element={<PickTeamPage toggleTeamId = {toggleTeamId}    getTeamId={teamId}/>} />
                         <Route path="/newTeam" element={<NewTeamPage toggleTeamId = {toggleTeamId}    getTeamId={teamId}/>} />
-                        <Route path="/user" element={<UserPage getTeamId={teamId}/>} />
-                        <Route path="/findRival" element={<FindRivalPage getTeamId={teamId}/>} />
-                        <Route path = "/editTeam" element = {<EditTeamPage getTeamId={teamId}/>} />
-                        <Route path = "/currentSearches" element = {<CurrentSearchesPage getTeamId={teamId}/>} />
-                        <Route path = "/ReactMap" element = {<BingMap getTeamId={teamId}/>} />
-                        <Route path = "/pendingConfirmations" element={<ConfirmationsPage getTeamId={teamId}/>}/>
-                        <Route path = "/notificationPage" element={<NotificationPage getTeamId={teamId}/>}/>
+                        <Route path="/user" element={<UserPage toggleTeamId = {toggleTeamId} getTeamId={teamId} />} />
+                        <Route path="/findRival" element={<FindRivalPage toggleTeamId = {toggleTeamId} getTeamId={teamId}/>} />
+                        <Route path = "/editTeam" element = {<EditTeamPage toggleTeamId = {toggleTeamId} getTeamId={teamId}/>} />
+                        <Route path = "/currentSearches" element = {<CurrentSearchesPage toggleTeamId = {toggleTeamId} getTeamId={teamId}/>} />
+                        <Route path = "/ReactMap" element = {<BingMap toggleTeamId = {toggleTeamId} getTeamId={teamId}/>} />
+                        <Route path = "/pendingConfirmations" element={<ConfirmationsPage toggleTeamId = {toggleTeamId} getTeamId={teamId}/>}/>
+                        <Route path = "/notificationPage" element={<NotificationPage toggleTeamId = {toggleTeamId} getTeamId={teamId}/>}/>
                         <Route path = "/chat" element={<WebSocketChat toggleTeamId = {toggleTeamId} getTeamId={teamId}/>}/>
                         <Route path = "/contacts" element={<ContactsPage toggleTeamId = {toggleTeamId} getTeamId={teamId}/>}/>
                         <Route path = "/myConfirmations" element={<MyConfirmationsPage toggleTeamId = {toggleTeamId} getTeamId={teamId}/>}/>

@@ -5,8 +5,8 @@ import java.util.Date;
 import static json.JsonParser.fromJson;
 
 public class CreateMessageForm {
-    private final String team1_id;
-    private final String team2_id;
+    private final String team_id;
+    private final String contact_id;
     private final String text;
     private final Date date;
 
@@ -14,19 +14,19 @@ public class CreateMessageForm {
         return fromJson(body, CreateMessageForm.class);
     }
 
-    public CreateMessageForm(String team1_id, String team2_id, Date date, String text){
-        this.team1_id = team1_id;
-        this.team2_id = team2_id;
+    public CreateMessageForm(String team_id, String contact_id, Date date, String text){
+        this.contact_id = contact_id;
+        this.team_id = team_id;
         this.date = date;
         this.text = text;
     }
 
-    public String getTeam1_id(){
-        return team1_id;
+    public String getTeam_id() {
+        return team_id;
     }
 
-    public String getTeam2_id(){
-        return team2_id;
+    public String getContact_id() {
+        return contact_id;
     }
 
     public Date getDate() {

@@ -23,11 +23,26 @@ public class Matches {
     }
 
     public Optional<Match> createMatch(Search search1, Search search2) {
-        if (findMatchBySearchId(Long.toString(search1.getId()), Long.toString(search2.getId())).isPresent())
+        if (findMatchBySearchIds(Long.toString(search1.getId()), Long.toString(search2.getId())).isPresent())
             return Optional.empty();
         final Match newMatch = Match.create(search1, search2);
         entityManager.persist(newMatch);
         return Optional.of(newMatch);
+    }
+
+    /**
+     * It finds the searches that has no match with the searchId
+     * @param searchId
+     * @param possibleCandidates
+     * @return a list of the possible candidates for new matches
+     */
+    public List<Search> findNoMatch(String searchId, List<Search> possibleCandidates){
+        List<Search> candidates = new ArrayList<>();
+        for (Search search2: possibleCandidates) {
+            if (findMatchBySearchIds(searchId, Long.toString(search2.getId())).isEmpty())
+                candidates.add(search2);
+        }
+        return candidates;
     }
 
     /**
@@ -37,7 +52,7 @@ public class Matches {
      * @param search2
      * @return
      */
-    private Optional<Match> findMatchBySearchId(String search1, String search2) {
+    private Optional<Match> findMatchBySearchIds(String search1, String search2) {
         return entityManager
                 .createQuery("SELECT m FROM Match m WHERE (((cast(m.search1.id as string) LIKE :id1) AND (cast(m.search2.id as string) LIKE :id2)) " +
                         "OR ((cast(m.search2.id as string) LIKE :id1) AND (cast(m.search1.id as string) LIKE :id2)))", Match.class)

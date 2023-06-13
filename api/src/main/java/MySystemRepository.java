@@ -10,6 +10,7 @@ public class MySystemRepository {
     private final Matches matches;
     private final Contacts contacts;
     private final Notifications notifications;
+    private final Messages messages;
 
     public MySystemRepository(EntityManager entityManager) {
         this.users = new Users(entityManager);
@@ -18,6 +19,7 @@ public class MySystemRepository {
         this.matches = new Matches(entityManager);
         this.notifications = new Notifications(entityManager);
         this.contacts = new Contacts(entityManager);
+        this.messages = new Messages(entityManager);
     }
 
     public static MySystemRepository create(EntityManager entityManager) {
@@ -40,5 +42,8 @@ public class MySystemRepository {
     public Contacts contacts(){return contacts;}
     public Notifications notifications() {
         return notifications;
+    }
+    public Messages messages() {
+        return messages;
     }
 }
