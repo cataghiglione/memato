@@ -45,6 +45,7 @@ export function FindRivalPage(props) {
     const navigate = useNavigate();
     const [errorMsg, setErrorMsg] = useState(undefined)
 
+
     const [date, setDate] = useState(new Date());
     const [time, setTime] = useState('')
 
@@ -125,6 +126,16 @@ export function FindRivalPage(props) {
     const findRivalMethod = (search) => {
         if (rivalMenuOpen) {
             findRival(token, teamId, search, (res) => {
+                    toast.success('Search is now active!', {containerId: 'toast-container',
+                        position: "top-center",
+                        autoClose: 5000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                        theme: "light",
+                    });
                     console.log(res)
                     setSearches(res.searches)
                     setSearchId(res.searchId)
@@ -136,11 +147,21 @@ export function FindRivalPage(props) {
     }
 
     const playButton = async (id) => {
-        await toast.success('Request sent!');
         await newMatch(token, {
                 candidate_search_id: id,
                 searchId: searchId
-            }, async (res) => {
+            },
+            async (res) => {
+                toast.success('Request sent!', {containerId: 'toast-container',
+                    position: "top-center",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                });
                 console.log(res)
                 await possibleSearchCandidates(token, searchId, (searches) => {
                     setSearches(searches)
@@ -204,7 +225,10 @@ export function FindRivalPage(props) {
                     <DatePicker
                         showIcon
                         selected={date}
+                        dateFormat="dd/MM/yyyy"
                         onChange={date => setDate(date)}
+                        minDate={new Date()}
+                        showDisabledMonthNavigation
                         calendarContainer={MyContainer}
                     />
                 </div>
@@ -274,32 +298,26 @@ export function FindRivalPage(props) {
                                     </div>
                                     <br/><br/>
                                     <div>
-                                        <button className={"button-play"} onClick={() => playButton(search.id)}>
+                                        <button className={"button-play"} onClick={async () => await playButton(search.id)}>
                                             Play
                                         </button>
-                                        <ToastContainer position="top-center"
-                                                        autoClose={5000}
-                                                        hideProgressBar={false}
-                                                        newestOnTop={false}
-                                                        closeOnClick
-                                                        rtl={false}
-                                                        pauseOnFocusLoss
-                                                        draggable
-                                                        pauseOnHover
-                                                        theme="light"/>
+
                                     </div>
                                 </div>
                                 <br/>
                             </div>
                         ))}
+
                         {/*<TextWithButton text = {team.name}/>))}*/}
                     </div>
                 </div>
             }
-            {(rivalMenuOpen && searches.length === 0) &&
+            {(rivalMenuOpen && searches.length === 0) &&(
 
-                <p className={"noTeamSearch"}>{noSearchesCandidates}</p>
+                <p className={"noTeamSearch"}>{noSearchesCandidates}</p>)
             }
+            <ToastContainer /> {/* Mover el ToastContainer aquí */}
+
 
 
             <button className={"goToPickTeamButton"} onClick={goToPickTeam}> Change Team</button>

@@ -624,7 +624,8 @@ public class Routes {
             List<PendingMatch> pendingMatches = matchesList.stream().map(match -> {
                 final PendingMatch pendingMatch = new PendingMatch();
 
-                pendingMatch.day = match.getDay() + "/" + match.getMonth();
+
+                pendingMatch.day = match.getDay() + "/" + (match.getMonth()+1);
                 pendingMatch.time = match.getTime();
                 pendingMatch.id = match.getId();
 

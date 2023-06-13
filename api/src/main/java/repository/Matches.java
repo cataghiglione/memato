@@ -143,6 +143,18 @@ public class Matches {
                     .setParameter("matchId",matchId)
                     .executeUpdate();
         }
+        Optional<Match> match = entityManager.createQuery("SELECT m FROM Match m WHERE id =:matchId",Match.class)
+                .setParameter("matchId",matchId)
+                .getResultList()
+                .stream()
+                .findFirst();
+        if (match.isPresent()){
+            if (teamOneOrTeam2(matchId,teamId)){
+                match.get().getSearch2().reactivateSearching();
+            }
+            else match.get().getSearch1().reactivateSearching();
+            entityManager.flush();
+        }
         return updatedCount>0;
     }
 

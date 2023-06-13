@@ -2,7 +2,7 @@ import React, {Component, useEffect, useState} from 'react';
 import {useAuthProvider} from "../auth/auth";
 import {TopBar} from "./TopBar/TopBar";
 import {getConfirmedMatches, getPendingConfirmations, getTeam} from "../service/mySystem";
-import {MapInReact} from "./MapInReact";
+import { MapInReactFunction} from "./MapInReact";
 import "../css/MyConfirmations.css"
 
 export function MyConfirmationsPage(props) {
@@ -41,7 +41,7 @@ export function MyConfirmationsPage(props) {
                 {(confirmedMatches.length > 0) && (
                     <div className={"map-container"}>
                         <div className={"map"}>
-                            <MapInReact confirmedMatches={confirmedMatches}/>
+                            <MapInReactFunction confirmedMatches={confirmedMatches}/>
                         </div>
                     </div>)}
                 {(confirmedMatches.length === 0) && (
