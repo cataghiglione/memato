@@ -493,6 +493,7 @@ public class Routes {
             final EntityManager entityManager = entityManagerFactory.createEntityManager();
             final Teams teams = new Teams(entityManager);
             final Searches searches = new Searches(entityManager);
+            final Matches matches = new Matches(entityManager);
             final String id = (req.queryParams("id"));
             teams.findTeamsById(id).ifPresentOrElse(
                     (team) -> {
@@ -505,6 +506,7 @@ public class Routes {
                         teams.updateTeam(teamForm.getName(), teamForm.getSport(), teamForm.getQuantity(), teamForm.getAgeGroup(), Long.valueOf(id));
                         if (!Objects.equals(teamForm.getQuantity(), prev_quantity) || !Objects.equals(teamForm.getSport(), prev_sport)){
                             searches.deactivateSearchesByTeam(Long.parseLong(id));
+                            matches.cancelMatchesByTeam(Long.parseLong(id));
                         }
                         transaction.commit();
                         res.status(200);

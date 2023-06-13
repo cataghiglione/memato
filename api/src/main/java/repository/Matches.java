@@ -193,6 +193,17 @@ public class Matches {
 
 
     }
+    public void cancelMatchesByTeam(Long teamId){
+        List<Match> matches = entityManager.createQuery("SELECT m FROM Match m WHERE search1.team.id =:teamId or search2.team.id =:teamId",Match.class)
+                .setParameter("teamId", teamId)
+                .getResultList();
+        for (Match match : matches) {
+            match.setConfirmed_by_1(false);
+            match.setConfirmed_by_2(false);
+        }
+        entityManager.flush();
+    }
+
 
 
 }
