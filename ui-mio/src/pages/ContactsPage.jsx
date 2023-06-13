@@ -38,12 +38,12 @@ export function ContactsPage(props) {
                     {(contacts.length > 0) && (
                         <div>
                             <div className={"confirmationsTitle"}>
-                                {team.name}'s pending confirmations
+                                {team.name}'s contacts
                             </div>
                             {contacts.map((contact) => (
                                 <div className={"matchesContainer"}>
                                     <div key={contact.id}>
-                                        <p className={"match-info"}>Rival: {contact.team1_id}</p>
+                                        <p className={"match-info"}>Rival: {contact.team2.name}</p>
                                     </div>
                                 </div>
                             ))}

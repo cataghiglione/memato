@@ -1,20 +1,16 @@
-import React, {Component, useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import "../css/FindRival.css"
 import "../css/Home.css"
-import {useLocation, useNavigate} from "react-router";
-import {findRival, getTeam, newMatch} from "../service/mySystem";
+import {useNavigate} from "react-router";
+import {findRival, getTeam, newMatch, possibleSearchCandidates} from "../service/mySystem";
 import {useAuthProvider} from "../auth/auth";
-import {useSearchParams} from "react-router-dom";
 
 import DatePicker, {CalendarContainer} from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import {Dropdown} from "bootstrap";
 import {TopBar} from "./TopBar/TopBar";
 import {BingMap} from "./BingMap"
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
-import {forEach} from "react-bootstrap/ElementChildren";
 
 
 function goToNewTeam() {
@@ -97,8 +93,8 @@ export function FindRivalPage(props) {
     const [searches, setSearches] = useState([]);
     const [team, setTeam] = useState('');
     const [searchId, setSearchId] = useState(0)
-    const location = useLocation();
-    const id = props.getTeamId;
+    const teamId = props.getTeamId;
+    const [noSearchesCandidates, setNoSearchesCandidates] = useState("There are currently no teams searching for rivals with your preferences")
 
 
     // con esto lee los params
@@ -108,8 +104,8 @@ export function FindRivalPage(props) {
 
     // aca va al mySystem para agarrar los != teams
     useEffect(() => {
-        getTeam(token, id, (team) => setTeam(team));
-    }, [])
+        getTeam(token, teamId, (team) => setTeam(team));
+    }, [teamId, token])
     // aca va al mySystem para agarrar el team
 
     const openAndFindRivals = async e => {
@@ -117,18 +113,18 @@ export function FindRivalPage(props) {
     }
 
 
-    const handleSubmit = async e => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        findRivalMethod(id, {
+        await findRivalMethod({
             date: date,
             time: time,
             latitude: zone[0].toString(),
             longitude: zone[1].toString()
         })
     }
-    const findRivalMethod = (id, search) => {
+    const findRivalMethod = (search) => {
         if (rivalMenuOpen) {
-            findRival(token, id, search, (res) => {
+            findRival(token, teamId, search, (res) => {
                     console.log(res)
                     setSearches(res.searches)
                     setSearchId(res.searchId)
@@ -139,18 +135,26 @@ export function FindRivalPage(props) {
         }
     }
 
-    function playButton(id) {
-        toast.success('Request sent!');
-        newMatch(token, {
+    const playButton = async (id) => {
+        await toast.success('Request sent!');
+        await newMatch(token, {
                 candidate_search_id: id,
                 searchId: searchId
-            }, (res) => {
+            }, async (res) => {
                 console.log(res)
+                await possibleSearchCandidates(token, searchId, (searches) => {
+                    setSearches(searches)
+                    if (searches.length === 0) {
+                        setNoSearchesCandidates("There are currently no more teams searching for rivals with your preferences");
+                    }
+                    console.log(searches)
+                },)
             },
             () => {
                 console.log('A match with this searches already exists!')
             }
         )
+
     }
 
     // const requestRivals = (user) => {
@@ -169,41 +173,6 @@ export function FindRivalPage(props) {
                 </CalendarContainer>
             </div>
         );
-    };
-
-    function Box(name, puntuality) {
-        return (
-            <div
-                style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    // justifyContent: 'flex-end',
-                    // alignItems: 'flex-end',
-                    height: 'auto',
-                    padding: '10px',
-                    border: '1px solid black',
-                    borderRadius: '5px',
-                    margin: '5px',
-                    backgroundColor: 'white',
-                    position: 'absolute'
-                }}
-            >
-                <span style={{fontWeight: 'bold', marginBottom: '5px'}}>{name}</span>
-                <p style={{marginBottom: '10px'}}>{puntuality}</p>
-                <button
-                    style={{
-                        border: '1px solid black',
-                        borderRadius: '5px',
-                        padding: '5px',
-                        margin: '5px',
-                        backgroundColor: 'white',
-                        color: 'black',
-                    }}
-                >
-                    Play
-                </button>
-            </div>
-        )
     };
 
     return (
@@ -329,8 +298,7 @@ export function FindRivalPage(props) {
             }
             {(rivalMenuOpen && searches.length === 0) &&
 
-                <p className={"noTeamSearch"}>There are currently no teams searching for rivals with your
-                    preferences</p>
+                <p className={"noTeamSearch"}>{noSearchesCandidates}</p>
             }
 
 

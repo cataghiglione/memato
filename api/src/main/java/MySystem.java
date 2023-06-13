@@ -137,6 +137,33 @@ public class MySystem {
         );
     }
 
+
+
+    public boolean validPassword(String password, User foundUser) {
+        // Super dummy implementation. Zero security
+        return foundUser.getPassword().equals(password);
+    }
+
+    public Optional<Contact> findOrCreateContact(Team team1, Team team2) {
+        return runInTransaction(datasource -> {
+            final Contacts contacts = datasource.contacts();
+            return contacts.exists(team1.getId(), team2.getId()) ? Optional.empty() : contacts.createContact(team1, team2) ;
+        });
+    }
+
+//    public Message sendMessage(CreateMessageForm form) {
+//        return runInTransaction(datasource -> {
+//            final Messages messages = datasource.messages();
+//            return messages.createMessage(Long.parseLong(form.getTeam1_id()), Long.parseLong(form.getTeam2_id()), form.getDate(), form.getText());
+//        });
+//    }
+
+    public List<Message> getMessages(long contactId) {
+        return runInTransaction(datasource -> {
+            final Messages messages = datasource.messages();
+            return messages.getMessagesByContact(contactId);
+        });
+    }
     private <E> E runInTransaction(Function<MySystemRepository, E> closure) {
         final EntityManager entityManager = factory.createEntityManager();
         final MySystemRepository ds = MySystemRepository.create(entityManager);
@@ -154,19 +181,5 @@ public class MySystem {
             entityManager.close();
         }
     }
-
-    public boolean validPassword(String password, User foundUser) {
-        // Super dummy implementation. Zero security
-        return foundUser.getPassword().equals(password);
-    }
-
-    public Optional<Contact> findOrCreateContact(long team1_id, long team2_id) {
-        return runInTransaction(datasource -> {
-            final Contacts contacts = datasource.contacts();
-            return contacts.exists(team1_id, team2_id) ? Optional.empty() : contacts.createContact(team1_id, team2_id) ;
-        });
-    }
-
-
 
 }

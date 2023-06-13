@@ -180,6 +180,21 @@ export const declineMatch=(token, matchId, teamId, okCallback, errorCallback)=>{
         } else errorCallback()
     })
 }
+export const sendMessage = (token, form, okCallback, errorCallback) => {
+    fetch(`${restApiEndpoint}/sendMessage`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token
+        },
+        body: JSON.stringify({...form})
+    }).then(resp => {
+        if (resp.status === 200) {
+            okCallback(resp)
+        } else errorCallback()
+    })
+}
+
 /*
     GET
  */
@@ -222,10 +237,22 @@ export const currentSearches = (token, team_id, okCallback, errorCallback) => {
             errorCallback("Not able to fetch searches")
         }
     })
-
-
 }
-
+export const possibleSearchCandidates = (token, search_id, okCallback, errorCallback) => {
+    fetch(`${restApiEndpoint}/compatibleSearches?search_id=${search_id}`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token
+        }
+    }).then(resp => {
+        if (resp.status === 200) {
+            return resp.json().then(teams => okCallback(teams))
+        } else {
+            errorCallback("Not able to fetch searches")
+        }
+    })
+}
 export const teamById = (token, teamId, okCallback, errorCallback) => {
     fetch(`${restApiEndpoint}/getTeamByOwnId`, {
         method: 'GET',
@@ -343,6 +370,22 @@ export const getPendingNotifications = (token, okCallback, errorCallback) => {
     }).then(resp => {
         if (resp.status === 200) {
             resp.json().then(notifications => okCallback(notifications))
+        } else {
+            errorCallback("Not able to fetch searches")
+        }
+    })
+}
+export const getMessages = (token, contactId, okCallback, errorCallback) => {
+    fetch(`${restApiEndpoint}/getMessages?contactId=${contactId}`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token
+        },
+
+    }).then(resp => {
+        if (resp.status === 200) {
+            resp.json().then(messages => okCallback(messages))
         } else {
             errorCallback("Not able to fetch searches")
         }

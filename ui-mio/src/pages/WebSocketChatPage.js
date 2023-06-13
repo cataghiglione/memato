@@ -1,83 +1,76 @@
 import React, { useState, useEffect } from 'react';
 import "../css/Chat.css"
-export const WebSocketChat = () => {
-    const [webSocket, setWebSocket] = useState(null);
+import {TopBar} from "./TopBar/TopBar";
+import {getContacts, getMessages, sendMessage} from "../service/mySystem";
+import {useAuthProvider} from "../auth/auth";
+export function WebSocketChat (props) {
+    const auth = useAuthProvider()
+    const token = auth.getToken();
     const [message, setMessage] = useState('');
-    const [chat, setChat] = useState([]);
-    const [userList, setUserList] = useState([]);
-    const [currentUser, setCurrentUser] = useState('');
+    let [contacts, setContacts] = useState([]);
+    const [currentContact, setCurrentContact] = useState(0);
+    const [yourMessages, setYourMessages] = useState(['']);
+
+    const sendMessageMethod = () => {
+        sendMessage(token, {
+            team_id: props.getTeamId,
+            contact_id: currentContact,
+            text: message,
+            date: "2023-06-13T15:46:42.300Z"
+        }, setMessage(''))
+    };
+
 
     useEffect(() => {
-        const socket = new WebSocket("ws://localhost:4567/chat");
+            getContacts(token, props.getTeamId, (contacts) => {
+                    setContacts(contacts)
+                }
+            )
+        },[props.getTeamId, token]
+    )
 
-        socket.onopen = () => {
-            console.log("WebSocket connection opened");
-        };
-
-        socket.onmessage = (event) => {
-            updateChat(event);
-        };
-
-        socket.onclose = () => {
-            console.log("WebSocket connection closed");
-        };
-
-        setWebSocket(socket);
-
-        return () => {
-            socket.close();
-        };
-    }, []);
-
-    const sendMessage = () => {
-        if (message.trim() !== '') {
-            webSocket.send(message);
-            setMessage('');
-        }
-    };
-
-    const handleKeyPress = (event) => {
-        if (event.key === 'Enter') {
-            sendMessage();
-        }
-    };
-
-    const updateChat = (event) => {
-        const data = JSON.parse(event.data);
-        console.log('Received data:', data); // Debugging statement
-        setChat((prevChat) => [...prevChat, data.userMessage]);
-        setUserList(data.userList);
-    };
+    async function goToContact(id) {
+        setCurrentContact(id);
+        await getMessages(token, currentContact, (response) => {
+            setYourMessages(response);
+        });
+    }
 
     return (
         <div>
-            <div id="chatControls">
-                <input
-                    id="message"
-                    placeholder="Type your message"
-                    value={message}
-                    onChange={(event) => setMessage(event.target.value)}
-                    onKeyPress={handleKeyPress}
-                />
-                <button id="send" onClick={sendMessage}>Send</button>
-            </div>
-            <ul id="userlist">
-                {userList.map((user, index) => (
-                    <li key={index}>{user}</li>
-                ))}
-            </ul>
-            <div id="chat">
-                {/*Por ahora, y solo para el parcial, voy a usar esta tramoya increible llamada dangerouslySetInnerHTML*/}
-                {/*Como podrán deducir, es increiblemente peligrosa*/}
-                {chat.map((message, index) => (
-                    <div
-                        key={index}
-
-                        className={`message ${message.includes('current-user') ? 'current-user' : 'other-user'}`}
-                        dangerouslySetInnerHTML={{ __html: message }}
-                    />
-                ))}
+            <TopBar getTeamId = {props.getTeamId} toggleTeamId = {props.toggleTeamId}/>
+            <div className="chat-container">
+                <div className="contacts">
+                    {contacts.map((contact) => (
+                        <div>
+                            <ul>
+                                <li className="contact" key={contact.id} onClick={() => goToContact(contact.id)}>{contact.team2.name}</li>
+                            </ul>
+                        </div>
+                    ))}
+                </div>
+                {currentContact !== 0 && (
+                    <div className="chat">
+                        <div className="chat-messages">
+                            {yourMessages.map((message)=>(
+                                    <div className="chat-message">
+                                        <span className="sender">{message.team_name}: </span>
+                                        <span className="message">{message.text}</span>
+                                        <span className="timestamp">{message.hour}:{message.minute}</span>
+                                    </div>
+                                ))}
+                        </div>
+                        <input
+                            id="message"
+                            placeholder="Type your message"
+                            value={message}
+                            onChange={(event) => setMessage(event.target.value)}
+                            // onKeyPress={handleKeyPress}
+                        />
+                        <button id="send" onClick={() => sendMessageMethod()}>Send</button>
+                    </div>
+                )}
             </div>
         </div>
     );
-};
+}
