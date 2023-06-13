@@ -92,6 +92,13 @@ public class Match {
         return confirmed_by_1 && confirmed_by_2;
     }
 
+    public void setConfirmed_by_1(boolean state){
+        confirmed_by_1=state;
+    }
+    public void setConfirmed_by_2(boolean state){
+        confirmed_by_2=state;
+    }
+
 
 
     public Long getId(){

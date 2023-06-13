@@ -114,6 +114,11 @@ public class Searches {
     public List<Search> listAll() {
         return entityManager.createQuery("SELECT u FROM Search u", Search.class).getResultList();
     }
+    public void deactivateSearchesByTeam(Long teamId){
+        entityManager.createQuery("UPDATE Search set isSearching = false WHERE team.id = :teamId")
+                .setParameter("teamId",teamId)
+                .executeUpdate();
+    }
     private Optional<Search> findSearchByTeam(String team_id, String time, int month, int day, int year,String latitude, String longitude) {
         return entityManager.createQuery("SELECT s FROM Search s WHERE (cast(s.team.id as string) LIKE :team_id AND s.time LIKE :time AND s.day = :day AND s.month = :month AND s.year = :year AND s.latitude LIKE :latitude AND s.longitude LIKE :longitude)", Search.class)
                 .setParameter("team_id", team_id)
