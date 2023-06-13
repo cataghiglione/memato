@@ -19,7 +19,7 @@ import {ConfirmationsPage} from "./pages/ConfirmationsPage";
 import {useAuthProvider} from "./auth/auth";
 import {NotificationPage} from "./pages/NotificationPage";
 import {ContactsPage} from "./pages/ContactsPage";
-// import {MyConfirmationsPage} from "./pages/MyConfirmationsPage";
+import {MyConfirmationsPage} from "./pages/MyConfirmationsPage";
 
 
 const App = () =>{
@@ -76,7 +76,7 @@ const App = () =>{
                         <Route path = "/notificationPage" element={<NotificationPage getTeamId={teamId}/>}/>
                         <Route path = "/chat" element={<WebSocketChat toggleTeamId = {toggleTeamId} getTeamId={teamId}/>}/>
                         <Route path = "/contacts" element={<ContactsPage toggleTeamId = {toggleTeamId} getTeamId={teamId}/>}/>
-                        {/*<Route path = "/myConfirmations" element={<MyConfirmationsPage toggleTeamId = {toggleTeamId} getTeamId={teamId}/>}/>*/}
+                        <Route path = "/myConfirmations" element={<MyConfirmationsPage toggleTeamId = {toggleTeamId} getTeamId={teamId}/>}/>
 
 
                     </Routes>
