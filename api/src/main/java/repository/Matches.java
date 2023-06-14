@@ -143,6 +143,18 @@ public class Matches {
                     .setParameter("matchId",matchId)
                     .executeUpdate();
         }
+        Optional<Match> match = entityManager.createQuery("SELECT m FROM Match m WHERE id =:matchId",Match.class)
+                .setParameter("matchId",matchId)
+                .getResultList()
+                .stream()
+                .findFirst();
+        if (match.isPresent()){
+            if (teamOneOrTeam2(matchId,teamId)){
+                match.get().getSearch2().reactivateSearching();
+            }
+            else match.get().getSearch1().reactivateSearching();
+            entityManager.flush();
+        }
         return updatedCount>0;
     }
 
@@ -193,6 +205,17 @@ public class Matches {
 
 
     }
+    public void cancelMatchesByTeam(Long teamId){
+        List<Match> matches = entityManager.createQuery("SELECT m FROM Match m WHERE search1.team.id =:teamId or search2.team.id =:teamId",Match.class)
+                .setParameter("teamId", teamId)
+                .getResultList();
+        for (Match match : matches) {
+            match.setConfirmed_by_1(false);
+            match.setConfirmed_by_2(false);
+        }
+        entityManager.flush();
+    }
+
 
 
 }

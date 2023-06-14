@@ -147,7 +147,7 @@ public class MySystem {
     public Optional<Contact> findOrCreateContact(Team team1, Team team2) {
         return runInTransaction(datasource -> {
             final Contacts contacts = datasource.contacts();
-            return contacts.exists(team1.getId(), team2.getId()) ? Optional.empty() : contacts.createContact(team1, team2) ;
+            return contacts.exists(team1.getId(), team2.getId()) ? contacts.findContactByTeamsId(team1.getId(), team2.getId()) : contacts.createContact(team1, team2) ;
         });
     }
 

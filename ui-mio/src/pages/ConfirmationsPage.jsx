@@ -15,7 +15,7 @@ export function ConfirmationsPage(props) {
     const token = auth.getToken();
     const id = props.getTeamId;
     let [matches, setMatches] = useState([]);
-    const[team, setTeam]=useState('');
+    const [team, setTeam] = useState('');
     let [searches, setSearches] = useState([]);
 
     useEffect(() => {
@@ -29,31 +29,33 @@ export function ConfirmationsPage(props) {
         [id, token]
     )
     useEffect(() => {
-        getTeam(token,id, (team) => setTeam(team));
+        getTeam(token, id, (team) => setTeam(team));
     }, [token, id])
 
 
-
     const handleConfirmMatch = async (match_id) => {
-        toast.success('Confirmation sent!');
         await confirmMatch(token, match_id, id, () => {
             getPendingConfirmations(token, id, (matches) => {
                     setMatches(matches)
+                    toast.success('Confirmation sent!');
+
                     // and takes you to that contact (hacleo hoy)
                 }, (matches) => {
-                // TODO ERROR CALLBACK
+                    // TODO ERROR CALLBACK
                 }
             )
         })
     }
-    const handleDeclineMatch = async (match_id) =>{
-        toast.success('Match rejected!');
-        await declineMatch(token,match_id,id, ()=>{
+    const handleDeclineMatch = async (match_id) => {
+        await declineMatch(token, match_id, id, () => {
             getPendingConfirmations(token, id, (matches) => {
                     setMatches(matches)
+                    toast.success('Match rejected!');
+
+
 
                 }, () => {
-                // TODO ERROR CALLBACK
+                    // TODO ERROR CALLBACK
 
                 }
             )
@@ -63,24 +65,24 @@ export function ConfirmationsPage(props) {
 
     function findOrCreateContact(id) {
         newContact(token, {
-                team1_id:props.getTeamId,
-                team2_id:id
-            }, (res)=>{
+                team1_id: props.getTeamId,
+                team2_id: id
+            }, (res) => {
                 console.log(res)
-                navigate("/chat")
+                navigate(`/chat?contactId=${res}`)
             },
-            ()=>{
+            () => {
                 // TODO when error callback happens it takes you only to the /chat, without throwing the error on console
                 console.log('Contact already exists!')
                 navigate("/chat")
             }
         )
     }
-    function goToFindRival(){
+
+    function goToFindRival() {
         window.location.href = "/findRival"
 
     }
-
 
 
     return (
@@ -100,49 +102,42 @@ export function ConfirmationsPage(props) {
                                         </p>
                                         <p className={"match-info"}>Time: {match.time}</p>
                                         <p className={"match-info"}>Day: {match.day}</p>
-                                        {match.team1Confirmed &&(
+                                        {match.team1Confirmed && (
                                             <p>You have confirmed this match, wait for the other team to confirm</p>
                                         )}
-                                        {!match.team1Confirmed &&(
+                                        {!match.team1Confirmed && (
                                             <div>
-                                                <div>
-                                                <button class = {"confirmButton"} onClick={()=>handleConfirmMatch(match.id)}>Confirm</button>
-                                                    <ToastContainer position="top-center"
-                                                                    autoClose={5000}
-                                                                    hideProgressBar={false}
-                                                                    newestOnTop={false}
-                                                                    closeOnClick
-                                                                    rtl={false}
-                                                                    pauseOnFocusLoss
-                                                                    draggable
-                                                                    pauseOnHover
-                                                                    theme="light"/>
-                                                </div>
-                                                <div>
-                                                <button className = {"declineButton"} onClick={()=>handleDeclineMatch(match.id)}>Reject</button>
-                                                    <ToastContainer position="top-center"
-                                                                    autoClose={5000}
-                                                                    hideProgressBar={false}
-                                                                    newestOnTop={false}
-                                                                    closeOnClick
-                                                                    rtl={false}
-                                                                    pauseOnFocusLoss
-                                                                    draggable
-                                                                    pauseOnHover
-                                                                    theme="light"/>
-                                                </div>
-                                                <button className={"chatButton"} onClick={()=>findOrCreateContact(match.team2.id)}> <ChatFill /></button>
+                                                <button class={"confirmButton"}
+                                                        onClick={() => handleConfirmMatch(match.id)}>Confirm
+                                                </button>
+                                                <button className={"declineButton"}
+                                                        onClick={() => handleDeclineMatch(match.id)}>Reject
+                                                </button>
+                                                <button className={"chatButton"}
+                                                        onClick={() => findOrCreateContact(match.team2.id)}><ChatFill/>
+                                                </button>
                                             </div>
-                                            )}
+                                        )}
+
                                     </div>
 
                                 </div>
 
                             ))}
+                            <ToastContainer position="top-center"
+                                            autoClose={5000}
+                                            hideProgressBar={false}
+                                            newestOnTop={false}
+                                            closeOnClick
+                                            rtl={false}
+                                            pauseOnFocusLoss
+                                            draggable
+                                            pauseOnHover
+                                            theme="light"/>
                         </div>
 
                     )}
-                    {(matches.length===0) &&(
+                    {(matches.length === 0) && (
                         <div>
                             <div className={"noConfirmationsTitle"}>
                                 {team.name}'s pending confirmations
@@ -158,7 +153,8 @@ export function ConfirmationsPage(props) {
                                 Find a new rival now!
                             </div>
                             <div>
-                                <button className={"findRButton"} id="submit" type="submit" onClick={goToFindRival}> Find
+                                <button className={"findRButton"} id="submit" type="submit"
+                                        onClick={goToFindRival}> Find
                                     Rival!
                                 </button>
                             </div>

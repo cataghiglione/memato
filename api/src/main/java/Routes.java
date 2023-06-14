@@ -16,10 +16,7 @@ import spark.Spark;
 import javax.persistence.*;
 import java.awt.geom.Point2D;
 import java.time.Instant;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Stream;
@@ -164,11 +161,11 @@ public class Routes {
                                                 system.findOrCreateContact(team1, team2).ifPresentOrElse(
                                                         (contact) -> {
                                                             res.status(201);
-                                                            res.body("Contact Created");
+                                                            res.body(Long.toString(contact.getId()));
                                                         },
                                                         () -> {
                                                             res.status(409);
-                                                            res.body("Contact already exists");
+                                                            res.body("An error occurred when creating or finding the contact");
                                                         }
                                                 );
                                             }
@@ -495,14 +492,22 @@ public class Routes {
         post(UPDATE_TEAM_ROUTE, (req, res) -> {
             final EntityManager entityManager = entityManagerFactory.createEntityManager();
             final Teams teams = new Teams(entityManager);
+            final Searches searches = new Searches(entityManager);
+            final Matches matches = new Matches(entityManager);
             final String id = (req.queryParams("id"));
             teams.findTeamsById(id).ifPresentOrElse(
                     (team) -> {
+                        final String prev_sport = team.getSport();
+                        final String prev_quantity = team.getQuantity();
                         final CreateTeamForm teamForm = CreateTeamForm.createFromJson(req.body());
                         EntityTransaction transaction = entityManager.getTransaction();
                         transaction.begin();
                         //por las dudas, aca en el form habia un teamForm.getTeam en la query
                         teams.updateTeam(teamForm.getName(), teamForm.getSport(), teamForm.getQuantity(), teamForm.getAgeGroup(), Long.valueOf(id));
+                        if (!Objects.equals(teamForm.getQuantity(), prev_quantity) || !Objects.equals(teamForm.getSport(), prev_sport)){
+                            searches.deactivateSearchesByTeam(Long.parseLong(id));
+                            matches.cancelMatchesByTeam(Long.parseLong(id));
+                        }
                         transaction.commit();
                         res.status(200);
                     },
@@ -619,7 +624,8 @@ public class Routes {
             List<PendingMatch> pendingMatches = matchesList.stream().map(match -> {
                 final PendingMatch pendingMatch = new PendingMatch();
 
-                pendingMatch.day = match.getDay() + "/" + match.getMonth();
+
+                pendingMatch.day = match.getDay() + "/" + (match.getMonth()+1);
                 pendingMatch.time = match.getTime();
                 pendingMatch.id = match.getId();
 
