@@ -121,4 +121,5 @@ public class Search {
     public long getId() {
         return id;
     }
+
 }

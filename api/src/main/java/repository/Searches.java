@@ -63,7 +63,7 @@ public class Searches {
         //        }
     }
     public List<Search> findActiveSearchesByUserId(Long user_id){
-        return entityManager.createQuery("SELECT s FROM Search s WHERE(s.team.user.id =:user_id AND s.isSearching  =true)",Search.class)
+        return entityManager.createQuery("SELECT s FROM Search s WHERE(s.team.user.id =:user_id AND s.isSearching = true)",Search.class)
                 .setParameter("user_id",user_id)
                 .getResultList();
     }
@@ -79,7 +79,7 @@ public class Searches {
 
 
     public List<Search> findCandidates(String id, String time, Date date, String sport, String quantity, String latitude, String longitude){
-        List<Search> possibleCandidates = entityManager.createQuery("SELECT s FROM Search s WHERE (s.time like :time AND s.month =: month AND s.day =: day AND s.year=: year AND cast(s.team.user.id as string) not LIKE :id AND s.team.sport LIKE :sport AND s.team.quantity LIKE :quantity)", Search.class)
+        List<Search> possibleCandidates = entityManager.createQuery("SELECT s FROM Search s WHERE (s.time like :time AND s.month =: month AND s.day =: day AND s.year=: year AND cast(s.team.user.id as string) not LIKE :id AND s.team.sport LIKE :sport AND s.team.quantity LIKE :quantity AND isSearching = true)", Search.class)
                 .setParameter("time",time)
                 .setParameter("month", date.getMonth())
                 .setParameter("day",date.getDate())

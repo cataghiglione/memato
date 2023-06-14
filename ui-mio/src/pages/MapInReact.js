@@ -21,7 +21,7 @@ export function MapInReactFunction(props) {
             return {
                 location: [latitude, longitude],
                 addHandler: "mouseover",
-                infoboxOption: { title: 'Match info', description: `Rival: ${match.rival.name} , Time: ${match.time}, Date: ${match.date}` },
+                infoboxOption: { title: 'Match info', description: `Rival: ${match.rival.name} , Time: ${match.time}, Date: ${match.day}/${match.month}/${match.year + 1900}` },
                 pushPinOption: { title: 'Match details', description: 'Pushpin' }
             };
         });
