@@ -23,7 +23,7 @@ export function NotificationPage(props){
     }
 
     function goToMessages() {
-        return undefined;
+        navigate("/chat")
     }
 
     const changeStatusOpened = async (id) => {
