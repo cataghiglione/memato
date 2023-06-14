@@ -57,6 +57,15 @@ public class Contacts {
                 .findFirst();
     }
 
+    public Optional<Contact> findContactByTeamIdAndContactId(long teamId, long contactId){
+        return entityManager
+                .createQuery("SELECT c FROM Contact c WHERE ((c.team1.id =:teamId) or (c.team2.id =:teamId)) AND c.id =: contactId", Contact.class)
+                .setParameter("teamId", teamId)
+                .setParameter("contactId", contactId)
+                .getResultList()
+                .stream()
+                .findFirst();
+    }
     public List<Contact>  findContactsByTeamId(Long teamId) {
         // if one contact has two, then it will display 2 contacts every one, check how to solve that each is displayed only once
         List<Contact> contacts = entityManager.createQuery("SELECT c FROM Contact c WHERE (c.team1.id =:teamId) or (c.team2.id =:teamId)", Contact.class)

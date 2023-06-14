@@ -27,12 +27,41 @@
     display: flex;
     flex-direction: column;
 }
+/* User Bar */
+
+.user-bar {
+    height: 55px;
+    background: rgba(44, 62, 80, 0.74);
+    color: #fff;
+    padding: 0 8px;
+    font-size: 24px;
+    position: relative;
+    z-index: 1;
+}
+
+.user-bar div {
+    float: left;
+    transform: translateY(-50%);
+    position: relative;
+    top: 50%;
+}
+
+.user-bar .name {
+    font-size: 17px;
+    font-weight: 600;
+    text-overflow: ellipsis;
+    letter-spacing: 0.3px;
+    margin: 0 0 0 8px;
+    overflow: hidden;
+    white-space: nowrap;
+    width: 110px;
+}
 
 
 
 .conversation {
     flex-grow: 1;
-    height: calc(100% - 12px);
+    height: 85vh;
     position: relative;
     z-index: 0;
 }
@@ -119,14 +148,16 @@
 }
 
 .message.sent {
-    background: #e1ffc7;
+    background: #7b8692;
     border-radius: 5px 0px 5px 5px;
+    color:white;
     float: right;
 }
 
 .message.sent:after {
     border-width: 0px 0 10px 10px;
-    border-color: transparent transparent transparent #e1ffc7;
+    border-color: transparent transparent transparent #7b8692;
+    color:white;
     top: 0;
     right: -10px;
 }

@@ -76,6 +76,7 @@ const App = () =>{
                         <Route path = "/pendingConfirmations" element={<ConfirmationsPage toggleTeamId = {toggleTeamId} getTeamId={teamId}/>}/>
                         <Route path = "/notificationPage" element={<NotificationPage toggleTeamId = {toggleTeamId} getTeamId={teamId}/>}/>
                         <Route path = "/chat" element={<ChatPage toggleTeamId = {toggleTeamId} getTeamId={teamId}/>}/>
+                        <Route path = "/webSocketChat" element={<WebSocketChat toggleTeamId = {toggleTeamId} getTeamId={teamId}/>}/>
                         <Route path = "/contacts" element={<ContactsPage toggleTeamId = {toggleTeamId} getTeamId={teamId}/>}/>
                         <Route path = "/myConfirmations" element={<MyConfirmationsPage toggleTeamId = {toggleTeamId} getTeamId={teamId}/>}/>
 

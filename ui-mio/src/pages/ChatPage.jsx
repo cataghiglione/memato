@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import "../css/Chat.css"
 import {TopBar} from "./TopBar/TopBar";
-import {getContacts, getMessages, sendMessage} from "../service/mySystem";
+import {getContacts, getMessages, sendMessage, getOtherTeamName} from "../service/mySystem";
 import {useAuthProvider} from "../auth/auth";
 import {useNavigate} from "react-router";
 export function ChatPage (props) {
@@ -14,25 +14,32 @@ export function ChatPage (props) {
     const [currentContact, setCurrentContact] = useState( () => {
         return urlParams.has("contactId") ? urlParams.get("contactId") : 0;
     });
+    const [otherTeamName, setOtherTeamName] = useState('');
     const [yourMessages, setYourMessages] = useState(['']);
     const [messageSent, setMessageSent] = useState(true);
     useEffect(() => {
         pollForNewMessages()
     }, [])
+    // useEffect(() => {
+    //     if(urlParams.has("contactId")){
+    //         setCurrentContact(urlParams.get('contactId'))
+    //     }
+    //     else{
+    //         setCurrentContact(0)
+    //     }
+    // }, [window.location.search]);
     useEffect(() => {
-        if(urlParams.has("contactId")){
-            setCurrentContact(urlParams.get('contactId'))
-        }
-        else{
-            setCurrentContact(0)
-        }
-    }, [window.location.search]);
+        getOtherTeamName(token, currentContact, props.getTeamId, (res) =>{
+            setOtherTeamName(res)
+        })
+    }, [currentContact, props.getTeamId, token]);
 
     function pollForNewMessages(){
         getMessages(token, currentContact, (response) => {
             setYourMessages(response);
             setTimeout(pollForNewMessages, 1000);
         })
+
     }
 
 
@@ -71,21 +78,20 @@ export function ChatPage (props) {
     //         setMessageSent(false)
     //     }
     //     },[props.getTeamId, token, messageSent, currentContact]
+    // // )
+    // useEffect(() => {
+    //         if(currentContact !== 0){
+    //             getMessages(token, currentContact, (response) => {
+    //                 setYourMessages(response);
+    //             })
+    //             setMessageSent(false)
+    //         }
+    //     },[props.getTeamId, token, currentContact]
     // )
-    useEffect(() => {
-            if(currentContact !== 0){
-                getMessages(token, currentContact, (response) => {
-                    setYourMessages(response);
-                })
-                setMessageSent(false)
-            }
-        },[props.getTeamId, token, currentContact]
-    )
 
     async function goToContact(id) {
-        navigate(`/chat?contactId=${id}`)
         setCurrentContact(id)
-
+        window.location.href = `/chat?contactId=${id}`
     }
 
     return (
@@ -96,13 +102,21 @@ export function ChatPage (props) {
                     {contacts.map((contact) => (
                         <div>
                             <ul>
-                                <li className="contact" key={contact.id} onClick={() => goToContact(contact.id)}>{contact.team2.name}</li>
+                                <li className="contact" key={contact.id} onClick={() => goToContact(contact.id)}>
+                                    {contact.team2.name}
+                                </li>
                             </ul>
+                            {contact.id === currentContact && setOtherTeamName(contact.team2.name)}
                         </div>
                     ))}
                 </div>
                 {currentContact !== 0 && (
                     <div className="conversation">
+                        <div className="user-bar">
+                            <div className="name">
+                                <span>{otherTeamName}</span>
+                            </div>
+                        </div>
                         <div className="conversation-container">
                             {yourMessages.length > 0 && (
                                 <div>

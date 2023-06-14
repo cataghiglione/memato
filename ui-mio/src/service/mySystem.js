@@ -272,6 +272,23 @@ export const teamById = (token, teamId, okCallback, errorCallback) => {
 
 }
 
+export const getOtherTeamName = (token, currentContact, teamId, okCallback, errorCallback) => {
+    fetch(`${restApiEndpoint}/getOtherTeamName?contactId=${currentContact}&teamId=${teamId}`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token
+
+        },
+
+    }).then(resp => {
+        if (resp.status === 200) {
+            resp.json().then(team => okCallback(team))
+        } else errorCallback()
+
+    })
+
+}
 export const listTeams = (token, okCallback, errorCallback) => {
     fetch('http://localhost:4326/pickTeam', {
         method: 'GET',

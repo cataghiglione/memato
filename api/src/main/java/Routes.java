@@ -60,6 +60,7 @@ public class Routes {
     public static final String UPDATE_NOTIFICATION_STATUS = "/updateNotification";
     public static final String SEND_MESSAGE_ROUTE = "/sendMessage";
     public static final String GET_MESSAGES_ROUTE = "/getMessages";
+    public static final String GET_OTHER_TEAM_NAME = "/getOtherTeamName";
 
 
     private MySystem system;
@@ -408,6 +409,26 @@ public class Routes {
             );
             return res.body();
         });
+        authorizedGet(GET_OTHER_TEAM_NAME, (req, res) -> {
+            final Long contactId = Long.valueOf(req.queryParams("contactId"));
+            final Long teamId = Long.valueOf(req.queryParams("teamId"));
+            final EntityManager entityManager = entityManagerFactory.createEntityManager();
+            final Contacts contacts = new Contacts(entityManager);
+            getUser(req).ifPresentOrElse(
+                    (user) -> {
+                        contacts.findContactByTeamIdAndContactId(teamId, contactId).ifPresent(
+                                (contact) -> {
+                                    res.body(toJson(contact.getTeam1().getId() == teamId ? contact.getTeam2().getName() : contact.getTeam1().getName()));
+                                }
+                        );
+                    },
+                    () -> {
+                        res.status(404);
+                        res.body("Invalid Token");
+                    }
+            );
+            return res.body();
+        });
         authorizedGet(GET_TEAM_BY_ID_ROUTE, (req, res) -> {
             final String id = (req.queryParams("id"));
             final EntityManager entityManager = entityManagerFactory.createEntityManager();
@@ -656,6 +677,30 @@ public class Routes {
             return res.body();
         });
 
+
+        authorizedGet(GET_CONTACTS_BY_TEAMID_ROUTE, (req, res) -> {
+            final EntityManager entityManager = entityManagerFactory.createEntityManager();
+            final Long team_id = Long.valueOf(req.queryParams("teamid"));
+            final Contacts contacts = new Contacts(entityManager);
+            List<Contact> contactsList = contacts.findContactsByTeamId(team_id);
+            List<dto.Contact> contactListDto = contactsList.stream().map(contact -> {
+                final dto.Contact DTOcontact = new dto.Contact();
+
+                DTOcontact.id = contact.getId();
+
+                if (team_id == contact.getTeam1().getId()) {
+                    DTOcontact.team1 = contact.getTeam1().asDto();
+                    DTOcontact.team2 = contact.getTeam2().asDto();
+                } else {
+                    DTOcontact.team1 = contact.getTeam2().asDto();
+                    DTOcontact.team2 = contact.getTeam1().asDto();
+                }
+
+                return DTOcontact;
+            }).toList();
+            res.body(toJson(contactListDto));
+            return res.body();
+        });
 
         authorizedGet(GET_CONTACTS_BY_TEAMID_ROUTE, (req, res) -> {
             final EntityManager entityManager = entityManagerFactory.createEntityManager();
