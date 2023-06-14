@@ -17,6 +17,9 @@ export function ChatPage (props) {
     const [yourMessages, setYourMessages] = useState(['']);
     const [messageSent, setMessageSent] = useState(true);
     useEffect(() => {
+        pollForNewMessages()
+    }, [])
+    useEffect(() => {
         if(urlParams.has("contactId")){
             setCurrentContact(urlParams.get('contactId'))
         }
@@ -24,13 +27,15 @@ export function ChatPage (props) {
             setCurrentContact(0)
         }
     }, [window.location.search]);
-    function getMessagesMethod() {
-        if(currentContact !== 0){
-            getMessages(token, currentContact, (response) => {
-                setYourMessages(response);
-            })
-        }
+
+    function pollForNewMessages(){
+        getMessages(token, currentContact, (response) => {
+            setYourMessages(response);
+            setTimeout(pollForNewMessages, 1000);
+        })
     }
+
+
 
     const sendMessageMethod = async () => {
         if(message !== ""){
@@ -58,15 +63,15 @@ export function ChatPage (props) {
             )
         },[props.getTeamId, token]
     )
-    useEffect(() => {
-        if(messageSent){
-            getMessages(token, currentContact, (response) => {
-                setYourMessages(response);
-            })
-            setMessageSent(false)
-        }
-        },[props.getTeamId, token, messageSent, currentContact]
-    )
+    // useEffect(() => {
+    //     if(messageSent){
+    //         getMessages(token, currentContact, (response) => {
+    //             setYourMessages(response);
+    //         })
+    //         setMessageSent(false)
+    //     }
+    //     },[props.getTeamId, token, messageSent, currentContact]
+    // )
     useEffect(() => {
             if(currentContact !== 0){
                 getMessages(token, currentContact, (response) => {
@@ -80,6 +85,7 @@ export function ChatPage (props) {
     async function goToContact(id) {
         navigate(`/chat?contactId=${id}`)
         setCurrentContact(id)
+
     }
 
     return (
@@ -102,7 +108,6 @@ export function ChatPage (props) {
                                 <div>
                                     {yourMessages.map((message)=>(
                                         <div>
-                                            {console.log(yourMessages)}
                                             {message.team_id === parseInt(props.getTeamId) && (
                                                 <div className="message sent">
                                                     <span>{message.text}</span>

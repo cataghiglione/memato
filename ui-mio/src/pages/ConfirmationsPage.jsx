@@ -128,6 +128,16 @@ export function ConfirmationsPage(props) {
                         </div>
 
                     )}
+                    <ToastContainer position="top-right"
+                                    autoClose={5000}
+                                    hideProgressBar={false}
+                                    newestOnTop={false}
+                                    closeOnClick
+                                    rtl={false}
+                                    pauseOnFocusLoss
+                                    draggable
+                                    pauseOnHover
+                                    theme="light"/>
                     {(matches.length === 0) && (
                         <div>
                             <div className={"noConfirmationsTitle"}>
