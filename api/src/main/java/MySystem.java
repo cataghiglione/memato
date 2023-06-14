@@ -56,7 +56,7 @@ public class MySystem {
             }
         });
     }
-    public Notification createNotificationWithSearch(Search search2, String message, int code_id) {
+    public Notification createNotificationWithSearch(Search search2, String message, int code_id, long teamId1) {
         return runInTransaction(datasource -> {
             final Notifications notifications = datasource.notifications();
             long user_id = search2.getTeam().getUserId();
@@ -64,7 +64,12 @@ public class MySystem {
             AtomicReference<Notification> notification = new AtomicReference<>();
             users.findById(user_id).ifPresentOrElse(
                     (user) -> {
-                         notification.set(notifications.createNotification(users.findById(user_id).get(), message, code_id));
+
+                        if(code_id == 0 || code_id == 2)
+                            notification.set(notifications.createNotificationWithTeamId(users.findById(user_id).get(), message, code_id, teamId1));
+
+                        else
+                            notification.set(notifications.createNotification(users.findById(user_id).get(), message, code_id));
                     },
                     () -> {
                         notification.set(new Notification());
@@ -73,7 +78,7 @@ public class MySystem {
             return notification.get();
         });
     }
-    public Notification createNotificationWithTeam(Team team, String message, int code_id) {
+    public Notification createNotificationWithTeam(Team team, String message, int code_id, long otherTeamId) {
         return runInTransaction(datasource -> {
             final Notifications notifications = datasource.notifications();
             long user_id = team.getUserId();
@@ -81,7 +86,8 @@ public class MySystem {
             AtomicReference<Notification> notification = new AtomicReference<>();
             users.findById(user_id).ifPresentOrElse(
                     (user) -> {
-                        notification.set(notifications.createNotification(users.findById(user_id).get(), message, code_id));
+                        if(code_id == 0 || code_id == 2)
+                            notification.set(notifications.createNotificationWithTeamId(users.findById(user_id).get(), message, code_id, team.getId()));
                     },
                     () -> {
                         notification.set(new Notification());

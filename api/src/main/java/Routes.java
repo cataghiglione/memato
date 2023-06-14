@@ -127,7 +127,7 @@ public class Routes {
                                                         (match) -> {
                                                             res.status(201);
                                                             res.body("match created");
-                                                            system.createNotificationWithSearch(search2, String.format("Good news! %s wants to play with %s on %d/%d", search1.getTeam().getName(), search2.getTeam().getName(), search2.getDay(), search2.getMonth() + 1), 0);
+                                                            system.createNotificationWithSearch(search2, String.format("Good news! %s wants to play with %s on %d/%d", search1.getTeam().getName(), search2.getTeam().getName(), search2.getDay(), search2.getMonth() + 1), 0, search1.getTeam().getId());
                                                         },
                                                         () -> {
                                                             res.status(409);
@@ -202,7 +202,7 @@ public class Routes {
                                             entityManager2.close();
                                             system.createNotificationWithTeam(contact.getTeam1().equals(team) ? contact.getTeam2() : contact.getTeam1(),
                                                     String.format("%s has send %s a message", team.getName(), contact.getTeam2().getName()),
-                                                    2);
+                                                    2, team.getId());
                                             res.status(200);
                                             res.body("new message");
                                     });
@@ -583,7 +583,7 @@ public class Routes {
                             (team) -> {
                                 system.createNotificationWithSearch(match.getTeam1().equals(team) ? match.getSearch2() : match.getSearch1(),
                                         String.format("%s has confirmed the match for %d/%d", team.getName(), match.getDay(), match.getMonth() + 1),
-                                        match.isConfirmed() ? 3 : 1);
+                                        match.isConfirmed() ? 3 : 1, team.getId());
                             }
                         );
                     }
@@ -805,6 +805,7 @@ public class Routes {
             dtoNotification.message = notification.getMessage();
             dtoNotification.opened = notification.isOpened();
             dtoNotification.id = notification.getId();
+            dtoNotification.team_id = notification.getTeam_id();
             return dtoNotification;
         }).toList();
 

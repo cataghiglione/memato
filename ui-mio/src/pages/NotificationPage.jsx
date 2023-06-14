@@ -69,18 +69,18 @@ export function NotificationPage(props){
                                 <button className={"button"}>See pending matches</button>
                             </div>
                         )}
-                        {notification.opened && (
-                            <div>
-                                <button className={"icon"}>
-                                    <img style={{ width: 22, height: "auto"}} src={require("../images/tickGreenIcon.jpg")} alt={"Logo"}/>
-                                </button>
-                            </div>)}
-                        {!notification.opened && (
-                            <div>
-                                <button className={"icon"} onClick={() => changeStatusOpened(notification.id)}>
-                                    <img style={{ width: 22, height: "auto"}} src={require("../images/tickBlackIcon.jpg")} alt={"Logo"}/>
-                                </button>
-                            </div>)}
+                        {/*{notification.opened && (*/}
+                        {/*    <div>*/}
+                        {/*        <button className={"icon"}>*/}
+                        {/*            <img style={{ width: 22, height: "auto"}} src={require("../images/tickGreenIcon.jpg")} alt={"Logo"}/>*/}
+                        {/*        </button>*/}
+                        {/*    </div>)}*/}
+                        {/*{!notification.opened && (*/}
+                        {/*    <div>*/}
+                        {/*        <button className={"icon"} onClick={() => changeStatusOpened(notification.id)}>*/}
+                        {/*            <img style={{ width: 22, height: "auto"}} src={require("../images/tickBlackIcon.jpg")} alt={"Logo"}/>*/}
+                        {/*        </button>*/}
+                        {/*    </div>)}*/}
                     </div>
                 ))}
             </div>
