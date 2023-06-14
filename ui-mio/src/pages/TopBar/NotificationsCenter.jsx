@@ -12,11 +12,10 @@ export function NotificationsCenter(props){
     const token = auth.getToken();
     const [notifications, setNotifications] = useState([''])
     useEffect(() => {
-            getPendingNotifications(token, (notifications) => {
-                    setNotifications(notifications)
-                })
-        },
-        [token]
+        getPendingNotifications(token, (notifications) => {
+                setNotifications(notifications)
+            })
+        }, [token]
     )
 
     function goToConfirmationsPage() {

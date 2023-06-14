@@ -99,6 +99,11 @@ export function ChatPage (props) {
             <TopBar getTeamId = {props.getTeamId} toggleTeamId = {props.toggleTeamId}/>
             <div className="chat-container">
                 <div className="contacts">
+                    {contacts.length === 0 && (
+                        <div style={{alignItems: "center"}}>
+                            <p> You don't have any contacts </p>
+                        </div>
+                    )}
                     {contacts.map((contact) => (
                         <div>
                             <ul>
@@ -118,6 +123,11 @@ export function ChatPage (props) {
                             </div>
                         </div>
                         <div className="conversation-container">
+                            {yourMessages.length === 0 && (
+                                <div style={{alignItems: "center", fontFamily: "Tiro Gurmukhi"}}>
+                                    <p> There are no messages in this chat </p>
+                                </div>
+                            )}
                             {yourMessages.length > 0 && (
                                 <div>
                                     {yourMessages.map((message)=>(

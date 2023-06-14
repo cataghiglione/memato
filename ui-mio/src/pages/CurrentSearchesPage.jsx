@@ -1,6 +1,6 @@
 import React, {Component, useEffect, useState,useRef} from 'react';
 import {useAuthProvider} from "../auth/auth";
-import { confirmAlert } from 'react-confirm-alert';
+// import { confirmAlert } from 'react-confirm-alert';
 
 import {useSearchParams} from "react-router-dom";
 import {useNavigate} from "react-router";

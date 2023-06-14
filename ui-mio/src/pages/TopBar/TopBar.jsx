@@ -80,7 +80,7 @@ export function TopBar(props) {
                         <MenuSideBar getTeamId={props.getTeamId} toggleTeamId={props.toggleTeamId} changeVisible = {() => setMenuVisible(false)}/>
                     </div>
                 )}
-                {notifVisible && (
+                {(notifVisible && parseInt(props.getTeamId) !== 0) && (
                     <div>
                         <NotificationsCenter changeVisible = {() => setNotifVisible(false)}/>
                     </div>
