@@ -3,13 +3,14 @@ import {useEffect, useState} from "react";
 import * as React from "react";
 import {useNavigate} from "react-router";
 import {useAuthProvider} from "../auth/auth";
-import {getNotifications, updateNotification} from "../service/mySystem";
+import {getNotifications, updateNotification, newContact} from "../service/mySystem";
 import {TopBar} from "./TopBar/TopBar";
 
-export function NotificationPage(props){
+export function NotificationPage(props) {
     const navigate = useNavigate();
     const auth = useAuthProvider();
     const token = auth.getToken();
+    const teamId = props.getTeamId;
     const [notifications, setNotifications] = useState([''])
     useEffect(() => {
             getNotifications(token, (notifications) => {
@@ -18,12 +19,20 @@ export function NotificationPage(props){
         },
         [token]
     )
+
     function goToConfirmationsPage() {
         navigate("/pendingConfirmations")
     }
 
-    function goToMessages() {
-        navigate("/chat")
+    const goToMessages= async (id) =>{
+        newContact(token, {
+            team1_id: teamId,
+            team2_id: id
+        },(res) => {
+            console.log(res)
+            navigate(`/chat?contactId=${res}`)
+        },
+        )
     }
 
     const changeStatusOpened = async (id) => {
@@ -34,36 +43,43 @@ export function NotificationPage(props){
         })
     }
 
-    return(
+    return (
         <div>
             <TopBar toggleTeamId={props.toggleTeamId} getTeamId={props.getTeamId}/>
             <div className={"notification-page"}>
                 <h1>Notifications Page</h1>
-                {notifications.length === 0 &&(
+                {notifications.length === 0 && (
                     <div className={"noNotification"}>
                         You don't have any notifications
                     </div>
                 )}
+                {(notifications.length > 0) &&  (
+                    <div>
                 {notifications.map((notification) => (
                     <div className={"notification"}>
                         <div className={"content"}>{notification.message}</div>
                         <br/>
                         {notification.code_id === 0 && (
                             <div>
-                                <button className={"button"} onClick={() => goToConfirmationsPage()}>Don't forget to confirm</button>
-                                <button className={"button"} onClick={() => goToMessages()}>Send a message</button>
+                                <button className={"button"} onClick={() => goToConfirmationsPage()}>Don't forget to
+                                    confirm
+                                </button>
+                                <button className={"button"} onClick={() => goToMessages(notification.team_id)}>Send a message</button>
                             </div>
                         )}
                         {notification.code_id === 1 && (
                             <div>
-                                <button className={"button"} onClick={() => goToConfirmationsPage()}>Don't forget to confirm</button>
+                                <button className={"button"} onClick={() => goToConfirmationsPage()}>Don't forget to
+                                    confirm
+                                </button>
                             </div>
                         )}
                         {notification.code_id === 2 && (
-                        <div>
-                            <button className={"button"} onClick={() => goToMessages()}>Send a message</button>
-                        </div>
-                    )}
+                            <div>
+                                <button className={"button"} onClick={() => goToMessages(notification.team_id)}>Send a message
+                                </button>
+                            </div>
+                        )}
                         {notification.code_id === 3 && (
                             <div>
                                 <button className={"button"}>See pending matches</button>
@@ -83,6 +99,7 @@ export function NotificationPage(props){
                         {/*    </div>)}*/}
                     </div>
                 ))}
+                    </div>)}
             </div>
         </div>
     );
