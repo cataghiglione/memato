@@ -24,7 +24,7 @@ export function NotificationsCenter(props){
     }
 
     function goToMessages() {
-        return undefined;
+        navigate("/chat")
     }
 
     function seeAllNotifications() {
