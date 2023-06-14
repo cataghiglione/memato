@@ -59,6 +59,11 @@ export function NotificationPage(props){
                                 <button className={"button"} onClick={() => goToConfirmationsPage()}>Don't forget to confirm</button>
                             </div>
                         )}
+                        {notification.code_id === 2 && (
+                        <div>
+                            <button className={"button"} onClick={() => goToMessages()}>Send a message</button>
+                        </div>
+                    )}
                         {notification.code_id === 3 && (
                             <div>
                                 <button className={"button"}>See pending matches</button>
