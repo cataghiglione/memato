@@ -37,7 +37,16 @@ export function ConfirmationsPage(props) {
         await confirmMatch(token, match_id, id, () => {
             getPendingConfirmations(token, id, (matches) => {
                     setMatches(matches)
-                    toast.success('Confirmation sent!');
+                toast.success('Confirmation sent!', {
+                    position: "top-center",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                });
 
                     // and takes you to that contact (hacleo hoy)
                 }, (matches) => {
@@ -50,7 +59,16 @@ export function ConfirmationsPage(props) {
         await declineMatch(token, match_id, id, () => {
             getPendingConfirmations(token, id, (matches) => {
                     setMatches(matches)
-                    toast.success('Match rejected!');
+                toast.success('Match rejected!', {
+                    position: "top-center",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                });
 
 
 
@@ -128,16 +146,7 @@ export function ConfirmationsPage(props) {
                         </div>
 
                     )}
-                    <ToastContainer position="top-right"
-                                    autoClose={5000}
-                                    hideProgressBar={false}
-                                    newestOnTop={false}
-                                    closeOnClick
-                                    rtl={false}
-                                    pauseOnFocusLoss
-                                    draggable
-                                    pauseOnHover
-                                    theme="light"/>
+
                     {(matches.length === 0) && (
                         <div>
                             <div className={"noConfirmationsTitle"}>
@@ -162,18 +171,9 @@ export function ConfirmationsPage(props) {
                         </div>
 
                     )}
-                    <ToastContainer position="top-right"
-                                    autoClose={5000}
-                                    hideProgressBar={false}
-                                    newestOnTop={false}
-                                    closeOnClick
-                                    rtl={false}
-                                    pauseOnFocusLoss
-                                    draggable
-                                    pauseOnHover
-                                    theme="light"/>
                 </div>
             </div>
+            <ToastContainer />
         </div>
     )
 }

@@ -135,7 +135,7 @@ export function CurrentSearchesPage(props) {
                     {searches.length > 0 && (
                         <div>
 
-                            <div className={"searchesTitle"}>
+                            <div className={"hasSearchesTitle"}>
                                 {team.name}'s current searches
                             </div>
                             {searches.map((search) => (
@@ -159,8 +159,12 @@ export function CurrentSearchesPage(props) {
                 </div>
                 {searches.length===0 && (
                     <div>
-                        <div className={"searchesTitle"}>
+                        <div className={"noSearchesTitle"}>
                             You don't have any active searches
+                        </div>
+                        <div>
+                            <img style={{width: 218, height: "auto"}} src={require("../images/referee.png")}
+                                 alt={"referee"}/>
                         </div>
                         <button className={"goToUserButton"} onClick={handleGoBackClick}>Find a new rival!</button>
                     </div>

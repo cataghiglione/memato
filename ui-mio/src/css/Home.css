@@ -189,6 +189,7 @@ lable{
     left: 50%;
     transform: translateX(-50%);
     display: inline-block;
+    font-family: "Tiro Gurmukhi", sans-serif;
 }
 
 .dropdown-btn {
