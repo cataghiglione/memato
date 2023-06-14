@@ -1,6 +1,6 @@
 .chat-container {
     display: flex;
-    height: 95vh;
+    height: 95vh; /* me gusta 94 en realidad, pero el coso para escribir queda aún más arriba, lo q no me gusta*/
     background-color: #f0f0f0;
 }
 

@@ -4,7 +4,7 @@
     z-index: 1;
     top: 28%;
     left: 54%;
-    font-family: "Times New Roman", sans-serif;
+    font-family: "Tiro Gurmukhi", sans-serif;
 }
 .datePicker{
     position: absolute;
@@ -12,7 +12,7 @@
     z-index: 9;
     top: 24%;
     left: 43%;
-    font-family: "Times New Roman", sans-serif;
+    font-family: "Tiro Gurmukhi", sans-serif;
 }
 .team_name {
     position: absolute;
@@ -20,7 +20,7 @@
     top: 13%;
     transform: translate(-50%, -50%);
     background-color: transparent;
-    font-family: "Times New Roman", sans-serif;
+    font-family: "Tiro Gurmukhi", sans-serif;
     font-size: x-large;
 
 
@@ -29,7 +29,7 @@
 .time_select {
     position: absolute;
     background: transparent;
-    font-family: "Times New Roman", sans-serif;
+    font-family: "Tiro Gurmukhi", sans-serif;
 
     left: 22%;
     top: 24%
@@ -88,7 +88,7 @@
 .zone {
     position: absolute;
     background: transparent;
-    font-family: "Times New Roman", sans-serif;
+    font-family: "Tiro Gurmukhi", sans-serif;
     left: 64%;
     top: 24%;
     z-index: 10;

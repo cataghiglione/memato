@@ -1,5 +1,7 @@
-import React, {Component, useEffect, useState} from 'react';
+import React, {Component, useEffect, useState,useRef} from 'react';
 import {useAuthProvider} from "../auth/auth";
+import { confirmAlert } from 'react-confirm-alert';
+
 import {useSearchParams} from "react-router-dom";
 import {useNavigate} from "react-router";
 /*import {PinMapFill} from "react-bootstrap-icons";*/
@@ -15,6 +17,7 @@ export function CurrentSearchesPage(props) {
     const token = auth.getToken();
     const team_id = props.getTeamId;
     const [popupMsg, setPopupMsg] = useState('');
+
     function goToHome() {
         window.location.href = "/home"
     }
@@ -98,7 +101,7 @@ export function CurrentSearchesPage(props) {
     // }
 
     const handleGoBackClick=()=>{
-        goToHome()
+        window.location.href = "/findRival"
 
     }
 
@@ -114,9 +117,10 @@ export function CurrentSearchesPage(props) {
     }*/
     return (
         <div>
+
             {popupMsg !=="" && <div className="searches-popup">{popupMsg}</div>}
             {showConfirmation === true && (
-                <div>
+                <div className={"popup-1"}>
                     <ConfirmationDialog
                         message="Are you sure you want to delete this search?"
                         onConfirm={handleConfirm}
@@ -132,7 +136,7 @@ export function CurrentSearchesPage(props) {
                     {searches.length > 0 && (
                         <div>
 
-                            <div className={"searchesTitle"}>
+                            <div className={"hasSearchesTitle"}>
                                 {team.name}'s current searches
                             </div>
                             {searches.map((search) => (
@@ -145,8 +149,9 @@ export function CurrentSearchesPage(props) {
                                    {/* <button className={"delete-search-button"} style={{left:"50%"}} onClick={() => {OpenCloseMap(); setTeamSelectedLoc([search.latitude, search.longitude])}}>
                                         <PinMapFill />
                                     </button>*/}
+
                                     <button className={"delete-search-button"} onClick={() => handleDeleteClick(search)}>
-                                        <i className="bi bi-trash"></i>
+                                        <i className={"bi bi-trash"}></i>
                                     </button>
                                 </div>
                             ))}
@@ -155,10 +160,14 @@ export function CurrentSearchesPage(props) {
                 </div>
                 {searches.length===0 && (
                     <div>
-                        <div className={"searchesTitle"}>
+                        <div className={"noSearchesTitle"}>
                             You don't have any active searches
                         </div>
-                        <button className={"goToUserButton"} onClick={handleGoBackClick}>Select a team</button>
+                        <div>
+                            <img style={{width: 218, height: "auto"}} src={require("../images/referee.png")}
+                                 alt={"referee"}/>
+                        </div>
+                        <button className={"goToUserButton"} onClick={handleGoBackClick}>Find a new rival!</button>
                     </div>
                 )}
 

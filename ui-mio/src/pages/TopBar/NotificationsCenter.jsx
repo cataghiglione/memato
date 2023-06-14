@@ -44,7 +44,7 @@ export function NotificationsCenter(props){
             )}
 
             {notifications.length !== 0 && (
-                <div>
+                <div className={"notifications-list"}>
                     {notifications.map((notification) => (
                         <div className={"notification"}>
                             {notification.message}
@@ -79,12 +79,9 @@ export function NotificationsCenter(props){
                     ))}
                 </div>
             )}
-            <div>
-                <div>
-                    <br/>
-                    <button className={"view-all"} onClick={() => seeAllNotifications()}>See all the notifications</button>
-                </div>
-            </div>
+
+                <button className={"view-all"}  onClick={() => seeAllNotifications()}>See all the notifications</button>
+
         </div>
     );
 }

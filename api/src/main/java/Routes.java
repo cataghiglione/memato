@@ -763,7 +763,10 @@ public class Routes {
             List<ConfirmedMatch> confirmedMatches = matchesList.stream().map(match -> {
                         final ConfirmedMatch confirmedMatch = new ConfirmedMatch();
                         confirmedMatch.time = match.getTime();
-                        confirmedMatch.date = match.getSearch1().getDate();
+                        confirmedMatch.day = match.getSearch1().getDay();
+                        confirmedMatch.month=match.getSearch1().getMonth();
+                        confirmedMatch.year = match.getSearch1().getYear();
+
                         Point2D.Double coordinates = searches.getMiddlePoint(match.getSearch1().getLatitude(), match.getSearch1().getLongitude(), match.getSearch2().getLatitude(), match.getSearch2().getLongitude());
                         confirmedMatch.latitude = coordinates.x;
                         confirmedMatch.longitude = coordinates.y;

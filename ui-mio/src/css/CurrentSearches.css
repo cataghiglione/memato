@@ -8,13 +8,21 @@
     left: 600px;
     /*transform: translateX(600px);*/
     min-height: 100vh;
-    font-family: "Times New Roman", sans-serif;
+    font-family: "Tiro Gurmukhi", sans-serif;
 }
 
-.searchesTitle {
+.noSearchesTitle {
+    position:relative;
     font-size: xx-large;
-    /*top: 50px;*/
-    /*right: 400px;*/
+    bottom: 80px;
+    right: 90px;
+    white-space:nowrap;
+}
+.hasSearchesTitle{
+    position:relative;
+    font-size: xx-large;
+    bottom: 80px;
+    right: 10px;
     white-space:nowrap;
 }
 
@@ -70,11 +78,13 @@
     color: black;
     border: 1px solid rebeccapurple;
     border-radius: 2px;
-    width: 100px;
+    width: auto;
     height: 50px;
     margin: 20px;
-    left: 100px;
+    left: 40px;
     white-space: nowrap;
+    font-family: "Tiro Gurmukhi", sans-serif;
+
 }
 
 
@@ -130,10 +140,15 @@
     justify-content: center;
 }
 
-.popup {
+.popup-1 {
+    position: absolute;
     background-color: white;
     padding: 20px;
-    max-width: 800px;
+    top: 30%;
+    left: 39.4%;
     text-align: center;
+    border: 1px solid lightgrey;
     border-radius: 5px;
+    z-index: 999;
 }
+
