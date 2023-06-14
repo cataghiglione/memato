@@ -17,6 +17,11 @@ public class Notifications {
         entityManager.persist(newNotification);
         return newNotification;
     }
+    public Notification createNotificationWithTeamId(User user, String message, int code_id, long team_id) {
+        final Notification newNotification = Notification.createWithTeamId(user, message, code_id, team_id);
+        entityManager.persist(newNotification);
+        return newNotification;
+    }
     public List<Notification> list(long user_id) {
         return entityManager.createQuery("SELECT n FROM Notification n WHERE cast(n.user.id as string) LIKE :id", Notification.class)
                 .setParameter("id", Long.toString(user_id))
