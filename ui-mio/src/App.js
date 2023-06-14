@@ -20,7 +20,6 @@ import {useAuthProvider} from "./auth/auth";
 import {NotificationPage} from "./pages/NotificationPage";
 import {ContactsPage} from "./pages/ContactsPage";
 import {MyConfirmationsPage} from "./pages/MyConfirmationsPage";
-// import {MyConfirmationsPage} from "./pages/MyConfirmationsPage";
 
 
 const App = () =>{

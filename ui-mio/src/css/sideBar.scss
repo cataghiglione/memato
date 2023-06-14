@@ -1,5 +1,6 @@
 @import "Login";
 .side-bar {
+    left:70%;
     top: 22px;
     height: 75vh;
     width: auto;
@@ -10,7 +11,7 @@
     background: white;
     border-radius: 9px;
     box-shadow: 0 10px 25px rgba(162, 162, 162, 0.4);
-    z-index: 99;
+    z-index: 999;
 }
 .side-bar .select{
     height: auto;
