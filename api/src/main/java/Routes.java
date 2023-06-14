@@ -201,7 +201,7 @@ public class Routes {
                                             entityManager2.getTransaction().commit();
                                             entityManager2.close();
                                             system.createNotificationWithTeam(contact.getTeam1().equals(team) ? contact.getTeam2() : contact.getTeam1(),
-                                                    String.format("%s has send %s a message", team.getName(), contact.getTeam2().getName()),
+                                                    String.format("%s has send %s a message", team.getName(), contact.getTeam1().equals(team) ? contact.getTeam2().getName() : contact.getTeam1().getName()),
                                                     2, team.getId());
                                             res.status(200);
                                             res.body("new message");
@@ -354,6 +354,8 @@ public class Routes {
                 (user) -> {
                     if(notifications.checkUserNotification(Long.toString(user.getId()), id)){
                         system.updateNotification(id);
+                        res.status(200);
+                        res.body("All turn great!");
                     }
                     else {
                         res.status(404);
@@ -635,7 +637,9 @@ public class Routes {
         authorizedPost(DEACTIVATE_SEARCH_ROUTE, (req, res) -> {
             final Long id = Long.valueOf(req.queryParams("id"));
             boolean state = system.deactivateSearch(id);
-            if (state) res.status(200);
+            if (state){
+                res.status(200);
+            }
             else res.status(400);
             return res.status();
 
@@ -720,12 +724,36 @@ public class Routes {
 //
 //        });
         authorizedPost(DECLINE_MATCH_ROUTE, (req, res) -> {
+            final EntityManager entityManager = entityManagerFactory.createEntityManager();
+            final EntityManager entityManager1 = entityManagerFactory.createEntityManager();
+            final Teams teams = new Teams(entityManager);
+            final Matches matches = new Matches(entityManager1);
             final Long matchId = Long.valueOf(req.queryParams("matchid"));
             final Long teamId = Long.valueOf(req.queryParams("teamid"));
-            final boolean status = system.declineMatch(matchId, teamId);
-            if (status) {
-                res.status(200);
-            } else res.status(404);
+            matches.getMatchById(matchId).ifPresent(
+                    (match) -> {
+                        teams.getTeamByTeamId(teamId).ifPresent(
+                                (team) -> {
+                                    final boolean status = system.declineMatch(matchId, teamId);
+                                    if (status) {
+                                        res.status(200);
+                                        if(match.getTeam1().equals(team))
+                                            system.createNotificationWithTeam(match.getTeam2(),
+                                                String.format("%s has decline the match with %s for %d/%d", team.getName(),
+                                                        match.getTeam2().getName(), match.getDay(), match.getMonth()),
+                                                4, team.getId());
+                                        else
+                                            system.createNotificationWithTeam(match.getTeam1(),
+                                                    String.format("%s has decline the match with %s for %d/%d", team.getName(),
+                                                            match.getTeam1().getName(), match.getDay(), match.getMonth()),
+                                                    4, team.getId());
+
+                                    } else res.status(404);
+                                }
+                        );
+                    }
+            );
+
             return res.status();
 
 

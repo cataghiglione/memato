@@ -3,7 +3,7 @@ import {useEffect, useState} from "react";
 import * as React from "react";
 import {useLocation, useNavigate} from "react-router";
 import {useAuthProvider} from "../../auth/auth";
-import {getPendingNotifications} from "../../service/mySystem";
+import {getNotifications, getPendingNotifications, updateNotification} from "../../service/mySystem";
 
 export function NotificationsCenter(props){
     const navigate = useNavigate();
@@ -18,12 +18,13 @@ export function NotificationsCenter(props){
         }, [token]
     )
 
-    function goToConfirmationsPage() {
-        navigate("/pendingConfirmations")
+    function goToConfirmationsPage(id) {
+        changeStatusOpened(id).then(r =>
+            navigate("/pendingConfirmations"))
     }
 
-    function goToMessages() {
-        navigate("/chat")
+    function goToMessages(id) {
+        changeStatusOpened(id).then(r => navigate("/chat"))
     }
 
     function seeAllNotifications() {
@@ -32,9 +33,11 @@ export function NotificationsCenter(props){
         }
         navigate("/notificationPage");
     }
+    const changeStatusOpened = async (id) => {
+        updateNotification(token, id)
+    }
     return(
         <div className={"popover-notifications"}>
-            {console.log(notifications)}
             {notifications.length === 0 &&(
                 <div className={"notification"} style={{border: "1px solid lightgray"}}>
                     You don't have any pending notifications.
@@ -49,22 +52,22 @@ export function NotificationsCenter(props){
                             <br/>
                             {notification.code_id === 0 && (
                                 <div>
-                                    <button className={"button"} onClick={() => goToConfirmationsPage()}>Don't forget to
+                                    <button className={"button"} onClick={() => goToConfirmationsPage(notification.id)}>Don't forget to
                                         confirm
                                     </button>
-                                    <button className={"button"} onClick={() => goToMessages()}>Send a message</button>
+                                    <button className={"button"} onClick={() => goToMessages(notification.id)}>Send a message</button>
                                 </div>
                             )}
                             {notification.code_id === 1 && (
                                 <div>
-                                    <button className={"button"} onClick={() => goToConfirmationsPage()}>Don't forget to
+                                    <button className={"button"} onClick={() => goToConfirmationsPage(notification.id)}>Don't forget to
                                         confirm
                                     </button>
                                 </div>
                             )}
                             {notification.code_id === 2 && (
                                 <div>
-                                    <button className={"button"} onClick={() => goToMessages()}>Send a message</button>
+                                    <button className={"button"} onClick={() => goToMessages(notification.id)}>Send a message</button>
                                 </div>
                             )}
 
@@ -82,7 +85,7 @@ export function NotificationsCenter(props){
                     See all the notifications
                 </button>
             )}
-            {notifications.length > 0 && notifications.length <= 3 && (
+            {notifications.length <= 3 && (
                 <button className={"view-all"} style={{ top: `${notifications.length * 95}px` }} onClick={() => seeAllNotifications()}>
                     See all the notifications
                 </button>
