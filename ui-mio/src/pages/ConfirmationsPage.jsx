@@ -81,10 +81,10 @@ export function ConfirmationsPage(props) {
 
     }
 
-    function findOrCreateContact(id) {
+    function findOrCreateContact(team_id) {
         newContact(token, {
-                team1_id: props.getTeamId,
-                team2_id: id
+                team1_id: id,
+                team2_id: team_id
             }, (res) => {
                 console.log(res)
                 navigate(`/chat?contactId=${res}`)
