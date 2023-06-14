@@ -77,10 +77,10 @@ export const RegisterPage = () => {
     }
 
     return (
-        <div className={"mainContainer"}>
+        <div className={"registerMainContainer"}>
             {errorMsg && <div className="alert alert-danger" role="alert">{errorMsg}</div>}
-
             <img style={{ width: 218, height: "auto"}} src={require("../images/logo_solo_letras.png")} alt={"Logo"}/>
+            <br/>
             <form onSubmit={handleSubmit}>
                 <br/>
                 <div>
