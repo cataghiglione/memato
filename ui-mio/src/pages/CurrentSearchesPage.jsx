@@ -1,5 +1,7 @@
-import React, {Component, useEffect, useState} from 'react';
+import React, {Component, useEffect, useState,useRef} from 'react';
 import {useAuthProvider} from "../auth/auth";
+import { confirmAlert } from 'react-confirm-alert';
+
 import {useSearchParams} from "react-router-dom";
 import {useNavigate} from "react-router";
 /*import {PinMapFill} from "react-bootstrap-icons";*/
@@ -15,6 +17,7 @@ export function CurrentSearchesPage(props) {
     const token = auth.getToken();
     const team_id = props.getTeamId;
     const [popupMsg, setPopupMsg] = useState('');
+
     function goToHome() {
         window.location.href = "/home"
     }
@@ -98,7 +101,7 @@ export function CurrentSearchesPage(props) {
     // }
 
     const handleGoBackClick=()=>{
-        goToHome()
+        window.location.href = "/findRival"
 
     }
 
@@ -146,6 +149,7 @@ export function CurrentSearchesPage(props) {
                                    {/* <button className={"delete-search-button"} style={{left:"50%"}} onClick={() => {OpenCloseMap(); setTeamSelectedLoc([search.latitude, search.longitude])}}>
                                         <PinMapFill />
                                     </button>*/}
+
                                     <button className={"delete-search-button"} onClick={() => handleDeleteClick(search)}>
                                         <i className={"bi bi-trash"}></i>
                                     </button>
@@ -159,7 +163,7 @@ export function CurrentSearchesPage(props) {
                         <div className={"searchesTitle"}>
                             You don't have any active searches
                         </div>
-                        <button className={"goToUserButton"} onClick={handleGoBackClick}>Select a team</button>
+                        <button className={"goToUserButton"} onClick={handleGoBackClick}>Find a new rival!</button>
                     </div>
                 )}
 
