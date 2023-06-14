@@ -56,7 +56,7 @@ public class MySystem {
             }
         });
     }
-    public Notification createNotification(Search search2, String message, int code_id) {
+    public Notification createNotificationWithSearch(Search search2, String message, int code_id) {
         return runInTransaction(datasource -> {
             final Notifications notifications = datasource.notifications();
             long user_id = search2.getTeam().getUserId();
@@ -65,6 +65,23 @@ public class MySystem {
             users.findById(user_id).ifPresentOrElse(
                     (user) -> {
                          notification.set(notifications.createNotification(users.findById(user_id).get(), message, code_id));
+                    },
+                    () -> {
+                        notification.set(new Notification());
+                    }
+            );
+            return notification.get();
+        });
+    }
+    public Notification createNotificationWithTeam(Team team, String message, int code_id) {
+        return runInTransaction(datasource -> {
+            final Notifications notifications = datasource.notifications();
+            long user_id = team.getUserId();
+            final Users users = datasource.users();
+            AtomicReference<Notification> notification = new AtomicReference<>();
+            users.findById(user_id).ifPresentOrElse(
+                    (user) -> {
+                        notification.set(notifications.createNotification(users.findById(user_id).get(), message, code_id));
                     },
                     () -> {
                         notification.set(new Notification());
