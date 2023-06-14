@@ -117,9 +117,10 @@ export function CurrentSearchesPage(props) {
     }*/
     return (
         <div>
+
             {popupMsg !=="" && <div className="searches-popup">{popupMsg}</div>}
             {showConfirmation === true && (
-                <div>
+                <div className={"popup-1"}>
                     <ConfirmationDialog
                         message="Are you sure you want to delete this search?"
                         onConfirm={handleConfirm}
@@ -150,7 +151,7 @@ export function CurrentSearchesPage(props) {
                                     </button>*/}
 
                                     <button className={"delete-search-button"} onClick={() => handleDeleteClick(search)}>
-                                        <i className="bi bi-trash"></i>
+                                        <i className={"bi bi-trash"}></i>
                                     </button>
                                 </div>
                             ))}
