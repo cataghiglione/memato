@@ -46,7 +46,7 @@ export function NewTeamPage (props){
             quantity: quant_Players,
             age_group: age_group,
             // zone: zone,
-            name: name
+            name: name.charAt(0).toUpperCase() + name.substring(1).toLowerCase()
         })
     }
 

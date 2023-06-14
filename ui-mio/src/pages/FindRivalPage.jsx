@@ -287,12 +287,12 @@ export function FindRivalPage(props) {
 
 
                     {/*<div style={{display: 'flex', flexWrap: 'wrap', position: "relative"}}>*/}
-                    <div>
+                    <div className={"searches-list"}>
                         {searches.map((search) => (
                             <div>
                                 <div className={"team-select"}>
                                     <div className={"team-select.info"}>
-                                        <span style={{fontWeight: 'bold', marginLeft: '5px', marginBottom: '15px'}}> Team name: {search.team.name}</span>
+                                        <span style={{fontWeight: 'bold', marginLeft: '5px', marginBottom: '15px'}}> Team name: {search.team.name.charAt(0).toUpperCase() + search.team.name.substring(1).toLowerCase()}</span>
                                         <p style={{marginLeft: '5px', marginBottom: '15px'}}> Age
                                             group: {search.team.age_group}</p>
                                     </div>

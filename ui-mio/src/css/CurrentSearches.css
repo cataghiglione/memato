@@ -1,7 +1,7 @@
 .containerSearchPage {
     position: relative;
     background-color: white;
-    z-index: 999;
+    z-index: 10;
     align-items: center;
     justify-content: center;
     top: 90px;

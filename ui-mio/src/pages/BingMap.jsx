@@ -9,7 +9,7 @@ export class BingMap extends Component {
             isVisible : true,
             bingmapKey: "ApqYZq8IsmnPRxOON1m_mY9eGEZqjDawW2cleubNdcVT5CbVMU8snXUF4qku9DcW",
             infoboxesWithPushPins: [],
-            searchInput: "", // Future implementation (NOW MOTHERFUCKER)
+            searchInput: "",
             getLocationHandledData: "",
             searchForm: false,
         };
@@ -68,9 +68,10 @@ export class BingMap extends Component {
             <div>
                 {this.state.isVisible && (<div>
                     <div className = "map-one">
-                        SELECT THE LOCATION OF YOUR TEAM
-                        <br></br>
-                        <span style={{'display':'inline-block'}}>
+                       {/* SELECT THE LOCATION OF YOUR TEAM
+                        <br></br>*/}
+                        {/*BUSCADOR: */}
+                       {/* <span style={{'display':'inline-block'}}>
                                 <div onSubmit={this.state.searchForm && this.handleSubmit.bind(this)}>
                                     <input type="text" placeholder="search place, pin, city"
                                            onChange={(event)=>{this.setState({searchInput:event.target.value})}}
@@ -80,7 +81,7 @@ export class BingMap extends Component {
                                         if (this.state.searchForm) this.handleSubmit.bind(this)
                                         this.setState({searchForm: true})}}> Submit</button>
                                 </div>
-                            </span>
+                            </span>*/}
                         <ReactBingmaps
                             id = "seven"
                             className = "customClass"

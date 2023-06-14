@@ -4,6 +4,7 @@ import * as React from "react";
 import {useLocation, useNavigate} from "react-router";
 import {useAuthProvider} from "../../auth/auth";
 import {signOut} from "../../service/mySystem";
+import {Search} from "react-bootstrap-icons";
 
 export function MenuSideBar(props){
     const [pageChange, setPageChange] = useState(['']);
@@ -32,7 +33,8 @@ export function MenuSideBar(props){
     return(
         <div className={"side-bar"}>
             <select id="Menu" multiple={true} className={"select"} value={pageChange} onChange={togglePage} style={{width: "100%"}}>
-                {props.getTeamId !== 0 && <option className={"option"} key={"/findRival"} value="/findRival">Find Rival</option>}
+
+                {props.getTeamId !== 0 && <option className={"option"} key={"/findRival"} value="/findRival"> Find Rival</option>}
                 {props.getTeamId !== 0 && <option className={"option"} key={"/currentSearches"} value="/currentSearches">Current Searches</option>}
                 {props.getTeamId !== 0 && <option className={"option"} key={"/pendingConfirmations"} value="/pendingConfirmations">Pending Confirmations</option>}
                 {props.getTeamId !== 0 && <option className={"option"} key={"/myConfirmations"} value="/myConfirmations">My Confirmations</option>}
@@ -41,6 +43,7 @@ export function MenuSideBar(props){
                 {props.getTeamId !== 0 && <option className={"option"} key={"/editTeam"} value="/editTeam">Team Settings</option>}
                 <option className={"option"} key={"/user"} value="/user">Profile</option>
             </select>
+
             {/*<br/><br/>*/}
             <button className={"signOut-option"} onClick={signOutMethod} value="Sign Out">Sign Out</button>
         </div>
