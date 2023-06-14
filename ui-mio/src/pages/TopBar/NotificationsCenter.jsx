@@ -32,12 +32,11 @@ export function NotificationsCenter(props){
         }
         navigate("/notificationPage");
     }
-
     return(
         <div className={"popover-notifications"}>
             {console.log(notifications)}
             {notifications.length === 0 &&(
-                <div className={"notification"}>
+                <div className={"notification"} style={{border: "1px solid lightgray"}}>
                     You don't have any pending notifications.
                 </div>
             )}
@@ -78,8 +77,16 @@ export function NotificationsCenter(props){
                     ))}
                 </div>
             )}
-
-                <button className={"view-all"}  onClick={() => seeAllNotifications()}>See all the notifications</button>
+            {notifications.length > 3 && (
+                <button className={"view-all"} style={{ top: "320px" }} onClick={() => seeAllNotifications()}>
+                    See all the notifications
+                </button>
+            )}
+            {notifications.length > 0 && notifications.length <= 3 && (
+                <button className={"view-all"} style={{ top: `${notifications.length * 95}px` }} onClick={() => seeAllNotifications()}>
+                    See all the notifications
+                </button>
+            )}
 
         </div>
     );

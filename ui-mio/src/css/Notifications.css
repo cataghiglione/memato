@@ -45,7 +45,6 @@
 .view-all{
     position: relative;
     background-color: #707070;
-    top: 320px;
     color: white;
     width: 45.17vh;
     border: 1px solid #808080;
@@ -158,8 +157,8 @@
 .notifications-list{
     position: absolute;
     top: 1%; /*quitar, obvio*/
-    width: 45.2vh;
-    height: 310px;
+    width: 45.21vh;
+    max-height: 310px;
     overflow-y: scroll;
     border: 1px solid gray;
 
