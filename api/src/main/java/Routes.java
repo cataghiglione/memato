@@ -474,10 +474,10 @@ public class Routes {
                         system.findOrCreateSearch(searchForm, team).ifPresentOrElse(
                                 (search) -> {
                                     searchId.set(search.getId());
-                                    res.status(201);
+                                    res.status(200);
                                 },
                                 () -> {
-                                    res.status(200);
+                                    res.status(201);
                                 }
 
                         );

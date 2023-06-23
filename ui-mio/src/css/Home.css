@@ -4,6 +4,13 @@
     background-color: white;
     text-align-all: center;
 }
+.containerPrincipalHome{
+    position: relative;
+    /*transform: translate(-100%, 0%);*/
+    background-color: white;
+
+    text-align-all: center;
+}
 .containerPrincipalNewTeam{
     position: absolute;
     left:50%;

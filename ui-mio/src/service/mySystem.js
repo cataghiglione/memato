@@ -102,7 +102,7 @@ export const deleteSearch = (token, searchId, okCallback, errorCallback) => {
 }
 
 
-export const findRival = (token, id, form, okCallback, errorCallback) => {
+export const findRival = (token, id, form, okCallback, secondOkCallback ,errorCallback) => {
     fetch(`${restApiEndpoint}/newSearch?id=${id}`, {
         method: 'POST',
         headers: {
@@ -113,11 +113,16 @@ export const findRival = (token, id, form, okCallback, errorCallback) => {
 
         body: JSON.stringify({id, ...form})
     }).then(resp => {
-        if (resp.status === 201 || resp.status === 200) {
+        if ( resp.status === 200) {
             console.log(resp.body)
             return resp.json().then(response => okCallback(response))
             // okCallback(resp)
-        } else {
+        }
+        else if (resp.status === 201){
+            return resp.json().then(response => secondOkCallback(response))
+
+        }
+        else {
             errorCallback()
         }
 
