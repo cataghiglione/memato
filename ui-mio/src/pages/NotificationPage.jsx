@@ -20,23 +20,25 @@ export function NotificationPage(props) {
         [token]
     )
 
-    function goToConfirmationsPage() {
-        navigate("/pendingConfirmations")
+    function goToConfirmationsPage(id) {
+        changeStatusOpened(id).then(r =>
+            navigate("/pendingConfirmations"))
     }
 
-    const goToMessages= async (id) =>{
+    const goToMessages= async (id, notification_id) =>{
         newContact(token, {
             team1_id: teamId,
             team2_id: id
         },(res) => {
-            console.log(res)
+            console.log(res);
+            changeStatusOpened(notification_id);
             navigate(`/chat?contactId=${res}`)
         },
         )
     }
 
-    const changeStatusOpened = async (id) => {
-        await updateNotification(token, id, () => {
+    const changeStatusOpened = (id) => {
+        updateNotification(token, id, () => {
             getNotifications(token, (notifications) => {
                 setNotifications(notifications)
             })
@@ -64,7 +66,7 @@ export function NotificationPage(props) {
                                 <button className={"button"} onClick={() => goToConfirmationsPage()}>Don't forget to
                                     confirm
                                 </button>
-                                <button className={"button"} onClick={() => goToMessages(notification.team_id)}>Send a message</button>
+                                <button className={"button"} onClick={() => goToMessages(notification.team_id, notification.id)}>Send a message</button>
                             </div>
                         )}
                         {notification.code_id === 1 && (
@@ -85,18 +87,18 @@ export function NotificationPage(props) {
                                 <button className={"button"}>See pending matches</button>
                             </div>
                         )}
-                        {/*{notification.opened && (*/}
-                        {/*    <div>*/}
-                        {/*        <button className={"icon"}>*/}
-                        {/*            <img style={{ width: 22, height: "auto"}} src={require("../images/tickGreenIcon.jpg")} alt={"Logo"}/>*/}
-                        {/*        </button>*/}
-                        {/*    </div>)}*/}
-                        {/*{!notification.opened && (*/}
-                        {/*    <div>*/}
-                        {/*        <button className={"icon"} onClick={() => changeStatusOpened(notification.id)}>*/}
-                        {/*            <img style={{ width: 22, height: "auto"}} src={require("../images/tickBlackIcon.jpg")} alt={"Logo"}/>*/}
-                        {/*        </button>*/}
-                        {/*    </div>)}*/}
+                        {notification.opened && (
+                            <div>
+                                <button className={"icon"}>
+                                    <img style={{ width: 22, height: "auto"}} src={require("../images/tickGreenIcon.jpg")} alt={"Logo"}/>
+                                </button>
+                            </div>)}
+                        {!notification.opened && (
+                            <div>
+                                <button className={"icon"} onClick={() => changeStatusOpened(notification.id)}>
+                                    <img style={{ width: 22, height: "auto"}} src={require("../images/tickBlackIcon.jpg")} alt={"Logo"}/>
+                                </button>
+                            </div>)}
                     </div>
                 ))}
                     </div>)}

@@ -24,6 +24,7 @@ public class Notification {
      * <li>1 --> reminder to confirm a match</li>
      * <li>2 --> new message alert</li>
      * <li>3 --> pending match coming soon</li>
+     * <li>4 --> a team has decline a match</li>
      */
     @Column
     private int code_id;

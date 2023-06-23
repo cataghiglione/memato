@@ -17,6 +17,7 @@ export function ChatPage (props) {
     const [otherTeamName, setOtherTeamName] = useState('');
     const [yourMessages, setYourMessages] = useState(['']);
     const [messageSent, setMessageSent] = useState(true);
+    const teamId = props.getTeamId;
     useEffect(() => {
         pollForNewMessages()
     }, [])
@@ -29,10 +30,10 @@ export function ChatPage (props) {
     //     }
     // }, [window.location.search]);
     useEffect(() => {
-        getOtherTeamName(token, currentContact, props.getTeamId, (res) =>{
+        getOtherTeamName(token, currentContact, teamId, (res) =>{
             setOtherTeamName(res)
         })
-    }, [currentContact, props.getTeamId, token]);
+    }, [currentContact, teamId, token]);
 
     function pollForNewMessages(){
         getMessages(token, currentContact, (response) => {
@@ -47,7 +48,7 @@ export function ChatPage (props) {
     const sendMessageMethod = async () => {
         if(message !== ""){
             sendMessage(token, {
-                team_id: props.getTeamId,
+                team_id: teamId,
                 contact_id: currentContact,
                 text: message,
                 date: getTodayUtcTZFormat()
@@ -64,30 +65,12 @@ export function ChatPage (props) {
     }
 
     useEffect(() => {
-            getContacts(token, props.getTeamId, (contacts) => {
+            getContacts(token, teamId, (contacts) => {
                     setContacts(contacts)
                 }
             )
-        },[props.getTeamId, token]
+        },[teamId, token]
     )
-    // useEffect(() => {
-    //     if(messageSent){
-    //         getMessages(token, currentContact, (response) => {
-    //             setYourMessages(response);
-    //         })
-    //         setMessageSent(false)
-    //     }
-    //     },[props.getTeamId, token, messageSent, currentContact]
-    // // )
-    // useEffect(() => {
-    //         if(currentContact !== 0){
-    //             getMessages(token, currentContact, (response) => {
-    //                 setYourMessages(response);
-    //             })
-    //             setMessageSent(false)
-    //         }
-    //     },[props.getTeamId, token, currentContact]
-    // )
 
     async function goToContact(id) {
         setCurrentContact(id)
@@ -132,13 +115,13 @@ export function ChatPage (props) {
                                 <div>
                                     {yourMessages.map((message)=>(
                                         <div>
-                                            {message.team_id === parseInt(props.getTeamId) && (
+                                            {message.team_id === parseInt(teamId) && (
                                                 <div className="message sent">
                                                     <span>{message.text}</span>
                                                     <span className="metadata"><span className="time">{message.hour}:{message.minute}</span></span>
                                                 </div>
                                             )}
-                                            {message.team_id !== parseInt(props.getTeamId) && (
+                                            {message.team_id !== parseInt(teamId) && (
                                                 <div className="message received">
                                                     <span>{message.text}</span>
                                                     <span className="metadata"><span className="time">{message.hour}:{message.minute}</span></span>
