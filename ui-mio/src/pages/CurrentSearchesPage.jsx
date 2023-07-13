@@ -142,8 +142,7 @@ export function CurrentSearchesPage(props) {
                             {searches.map((search) => (
                                 <div className={"searchesContainer"}>
                                     <div key={search.id}>
-                                        <p className={"search-info"}>Team: {search.team.name}</p>
-                                        <p className={"search-info"}>Time: {search.time}</p>
+                                        <p className={"search-info"}>Time(s): {search.times.join(", ")}</p>
                                         <p className={"search-info"}>Day: {search.day}/{search.month + 1}</p>
                                     </div>
                                    {/* <button className={"delete-search-button"} style={{left:"50%"}} onClick={() => {OpenCloseMap(); setTeamSelectedLoc([search.latitude, search.longitude])}}>

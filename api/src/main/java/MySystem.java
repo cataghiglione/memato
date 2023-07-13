@@ -45,12 +45,18 @@ public class MySystem {
             return matches.createMatch(search1, search2);
         });
     }
+    public TimeInterval createTimeInterval(List<String> times){
+        return runInTransaction(datasource->{
+            final TimeIntervals timeIntervals = datasource.timeIntervals();
+            return timeIntervals.createTimeInterval(times);
+        });
+    }
 
-    public Optional<Search> findOrCreateSearch(CreateSearchForm form, Team team) {
+    public Optional<Search> findOrCreateSearch(CreateSearchForm form, Team team, TimeInterval time) {
         return runInTransaction(datasource -> {
             final Searches searches = datasource.searches();
             try {
-                return searches.exists(Long.toString(team.getId()), form.getTime(), form.getDate(), form.getLatitude(), form.getLongitude()) ? searches.reactivateSearch(team, form.getTime(), form.getDate(), form.getLatitude(), form.getLongitude()) : Optional.of(searches.createSearch(team, form.getDate(), form.getTime(), form.getLatitude(), form.getLongitude()));
+                return searches.exists(Long.toString(team.getId()), time.getIntervals(), form.getDate(), form.getLatitude(), form.getLongitude()) ? searches.reactivateSearch(team, time.getIntervals(), form.getDate(), form.getLatitude(), form.getLongitude()) : Optional.of(searches.createSearch(team, form.getDate(), time.getIntervals(), form.getLatitude(), form.getLongitude()));
             } catch (ParseException e) {
                 throw new RuntimeException(e);
             }

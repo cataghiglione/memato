@@ -4,13 +4,15 @@ import "../css/Home.css"
 import {useNavigate} from "react-router";
 import {findRival, getTeam, newMatch, possibleSearchCandidates} from "../service/mySystem";
 import {useAuthProvider} from "../auth/auth";
-
 import DatePicker, {CalendarContainer} from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import {TopBar} from "./TopBar/TopBar";
 import {BingMap} from "./BingMap"
-import { ToastContainer, toast } from 'react-toastify';
+import {ToastContainer, toast} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Select from 'react-select';
+// import '@mobiscroll/react/dist/css/mobiscroll.min.css';
+// import { Datepicker } from '@mobiscroll/react';
 
 
 function goToNewTeam() {
@@ -48,6 +50,9 @@ export function FindRivalPage(props) {
 
     const [date, setDate] = useState(new Date());
     const [time, setTime] = useState('')
+    const [selectedTimes, setSelectedTimes] = useState([]);
+
+
 
     const [rivalMenuOpen, setRivalMenuOpen] = useState(false);
 
@@ -55,6 +60,13 @@ export function FindRivalPage(props) {
     const [showPopup, setShowPopup] = useState(false);
     const [changeLocationButton, setChangeLocationButton] = useState('Select location');
     const [selectedLocation, setSelectedLocation] = useState("")
+    const[finalSelectedTimes,setFinalSelectedTimes]=useState([]);
+    const handleTimeChange = (selectedTime) => {
+        const {valueText} = selectedTime;
+        setTime(valueText)
+        console.log(selectedTime);
+    };
+
 
     function handleSelectLocation(e) {
         e.preventDefault(); // Prevent form submission
@@ -96,7 +108,22 @@ export function FindRivalPage(props) {
     const [searchId, setSearchId] = useState(0)
     const teamId = props.getTeamId;
     const [noSearchesCandidates, setNoSearchesCandidates] = useState("There are currently no teams searching for rivals with your preferences")
-
+    const options = [{label: "8:00-9:00", value: "8:00-9:00"},
+        {label: "9:00-10:00", value: "9:00-10:00"}, {label: "10:00-11:00", value: "10:00-11:00"},
+        {label: "11:00-12:00", value: "11:00-12:00"},
+        {label: "12:00-13:00", value: "12:00-13:00"},
+        {label: "13:00-14:00", value: "13:00-14:00"},
+        {label: "14:00-15:00", value: "14:00-15:00"},
+        {label: "15:00-16:00", value: "15:00-16:00"},
+        {label: "16:00-17:00", value: "16:00-17:00"},
+        {label: "17:00-18:00", value: "17:00-18:00"},
+        {label: "18:00-19:00", value: "18:00-19:00"},
+        {label: "19:00-20:00", value: "19:00-20:00"},
+        {label: "20:00-21:00", value: "20:00-21:00"},
+        {label: "21:00-22:00", value: "21:00-22:00"},
+        {label: "22:00-23:00", value: "22:00-23:00"},
+        {label: "23:00-00:00", value: "23:00-00:00"}
+    ]
 
     // con esto lee los params
     // const searchParams = useSearchParams();
@@ -112,13 +139,18 @@ export function FindRivalPage(props) {
     const openAndFindRivals = async e => {
         setRivalMenuOpen(true);
     }
+    useEffect(() => {
+        setFinalSelectedTimes(selectedTimes.map(option => option.value));
+    }, [selectedTimes]);
 
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        const finalValues = selectedTimes.map(option => option.value)
+        setFinalSelectedTimes(finalValues)
         await findRivalMethod({
             date: date,
-            time: time,
+            time: finalSelectedTimes,
             latitude: zone[0].toString(),
             longitude: zone[1].toString()
         })
@@ -126,7 +158,8 @@ export function FindRivalPage(props) {
     const findRivalMethod = (search) => {
         if (rivalMenuOpen) {
             findRival(token, teamId, search, (res) => {
-                    toast.success('Search is now active!', {containerId: 'toast-container',
+                    toast.success('Search is now active!', {
+                        containerId: 'toast-container',
                         position: "top-center",
                         autoClose: 5000,
                         hideProgressBar: false,
@@ -155,7 +188,7 @@ export function FindRivalPage(props) {
                     setSearches(res.searches)
                     setSearchId(res.searchId)
                 },
-                ()=>{
+                () => {
                     toast.error('Something went wrong', {
                             position: "top-center",
                             autoClose: 5000,
@@ -165,8 +198,9 @@ export function FindRivalPage(props) {
                             draggable: true,
                             progress: undefined,
                             theme: "light",
-                }
-                )})
+                        }
+                    )
+                })
         }
     }
 
@@ -176,7 +210,8 @@ export function FindRivalPage(props) {
                 searchId: searchId
             },
             async (res) => {
-                toast.success('Request sent!', {containerId: 'toast-container',
+                toast.success('Request sent!', {
+                    containerId: 'toast-container',
                     position: "top-center",
                     autoClose: 5000,
                     hideProgressBar: false,
@@ -220,6 +255,7 @@ export function FindRivalPage(props) {
         );
     };
 
+
     return (
 
         <div>
@@ -258,16 +294,24 @@ export function FindRivalPage(props) {
                 </div>
 
                 <div className={"time_select"}>
-                    <p>Select your time of preference!</p>
-                    <select id="time" required onChange={timeChange} value={time}>
-                        <option disabled={true} value="">
-                            Time of day...
-                        </option>
-                        <option value="Morning">Morning</option>
-                        <option value="Afternoon">Afternoon</option>
-                        <option value="Night">Night</option>
-                        <option value="No preference">No preference</option>
-                    </select>
+
+
+                    <p>Select your time intervals of preference!</p>
+                    <Select
+                        options={options}
+                        value={selectedTimes}
+                        onChange={setSelectedTimes}
+                        isMulti
+                    />
+                    {/*<select id="time" required onChange={timeChange} value={time}>*/}
+                    {/*    <option disabled={true} value="">*/}
+                    {/*        Time of day...*/}
+                    {/*    </option>*/}
+                    {/*    <option value="Morning">Morning</option>*/}
+                    {/*    <option value="Afternoon">Afternoon</option>*/}
+                    {/*    <option value="Night">Night</option>*/}
+                    {/*    <option value="No preference">No preference</option>*/}
+                    {/*</select>*/}
                 </div>
 
                 <div className={"zone"}>
@@ -316,13 +360,16 @@ export function FindRivalPage(props) {
                             <div>
                                 <div className={"team-select"}>
                                     <div className={"team-select.info"}>
-                                        <span style={{fontWeight: 'bold', marginLeft: '5px', marginBottom: '15px'}}> Team name: {search.team.name.charAt(0).toUpperCase() + search.team.name.substring(1).toLowerCase()}</span>
+                                        <span style={{fontWeight: 'bold', marginLeft: '5px', marginBottom: '15px'}}> Team name: {search.search.team.name.charAt(0).toUpperCase() + search.search.team.name.substring(1).toLowerCase()}</span>
                                         <p style={{marginLeft: '5px', marginBottom: '15px'}}> Age
-                                            group: {search.team.age_group}</p>
+                                            group: {search.search.team.age_group}</p>
+                                        <p style={{marginLeft: '5px', marginBottom: '15px'}}> Time(s) in common:
+                                            {search.times.join(", ")}</p>
                                     </div>
                                     <br/><br/>
                                     <div>
-                                        <button className={"button-play"} onClick={async () => await playButton(search.id)}>
+                                        <button className={"button-play"}
+                                                onClick={async () => await playButton(search.id)}>
                                             Play
                                         </button>
 
@@ -336,12 +383,11 @@ export function FindRivalPage(props) {
                     </div>
                 </div>
             }
-            {(rivalMenuOpen && searches.length === 0) &&(
+            {(rivalMenuOpen && searches.length === 0) && (
 
                 <p className={"noTeamSearch"}>{noSearchesCandidates}</p>)
             }
-            <ToastContainer /> {/* Mover el ToastContainer aquí */}
-
+            <ToastContainer/> {/* Mover el ToastContainer aquí */}
 
 
             <button className={"goToPickTeamButton"} onClick={goToPickTeam}> Change Team</button>

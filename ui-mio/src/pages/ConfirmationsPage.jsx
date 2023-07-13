@@ -118,7 +118,7 @@ export function ConfirmationsPage(props) {
                                     <div key={match.id}>
                                         <p className={"match-info"}>Rival: {match.team2.name}
                                         </p>
-                                        <p className={"match-info"}>Time: {match.time}</p>
+                                        <p className={"match-info"}>Time(s): {match.time.join(", ")}</p>
                                         <p className={"match-info"}>Day: {match.day}</p>
                                         {match.team1Confirmed && (
                                             <p>You have confirmed this match, wait for the other team to confirm</p>
