@@ -2,8 +2,9 @@ import * as React from 'react'
 import {useEffect, useState} from 'react'
 import {useAuthProvider} from "../auth/auth";
 import {listTeams, getUser} from "../service/mySystem";
-import "../css/Home.css";
-import "../css/PickTeam.scss";
+import "../css/Home.scss";
+import { Icon } from '@iconify/react';
+// import "../css/PickTeam.scss";
 import {useNavigate} from "react-router";
 import {TopBar} from "./TopBar/TopBar";
 import {PencilSquare} from "react-bootstrap-icons";
@@ -44,11 +45,25 @@ export function HomePage(props){
         }
     }
     return (
-        <div>
+        <body>
             <TopBar toggleTeamId={props.toggleTeamId} getTeamId={props.getTeamId}/>
-            <div className="containerPrincipal" style={containerStyle}>
+            <div className="containerPrincipalHomePage" style={containerStyle}>
+                {/*<nav>*/}
+                {/*    <ul>*/}
+                {/*        <figure className="brick">*/}
+                {/*            <Icon icon="tabler:home" className={"icon"}/>*/}
+                {/*            Dashboard*/}
+                {/*        </figure>*/}
+                {/*        <figure className="brick">*/}
+                {/*            <Icon icon="fluent:people-team-32-regular" className={"icon"}/>*/}
+                {/*            Teams*/}
+                {/*        </figure>*/}
+                {/*    </ul>*/}
+                {/*</nav>*/}
                 <h1> Welcome {user.firstName}! </h1>
+                <br/>
                 <h3> Your teams </h3>
+                <br/>
                 <button className={"newTeamButton"} onClick={goToNewTeam} style={{width:"325px"}}>
                     {teams.length===0 ? 'Create your first team' : 'New Team'}
                 </button>
@@ -70,10 +85,7 @@ export function HomePage(props){
                         ))}
                     </div>
                 )}
-                {/*{teams.length === 0 &&*/}
-                {/*    <p className={"noTeamPick"}>You haven't created any teams yet</p>*/}
-                {/*}*/}
             </div>
-        </div>
+        </body>
     )
 }

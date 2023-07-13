@@ -3,7 +3,7 @@ import {useAuthProvider} from "../auth/auth";
 import {TopBar} from "./TopBar/TopBar";
 import {getConfirmedMatches, getPendingConfirmations, getTeam} from "../service/mySystem";
 import { MapInReactFunction} from "./MapInReact";
-import "../css/MyConfirmations.css"
+import "../css/MyConfirmations.scss"
 
 export function MyConfirmationsPage(props) {
     const auth = useAuthProvider()
@@ -37,7 +37,7 @@ export function MyConfirmationsPage(props) {
 
         <div>
             <TopBar toggleTeamId={props.toggleTeamId} getTeamId={props.getTeamId}/>
-            <div>
+            <div className={"containerMyConfirmationsPage"}>
                 {(confirmedMatches.length > 0) && (
                     <div className={"map-container"}>
                         <div className={"map"}>

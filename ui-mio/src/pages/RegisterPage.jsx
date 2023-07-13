@@ -1,13 +1,14 @@
 import * as React from 'react'
-import {Link} from "react-router-dom";
 import {useState} from "react";
 import {useNavigate} from "react-router";
 import {register} from "../service/mySystem";
 import "../css/Login.scss"
 import "../images/RivalMatch_logoRecortado.png"
+import {toast, ToastContainer} from "react-toastify";
+import {Icon} from "@iconify/react";
 
 function goToLogin() {
-    window.location.href = "/login"
+    window.location.href = "/"
 }
 export const RegisterPage = () => {
 
@@ -21,10 +22,18 @@ export const RegisterPage = () => {
     const navigate = useNavigate();
 
     const handleSubmit = async e => {
-        console.log("Estoy aca");
         e.preventDefault();
         if(!username || !name || !lastName || !mail || !password){
-            setErrorMsg('Please fill out all the required fields')
+            toast.error('Please fill out all the required fields', {
+                position: "top-center",
+                autoClose: 2500,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+            });
             return;
         }
         registerUser({
@@ -45,12 +54,30 @@ export const RegisterPage = () => {
     }
 
     const registerUser = (user) => {
-        console.log("pase!")
         register(
             user,
-            () => navigate("/login?ok=true"),
             () => {
-                setErrorMsg('User already exists!')
+                toast.success('User created!', {containerId: 'toast-container',
+                    position: "top-center",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                });},
+            () => {
+                toast.success('User already exists!', {containerId: 'toast-container',
+                    position: "top-center",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                });
                 resetForm();
             }
         )
@@ -77,74 +104,57 @@ export const RegisterPage = () => {
     }
 
     return (
-        <div className={"registerMainContainer"}>
-            {errorMsg && <div className="alert alert-danger" role="alert">{errorMsg}</div>}
-            <img style={{ width: 218, height: "auto"}} src={require("../images/logo_solo_letras.png")} alt={"Logo"}/>
-            <br/>
-            <form onSubmit={handleSubmit}>
-                <br/>
-                <div>
-                    {/*<label>*/}
-                    {/*    Mail:*/}
-                    <p>Email: <input type="email"
-                           placeholder="name@example.com"
-                           value={mail}
-                           name="email"
-                           id={"email"}
-                           onChange={mailChange}/></p>
-                    {/*</label>*/}
+        <div>
+            <div className={"LogoRegister"}>
+                <h1 className="animate__animated animate__bounceInLeft">
+                    <img style={{ width: 218, height: "auto"}}  src={require("../images/logoRM/logoRM_persona.png")} alt={"Logo"}/>
+                </h1>
+                <img style={{ width: 218, height: "auto"}} src={require("../images/logoRM/logoRM_letra.png")} alt={"Logo"}/>
+            </div>
+            <div className={"containerPrincipalRegisterPage"}>
+                <ToastContainer /> {/* Mover el ToastContainer aquí */}
+                <form onSubmit={handleSubmit}>
+                    <br/>
+                    <div>
+                        <input type="email" name="logemail" className="form-style"
+                               placeholder="Your Email" id="logemail" autoComplete="off" onChange={mailChange}/>
+                        <Icon className="input-icon-log" icon="uil:at"/>
+                    </div>
 
-                </div>
+                    <div>
+                        <input type="name" name="logFirstName" className="form-style"
+                               placeholder="Your First Name" id="logFirstName" autoComplete="off" onChange={nameChange}/>
+                        <Icon className="input-icon-log" icon="material-symbols:person" />
+                    </div>
 
-                <br/>
-                <div>
-                    <p>Name: <input type="Name"
-                    id="Name"
-                    placeholder="Name"
-                    name ="Name"
-                    value={name}
-                    onChange={nameChange}/></p>
-                </div>
-                <br/>
-                <div>
-                   <p>Last name:  <input
-                        type="lastName"
-                        id="lastName"
-                        placeholder="Last Name"
-                        name="lastName"
-                        value={lastName}
-                        onChange={lastNameChange}/></p>
-                </div>
-                <br/>
-                <div>
-                    <p>Username: <input
-                        type="username"
-                        id="username"
-                        placeholder="username"
-                        name="username"
-                        value={username}
-                        onChange={usernameChange}/></p>
-                </div>
-                <br/>
-                <div>
-                    <p>Password: <input type="password"
-                           id="floatingPassword"
-                           placeholder="Password"
-                           name="password"
-                           value={password}
-                           onChange={passwordChange}/></p>
-                </div>
-                <br/>
-                <br/>
-                <div>
-                    {/*<button type="submit" className={"signUpButton"}>Sign up</button>*/}
-                    <button id="submit" type="submit" className={"greenButton"} onClick={() => RegisterRequest()}>Register</button>
-                </div>
-                <br/>
-                <div>
-                    <button className={"goToSignUp"} onClick={goToLogin}>Go to Login</button>
-                </div>
-            </form>
+
+                    <div>
+                        <input type="lastName" name="logLastName" className="form-style"
+                               placeholder="Your Last Name" id="logLastName" autoComplete="off" onChange={lastNameChange}/>
+                        <Icon className="input-icon-log" icon="material-symbols:person" />
+                    </div>
+
+                    <div>
+                        <input type="username" name="logUsername" className="form-style"
+                               placeholder="Your Username" id="logUsername" autoComplete="off" onChange={usernameChange}/>
+                        <Icon className="input-icon-log" icon="material-symbols:person" />
+                    </div>
+
+                    <div>
+                        <input type="password" name="logPassword" className="form-style"
+                               placeholder="Your Password" id="logPassword" autoComplete="off" onChange={passwordChange}/>
+                        <Icon className="input-icon-log" icon="uil:lock-alt"/>
+                    </div>
+
+                    <br/><br/>
+                    <div>
+                        <button id="submit" type="submit" className={"submitButtonRegister"} onClick={() => RegisterRequest()}>Register</button>
+                    </div>
+                    <div>
+                        <button className={"signUpButtonLogin"} onClick={goToLogin}>Go to Login</button>
+                    </div>
+                </form>
+            </div>
         </div>
     )
 }

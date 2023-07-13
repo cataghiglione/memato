@@ -1,16 +1,9 @@
-import React, {Component, useEffect, useState,useRef} from 'react';
+import React, {useEffect, useState} from 'react';
 import {useAuthProvider} from "../auth/auth";
-// import { confirmAlert } from 'react-confirm-alert';
 
-import {useSearchParams} from "react-router-dom";
-import {useNavigate} from "react-router";
-/*import {PinMapFill} from "react-bootstrap-icons";*/
-
-import "../css/CurrentSearches.css"
+import "../css/CurrentSearches.scss"
 import {currentSearches, deleteSearch, getTeam} from "../service/mySystem";
 import {TopBar} from "./TopBar/TopBar";
-/*import {BingMap} from "./BingMap";*/
-
 
 export function CurrentSearchesPage(props) {
     const auth = useAuthProvider()
@@ -120,12 +113,14 @@ export function CurrentSearchesPage(props) {
 
             {popupMsg !=="" && <div className="searches-popup">{popupMsg}</div>}
             {showConfirmation === true && (
-                <div className={"popup-1"}>
-                    <ConfirmationDialog
-                        message="Are you sure you want to delete this search?"
-                        onConfirm={handleConfirm}
-                        onCancel={handleCancel}
-                    />
+                <div className={"popup"}>
+                    <div className={"popup-1"}>
+                        <ConfirmationDialog
+                            message="Are you sure you want to delete this search?"
+                            onConfirm={handleConfirm}
+                            onCancel={handleCancel}
+                        />
+                    </div>
                 </div>
             )}
 
@@ -160,13 +155,16 @@ export function CurrentSearchesPage(props) {
                 </div>
                 {searches.length===0 && (
                     <div>
+                        <br/>
                         <div className={"noSearchesTitle"}>
                             You don't have any active searches
                         </div>
-                        <div>
+                        <br/><br/>
+                        <div className={"refereeImageSearches"}>
                             <img style={{width: 218, height: "auto"}} src={require("../images/referee.png")}
                                  alt={"referee"}/>
                         </div>
+                        <br/><br/><br/><br/>
                         <button className={"goToUserButton"} onClick={handleGoBackClick}>Find a new rival!</button>
                     </div>
                 )}

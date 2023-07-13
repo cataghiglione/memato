@@ -94,7 +94,6 @@ export class BingMap extends Component {
                             boundary = {this.state.boundary}
                         >
                         </ReactBingmaps>
-                        {/*<button onClick={goToFindRival}>Confirm location</button>*/}
                     </div>
                 </div>)}
             </div>

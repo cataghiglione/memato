@@ -1,7 +1,7 @@
 import React, {Component, useEffect, useState} from 'react';
 import {useAuthProvider} from "../auth/auth";
 import {useSearchParams} from "react-router-dom";
-import "../css/EditTeam.css"
+import "../css/EditTeam.scss"
 import { getTeam, updateTeam, deleteTeam} from "../service/mySystem";
 import {useLocation} from "react-router";
 import {useNavigate} from "react-router";
@@ -135,98 +135,103 @@ export function EditTeamPage(props) {
     };
     return (
         <div>
-            {errorMsg && <div className="alert alert-danger" role="alert">{errorMsg}</div>}
-            {isOk && <div className="alert alert-success" role="alert">Changes saved</div>}
-            {/*<div className={"logo"}>*/}
-            {/*    <img style={{width: 150, height: "auto"}} src={require("../images/logo_solo_letras.png")} alt={"Logo"}/>*/}
-            {/*</div>*/}
-            <div className={"team_name"} style={teamNameStyle}>
-                {team.name}
-            </div>
-            <div className={"sport_and_quantity"} style={sportAndQuantityStyle}>
-                {team.sport} {team.quantity}
-            </div>
-
             <TopBar getTeamId={props.getTeamId} toggleTeamId={props.toggleTeamId}/>
-            <div className={"form"}>
+            <div className={"editTeamContainer"}>
+
+                {errorMsg && <div className="alert alert-danger" role="alert">{errorMsg}</div>}
+                {isOk && <div className="alert alert-success" role="alert">Changes saved</div>}
+                {/*<div className={"logo"}>*/}
+                {/*    <img style={{width: 150, height: "auto"}} src={require("../images/logo_solo_letras.png")} alt={"Logo"}/>*/}
+                {/*</div>*/}
+                <div className={"team_name"} style={teamNameStyle}>
+                    {team.name}
+                </div>
+                <br/>
+                <div className={"sport_and_quantity"} style={sportAndQuantityStyle}>
+                    {team.sport} {team.quantity}
+                </div>
 
 
-                <form onSubmit={handleSubmit}>
-                    <br/>
-                    <div>
-                        <p>Team name: <input type="Name"
-                               id="Name"
-                               placeholder="Name"
-                               name="Name"
-                               value={name}
-                               onChange={nameChange}/></p>
-                    </div>
-                    {/*<div>*/}
-                    {/*    <input*/}
-                    {/*        type="zone"*/}
-                    {/*        id="zone"*/}
-                    {/*        placeholder="Zone"*/}
-                    {/*        name="zone"*/}
-                    {/*        value={zone}*/}
-                    {/*        onChange={zoneChange}/>*/}
-                    {/*</div>*/}
-                    <div>
+                <div>
+
+
+                    <form onSubmit={handleSubmit}>
                         <br/>
-                       <p>Group:  <select id="age_group" required onChange={groupChange} value={age_group}>
-                            <option  value=""></option>
-                            <option value="Young">Young</option>
-                            <option value="Adults">Adults</option>
-                        </select></p>
-                    </div>
+                        <div className={"edit-team-name"}>
+                            <p>Team name: <input type="Name"
+                                   id="Name"
+                                   placeholder="Name"
+                                   name="Name"
+                                   value={name}
+                                   onChange={nameChange}/></p>
+                        </div>
+                        {/*<div>*/}
+                        {/*    <input*/}
+                        {/*        type="zone"*/}
+                        {/*        id="zone"*/}
+                        {/*        placeholder="Zone"*/}
+                        {/*        name="zone"*/}
+                        {/*        value={zone}*/}
+                        {/*        onChange={zoneChange}/>*/}
+                        {/*</div>*/}
+                        <div className={"edit-age-group"}>
+                            <br/>
+                           <p>Group:  <select id="age_group" required onChange={groupChange} value={age_group}>
+                                <option  value=""></option>
+                                <option value="Young">Young</option>
+                                <option value="Adults">Adults</option>
+                            </select></p>
+                        </div>
+
+                        <div className={"edit-sport"}>
+                            <br/>
+                            <p>Sport: <select id="sport" required onChange={sportChange} value={sport}>
+                                <option value=""></option>
+                                <option value="Football">Football</option>
+                                <option value="Padel">Padel</option>
+                            </select></p>
+                            <br/>
+                        </div>
+                        {sport === "Football" &&
+                            (
+                                <div className={"edit-quantity"}>
+                                    <p>Quantity<select id="Quantity" required onChange={quant_PlayersChange} value={quant_Players}>
+                                        <option  value=""></option>
+                                        <option value="11">11</option>
+                                        <option value="7">7</option>
+                                        <option value="5">5</option>
+                                    </select></p>
+                                </div>
+                            )
+                        }
+                        {sport === "Padel" &&
+                            (
+                                <div className={"edit-quantity"}>
+                                    <p>Quantity: <select id="Quantity" required onChange={quant_PlayersChange} defaultValue={team.quantity}>
+                                        <option value=""></option>
+                                        <option value="2">2</option>
+                                        <option value="1">1</option>
+                                    </select></p>
+                                </div>
+                            )
+                        }
+                        <div>
+                            {/*<button type="submit" className={"signUpButton"}>Sign up</button>*/}
+                            <button id="submit" type="submit" className={"saveChangesButton"} style={{right: "550px"}} onClick={() => newTeamRequest()}>Save Changes</button>
+                        </div>
+                        <div>
+                            <button className={"goBackButton"} onClick={handleGoToPickTeam}>Return to Pick Team</button>
+                        </div>
+                    </form>
+                        <br/>
+                        <div>
+                            <button className={"delete-button"} onClick={handleDeleteClick}>Delete team</button>
+                        </div>
 
 
-                    <br/>
-                    <p>Sport: <select id="sport" required onChange={sportChange} value={sport}>
-                        <option value=""></option>
-                        <option value="Football">Football</option>
-                        <option value="Padel">Padel</option>
-                    </select></p>
-                    <br/>
-                    {sport === "Football" &&
-                        (
-                            <div>
-                                <p>Quantity<select id="Quantity" required onChange={quant_PlayersChange} value={quant_Players}>
-                                    <option  value=""></option>
-                                    <option value="11">11</option>
-                                    <option value="7">7</option>
-                                    <option value="5">5</option>
-                                </select></p>
-                            </div>
-                        )
-                    }
-                    {sport === "Padel" &&
-                        (
-                            <div>
-                                <p>Quantity: <select id="Quantity" required onChange={quant_PlayersChange} defaultValue={team.quantity}>
-                                    <option value=""></option>
-                                    <option value="2">2</option>
-                                    <option value="1">1</option>
-                                </select></p>
-                            </div>
-                        )
-                    }
-                    <div>
-                        {/*<button type="submit" className={"signUpButton"}>Sign up</button>*/}
-                        <button id="submit" type="submit" className={"saveChangesButton"} onClick={() => newTeamRequest()}>Save Changes</button>
-                    </div>
-                    <div>
-                        <button className={"goBackButton"} onClick={handleGoToPickTeam}>Return to Pick Team</button>
-                    </div>
-                </form>
-                    <br/>
-                    <div>
-                        <button className={"delete-button"} onClick={handleDeleteClick}>Delete team</button>
-                    </div>
-
+                </div>
 
             </div>
-
-
         </div>
     )
 }

@@ -57,8 +57,7 @@ const App = () =>{
 
     return (
         <Routes>
-            <Route path="/" element={<PublicPage />} />
-            <Route path="/login" element={<LoginPage />} />
+            <Route path="/" element={<LoginPage />} />
             <Route path="/register" element={<RegisterPage />} />
             {/* Use RequireAuth to protect all other routes */}
             <Route

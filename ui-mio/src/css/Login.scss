@@ -1,9 +1,81 @@
+$background-color: #A9CCE3;
+@import url('https://fonts.googleapis.com/css?family=Baloo+Bhai+2&display=swap');
 .mainContainer {
     position: absolute;
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
-    background-color: white;
+}
+body {
+    height: 100vh;
+    margin: 0;
+    font-family: 'Baloo Bhai 2', sans-serif;
+    font-weight: 300;
+    font-size: 15px;
+    line-height: 1.7;
+    color: #c4c3ca;
+    background-color: $background-color;
+    overflow-x: hidden;
+}
+h1{
+    font-family: 'Baloo Bhai 2', sans-serif;
+}
+.containerPrincipalLogInPage{
+    position: absolute;
+    left: 42%;
+    top: 42%;
+    /*transform: translate(-100%, 0%);*/
+    text-align-all: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+}
+.containerPrincipalRegisterPage{
+    position: absolute;
+    left: 42%;
+    top: 32%;
+    /*transform: translate(-100%, 0%);*/
+    text-align-all: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.Logo{
+    position: relative;
+    /*background-color: #E2E2E2;*/
+    /*color: black;*/
+    /*border: 1px solid #E2E2E2;*/
+    border-radius: 1px;
+    transition-duration: 0.4s;
+    left: 625px;
+    top: 70px;
+}
+.LogoLogIn{
+    position: absolute;
+    left: 43.5%;
+    top: 10%;
+    z-index: 1;
+    /*background-color: #E2E2E2;*/
+    /*color: black;*/
+    /*border: 1px solid #E2E2E2;*/
+    border-radius: 1px;
+    transition-duration: 0.4s;
+    //left: 660px;
+    //top: 70px;
+}
+.LogoRegister{
+    position: absolute;
+    left: 43.5%;
+    top: 1%;
+    z-index: 1;
+    /*background-color: #E2E2E2;*/
+    /*color: black;*/
+    /*border: 1px solid #E2E2E2;*/
+    border-radius: 1px;
+    transition-duration: 0.4s;
+    //left: 660px;
+    //top: 70px;
 }
 .registerMainContainer{
     position: absolute;
@@ -12,7 +84,6 @@
     justify-content: center;
     top: 25px;
     //transform: translate(-50%, -50%);
-    background-color: white;
 }
 
 .containerForgotPassword {
@@ -72,9 +143,10 @@ lable {
 .greenButton {
     position: relative;
     background-color: white;
+    width: 275px;
     color: black;
     border: 1px solid #4CAF50;
-    border-radius: 1px;
+    border-radius: 4px;
     transition-duration: 0.4s;
 
 
@@ -84,24 +156,64 @@ lable {
     background-color: #4CAF50;
     color: white;
 }
+.pageTitle{
+    position: absolute;
+    color: black;
+    top: -5%;
+}
+.submitButtonLogIn {
+    position: absolute;
+    background-color: white;
+    width: 137.5px;
+    height: 50px;
+    color: black;
+    border: 1px solid #9F9280;
+    border-radius: 4px;
+    transition-duration: 0.4s;
+    top: 75%;
+    left: 25%;
+}
+
+.submitButtonLogIn:hover {
+    background-color: #9F9280;
+    color: white;
+}
+.submitButtonRegister {
+    position: absolute;
+    background-color: white;
+    width: 137.5px;
+    height: 50px;
+    color: black;
+    border: 1px solid #9F9280;
+    border-radius: 4px;
+    transition-duration: 0.4s;
+    top: 90%;
+    left: 25%;
+}
+
+.submitButtonRegister:hover {
+    background-color: #9F9280;
+    color: white;
+}
+
 .inputContainer{
     position: relative;
 }
 
 .signUpButtonLogin {
-    position: relative;
-    top : 1%;
-    left: 0%;
-    background-color: white;
-    padding: 12px 20px;
-    color: black;
-    border: 2px solid #b95de3;
+    position: absolute;
+    top : 100%;
+    left: 25%;
+    width: 137.5px;
+    background-color: $background-color;
+    color: #2a65f0;
+    border: 2px solid $background-color;
     border-radius: 4px;
     transition-duration: 0.4s;
 }
 
 .signUpButtonLogin:hover {
-    background-color: #b95de3;
+    background-color: #2a65f0;
     color: white;
 }
 
@@ -124,4 +236,50 @@ lable {
     width: 100px;
     height: auto;
     padding: 10px;
+}
+.input-icon-log {
+    position: relative;
+    top: -52.5px;
+    left: 18px;
+    height: 48px;
+    font-size: 24px;
+    line-height: 48px;
+    text-align: left;
+    color: #9F9280;
+    //-webkit-transition: all 200ms linear;
+    transition: all 200ms linear;
+}
+.form-group{
+    position: relative;
+    display: block;
+    margin: 0;
+    padding: 0;
+}
+
+
+
+.form-style {
+    padding: 13px 20px;
+    padding-left: 55px;
+    height: 48px;
+    width: 275px;
+    font-weight: 500;
+    border-radius: 4px;
+    font-size: 14px;
+    line-height: 22px;
+    letter-spacing: 0.5px;
+    outline: none;
+    color: #60584D;
+    background-color: #CDE2FF;
+    border: none;
+    -webkit-transition: all 200ms linear;
+    transition: all 200ms linear;
+    font-family: 'Baloo Bhai 2', sans-serif;
+    box-shadow: 0 4px 8px 0 rgba(196, 195, 202, 0.2);
+}
+.form-style:focus,
+.form-style:active {
+    border: none;
+    outline: none;
+    box-shadow: 0 4px 8px 0 rgba(196, 195, 202, 0.2);
 }

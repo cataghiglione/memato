@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import "../../css/Home.css"
+import "../../css/Home.scss"
 import "../../css/PickTeam.scss"
 import {getTeam, listTeams} from "../../service/mySystem";
 import {useAuthProvider} from "../../auth/auth";
@@ -57,23 +57,25 @@ export function TopBar(props) {
     return (
         <div>
             {once && getTeamMethod()}
-            <div className={"top-bar"}>
-                <img onClick={goToHome} style={{width: 280, height: "auto"}} src={require("../../images/logo_solo_letras.png")} alt={"Logo"} className={"Logo"}/>
+            <div className={"top-bar"} style={{backgroundColor: 204257}}>
 
-                <div className={"dropdown"}>
+                <img className={"top-bar-logo"} onClick={goToHome} style={{width: 250, height: "auto"}} src={require("../../images/logoRM/logoRM_letra.png")} alt={"Logo"}/>
+
+                <div className={"team-dropdown"}>
                     {!(props.getTeamId === 0) &&
-                    <button className={"dropdown-btn"} onClick={togglePickTeam}>
+                    <button className={"team-dropdown-btn"} onClick={togglePickTeam}>
                         {actualTeam.sport} {actualTeam.quantity}: {actualTeam.name}
                         <img style={{width: 22, height: "auto"}} src={require("../../images/dropdown-1.png")}
                              alt={"Logo"}/>
                     </button>}
                     {visible && goToPickTeam()}
                 </div>
+                <br/>
                 <button className={"showNotificationCenter"} onClick={toggleNotificationCenter}>
-                    <img style={{ width: 22, height: "auto"}} src={require("../../images/bell.png")} alt={"Logo"}/>
+                    <img style={{ width: 25, height: "auto"}} src={require("../../images/bell.png")}/>
                 </button>
                 <button className={"showMenu"} onClick={toggleMenuCenter}>
-                    <img style={{ width: 22, height: "auto"}} src={require("../../images/sideBarIcon.png")}/>
+                    <img style={{ width: 25, height: "auto"}} src={require("../../images/sideBarIcon.png")}/>
                 </button>
                 {menuVisible && (
                     <div>

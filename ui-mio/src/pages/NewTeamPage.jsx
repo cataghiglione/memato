@@ -3,7 +3,7 @@ import * as React from 'react'
 import {useState} from "react";
 import {useNavigate} from "react-router";
 import {newTeam} from "../service/mySystem";
-import "../css/Home.css"
+import "../css/Home.scss"
 import "../images/RivalMatch_logoRecortado.png"
 import {useSearchParams} from "react-router-dom";
 import {render} from "@testing-library/react";
