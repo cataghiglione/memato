@@ -69,20 +69,20 @@ export function HomePage(props){
                 </button>
                 {teams.length > 0 && (
                     <div>
-                        {teams.map((team) => (
-                            <div>
-                                <div className={`team-pick`} multiple={true} key={team.id} onClick={findRival}>
-                                    <button className={"team-select-option-pick"}  value={team.id} >
-                                        {team.sport} {team.quantity}: {team.name}
-                                    </button>
-                                </div>
-                                <div className={`team-edit`}>
-                                    <button onClick={changeNextTeam} className={"team-edit-option"} multiple={true} key={team.id} value={team.id} >
-                                        <PencilSquare style={{color:"black"}} />
-                                    </button>
-                                </div>
-                            </div>
-                        ))}
+                        <div className={`team-pick`} multiple={true} onClick={findRival}>
+                            {teams.map((team) => (
+                                <button className={"team-select-option-pick"} key={team.id} value={team.id} >
+                                    {team.sport} {team.quantity}: {team.name}
+                                </button>
+                            ))}
+                        </div>
+                        <div className={`team-edit`} multiple={true} onClick={changeNextTeam}>
+                            {teams.map((team) => (
+                                <button className={"team-edit-option"} key={team.id} value={team.id} >
+                                    <PencilSquare style={{color:"black"}} />
+                                </button>
+                            ))}
+                        </div>
                     </div>
                 )}
             </div>

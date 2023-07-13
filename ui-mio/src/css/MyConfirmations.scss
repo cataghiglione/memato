@@ -27,15 +27,16 @@ h1{
 }
 .map-container {
     display: flex;
-    justify-content: center;
-    align-items: center;
+    justify-content: flex-start;
+    align-items: flex-start;
     height: 100vh;
 }
 
 .map {
-    width: 750px; /* ajusta el ancho según tus necesidades */
-    height: 700px; /* ajusta la altura según tus necesidades */
+    flex: 2;
+    height: 100%;
 }
+
 .noConfirmedMatchesTitle {
     display: flex;
     justify-content: center;
@@ -82,4 +83,20 @@ h1{
 .findRivalB:hover{
     background-color: #b95de3;
     color: white;
+}
+.matches-list {
+    position: fixed;
+    left: 60%;
+    bottom:50%;
+
+}
+.content {
+    flex: 1;
+    display: flex;
+    justify-content: space-between;
+}
+.headerContainer{
+    position:fixed;
+    left:60%;
+    bottom:75%;
 }
