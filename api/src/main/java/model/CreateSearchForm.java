@@ -20,18 +20,20 @@ public class CreateSearchForm {
     private final Date date;
     private final String latitude;
     private final String longitude;
+    private final int age;
 
     public static CreateSearchForm createFromJson(String body) {
         return fromJson(body, CreateSearchForm.class);
     }
 
-    public CreateSearchForm(Team team, boolean isSearching, Date date,  String latitude,String longitude) {
+    public CreateSearchForm(Team team, boolean isSearching, Date date,  String latitude,String longitude,int age) {
         this.team = team;
         this.isSearching = isSearching;
 //        LocalDate localDate = LocalDate.parse(date, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
         this.date = date;
         this.latitude=latitude;
         this.longitude=longitude;
+        this.age=age;
     }
 
     public Team getTeam() {
@@ -54,7 +56,10 @@ public class CreateSearchForm {
         return longitude;
     }
 
-//    public List<String> getTime() {
+    public int getAge() {
+        return age;
+    }
+    //    public List<String> getTime() {
 //        return time;
 //    }
 //    private Date date_formatter(Date date) throws ParseException {

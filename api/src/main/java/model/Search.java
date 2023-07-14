@@ -45,12 +45,14 @@ public class Search {
     @Column
     private String longitude;
     private Date date;
+    @Column
+    private int averageAge;
 
 
     public Search() {
     }
 
-    private Search(Team team, Date date, List<String> time,String latitude, String longitude) {
+    private Search(Team team, Date date, List<String> time,String latitude, String longitude, int age) {
         this.team=team;
         this.isSearching=true;
         this.month=date.getMonth();
@@ -60,11 +62,12 @@ public class Search {
         this.latitude=latitude;
         this.longitude=longitude;
         this.date=date;
+        this.averageAge=age;
 
 
     }
-    public static Search create(Team team, Date date, List<String> time,String latitude,String longitude){
-        return new Search(team, date,time,latitude,longitude);
+    public static Search create(Team team, Date date, List<String> time,String latitude,String longitude,int age){
+        return new Search(team, date,time,latitude,longitude,age);
     }
     private void setSearching(boolean value){
         this.isSearching=value;
@@ -124,4 +127,7 @@ public class Search {
         return id;
     }
 
+    public int getAverageAge() {
+        return averageAge;
+    }
 }

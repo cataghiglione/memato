@@ -490,7 +490,7 @@ public class Routes {
                         );
                         if (user.isPresent()) {
                             String user_id = user.get().getId().toString();
-                            List<Search> candidates = searches.findCandidates(user_id, timeInterval, searchForm.getDate(), team.getSport(), team.getQuantity(), searchForm.getLatitude(), searchForm.getLongitude());
+                            List<Search> candidates = searches.findCandidates(user_id, timeInterval, searchForm.getDate(), team.getSport(), team.getQuantity(), searchForm.getLatitude(), searchForm.getLongitude(),searchForm.getAge());
                             List<CommonTimeSearch> commonTimeSearchList = new ArrayList<>();
                             Long activeSearchId = searchId.longValue();
                             searches.getSearchById(activeSearchId).ifPresent(
