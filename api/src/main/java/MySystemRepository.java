@@ -11,6 +11,7 @@ public class MySystemRepository {
     private final Contacts contacts;
     private final Notifications notifications;
     private final Messages messages;
+    private final TimeIntervals timeIntervals;
 
     public MySystemRepository(EntityManager entityManager) {
         this.users = new Users(entityManager);
@@ -20,6 +21,7 @@ public class MySystemRepository {
         this.notifications = new Notifications(entityManager);
         this.contacts = new Contacts(entityManager);
         this.messages = new Messages(entityManager);
+        this.timeIntervals = new TimeIntervals(entityManager);
     }
 
     public static MySystemRepository create(EntityManager entityManager) {
@@ -46,4 +48,5 @@ public class MySystemRepository {
     public Messages messages() {
         return messages;
     }
+    public TimeIntervals timeIntervals(){return timeIntervals;}
 }

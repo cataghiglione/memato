@@ -9,6 +9,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 
 @Entity
@@ -25,8 +26,9 @@ public class Search {
     @Column
     private boolean isSearching;
 
-    @Column
-    private String time;
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "TIME_ID", referencedColumnName = "id")
+    private TimeInterval time;
 
     @Column
     private int month;
@@ -48,20 +50,20 @@ public class Search {
     public Search() {
     }
 
-    private Search(Team team, Date date, String time,String latitude, String longitude) {
+    private Search(Team team, Date date, List<String> time,String latitude, String longitude) {
         this.team=team;
         this.isSearching=true;
         this.month=date.getMonth();
         this.day=date.getDate();
         this.year=date.getYear();
-        this.time=time;
+        this.time=new TimeInterval(time);
         this.latitude=latitude;
         this.longitude=longitude;
         this.date=date;
 
 
     }
-    public static Search create(Team team, Date date, String time,String latitude,String longitude){
+    public static Search create(Team team, Date date, List<String> time,String latitude,String longitude){
         return new Search(team, date,time,latitude,longitude);
     }
     private void setSearching(boolean value){
@@ -102,7 +104,7 @@ public class Search {
         return isSearching;
     }
 
-    public String getTime() {
+    public TimeInterval getTime() {
         return time;
     }
 

@@ -1,4 +1,5 @@
 package dto;
+import java.util.List;
 
 public class PendingMatch {
 
@@ -7,7 +8,7 @@ public class PendingMatch {
     public Team team1;
     public Team team2;
 
-    public String time;
+    public List<String> time;
     public String day;
 
     public Boolean isConfirmed;

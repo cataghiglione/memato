@@ -12,6 +12,7 @@
         <class>model.Contact</class>
         <class>model.Message</class>
         <class>model.Notification</class>
+        <class>model.TimeInterval</class>
 <!--        <class>org.austral.ing.lab1.model.Publication</class>-->
 <!--        aca arriba se pone como la ubicacion de la entity que queres guardar-->
 

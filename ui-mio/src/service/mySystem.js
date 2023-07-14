@@ -103,7 +103,9 @@ export const deleteSearch = (token, searchId, okCallback, errorCallback) => {
 
 
 export const findRival = (token, id, form, okCallback, secondOkCallback ,errorCallback) => {
-    fetch(`${restApiEndpoint}/newSearch?id=${id}`, {
+    const timeParam = form.time.join(',');
+
+    fetch(`${restApiEndpoint}/newSearch?id=${id}&time=${timeParam}`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',

@@ -1,9 +1,10 @@
 package dto;
 import java.util.Date;
+import java.util.List;
 
 public class ConfirmedMatch {
     public Long id;
-    public String time;
+    public List<String> time;
     public int day;
     public int month;
     public int year;

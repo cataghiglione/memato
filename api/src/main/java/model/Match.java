@@ -2,6 +2,7 @@ package model;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 
 @Entity
@@ -68,8 +69,8 @@ public class Match {
         return search1.getYear();
     }
 
-    public String getTime() {
-        return search1.getTime();
+    public List<String> getTime() {
+        return search1.getTime().sameIntervals(search2.getTime().getIntervals());
     }
 
     public Team getTeam1() {

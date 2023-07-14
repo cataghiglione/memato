@@ -2,8 +2,10 @@ package repository;
 
 import model.Search;
 import model.Team;
+import model.TimeInterval;
 
 import java.awt.geom.Point2D;
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -21,7 +23,7 @@ public class Searches {
         this.entityManager = entityManager;
     }
 
-    public Search createSearch(Team team, Date date, String time, String latitude,String longitude) throws ParseException {
+    public Search createSearch(Team team, Date date, List<String> time, String latitude,String longitude) throws ParseException {
         Optional<Search> searchOptional = findSearchByTeam(Long.toString(team.getId()), time,date.getMonth(),date.getDate(), date.getYear(),latitude,longitude );
         if (searchOptional.isEmpty()) {
             final Search search = Search.create(team, date, time,latitude,longitude);
@@ -68,19 +70,18 @@ public class Searches {
                 .getResultList();
     }
 
-    public Optional<Search> reactivateSearch(Team team, String time, Date date, String latitude, String longitude) {
+    public Optional<Search> reactivateSearch(Team team, List<String> time, Date date, String latitude, String longitude) {
         Optional<Search> search = findSearchByTeam(Long.toString(team.getId()), time, date.getMonth(),date.getDay(),date.getYear(), latitude,longitude);
         search.ifPresent(Search::reactivateSearching);
         return search;
     }
-    public boolean exists(String id, String time, Date date,String latitude, String longitude){
+    public boolean exists(String id, List<String> time, Date date, String latitude, String longitude){
         return findSearchByTeam(id,time,date.getMonth(),date.getDate(), date.getYear(),latitude,longitude).isPresent();
     }
 
 
-    public List<Search> findCandidates(String id, String time, Date date, String sport, String quantity, String latitude, String longitude){
-        List<Search> possibleCandidates = entityManager.createQuery("SELECT s FROM Search s WHERE (s.time like :time AND s.month =: month AND s.day =: day AND s.year=: year AND cast(s.team.user.id as string) not LIKE :id AND s.team.sport LIKE :sport AND s.team.quantity LIKE :quantity AND isSearching = true)", Search.class)
-                .setParameter("time",time)
+    public List<Search> findCandidates(String id, TimeInterval time, Date date, String sport, String quantity, String latitude, String longitude){
+        List<Search> possibleCandidates = entityManager.createQuery("SELECT s FROM Search s WHERE ( s.month =: month AND s.day =: day AND s.year=: year AND cast(s.team.user.id as string) not LIKE :id AND s.team.sport LIKE :sport AND s.team.quantity LIKE :quantity AND isSearching = true)", Search.class)
                 .setParameter("month", date.getMonth())
                 .setParameter("day",date.getDate())
                 .setParameter("year",date.getYear())
@@ -89,9 +90,14 @@ public class Searches {
                 .setParameter("quantity",quantity)
                 .getResultList();
         List<Search> candidates=new ArrayList<>(possibleCandidates.size());
-        for (Search possibleCandidate : possibleCandidates) {
-            if (isInA5KmRadius(Double.parseDouble(latitude), Double.parseDouble(longitude), Double.parseDouble(possibleCandidate.getLatitude()), Double.parseDouble(possibleCandidate.getLongitude()))) {
-                candidates.add(possibleCandidate);
+        for (int i = 0; i < possibleCandidates.size() ; i++) {
+            if (time.haveOneCoincidentTime(possibleCandidates.get(i).getTime().getIntervals())){
+                candidates.add(possibleCandidates.get(i));
+            }
+        }
+        for (Search candidate : candidates) {
+            if (!isInA5KmRadius(Double.parseDouble(latitude), Double.parseDouble(longitude), Double.parseDouble(candidate.getLatitude()), Double.parseDouble(candidate.getLongitude()))) {
+                candidates.remove(candidate);
             }
 
         }
@@ -119,18 +125,25 @@ public class Searches {
                 .setParameter("teamId",teamId)
                 .executeUpdate();
     }
-    private Optional<Search> findSearchByTeam(String team_id, String time, int month, int day, int year,String latitude, String longitude) {
-        return entityManager.createQuery("SELECT s FROM Search s WHERE (cast(s.team.id as string) LIKE :team_id AND s.time LIKE :time AND s.day = :day AND s.month = :month AND s.year = :year AND s.latitude LIKE :latitude AND s.longitude LIKE :longitude)", Search.class)
+    private Optional<Search> findSearchByTeam(String team_id, List<String> time, int month, int day, int year, String latitude, String longitude) {
+        Optional<Search> search =  entityManager.createQuery("SELECT s FROM Search s WHERE (cast(s.team.id as string) LIKE :team_id  AND s.day = :day AND s.month = :month AND s.year = :year AND s.latitude LIKE :latitude AND s.longitude LIKE :longitude)", Search.class)
                 .setParameter("team_id", team_id)
                 .setParameter("month", month)
                 .setParameter("year", year)
                 .setParameter("day", day)
-                .setParameter("time", time)
                 .setParameter("latitude",latitude)
                 .setParameter("longitude",longitude)
                 .getResultList()
                 .stream()
                 .findFirst();
+        if (search.isPresent()){
+            TimeInterval timeInterval = search.get().getTime();
+            if (timeInterval.listEqualsIgnoreOrder(time)){
+                return search;
+            }
+            else return Optional.empty();
+        }
+        else return Optional.empty();
     }
     private static boolean isInA5KmRadius(double lat1, double lon1, double lat2, double lon2) {
         //Haversine formula
