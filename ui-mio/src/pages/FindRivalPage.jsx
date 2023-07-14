@@ -57,7 +57,7 @@ export function FindRivalPage(props) {
     const [date, setDate] = useState(new Date());
     const [time, setTime] = useState('')
     const [selectedTimes, setSelectedTimes] = useState([]);
-    const [averageAge, setAverageAge] = React.useState(25);
+    const [averageAge, setAverageAge] = useState(25);
 
 
     const [rivalMenuOpen, setRivalMenuOpen] = useState(false);
@@ -262,6 +262,9 @@ export function FindRivalPage(props) {
     function valuetext(value) {
         return `${value}`;
     }
+    const handleAverageAgeChange = (event, value) => {
+        setAverageAge(value);
+    };
     const marks = [
         {
             value: 18,
@@ -373,7 +376,7 @@ export function FindRivalPage(props) {
                             min={18}
                             max={100}
                             value={averageAge}
-                            onChange={setAverageAge}
+                            onChange={handleAverageAgeChange}
                             valueLabelDisplay="on"
                         />
                     </Box>
@@ -437,7 +440,7 @@ export function FindRivalPage(props) {
                                     <br/><br/>
                                     <div>
                                         <button className={"button-play"}
-                                                onClick={async () => await playButton(search.id)}>
+                                                onClick={async () => await playButton(search.search.id)}>
                                             Play
                                         </button>
 

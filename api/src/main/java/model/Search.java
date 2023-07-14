@@ -26,25 +26,22 @@ public class Search {
     @Column
     private boolean isSearching;
 
+    @Column
+    private boolean isRecurring;
+
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "TIME_ID", referencedColumnName = "id")
     private TimeInterval time;
-
-    @Column
-    private int month;
-
-    @Column
-    private int day;
-
-    @Column
-    private int year;
 
     @Column
     private String latitude;
 
     @Column
     private String longitude;
-    private Date date;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "DATE_ID", referencedColumnName = "id")
+    private model.Date date;
     @Column
     private int averageAge;
 
@@ -55,13 +52,10 @@ public class Search {
     private Search(Team team, Date date, List<String> time,String latitude, String longitude, int age) {
         this.team=team;
         this.isSearching=true;
-        this.month=date.getMonth();
-        this.day=date.getDate();
-        this.year=date.getYear();
         this.time=new TimeInterval(time);
         this.latitude=latitude;
         this.longitude=longitude;
-        this.date=date;
+        this.date= new model.Date(date.getDate(),date.getMonth(),date.getYear(),date.getDay());
         this.averageAge=age;
 
 
@@ -99,7 +93,7 @@ public class Search {
         isSearching = false;
     }
 
-    public Date getDate() {
+    public model.Date getDate() {
         return date;
     }
 
@@ -111,17 +105,17 @@ public class Search {
         return time;
     }
 
-    public int getMonth() {
-        return month;
-    }
-
-    public int getDay() {
-        return day;
-    }
-
-    public int getYear() {
-        return year;
-    }
+//    public int getMonth() {
+//        return month;
+//    }
+//
+//    public int getDay() {
+//        return day;
+//    }
+//
+//    public int getYear() {
+//        return year;
+//    }
 
     public long getId() {
         return id;
