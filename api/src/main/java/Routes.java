@@ -4,6 +4,7 @@ import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.google.gson.Gson;
 import dto.ConfirmedMatch;
+import dto.CurrentSearch;
 import dto.PendingMatch;
 import json.JsonParser;
 import model.*;
@@ -15,6 +16,7 @@ import spark.Spark;
 
 import javax.persistence.*;
 import java.awt.geom.Point2D;
+import java.sql.Time;
 import java.time.Instant;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -82,7 +84,7 @@ public class Routes {
         });
         storedBasicUser(entityManagerFactory);
         storedBasicTeam(entityManagerFactory);
-        storedBasicSearch(entityManagerFactory);
+//        storedBasicSearch(entityManagerFactory);
         options("/*", (req, resp) -> {
             resp.status(200);
             return "ok";
@@ -195,18 +197,18 @@ public class Routes {
                         teams.getTeamByTeamId(Long.parseLong(form.getTeam_id())).ifPresent(
                                 (team) -> {
                                     contacts.getContactByContactId(Long.parseLong(form.getContact_id())).ifPresent(
-                                        (contact) -> {
-                                            entityManager2.getTransaction().begin();
-                                            messages.createMessage(contact, team, form.getDate(), form.getText());
-                                            entityManager2.getTransaction().commit();
-                                            entityManager2.close();
-                                            system.createNotificationWithTeam(contact.getTeam1().equals(team) ? contact.getTeam2() : contact.getTeam1(),
-                                                    String.format("%s has send %s a message", team.getName(), contact.getTeam1().equals(team) ? contact.getTeam2().getName() : contact.getTeam1().getName()),
-                                                    2, team.getId());
-                                            res.status(200);
-                                            res.body("new message");
-                                    });
-                        });
+                                            (contact) -> {
+                                                entityManager2.getTransaction().begin();
+                                                messages.createMessage(contact, team, form.getDate(), form.getText());
+                                                entityManager2.getTransaction().commit();
+                                                entityManager2.close();
+                                                system.createNotificationWithTeam(contact.getTeam1().equals(team) ? contact.getTeam2() : contact.getTeam1(),
+                                                        String.format("%s has send %s a message", team.getName(), contact.getTeam1().equals(team) ? contact.getTeam2().getName() : contact.getTeam1().getName()),
+                                                        2, team.getId());
+                                                res.status(200);
+                                                res.body("new message");
+                                            });
+                                });
                     },
                     () -> {
                         res.status(404);
@@ -334,7 +336,7 @@ public class Routes {
             getUser(req).ifPresentOrElse(
                     (user) -> {
                         final List<Notification> notificationsList = system.listPendingNotifications(user);
-                        if(notificationsList.size() > 5){
+                        if (notificationsList.size() > 5) {
                             transformNotifications(res, notificationsList.subList(0, 5));
                         }
                         transformNotifications(res, notificationsList);
@@ -346,26 +348,25 @@ public class Routes {
             );
             return res.body();
         });
-        authorizedPost(UPDATE_NOTIFICATION_STATUS, (req, res)-> {
+        authorizedPost(UPDATE_NOTIFICATION_STATUS, (req, res) -> {
             final String id = (req.queryParams("id"));
             final EntityManager entityManager = entityManagerFactory.createEntityManager();
             final Notifications notifications = new Notifications(entityManager);
             getUser(req).ifPresentOrElse(
-                (user) -> {
-                    if(notifications.checkUserNotification(Long.toString(user.getId()), id)){
-                        system.updateNotification(id);
-                        res.status(200);
-                        res.body("All turn great!");
-                    }
-                    else {
+                    (user) -> {
+                        if (notifications.checkUserNotification(Long.toString(user.getId()), id)) {
+                            system.updateNotification(id);
+                            res.status(200);
+                            res.body("All turn great!");
+                        } else {
+                            res.status(404);
+                            res.body("Invalid user permission");
+                        }
+                    },
+                    () -> {
                         res.status(404);
-                        res.body("Invalid user permission");
-                    }
-                },
-                () -> {
-                    res.status(404);
-                    res.body("Invalid Token");
-                });
+                        res.body("Invalid Token");
+                    });
             return res.body();
         });
         get(PICK_TEAM_ROUTE, (req, res) -> {
@@ -467,13 +468,17 @@ public class Routes {
             final Searches searches = new Searches(entityManager);
             final Teams teams = new Teams(entityManager);
             final String id = (req.queryParams("id"));
+            final TimeIntervals timeIntervals = new TimeIntervals(entityManager);
+            String timeParams = req.queryParams("time");
+            String[] time = timeParams.split(",");
             Optional<User> user = getUser(req);
             AtomicLong searchId = new AtomicLong();
+            TimeInterval timeInterval = system.createTimeInterval(List.of(time));
 
             teams.findTeamsById(id).ifPresent(
                     (team) -> {
                         final CreateSearchForm searchForm = CreateSearchForm.createFromJson(req.body());
-                        system.findOrCreateSearch(searchForm, team).ifPresentOrElse(
+                        system.findOrCreateSearch(searchForm, team, timeInterval).ifPresentOrElse(
                                 (search) -> {
                                     searchId.set(search.getId());
                                     res.status(200);
@@ -485,8 +490,22 @@ public class Routes {
                         );
                         if (user.isPresent()) {
                             String user_id = user.get().getId().toString();
-                            List<Search> candidates = searches.findCandidates(user_id, searchForm.getTime(), searchForm.getDate(), team.getSport(), team.getQuantity(), searchForm.getLatitude(), searchForm.getLongitude());
-                            NewSearchResponse newSearchResponse = new NewSearchResponse(searchId.get(), candidates);
+                            List<Search> candidates = searches.findCandidates(user_id, timeInterval, searchForm.getDate(), team.getSport(), team.getQuantity(), searchForm.getLatitude(), searchForm.getLongitude());
+                            List<CommonTimeSearch> commonTimeSearchList = new ArrayList<>();
+                            Long activeSearchId = searchId.longValue();
+                            searches.getSearchById(activeSearchId).ifPresent(
+                                    (search) -> {
+                                        for (Search candidate : candidates) {
+                                            List<String> times = timeIntervals.sameIntervals(search.getTime().getIntervals(), candidate.getTime().getIntervals());
+                                            final CommonTimeSearch commonTimeSearch = new CommonTimeSearch();
+                                            commonTimeSearch.search = candidate;
+                                            commonTimeSearch.times = times;
+                                            commonTimeSearchList.add(commonTimeSearch);
+                                        }
+                                    });
+                            NewSearchResponse newSearchResponse = new NewSearchResponse(searchId.get(), commonTimeSearchList);
+
+
                             res.body(toJson(newSearchResponse));
                         }
 
@@ -499,7 +518,15 @@ public class Routes {
             final Searches searches = new Searches(entityManager);
             final Long team_id = Long.valueOf(req.queryParams("teamid"));
             List<Search> active_searches = searches.findActiveSearchesByTeamId(team_id);
-            res.body(toJson(active_searches));
+            List<CurrentSearch> dto_active_searches = active_searches.stream().map(search -> {
+                final CurrentSearch currentSearch = new CurrentSearch();
+                currentSearch.id = search.getId();
+                currentSearch.day = search.getDay();
+                currentSearch.month = search.getMonth();
+                currentSearch.times = search.getTime().getIntervals();
+                return currentSearch;
+            }).toList();
+            res.body(toJson(dto_active_searches));
             res.status(200);
             return res.body();
         });
@@ -530,7 +557,7 @@ public class Routes {
                         transaction.begin();
                         //por las dudas, aca en el form habia un teamForm.getTeam en la query
                         teams.updateTeam(teamForm.getName(), teamForm.getSport(), teamForm.getQuantity(), teamForm.getAgeGroup(), Long.valueOf(id));
-                        if (!Objects.equals(teamForm.getQuantity(), prev_quantity) || !Objects.equals(teamForm.getSport(), prev_sport)){
+                        if (!Objects.equals(teamForm.getQuantity(), prev_quantity) || !Objects.equals(teamForm.getSport(), prev_sport)) {
                             searches.deactivateSearchesByTeam(Long.parseLong(id));
                             matches.cancelMatchesByTeam(Long.parseLong(id));
                         }
@@ -580,15 +607,15 @@ public class Routes {
             if (state) {
                 res.status(200);
                 matches.findMatch(match_id).ifPresent(
-                    (match) -> {
-                        teams.getTeamByTeamId(team_id).ifPresent(
-                            (team) -> {
-                                system.createNotificationWithSearch(match.getTeam1().equals(team) ? match.getSearch2() : match.getSearch1(),
-                                        String.format("%s has confirmed the match for %d/%d", team.getName(), match.getDay(), match.getMonth() + 1),
-                                        match.isConfirmed() ? 3 : 1, team.getId());
-                            }
-                        );
-                    }
+                        (match) -> {
+                            teams.getTeamByTeamId(team_id).ifPresent(
+                                    (team) -> {
+                                        system.createNotificationWithSearch(match.getTeam1().equals(team) ? match.getSearch2() : match.getSearch1(),
+                                                String.format("%s has confirmed the match for %d/%d", team.getName(), match.getDay(), match.getMonth() + 1),
+                                                match.isConfirmed() ? 3 : 1, team.getId());
+                                    }
+                            );
+                        }
                 );
             } else res.status(400);
             return res.status();
@@ -637,10 +664,9 @@ public class Routes {
         authorizedPost(DEACTIVATE_SEARCH_ROUTE, (req, res) -> {
             final Long id = Long.valueOf(req.queryParams("id"));
             boolean state = system.deactivateSearch(id);
-            if (state){
+            if (state) {
                 res.status(200);
-            }
-            else res.status(400);
+            } else res.status(400);
             return res.status();
 
         });
@@ -648,12 +674,13 @@ public class Routes {
             final EntityManager entityManager = entityManagerFactory.createEntityManager();
             final Long team_id = Long.valueOf(req.queryParams("teamid"));
             final Matches matches = new Matches(entityManager);
+            final TimeIntervals timeIntervals = new TimeIntervals(entityManager);
             List<Match> matchesList = matches.findMatchesByTeamId(team_id);
             List<PendingMatch> pendingMatches = matchesList.stream().map(match -> {
                 final PendingMatch pendingMatch = new PendingMatch();
 
 
-                pendingMatch.day = match.getDay() + "/" + (match.getMonth()+1);
+                pendingMatch.day = match.getDay() + "/" + (match.getMonth() + 1);
                 pendingMatch.time = match.getTime();
                 pendingMatch.id = match.getId();
 
@@ -737,11 +764,11 @@ public class Routes {
                                     final boolean status = system.declineMatch(matchId, teamId);
                                     if (status) {
                                         res.status(200);
-                                        if(match.getTeam1().equals(team))
+                                        if (match.getTeam1().equals(team))
                                             system.createNotificationWithTeam(match.getTeam2(),
-                                                String.format("%s has decline the match with %s for %d/%d", team.getName(),
-                                                        match.getTeam2().getName(), match.getDay(), match.getMonth()),
-                                                4, team.getId());
+                                                    String.format("%s has decline the match with %s for %d/%d", team.getName(),
+                                                            match.getTeam2().getName(), match.getDay(), match.getMonth()),
+                                                    4, team.getId());
                                         else
                                             system.createNotificationWithTeam(match.getTeam1(),
                                                     String.format("%s has decline the match with %s for %d/%d", team.getName(),
@@ -768,7 +795,7 @@ public class Routes {
                         final ConfirmedMatch confirmedMatch = new ConfirmedMatch();
                         confirmedMatch.time = match.getTime();
                         confirmedMatch.day = match.getSearch1().getDay();
-                        confirmedMatch.month=match.getSearch1().getMonth();
+                        confirmedMatch.month = match.getSearch1().getMonth();
                         confirmedMatch.year = match.getSearch1().getYear();
 
                         Point2D.Double coordinates = searches.getMiddlePoint(match.getSearch1().getLatitude(), match.getSearch1().getLongitude(), match.getSearch2().getLatitude(), match.getSearch2().getLongitude());
@@ -781,8 +808,8 @@ public class Routes {
                             confirmedMatch.rival = match.getTeam1().asDto();
                         }
 
-                    return confirmedMatch;
-            }
+                        return confirmedMatch;
+                    }
             ).toList();
             res.status(200);
 
@@ -816,6 +843,7 @@ public class Routes {
         res.status(200);
         res.body(toJson(dtoNotifications));
     }
+
     private void transformMessages(Response res, List<Message> messageList) {
         List<dto.Message> dtoMessages = messageList.stream().map(message -> {
             final dto.Message dtoMessage = new dto.Message();
@@ -832,6 +860,7 @@ public class Routes {
         res.status(200);
         res.body(toJson(dtoMessages));
     }
+
     private void authorizedGet(final String path, final Route route) {
         get(path, (request, response) -> authorize(route, request, response));
     }
@@ -938,27 +967,27 @@ public class Routes {
         entityManager.close();
     }
 
-    private static void storedBasicSearch(EntityManagerFactory entityManagerFactory) {
-        final EntityManager entityManager = entityManagerFactory.createEntityManager();
-        final Teams teams = new Teams(entityManager);
-        final Searches searches = new Searches(entityManager);
-        List<Team> teamList = teams.listAll();
-        EntityTransaction tx = entityManager.getTransaction();
-        tx.begin();
-        if (searches.listAll().isEmpty()) {
-            final Search kateSearch =
-                    Search.create(teamList.get(0), Date.from(Instant.now()), "Afternoon", "-34.456884", "-58.858952");
-            final Search cocaSearch =
-                    Search.create(teamList.get(1), Date.from(Instant.now()), "Afternoon", "-36.456884", "-58.858952");
-            final Search ferpaSearch =
-                    Search.create(teamList.get(2), Date.from(Instant.now()), "Afternoon", "-35.456884", "-58.858952");
-            searches.persist(kateSearch);
-            searches.persist(cocaSearch);
-            searches.persist(ferpaSearch);
-        }
-        tx.commit();
-        entityManager.close();
-    }
+//    private static void storedBasicSearch(EntityManagerFactory entityManagerFactory) {
+//        final EntityManager entityManager = entityManagerFactory.createEntityManager();
+//        final Teams teams = new Teams(entityManager);
+//        final Searches searches = new Searches(entityManager);
+//        List<Team> teamList = teams.listAll();
+//        EntityTransaction tx = entityManager.getTransaction();
+//        tx.begin();
+//        if (searches.listAll().isEmpty()) {
+//            final Search kateSearch =
+//                    Search.create(teamList.get(0), Date.from(Instant.now()), "Afternoon", "-34.456884", "-58.858952");
+//            final Search cocaSearch =
+//                    Search.create(teamList.get(1), Date.from(Instant.now()), "Afternoon", "-36.456884", "-58.858952");
+//            final Search ferpaSearch =
+//                    Search.create(teamList.get(2), Date.from(Instant.now()), "Afternoon", "-35.456884", "-58.858952");
+//            searches.persist(kateSearch);
+//            searches.persist(cocaSearch);
+//            searches.persist(ferpaSearch);
+//        }
+//        tx.commit();
+//        entityManager.close();
+//    }
 
     private static String capitalized(String name) {
         return Strings.isNullOrEmpty(name) ? name : name.substring(0, 1).toUpperCase() + name.substring(1).toLowerCase();
