@@ -257,7 +257,7 @@ export function FindRivalPage(props) {
                         showDisabledMonthNavigation
                         calendarContainer={MyContainer}
                     />
-                    <Icon style ={{left:"4", top: "-48", fontSize: "20"}} className="input-icon-log" icon="radix-icons:calendar" />
+                    <Icon style ={{left:"4", top: "-40px", fontSize: "20"}} className="input-icon-log" icon="radix-icons:calendar" />
                 </div>
 
                 <div className={"time_select"}>
@@ -271,15 +271,15 @@ export function FindRivalPage(props) {
                         <option value="Night">Night</option>
                         <option value="No preference">No preference</option>
                     </select>
-                    <Icon style ={{left:"4", top: "-54", fontSize: "20"}} className="input-icon-log" icon="ion:time-outline" />
+                    <Icon style ={{left:"4", top: "-45px", fontSize: "20"}} className="input-icon-log" icon="ion:time-outline" />
                 </div>
 
                 <div className={"zone"}>
                     {changeLocationButton === 'Select location' && <p>Select your preferred zone: </p>}
                     {changeLocationButton !== 'Select location' && <p>Your preferred zone: {selectedLocation}</p>}
-                    <button className={"selectLocationButton"} onClick={handleSelectLocation}> <Icon style ={{left:"auto", top: "auto", fontSize: "20"}} className="input-icon-log" icon="mi:location" /> {changeLocationButton} </button>
+                    <button className={"selectLocationButton"} onClick={handleSelectLocation}> <Icon style ={{left:"auto", top: "-5px", fontSize: "20"}} className="input-icon-log" icon="mi:location" /> {changeLocationButton} </button>
                     {showPopup && (
-                        <div className="popup">
+                        <div className="popupFR">
                             <BingMap
                                 onInfoboxesWithPushPinsChange={handleInfoboxesWithPushPins}
                             />
@@ -291,13 +291,10 @@ export function FindRivalPage(props) {
                             <button className={"goBackSelLoc"} onClick={handleSelectLocation}>Go back</button>
                         </div>
                     )}
-
-
                 </div>
 
 
-                <button className={"findRivalButton"} id="submit" type="submit" onClick={openAndFindRivals}> Find
-                    Rival!
+                <button className={"findRivalButton"} id="submit" type="submit" onClick={openAndFindRivals}> Find rival!
                 </button>
             </form>
             {(rivalMenuOpen && searches.length > 0) &&
@@ -305,21 +302,6 @@ export function FindRivalPage(props) {
                     <div className={"title"}>
                         Teams searching for rivals:
                     </div>
-
-
-                    {/*    <select className={"team-select"} multiple={true} onChange={playMatch}>*/}
-                    {/*{teams.map(team =>*/}
-                    {/*    <option className={"team-select-option"} style={{textTransform: 'capitalize'}} value={team.id}>*/}
-                    {/*    nombre: {team.name}, deporte: {team.sport}, categoria: {team.group} </option>*/}
-                    {/*    // <p>nombre = {team.name}    deporte = {team.sport} </p>*/}
-                    {/*    // <option>{team.name}</option>*/}
-
-                    {/*    )*/}
-                    {/*}*/}
-                    {/*    </select>*/}
-
-
-                    {/*<div style={{display: 'flex', flexWrap: 'wrap', position: "relative"}}>*/}
                     <div className={"searches-list"}>
                         {searches.map((search) => (
                             <div>
@@ -350,10 +332,6 @@ export function FindRivalPage(props) {
                 <p className={"noTeamSearch"}>{noSearchesCandidates}</p>)
             }
             <ToastContainer /> {/* Mover el ToastContainer aquí */}
-
-
-
-            <button className={"goToPickTeamButton"} onClick={goToPickTeam}> Change Team</button>
         </div>
     )
 }
