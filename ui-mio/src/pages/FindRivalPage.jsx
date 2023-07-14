@@ -245,7 +245,9 @@ export function FindRivalPage(props) {
     // const requestRivals = (user) => {
     //
     // }
-
+    const timeChange = (event) => {
+        setTime(event.target.value)
+    }
     const MyContainer = ({className, children}) => {
         return (
             <div className={"calendarContainer"}>
@@ -306,7 +308,7 @@ export function FindRivalPage(props) {
 
     return (
         <div className={"containerPrincipalFindRival"}>
-            <TopBar popupOpen={showPopup} getTeamId={props.getTeamId} toggleTeamId={props.toggleTeamId}/>
+            <TopBar popupOpen = {showPopup} getTeamId={props.getTeamId} toggleTeamId={props.toggleTeamId}/>
             <div className={"sports_image"}>
                 <img style={{width: 218, height: "auto"}} src={require("../images/logoRM/logoRM_persona.png")}
                      alt={"deportes"}/>
@@ -336,8 +338,7 @@ export function FindRivalPage(props) {
                         showDisabledMonthNavigation
                         calendarContainer={MyContainer}
                     />
-                    <Icon style={{left: "4", top: "-48", fontSize: "20"}} className="input-icon-log"
-                          icon="radix-icons:calendar"/>
+                    <Icon style ={{left:"4", top: "-40px", fontSize: "20"}} className="input-icon-log" icon="radix-icons:calendar" />
                 </div>
 
                 <div className={"time_select"}>
@@ -350,8 +351,7 @@ export function FindRivalPage(props) {
                         onChange={setSelectedTimes}
                         isMulti
                     />
-                    <Icon style={{left: "4", top: "-54", fontSize: "20"}} className="input-icon-log"
-                          icon="ion:time-outline"/>
+                    <Icon style ={{left:"4", top: "-54", fontSize: "20"}} className="input-icon-log" icon="ion:time-outline" />
 
                     {/*<select id="time" required onChange={timeChange} value={time}>*/}
                     {/*    <option disabled={true} value="">*/}
@@ -383,32 +383,24 @@ export function FindRivalPage(props) {
                 <div className={"zone"}>
                     {changeLocationButton === 'Select location' && <p>Select your preferred zone: </p>}
                     {changeLocationButton !== 'Select location' && <p>Your preferred zone: {selectedLocation}</p>}
-                    <button className={"selectLocationButton"} onClick={handleSelectLocation}><Icon
-                        style={{left: "auto", top: "auto", fontSize: "20"}} className="input-icon-log"
-                        icon="mi:location"/> {changeLocationButton} </button>
+                    <button className={"selectLocationButton"} onClick={handleSelectLocation}> <Icon style ={{left:"auto", top: "-5px", fontSize: "20"}} className="input-icon-log" icon="mi:location" /> {changeLocationButton} </button>
                     {showPopup && (
-                        <div className="popup">
+                        <div className="popupFR">
                             <BingMap
                                 onInfoboxesWithPushPinsChange={handleInfoboxesWithPushPins}
                             />
                             {(zone !== newZone && newZone.length !== 0) && (
                                 <div>
-                                    <button className={"confirmLocation"} id="confirmLoc" onClick={confirmZone}>Confirm
-                                        location
-                                    </button>
+                                    <button className={"confirmLocation"} id="confirmLoc" onClick={confirmZone}>Confirm location</button>
                                 </div>
                             )}
                             <button className={"goBackSelLoc"} onClick={handleSelectLocation}>Go back</button>
                         </div>
                     )}
-
-
                 </div>
 
 
-
-                <button className={"findRivalButton"} id="submit" type="submit" onClick={openAndFindRivals}> Find
-                    Rival!
+                <button className={"findRivalButton"} id="submit" type="submit" onClick={openAndFindRivals}> Find rival!
                 </button>
             </form>
             {(rivalMenuOpen && searches.length > 0) &&
@@ -464,9 +456,6 @@ export function FindRivalPage(props) {
                 <p className={"noTeamSearch"}>{noSearchesCandidates}</p>)
             }
             <ToastContainer/> {/* Mover el ToastContainer aquí */}
-
-
-            <button className={"goToPickTeamButton"} onClick={goToPickTeam}> Change Team</button>
         </div>
     )
 }
