@@ -4,7 +4,7 @@ import {useNavigate} from "react-router";
 import {listTeams} from "../service/mySystem";
 import {useAuthProvider} from "../auth/auth";
 import {TopBar} from "./TopBar/TopBar";
-import "../css/Home.css";
+import "../css/Home.scss";
 import {Pencil, PencilSquare} from "react-bootstrap-icons";
 
 function goToNewTeam(){
@@ -50,7 +50,7 @@ export function PickTeamPage(props) {
     return (
         <div>
             <TopBar getTeamId={props.getTeamId} toggleTeamId={props.toggleTeamId} noTeams={noTeams}/>
-            <div className="containerPrincipal" style={{marginLeft: '7%', marginTop: "-5%"}}>
+            <div className="containerPrincipalPickTeamPage" style={{marginLeft: '7%', marginTop: "-5%"}}>
                 <h1 className={"teamTitle"}>Your teams</h1>
                 <h2 className={"teamSubtitle"}>Click on a team to use it</h2>
                 <div>

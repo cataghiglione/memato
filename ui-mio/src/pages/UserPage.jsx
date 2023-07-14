@@ -3,7 +3,7 @@ import {useEffect, useState} from 'react'
 import {useNavigate} from "react-router";
 import {useAuthProvider} from "../auth/auth";
 import {getUser, updateUser, deleteAccount} from "../service/mySystem";
-import "../css/Home.css"
+import "../css/Home.scss"
 import {TopBar} from "./TopBar/TopBar";
 
 export function UserPage(props) {
@@ -106,7 +106,7 @@ export function UserPage(props) {
             {errorMsg && <div className="alert alert-danger" role="alert">{errorMsg}</div>}
             {once && getUserMethod()}
             <TopBar getTeamId={props.getTeamId} toggleTeamId={props.toggleTeamId}/>
-            <div>
+            <div className={"containerPrincipalNewTeam"}>
                 <br/>
                 <br/>
                 <h1 style={{top: "50%"}}> Profile

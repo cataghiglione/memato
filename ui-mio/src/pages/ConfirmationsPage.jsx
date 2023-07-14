@@ -106,12 +106,12 @@ export function ConfirmationsPage(props) {
     return (
         <div>
             <TopBar toggleTeamId={props.toggleTeamId} getTeamId={props.getTeamId}/>
-            <div className={"containerPrincipal"}>
+            <div className={"containerConfirmationsPage"}>
                 <div>
                     {(matches.length > 0) && (
                         <div>
                             <div className={"confirmationsTitle"}>
-                                {team.name}'s pending confirmations
+                                <h1> {team.name}'s pending confirmations </h1>
                             </div>
                             {matches.map((match) => (
                                 <div className={"matchesContainer"}>
@@ -152,16 +152,20 @@ export function ConfirmationsPage(props) {
                             <div className={"noConfirmationsTitle"}>
                                 {team.name}'s pending confirmations
                             </div>
+                            <br/>
                             <div className={"refereeImage"}>
                                 <img style={{width: 218, height: "auto"}} src={require("../images/referee.png")}
                                      alt={"referee"}/>
                             </div>
+                            <br/>
                             <div className={"noPendingConfs"}>
                                 {team.name} does not have any pending confirmations!
                             </div>
+                            <br/><br/>
                             <div className={"findRText"}>
                                 Find a new rival now!
                             </div>
+                            <br/>
                             <div>
                                 <button className={"findRButton"} id="submit" type="submit"
                                         onClick={goToFindRival}> Find

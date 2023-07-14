@@ -1,13 +1,20 @@
+@import url('https://fonts.googleapis.com/css?family=Baloo Bhai 2&display=swap');
+@import "Login";
+.editTeamContainer {
+    z-index: 1;
+    color: #4E4E4E;
+    font-family: 'Baloo Bhai 2', sans-serif;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+}
 .team_name {
     position: absolute;
     left: 50%;
     top: 16%;
     transform: translate(-50%, -50%);
     background-color: transparent;
-    font-family: "Times New Roman", sans-serif;
     font-size: xxx-large;
-
-
 }
 .sport_and_quantity{
     position: absolute;
@@ -15,7 +22,6 @@
     top: 20%;
     transform: translate(-50%, -50%);
     background-color: transparent;
-    font-family: "Times New Roman", sans-serif;
     font-size: large;
 
 }
@@ -28,23 +34,37 @@
     background-color: white;
 
 }
-.form{
+.edit-team-name{
     position: absolute;
-    left: 42%;
-    top: 28%;
-
+    left: 300px;
+    top: 280px;
+}
+.edit-age-group{
+    position: absolute;
+    left: 610px;
+    top: 255px;
+}
+.edit-sport{
+    position: absolute;
+    left: 810px;
+    top: 255px;
+}
+.edit-quantity{
+    position: absolute;
+    left: 1030px;
+    top: 280px;
 }
 .saveChangesButton {
     position: absolute;
     background-color: white;
-    padding: 12px 20px;
-    left: 60%;
-    bottom: -30%;
+    padding: 12px;
+    top: 500px;
     color: black;
     border: 1px solid #4CAF50;
     border-radius: 1px;
     transition-duration: 0.4s;
-    width: 60%;
+    margin: 20px;
+    width: auto ;
 }
 
 .saveChangesButton:hover {
@@ -53,28 +73,38 @@
 }
 .goBackButton{
     position: absolute;
-    padding: 12px 20px;
     background-color: white;
-    left: -50%;
-    bottom: -30%;
-    color: black;
-    border: 1px solid rebeccapurple;
+    padding: 12px;
     border-radius: 1px;
     transition-duration: 0.4s;
-    width: 60%;
+    margin: 20px;
+    width: max-content;
+    font-size: 16px;
+    cursor: pointer;
+    right: 850px;
+    top: 500px;
+
+    color: black;
+    border: 1px solid rebeccapurple;
 }
 .goBackButton:hover{
     background-color: rebeccapurple;
     color: white;
 }
 .delete-button {
+    position: absolute;
     background-color: white;
+    padding: 12px;
+    border-radius: 1px;
+    transition-duration: 0.4s;
+    margin: 20px;
+    width: max-content;
     color: #f44336;
     border: 1px solid #da190b;
-    padding: 8px 16px;
-    border-radius: 1px;
     font-size: 16px;
     cursor: pointer;
+    right: 700px;
+    top: 500px;
 }
 
 .delete-button:hover {

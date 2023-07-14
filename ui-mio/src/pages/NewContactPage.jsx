@@ -1,6 +1,6 @@
 import React, {Component, useEffect, useState} from 'react';
-import "../css/FindRival.css"
-import "../css/Home.css"
+import "../css/FindRival.scss"
+import "../css/Home.scss"
 import {useLocation, useNavigate} from "react-router";
 import {findRival, getTeam, newMatch} from "../service/mySystem";
 import {useAuthProvider} from "../auth/auth";

@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
-import "../css/FindRival.css"
-import "../css/Home.css"
+import "../css/FindRival.scss"
+import "../css/Home.scss"
 import {useNavigate} from "react-router";
 import {findRival, getTeam, newMatch, possibleSearchCandidates} from "../service/mySystem";
 import {useAuthProvider} from "../auth/auth";
@@ -10,6 +10,7 @@ import {TopBar} from "./TopBar/TopBar";
 import {BingMap} from "./BingMap"
 import {ToastContainer, toast} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import {Icon} from "@iconify/react";
 import Select from 'react-select';
 // import '@mobiscroll/react/dist/css/mobiscroll.min.css';
 // import { Datepicker } from '@mobiscroll/react';
@@ -57,6 +58,8 @@ export function FindRivalPage(props) {
     const [rivalMenuOpen, setRivalMenuOpen] = useState(false);
 
     const [zone, setZone] = useState([])
+    const [newZone, setNewZone] = useState([])
+    const [previousZone, setPreviousZone] = useState([])
     const [showPopup, setShowPopup] = useState(false);
     const [changeLocationButton, setChangeLocationButton] = useState('Select location');
     const [selectedLocation, setSelectedLocation] = useState("")
@@ -70,10 +73,7 @@ export function FindRivalPage(props) {
 
     function handleSelectLocation(e) {
         e.preventDefault(); // Prevent form submission
-        if (showPopup === false)
-            setShowPopup(true);
-        else
-            setShowPopup(false);
+        setShowPopup(!showPopup);
     }
 
 
@@ -92,8 +92,7 @@ export function FindRivalPage(props) {
 
     const handleInfoboxesWithPushPins = (infoboxesWithPushPinsData) => {
         setChangeLocationButton('Change Location');
-        setZone(infoboxesWithPushPinsData[0].location);
-        printSelectedLocation(infoboxesWithPushPinsData[0].location);
+        setNewZone(infoboxesWithPushPinsData[0].location);
     };
 
     const printSelectedLocation = (location) => {
@@ -245,7 +244,7 @@ export function FindRivalPage(props) {
     }
     const MyContainer = ({className, children}) => {
         return (
-            <div style={{padding: "16px", background: "green", color: "#fff"}}>
+            <div className={"calendarContainer"}>
                 <CalendarContainer className={className}>
                     <div style={{background: "transparent"}}>
                     </div>
@@ -255,21 +254,22 @@ export function FindRivalPage(props) {
         );
     };
 
+    function confirmZone() {
+        setZone(newZone);
+        printSelectedLocation(newZone);
+        setShowPopup(false);
+    }
 
     return (
-
-        <div>
-            <TopBar getTeamId={props.getTeamId} toggleTeamId={props.toggleTeamId}/>
-            {/*<div className={"logo"}>*/}
-            {/*    <img style={{width: 218, height: "auto"}} src={require("../images/logo_solo_letras.png")} alt={"Logo"}/>*/}
-            {/*</div>*/}
+        <div className={"containerPrincipalFindRival"}>
+            <TopBar popupOpen = {showPopup} getTeamId={props.getTeamId} toggleTeamId={props.toggleTeamId}/>
             <div className={"sports_image"}>
-                <img style={{width: 218, height: "auto"}} src={require("../images/varios_deportes.png")}
+                <img style={{width: 218, height: "auto"}} src={require("../images/logoRM/logoRM_persona.png")}
                      alt={"deportes"}/>
             </div>
             <br/>
             <div className={"mirror_sports_image"}>
-                <img style={{width: 218, height: "auto"}} src={require("../images/varios_deportes.png")}
+                <img style={{width: 218, height: "auto"}} src={require("../images/logoRM/logoRM_persona.png")}
                      alt={"deportes"}/>
             </div>
             <br/>
@@ -282,6 +282,7 @@ export function FindRivalPage(props) {
 
                 <div className={"datePicker"}>
                     Choose a day to play:
+                    <br/><br/>
                     <DatePicker
                         showIcon
                         selected={date}
@@ -291,6 +292,7 @@ export function FindRivalPage(props) {
                         showDisabledMonthNavigation
                         calendarContainer={MyContainer}
                     />
+                    <Icon style ={{left:"4", top: "-48", fontSize: "20"}} className="input-icon-log" icon="radix-icons:calendar" />
                 </div>
 
                 <div className={"time_select"}>
@@ -303,6 +305,8 @@ export function FindRivalPage(props) {
                         onChange={setSelectedTimes}
                         isMulti
                     />
+                    <Icon style ={{left:"4", top: "-54", fontSize: "20"}} className="input-icon-log" icon="ion:time-outline" />
+
                     {/*<select id="time" required onChange={timeChange} value={time}>*/}
                     {/*    <option disabled={true} value="">*/}
                     {/*        Time of day...*/}
@@ -315,15 +319,20 @@ export function FindRivalPage(props) {
                 </div>
 
                 <div className={"zone"}>
-                    <p>Select your preferred zone: </p>
-                    <p>{selectedLocation}</p>
-                    <button className={"greenButton"} onClick={handleSelectLocation}>{changeLocationButton}</button>
+                    {changeLocationButton === 'Select location' && <p>Select your preferred zone: </p>}
+                    {changeLocationButton !== 'Select location' && <p>Your preferred zone: {selectedLocation}</p>}
+                    <button className={"selectLocationButton"} onClick={handleSelectLocation}> <Icon style ={{left:"auto", top: "auto", fontSize: "20"}} className="input-icon-log" icon="mi:location" /> {changeLocationButton} </button>
                     {showPopup && (
                         <div className="popup">
                             <BingMap
                                 onInfoboxesWithPushPinsChange={handleInfoboxesWithPushPins}
                             />
-                            <button id="confirmLoc" onClick={handleSelectLocation}>Confirm location</button>
+                            {(zone !== newZone && newZone.length !== 0) && (
+                                <div>
+                                    <button className={"confirmLocation"} id="confirmLoc" onClick={confirmZone}>Confirm location</button>
+                                </div>
+                            )}
+                            <button className={"goBackSelLoc"} onClick={handleSelectLocation}>Go back</button>
                         </div>
                     )}
 
@@ -390,10 +399,9 @@ export function FindRivalPage(props) {
             <ToastContainer/> {/* Mover el ToastContainer aquí */}
 
 
+
             <button className={"goToPickTeamButton"} onClick={goToPickTeam}> Change Team</button>
         </div>
-
-
     )
 }
 

@@ -2,14 +2,14 @@ import React, {Component, useEffect, useState} from 'react';
 import {useAuthProvider} from "../auth/auth";
 import {TopBar} from "./TopBar/TopBar";
 import {getConfirmedMatches, getPendingConfirmations, getTeam} from "../service/mySystem";
+import { MapInReactFunction} from "./MapInReact";
+import "../css/MyConfirmations.scss"
 import {Box, List, ListItem, ListItemText, ListItemIcon, ListItemButton} from '@mui/material'
 import PlaceIcon from '@mui/icons-material/Place';
 import { Header, Icon } from 'semantic-ui-react'
 import 'semantic-ui-css/semantic.min.css'
 
 import Map from "./ReactGoogleMap"; // Importa el componente Map desde MapInReact.js
-import {MapInReactFunction} from "./MapInReact";
-import "../css/MyConfirmations.css"
 import MapContainer from "./GoogleMaps"
 import "bootstrap/dist/css/bootstrap.min.css";
 
@@ -158,4 +158,4 @@ export function MyConfirmationsPage(props) {
     )
 
 
-    }
+}
