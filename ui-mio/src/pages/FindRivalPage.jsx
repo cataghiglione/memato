@@ -261,7 +261,7 @@ export function FindRivalPage(props) {
     }
 
     return (
-        <div className={"containerPrincipalFindRival"}>
+        <div>
             <TopBar popupOpen = {showPopup} getTeamId={props.getTeamId} toggleTeamId={props.toggleTeamId}/>
             <div className={"sports_image"}>
                 <img style={{width: 218, height: "auto"}} src={require("../images/logoRM/logoRM_persona.png")}
@@ -272,103 +272,80 @@ export function FindRivalPage(props) {
                 <img style={{width: 218, height: "auto"}} src={require("../images/logoRM/logoRM_persona.png")}
                      alt={"deportes"}/>
             </div>
-            <br/>
-            <div className="team_name">
-                You've chosen {team.name}
-                <br/>
-                Sport: {team.sport}
-            </div>
-            <form onSubmit={rivalMenuOpen && handleSubmit}>
-
-                <div className={"datePicker"}>
-                    Choose a day to play:
+            <div className={"containerPrincipalFindRival"}>
+                <div className="team_name_FR"><br/>
+                    You've chosen {team.name}
                     <br/><br/>
-                    <DatePicker
-                        showIcon
-                        selected={date}
-                        dateFormat="dd/MM/yyyy"
-                        onChange={date => setDate(date)}
-                        minDate={new Date()}
-                        showDisabledMonthNavigation
-                        calendarContainer={MyContainer}
-                    />
-                    <Icon style ={{left:"4", top: "-40px", fontSize: "20"}} className="input-icon-log" icon="radix-icons:calendar" />
+                    Sport: {team.sport}
                 </div>
-
-                <div className={"time_select"}>
-                    {/*<p>Select your time of preference!</p>*/}
-                    {/*<select id="time" required onChange={timeChange} value={time}>*/}
-                    {/*    <option disabled={true} value="">*/}
-                    {/*        Time of day...*/}
-                    {/*    </option>*/}
-                    {/*    <option value="Morning">Morning</option>*/}
-                    {/*    <option value="Afternoon">Afternoon</option>*/}
-                    {/*    <option value="Night">Night</option>*/}
-                    {/*    <option value="No preference">No preference</option>*/}
-                    {/*</select>*/}
-                    {/*<Icon style ={{left:"4", top: "-45px", fontSize: "20"}} className="input-icon-log" icon="ion:time-outline" />*/}
-
-
-                    <p>Select your time intervals of preference!</p>
-                    <Select
-                        options={options}
-                        value={selectedTimes}
-                        onChange={setSelectedTimes}
-                        isMulti
-                    />
-                    <Icon style ={{left:"4", top: "-54", fontSize: "20"}} className="input-icon-log" icon="ion:time-outline" />
-
-                    {/*<select id="time" required onChange={timeChange} value={time}>*/}
-                    {/*    <option disabled={true} value="">*/}
-                    {/*        Time of day...*/}
-                    {/*    </option>*/}
-                    {/*    <option value="Morning">Morning</option>*/}
-                    {/*    <option value="Afternoon">Afternoon</option>*/}
-                    {/*    <option value="Night">Night</option>*/}
-                    {/*    <option value="No preference">No preference</option>*/}
-                    {/*</select>*/}
-                </div>
-
-                <div className={"zone"}>
-                    {changeLocationButton === 'Select location' && <p>Select your preferred zone: </p>}
-                    {changeLocationButton !== 'Select location' && <p>Your preferred zone: {selectedLocation}</p>}
-                    <button className={"selectLocationButton"} onClick={handleSelectLocation}> <Icon style ={{left:"auto", top: "-5px", fontSize: "20"}} className="input-icon-log" icon="mi:location" /> {changeLocationButton} </button>
-                    {showPopup && (
-                        <div className="popupFR">
-                            <BingMap
-                                onInfoboxesWithPushPinsChange={handleInfoboxesWithPushPins}
-                            />
-                            {(zone !== newZone && newZone.length !== 0) && (
-                                <div>
-                                    <button className={"confirmLocation"} id="confirmLoc" onClick={confirmZone}>Confirm location</button>
-                                </div>
-                            )}
-                            <button className={"goBackSelLoc"} onClick={handleSelectLocation}>Go back</button>
-                        </div>
-                    )}
-                </div>
-
-
-                <button className={"findRivalButton"} id="submit" type="submit" onClick={openAndFindRivals}> Find rival!
-                </button>
-            </form>
-            {(rivalMenuOpen && searches.length > 0) &&
-                <div>
-                    <div className={"title"}>
-                        Teams searching for rivals:
+                <br/>
+                <form onSubmit={rivalMenuOpen && handleSubmit}>
+                    <div className={"time_select"}>
+                        {/*<p>Select your time intervals of preference!</p>*/}
+                        <Select
+                            options={options}
+                            value={selectedTimes}
+                            onChange={setSelectedTimes}
+                            isMulti
+                        />
+                        <Icon style ={{left:"-25px", top: "-5px", fontSize: "20px", position: "absolute"}} className="input-icon-log" icon="ion:time-outline" />
+                    </div>
+                    <div className={"datePicker"}>
+                        {/*Choose a day to play:*/}
+                        <br/><br/>
+                        <DatePicker
+                            showIcon
+                            selected={date}
+                            dateFormat="dd/MM/yyyy"
+                            onChange={date => setDate(date)}
+                            minDate={new Date()}
+                            showDisabledMonthNavigation
+                            calendarContainer={MyContainer}
+                        />
+                        <Icon style ={{left:"-25px", top: "-40px", fontSize: "20"}} className="input-icon-log" icon="radix-icons:calendar" />
                     </div>
 
 
-                    {/*    <select className={"team-select"} multiple={true} onChange={playMatch}>*/}
-                    {/*{teams.map(team =>*/}
-                    {/*    <option className={"team-select-option"} style={{textTransform: 'capitalize'}} value={team.id}>*/}
-                    {/*    nombre: {team.name}, deporte: {team.sport}, categoria: {team.group} </option>*/}
-                    {/*    // <p>nombre = {team.name}    deporte = {team.sport} </p>*/}
-                    {/*    // <option>{team.name}</option>*/}
+                    <div className={"zone"}>
+                        {changeLocationButton === 'Select location' && <p>Select your preferred zone: </p>}
+                        {changeLocationButton !== 'Select location' && <p>Your preferred zone: {selectedLocation}</p>}
+                        <button className={"selectLocationButton"} onClick={handleSelectLocation}> <Icon style ={{left:"-30px", top: "-5px", fontSize: "20"}} className="input-icon-log" icon="mi:location" /> {changeLocationButton} </button>
+                        {showPopup && (
+                            <div className="popupFR">
+                                <BingMap
+                                    onInfoboxesWithPushPinsChange={handleInfoboxesWithPushPins}
+                                />
+                                {(zone !== newZone && newZone.length !== 0) && (
+                                    <div>
+                                        <button className={"confirmLocation"} id="confirmLoc" onClick={confirmZone}>Confirm location</button>
+                                    </div>
+                                )}
+                                <button className={"goBackSelLoc"} onClick={handleSelectLocation}>Go back</button>
+                            </div>
+                        )}
+                    </div>
 
-                    {/*    )*/}
-                    {/*}*/}
-                    {/*    </select>*/}
+
+                    <button className={"findRivalButton"} id="submit" type="submit" onClick={openAndFindRivals}> Find rival!
+                    </button>
+                </form>
+                {(rivalMenuOpen && searches.length > 0) &&
+                    <div>
+                        <div className={"title"}>
+                            Teams searching for rivals:
+                        </div>
+
+
+                        {/*    <select className={"team-select"} multiple={true} onChange={playMatch}>*/}
+                        {/*{teams.map(team =>*/}
+                        {/*    <option className={"team-select-option"} style={{textTransform: 'capitalize'}} value={team.id}>*/}
+                        {/*    nombre: {team.name}, deporte: {team.sport}, categoria: {team.group} </option>*/}
+                        {/*    // <p>nombre = {team.name}    deporte = {team.sport} </p>*/}
+                        {/*    // <option>{team.name}</option>*/}
+
+                        {/*    )*/}
+                        {/*}*/}
+                        {/*    </select>*/}
 
 
                     {/*<div style={{display: 'flex', flexWrap: 'wrap', position: "relative"}}>*/}
@@ -390,21 +367,22 @@ export function FindRivalPage(props) {
                                             Play
                                         </button>
 
+                                        </div>
                                     </div>
+                                    <br/>
                                 </div>
-                                <br/>
-                            </div>
-                        ))}
+                            ))}
 
-                        {/*<TextWithButton text = {team.name}/>))}*/}
+                            {/*<TextWithButton text = {team.name}/>))}*/}
+                        </div>
                     </div>
-                </div>
-            }
-            {(rivalMenuOpen && searches.length === 0) && (
+                }
+                {(rivalMenuOpen && searches.length === 0) && (
 
-                <p className={"noTeamSearch"}>{noSearchesCandidates}</p>)
-            }
-            <ToastContainer/> {/* Mover el ToastContainer aquí */}
+                    <p className={"noTeamSearch"}>{noSearchesCandidates}</p>)
+                }
+                <ToastContainer/> {/* Mover el ToastContainer aquí */}
+            </div>
         </div>
     )
 }

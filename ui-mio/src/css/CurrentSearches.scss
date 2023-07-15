@@ -40,10 +40,9 @@ h1{
     white-space:nowrap;
 }
 .hasSearchesTitle{
-    position:relative;
+    //position:relative;
     font-size: xx-large;
-    bottom: 80px;
-    right: 10px;
+    bottom: 3000px;
     white-space:nowrap;
 }
 
@@ -183,7 +182,7 @@ h1{
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    z-index: 9999; /* Asegura que el popup esté por encima de otros elementos */
+    z-index: 900; /* Asegura que el popup esté por encima de otros elementos */
     background: rgba(0, 0, 0, 0.5); /* Fondo oscuro */
     padding: 1000px 3000px;
 }

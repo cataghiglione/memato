@@ -130,10 +130,11 @@ export function CurrentSearchesPage(props) {
                 <div>
                     {searches.length > 0 && (
                         <div>
-
+                            <br/>
                             <div className={"hasSearchesTitle"}>
                                 {team.name}'s current searches
                             </div>
+                            <br/>
                             {searches.map((search) => (
                                 <div className={"searchesContainer"}>
                                     <div key={search.id}>

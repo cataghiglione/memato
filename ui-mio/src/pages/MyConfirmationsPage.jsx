@@ -9,7 +9,7 @@ import PlaceIcon from '@mui/icons-material/Place';
 import { Header, Icon } from 'semantic-ui-react'
 import 'semantic-ui-css/semantic.min.css'
 
-import Map from "./ReactGoogleMap"; // Importa el componente Map desde MapInReact.js
+// import Map from "./ReactGoogleMap"; // Importa el componente Map desde MapInReact.js
 import MapContainer from "./GoogleMaps"
 import "bootstrap/dist/css/bootstrap.min.css";
 
@@ -131,6 +131,7 @@ export function MyConfirmationsPage(props) {
                 </div>
                 {(confirmedMatches.length === 0) && (
                     <div>
+                        <br/>
                         <div className={"noConfirmedMatchesTitle"}>
                             {team.name}'s confirmations
                         </div>

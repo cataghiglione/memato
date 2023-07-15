@@ -4,6 +4,8 @@
     z-index: 1;
     color: #4E4E4E;
     font-family: 'Baloo Bhai 2', sans-serif;
+    display: flex;
+    justify-content: center;
 }
 body {
     height: 100vh;
@@ -21,16 +23,13 @@ h1{
     color: #4E4E4E;
 }
 .datePicker{
-    position: absolute;
-    z-index: 9;
-    top: 180px;
-    left: 44%;
+    position: relative;
+    //z-index: 3;
+    top: 100px;
 }
-.team_name {
+.team_name_FR {
     position: absolute;
-    left: 50%;
-    top: 13%;
-    transform: translate(-50%, -50%);
+    font-family: 'Baloo Bhai 2', sans-serif;
     font-size: x-large;
 }
 
@@ -39,9 +38,11 @@ h1{
     color: #fff;
 }
 .time_select {
-    position: absolute;
-    left: 24%;
-    top: 180px;
+    position: relative;
+    max-width: 400px;
+    top: 120px;
+    //z-index: 4;
+    //left: 300px;
 }
 
 
@@ -80,7 +81,7 @@ h1{
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    z-index: 999; /* Asegura que el popup esté por encima de otros elementos */
+    z-index: 99; /* Asegura que el popup esté por encima de otros elementos */
     background: rgba(0, 0, 0, 0.5); /* Fondo oscuro */
     padding: 200px 500px;
 }
@@ -88,7 +89,7 @@ h1{
 .noTeamSearch {
     position: fixed;
     left: 47.5%;
-    top: 55%;
+    top: 70%;
     transform: translate(-50%, -50%);
     padding: 16px;
     border-radius: 8px;
@@ -111,10 +112,9 @@ h1{
 }
 
 .zone {
-    position: absolute;
-    left: 64%;
-    top: 180px;
-    z-index: 10;
+    position: relative;
+    top: 80px;
+    //z-index: 2;
 
 }
 
@@ -173,7 +173,7 @@ h1{
 }
 
 .team-select {
-    margin-left: 3px;
+    margin-left: 6px;
     margin-top: 4px;
     height: auto;
     width: 48vh;
@@ -217,8 +217,8 @@ h1{
 }
 .title{
     position: absolute;
-    left: 42%;
-    top:40%;
+    left: 650px;
+    top: 400px;
     font-size: x-large;
 }
 .select-rival{
@@ -226,16 +226,18 @@ h1{
 }
 
 .searches-list{
-    position: absolute;
-    left: 37.5%;
-    top: 45%;
+    position: fixed;
+    left: 250px;
+    top: 430px;
     width: auto; /*  Con borde sería 49vh */
-    height: 280px;
-    overflow-y: scroll;
+    max-width: 125vh;
+    height: auto;
+    overflow-x: scroll;
     scrollbar-width: thin;
+    display: inline-flex;
 }
 .searches-list::-webkit-scrollbar {
-    width: 6px;
+    width: 3px;
  }
 
 .searches-list::-webkit-scrollbar-track {

@@ -93,7 +93,7 @@ export const LoginPage = () => {
     }
 
     return (
-        <div>
+        <body>
             <ToastContainer /> {/* Mover el ToastContainer aquí */}
             <div className={"LogoLogIn"}>
                 <h1 className="animate__animated animate__bounceInLeft">
@@ -104,13 +104,13 @@ export const LoginPage = () => {
             <div className={"containerPrincipalLogInPage"}>
                 <br/><br/>
                 <form onSubmit={logIn && handleSubmit}>
-                    <br>
-                    </br>
+                    <br/>
+                    <br/>
                     <input type="email" name="logemail" className="form-style"
                            placeholder="Your Email" id="logemail" autoComplete="off" onChange={usernameChange}/>
                     <Icon className="input-icon-log" icon="uil:at"/>
                     <br></br>
-                    <div className={"login-input-group"}>
+                    <div>
                         <input type="password"
                                value={password}
                                id="password"
@@ -121,6 +121,7 @@ export const LoginPage = () => {
                     </div>
                     <br></br>
                     <br></br>
+                    <br></br>
                     <button id="submit" type="submit" className={"submitButtonLogIn"} onClick={() => LoginRequest()}>
                         <img style={{ width: 50, height: "auto"}}  src={require("../images/logoRM/logoRM_persona.png")} alt={"Logo"}/> LOG IN
                     </button>
@@ -128,7 +129,7 @@ export const LoginPage = () => {
                 <br></br>
                 <button className={"signUpButtonLogin"} onClick={goToRegister}>Go to sign up</button>
             </div>
-        </div>
+        </body>
     )
 }
 
