@@ -129,7 +129,7 @@ public class Routes {
                                                         (match) -> {
                                                             res.status(201);
                                                             res.body("match created");
-                                                            system.createNotificationWithSearch(search2, String.format("Good news! %s wants to play with %s on %d/%d", search1.getTeam().getName(), search2.getTeam().getName(), search2.getDay(), search2.getMonth() + 1), 0, search1.getTeam().getId());
+                                                            system.createNotificationWithSearch(search2, String.format("Good news! %s wants to play with %s on %d/%d", search1.getTeam().getName(), search2.getTeam().getName(), search2.getDate().getDate(), search2.getDate().getMonth() + 1), 0, search1.getTeam().getId());
                                                         },
                                                         () -> {
                                                             res.status(409);
@@ -490,7 +490,7 @@ public class Routes {
                         );
                         if (user.isPresent()) {
                             String user_id = user.get().getId().toString();
-                            List<Search> candidates = searches.findCandidates(user_id, timeInterval, searchForm.getDate(), team.getSport(), team.getQuantity(), searchForm.getLatitude(), searchForm.getLongitude());
+                            List<Search> candidates = searches.findCandidates(user_id, timeInterval, searchForm.getDate(), team.getSport(), team.getQuantity(), searchForm.getLatitude(), searchForm.getLongitude(),searchForm.getAge());
                             List<CommonTimeSearch> commonTimeSearchList = new ArrayList<>();
                             Long activeSearchId = searchId.longValue();
                             searches.getSearchById(activeSearchId).ifPresent(
@@ -521,8 +521,8 @@ public class Routes {
             List<CurrentSearch> dto_active_searches = active_searches.stream().map(search -> {
                 final CurrentSearch currentSearch = new CurrentSearch();
                 currentSearch.id = search.getId();
-                currentSearch.day = search.getDay();
-                currentSearch.month = search.getMonth();
+                currentSearch.day = search.getDate().getDate();
+                currentSearch.month = search.getDate().getMonth();
                 currentSearch.times = search.getTime().getIntervals();
                 return currentSearch;
             }).toList();
@@ -794,9 +794,9 @@ public class Routes {
             List<ConfirmedMatch> confirmedMatches = matchesList.stream().map(match -> {
                         final ConfirmedMatch confirmedMatch = new ConfirmedMatch();
                         confirmedMatch.time = match.getTime();
-                        confirmedMatch.day = match.getSearch1().getDay();
-                        confirmedMatch.month = match.getSearch1().getMonth();
-                        confirmedMatch.year = match.getSearch1().getYear();
+                        confirmedMatch.day = match.getSearch1().getDate().getDate();
+                        confirmedMatch.month = match.getSearch1().getDate().getMonth();
+                        confirmedMatch.year = match.getSearch1().getDate().getYear();
 
                         Point2D.Double coordinates = searches.getMiddlePoint(match.getSearch1().getLatitude(), match.getSearch1().getLongitude(), match.getSearch2().getLatitude(), match.getSearch2().getLongitude());
                         confirmedMatch.latitude = coordinates.x;

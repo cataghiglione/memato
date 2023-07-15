@@ -23,16 +23,16 @@ public class Searches {
         this.entityManager = entityManager;
     }
 
-    public Search createSearch(Team team, Date date, List<String> time, String latitude,String longitude) throws ParseException {
-        Optional<Search> searchOptional = findSearchByTeam(Long.toString(team.getId()), time,date.getMonth(),date.getDate(), date.getYear(),latitude,longitude );
+    public Search createSearch(Team team, Date date, List<String> time, String latitude,String longitude,int age) throws ParseException {
+        Optional<Search> searchOptional = findSearchByTeam(Long.toString(team.getId()), time,date.getMonth(),date.getDate(), date.getYear(),latitude,longitude,age );
         if (searchOptional.isEmpty()) {
-            final Search search = Search.create(team, date, time,latitude,longitude);
+            final Search search = Search.create(team, date, time,latitude,longitude,age);
 
             entityManager.persist(search);
             return search;
 
         } else {
-            reactivateSearch(team, time, date,latitude,longitude);
+            reactivateSearch(team, time, date,latitude,longitude,age);
             return searchOptional.get();
         }
     }
@@ -50,7 +50,7 @@ public class Searches {
                 .stream()
                 .findFirst();
 
-        return findCandidates(Long.toString(search.get().getTeam().getUserId()), search.get().getTime(), search.get().getDate(), search.get().getTeam().getSport(), search.get().getTeam().getQuantity(), search.get().getLatitude(), search.get().getLongitude());
+        return findCandidates(Long.toString(search.get().getTeam().getUserId()), search.get().getTime(), search.get().getDate().createJavaDate(), search.get().getTeam().getSport(), search.get().getTeam().getQuantity(), search.get().getLatitude(), search.get().getLongitude(),search.get().getAverageAge());
     }
     public boolean deactivateSearchBySearchId(Long search_id){
         int updatedCount = entityManager.createQuery("UPDATE Search  set isSearching =false WHERE id = :search_id")
@@ -70,24 +70,29 @@ public class Searches {
                 .getResultList();
     }
 
-    public Optional<Search> reactivateSearch(Team team, List<String> time, Date date, String latitude, String longitude) {
-        Optional<Search> search = findSearchByTeam(Long.toString(team.getId()), time, date.getMonth(),date.getDay(),date.getYear(), latitude,longitude);
+    public Optional<Search> reactivateSearch(Team team, List<String> time, Date date, String latitude, String longitude,int age) {
+        Optional<Search> search = findSearchByTeam(Long.toString(team.getId()), time, date.getMonth(),date.getDate(),date.getYear(), latitude,longitude,age);
         search.ifPresent(Search::reactivateSearching);
         return search;
     }
-    public boolean exists(String id, List<String> time, Date date, String latitude, String longitude){
-        return findSearchByTeam(id,time,date.getMonth(),date.getDate(), date.getYear(),latitude,longitude).isPresent();
+    public boolean exists(String id, List<String> time, Date date, String latitude, String longitude,int age){
+        return findSearchByTeam(id,time,date.getMonth(),date.getDate(), date.getYear(),latitude,longitude,age).isPresent();
     }
 
 
-    public List<Search> findCandidates(String id, TimeInterval time, Date date, String sport, String quantity, String latitude, String longitude){
-        List<Search> possibleCandidates = entityManager.createQuery("SELECT s FROM Search s WHERE ( s.month =: month AND s.day =: day AND s.year=: year AND cast(s.team.user.id as string) not LIKE :id AND s.team.sport LIKE :sport AND s.team.quantity LIKE :quantity AND isSearching = true)", Search.class)
-                .setParameter("month", date.getMonth())
-                .setParameter("day",date.getDate())
-                .setParameter("year",date.getYear())
+    public List<Search> findCandidates(String id, TimeInterval time, Date date, String sport, String quantity, String latitude, String longitude,int age){
+        int month = date.getMonth();
+        int day=date.getDate();
+        int year = date.getYear();
+        List<Search> possibleCandidates = entityManager.createQuery("SELECT s FROM Search s WHERE ( s.date.month =: month AND s.date.day =: day AND s.date.year=: year AND cast(s.team.user.id as string) not LIKE :id AND s.team.sport LIKE :sport AND s.team.quantity LIKE :quantity AND isSearching = true AND (s.averageAge BETWEEN :minAge AND :maxAge))", Search.class)
+                .setParameter("month", month)
+                .setParameter("day",day)
+                .setParameter("year",year)
                 .setParameter("sport",sport )
                 .setParameter("id",id)
                 .setParameter("quantity",quantity)
+                .setParameter("minAge",age-10)
+                .setParameter("maxAge",age+10)
                 .getResultList();
         List<Search> candidates=new ArrayList<>(possibleCandidates.size());
         for (int i = 0; i < possibleCandidates.size() ; i++) {
@@ -125,14 +130,15 @@ public class Searches {
                 .setParameter("teamId",teamId)
                 .executeUpdate();
     }
-    private Optional<Search> findSearchByTeam(String team_id, List<String> time, int month, int day, int year, String latitude, String longitude) {
-        Optional<Search> search =  entityManager.createQuery("SELECT s FROM Search s WHERE (cast(s.team.id as string) LIKE :team_id  AND s.day = :day AND s.month = :month AND s.year = :year AND s.latitude LIKE :latitude AND s.longitude LIKE :longitude)", Search.class)
+    private Optional<Search> findSearchByTeam(String team_id, List<String> time, int month, int day, int year, String latitude, String longitude,int age) {
+        Optional<Search> search =  entityManager.createQuery("SELECT s FROM Search s WHERE (cast(s.team.id as string) LIKE :team_id  AND s.date.day = :day AND s.date.month = :month AND s.date.year = :year AND s.latitude LIKE :latitude AND s.longitude LIKE :longitude AND s.averageAge = :age)", Search.class)
                 .setParameter("team_id", team_id)
                 .setParameter("month", month)
                 .setParameter("year", year)
                 .setParameter("day", day)
                 .setParameter("latitude",latitude)
                 .setParameter("longitude",longitude)
+                .setParameter("age",age)
                 .getResultList()
                 .stream()
                 .findFirst();

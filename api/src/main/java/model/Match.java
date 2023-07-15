@@ -58,15 +58,15 @@ public class Match {
 //    }
 
     public int getMonth() {
-        return search1.getMonth();
+        return search1.getDate().getMonth();
     }
 
     public int getDay() {
-        return search1.getDay();
+        return search1.getDate().getDate();
     }
 
     public int getYear() {
-        return search1.getYear();
+        return search1.getDate().getYear();
     }
 
     public List<String> getTime() {

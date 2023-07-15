@@ -12,6 +12,11 @@ import {ToastContainer, toast} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import {Icon} from "@iconify/react";
 import Select from 'react-select';
+import 'bootstrap/dist/css/bootstrap.css';
+import Box from '@mui/material/Box';
+import Slider from '@mui/material/Slider';
+
+
 // import '@mobiscroll/react/dist/css/mobiscroll.min.css';
 // import { Datepicker } from '@mobiscroll/react';
 
@@ -52,7 +57,7 @@ export function FindRivalPage(props) {
     const [date, setDate] = useState(new Date());
     const [time, setTime] = useState('')
     const [selectedTimes, setSelectedTimes] = useState([]);
-
+    const [averageAge, setAverageAge] = useState(25);
 
 
     const [rivalMenuOpen, setRivalMenuOpen] = useState(false);
@@ -63,7 +68,7 @@ export function FindRivalPage(props) {
     const [showPopup, setShowPopup] = useState(false);
     const [changeLocationButton, setChangeLocationButton] = useState('Select location');
     const [selectedLocation, setSelectedLocation] = useState("")
-    const[finalSelectedTimes,setFinalSelectedTimes]=useState([]);
+    const [finalSelectedTimes, setFinalSelectedTimes] = useState([]);
     const handleTimeChange = (selectedTime) => {
         const {valueText} = selectedTime;
         setTime(valueText)
@@ -151,7 +156,8 @@ export function FindRivalPage(props) {
             date: date,
             time: finalSelectedTimes,
             latitude: zone[0].toString(),
-            longitude: zone[1].toString()
+            longitude: zone[1].toString(),
+            age:averageAge
         })
     }
     const findRivalMethod = (search) => {
@@ -253,6 +259,49 @@ export function FindRivalPage(props) {
             </div>
         );
     };
+    function valuetext(value) {
+        return `${value}`;
+    }
+    const handleAverageAgeChange = (event, value) => {
+        setAverageAge(value);
+    };
+    const marks = [
+        {
+            value: 18,
+            label: '18',
+        },
+        {
+            value: 25,
+            label: '25',
+        },
+        {
+            value: 35,
+            label: '35',
+        },
+        {value:45,label:'45'},
+        {
+            value: 55,
+            label: '55',
+        },
+        {
+            value: 65,
+            label: '65',
+        },
+        {
+            value: 75,
+            label: '75',
+        },
+        {
+            value: 85,
+            label: '85',
+        },
+        {
+            value: 95,
+            label: '95',
+        },
+    ];
+
+
 
     function confirmZone() {
         setZone(newZone);
@@ -267,7 +316,6 @@ export function FindRivalPage(props) {
                 <img style={{width: 218, height: "auto"}} src={require("../images/logoRM/logoRM_persona.png")}
                      alt={"deportes"}/>
             </div>
-            <br/>
             <div className={"mirror_sports_image"}>
                 <img style={{width: 218, height: "auto"}} src={require("../images/logoRM/logoRM_persona.png")}
                      alt={"deportes"}/>
@@ -280,18 +328,9 @@ export function FindRivalPage(props) {
                 </div>
                 <br/>
                 <form onSubmit={rivalMenuOpen && handleSubmit}>
-                    <div className={"time_select"}>
-                        {/*<p>Select your time intervals of preference!</p>*/}
-                        <Select
-                            options={options}
-                            value={selectedTimes}
-                            onChange={setSelectedTimes}
-                            isMulti
-                        />
-                        <Icon style ={{left:"-25px", top: "-5px", fontSize: "20px", position: "absolute"}} className="input-icon-log" icon="ion:time-outline" />
-                    </div>
+
                     <div className={"datePicker"}>
-                        {/*Choose a day to play:*/}
+                        Choose a day to play:
                         <br/><br/>
                         <DatePicker
                             showIcon
@@ -303,6 +342,32 @@ export function FindRivalPage(props) {
                             calendarContainer={MyContainer}
                         />
                         <Icon style ={{left:"-25px", top: "-40px", fontSize: "20"}} className="input-icon-log" icon="radix-icons:calendar" />
+                    </div>
+                    <div className={"time_select"}>
+                        {/*<p>Select your time intervals of preference!</p>*/}
+                        <Select
+                            options={options}
+                            value={selectedTimes}
+                            onChange={setSelectedTimes}
+                            isMulti
+                        />
+                        <Icon style ={{left:"-25px", top: "-5px", fontSize: "20px", position: "absolute"}} className="input-icon-log" icon="ion:time-outline" />
+                    </div>
+                    <div className={"ageSlider"}>
+                        <Box sx={{ width: 300 }}>
+                            <Slider
+                                aria-label="Always visible"
+                                defaultValue={25}
+                                getAriaValueText={valuetext}
+                                marks={marks}
+                                min={18}
+                                max={100}
+                                value={averageAge}
+                                onChange={handleAverageAgeChange}
+                                valueLabelDisplay="on"
+                            />
+                        </Box>
+    
                     </div>
 
 
@@ -363,7 +428,7 @@ export function FindRivalPage(props) {
                                     <br/><br/>
                                     <div>
                                         <button className={"button-play"}
-                                                onClick={async () => await playButton(search.id)}>
+                                                onClick={async () => await playButton(search.search.id)}>
                                             Play
                                         </button>
 

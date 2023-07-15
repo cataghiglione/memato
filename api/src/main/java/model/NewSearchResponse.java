@@ -8,7 +8,7 @@ public class NewSearchResponse {
 
     public List<CommonTimeSearch> searches;
     public long searchId;
-    public List<String> commonTimes;
+
 
 
     public NewSearchResponse(long searchId, List<CommonTimeSearch> searches) {
