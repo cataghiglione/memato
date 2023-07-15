@@ -3,11 +3,13 @@ import com.google.common.base.Strings;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.google.gson.Gson;
-import dto.ConfirmedMatch;
-import dto.CurrentSearch;
-import dto.PendingMatch;
+import dto.*;
 import json.JsonParser;
 import model.*;
+import model.Contact;
+import model.Message;
+import model.Notification;
+import model.Team;
 import repository.*;
 import spark.Request;
 import spark.Response;
@@ -517,8 +519,9 @@ public class Routes {
             final EntityManager entityManager = entityManagerFactory.createEntityManager();
             final Searches searches = new Searches(entityManager);
             final Long team_id = Long.valueOf(req.queryParams("teamid"));
-            List<Search> active_searches = searches.findActiveSearchesByTeamId(team_id);
-            List<CurrentSearch> dto_active_searches = active_searches.stream().map(search -> {
+            List<Search> activeSearches = searches.findActiveSearchesByTeamId(team_id);
+            List<Search> activeRecurringSearches = searches.findActiveRecurringMatchesByTeamId(team_id);
+            List<CurrentSearch> dto_active_searches = activeSearches.stream().map(search -> {
                 final CurrentSearch currentSearch = new CurrentSearch();
                 currentSearch.id = search.getId();
                 currentSearch.day = search.getDate().getDate();
@@ -526,7 +529,17 @@ public class Routes {
                 currentSearch.times = search.getTime().getIntervals();
                 return currentSearch;
             }).toList();
-            res.body(toJson(dto_active_searches));
+            List<RecurringSearch> dtoRecurringSearches=activeRecurringSearches.stream().map(recurring->{
+                final RecurringSearch recurringSearch = new RecurringSearch();
+                recurringSearch.id = recurring.getId();
+                recurringSearch.times = recurring.getTime().getIntervals();
+                recurringSearch.setWeekDay(recurring.getDate().getWeekDay());
+                return recurringSearch;
+            }).toList();
+            AllSearches allSearches = new AllSearches();
+            allSearches.searches = dto_active_searches;
+            allSearches.recurringSearches = dtoRecurringSearches;
+            res.body(toJson(allSearches));
             res.status(200);
             return res.body();
         });

@@ -49,7 +49,7 @@ public class Search {
     public Search() {
     }
 
-    private Search(Team team, Date date, List<String> time,String latitude, String longitude, int age) {
+    private Search(Team team, Date date, List<String> time,String latitude, String longitude, int age,boolean isRecurring) {
         this.team=team;
         this.isSearching=true;
         this.time=new TimeInterval(time);
@@ -57,11 +57,12 @@ public class Search {
         this.longitude=longitude;
         this.date= new model.Date(date.getDate(),date.getMonth(),date.getYear(),date.getDay());
         this.averageAge=age;
+        this.isRecurring=isRecurring;
 
 
     }
-    public static Search create(Team team, Date date, List<String> time,String latitude,String longitude,int age){
-        return new Search(team, date,time,latitude,longitude,age);
+    public static Search create(Team team, Date date, List<String> time,String latitude,String longitude,int age, boolean isRecurring){
+        return new Search(team, date,time,latitude,longitude,age,isRecurring);
     }
     private void setSearching(boolean value){
         this.isSearching=value;
@@ -124,4 +125,9 @@ public class Search {
     public int getAverageAge() {
         return averageAge;
     }
+
+    public boolean isRecurring() {
+        return isRecurring;
+    }
+
 }

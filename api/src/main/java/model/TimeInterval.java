@@ -1,5 +1,7 @@
 package model;
 
+import org.hibernate.annotations.GenericGenerator;
+
 import javax.persistence.*;
 import java.util.*;
 import java.util.stream.IntStream;
@@ -7,7 +9,8 @@ import java.util.stream.IntStream;
 @Entity
 public class TimeInterval {
     @Id
-    @GeneratedValue(generator = "teamGen", strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(generator = "increment")
+    @GenericGenerator(name = "increment", strategy = "increment")
     private long id;
 
     @ElementCollection

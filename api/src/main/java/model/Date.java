@@ -1,13 +1,15 @@
 package model;
 
+import org.hibernate.annotations.GenericGenerator;
+
 import javax.persistence.*;
 
 @Entity
 @Table
 public class Date {
     @Id
-    @GeneratedValue(generator = "teamGen", strategy = GenerationType.SEQUENCE)
-    private long id;
+    @GeneratedValue(generator = "increment")
+    @GenericGenerator(name = "increment", strategy = "increment")    private long id;
 
     @Column
     private int day;

@@ -15,6 +15,9 @@ import Select from 'react-select';
 import 'bootstrap/dist/css/bootstrap.css';
 import Box from '@mui/material/Box';
 import Slider from '@mui/material/Slider';
+import FormGroup from '@mui/material/FormGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Checkbox from '@mui/material/Checkbox';
 
 
 // import '@mobiscroll/react/dist/css/mobiscroll.min.css';
@@ -58,6 +61,8 @@ export function FindRivalPage(props) {
     const [time, setTime] = useState('')
     const [selectedTimes, setSelectedTimes] = useState([]);
     const [averageAge, setAverageAge] = useState(25);
+    const [checked, setChecked] = React.useState(false);
+
 
 
     const [rivalMenuOpen, setRivalMenuOpen] = useState(false);
@@ -157,9 +162,13 @@ export function FindRivalPage(props) {
             time: finalSelectedTimes,
             latitude: zone[0].toString(),
             longitude: zone[1].toString(),
-            age:averageAge
+            age:averageAge,
+            isRecurring:checked
         })
     }
+    const handleCheckedBox = (event) => {
+        setChecked(event.target.checked);
+    };
     const findRivalMethod = (search) => {
         if (rivalMenuOpen) {
             findRival(token, teamId, search, (res) => {
@@ -381,6 +390,14 @@ export function FindRivalPage(props) {
                         />
                     </Box>
 
+                </div>
+                <div className={"checkBoxRecurrent"}>
+                    <FormGroup>
+                        <FormControlLabel control=
+                                              {<Checkbox checked={checked}
+                                                         onChange={handleCheckedBox} />}
+                                          label="Recurrent search" />
+                    </FormGroup>
                 </div>
 
                 <div className={"zone"}>

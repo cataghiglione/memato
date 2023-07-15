@@ -15,6 +15,7 @@ export function CurrentSearchesPage(props) {
         window.location.href = "/home"
     }
     const [searches, setSearches] = useState([]);
+    const[recurringSearches,setRecurringSearches]=useState([])
     const[team, setTeam]=useState('');
     const[selectedSearch, setSelectedSearch]=useState('');
    /* const [mapState, setMapState] = useState(false) */
@@ -22,8 +23,16 @@ export function CurrentSearchesPage(props) {
     const [pushpin, setPushpin] = useState([])
     const [locationHandle, setLocationHandle] = useState("")
 */
+
+    //Aca agregue un const que es RecurringSearches, en este estan solamente las busquedas recurrentes, hice esto
+    //porque me parecia que en una busqueda normal, necesitas saber el dia (tipo el numerito) y el mes, pero en
+    //una busqueda recurrente necesitas saber el dia de la semana, porque con el numerito no vas a adivinar que
+    //dia de la semana pusiste, aparte serian infinitos numeritos.
     useEffect(() => {
-        currentSearches(token,team_id, (searches) => setSearches(searches));
+        currentSearches(token,team_id, (searches) => {
+            setSearches(searches.searches)
+            setRecurringSearches(searches.recurringSearches)
+        });
     }, [])
 
     useEffect(() => {
@@ -58,7 +67,10 @@ export function CurrentSearchesPage(props) {
                 setTimeout(() => {
                     setPopupMsg('');
                 }, 180);
-                currentSearches(token, team_id,(searches) => setSearches(searches));
+                currentSearches(token, team_id,(searches) => {
+                    setSearches(searches.searches)
+                    setRecurringSearches(searches.recurringSearches)
+                });
             },
             (error) => {
                 setPopupMsg('Error');
@@ -152,6 +164,7 @@ export function CurrentSearchesPage(props) {
                         </div>
                     )}
                 </div>
+
                 {searches.length===0 && (
                     <div>
                         <br/>
