@@ -107,9 +107,11 @@ export function ConfirmationsPage(props) {
         <div>
             <TopBar toggleTeamId={props.toggleTeamId} getTeamId={props.getTeamId}/>
             <div className={"containerConfirmationsPage"}>
+                <br/>
                 <div>
                     {(matches.length > 0) && (
                         <div>
+                            <br/>
                             <div className={"confirmationsTitle"}>
                                 <h1> {team.name}'s pending confirmations </h1>
                             </div>
@@ -149,6 +151,7 @@ export function ConfirmationsPage(props) {
 
                     {(matches.length === 0) && (
                         <div>
+                            <br/>
                             <div className={"noConfirmationsTitle"}>
                                 {team.name}'s pending confirmations
                             </div>

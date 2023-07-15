@@ -3,7 +3,7 @@ import {useEffect, useState} from 'react'
 import {useNavigate} from "react-router";
 import {useAuthProvider} from "../auth/auth";
 import {getUser, updateUser, deleteAccount} from "../service/mySystem";
-import "../css/Home.scss"
+import "../css/EditTeam.scss"
 import {TopBar} from "./TopBar/TopBar";
 
 export function UserPage(props) {
@@ -106,13 +106,12 @@ export function UserPage(props) {
             {errorMsg && <div className="alert alert-danger" role="alert">{errorMsg}</div>}
             {once && getUserMethod()}
             <TopBar getTeamId={props.getTeamId} toggleTeamId={props.toggleTeamId}/>
-            <div className={"containerPrincipalNewTeam"}>
+            <div className={"editTeamContainer"}>
                 <br/>
                 <br/>
-                <h1 style={{top: "50%"}}> Profile
-                </h1>
-                <div className={"form"}>
-
+                <h1 className={"team_name"} style={{fontSize: "35px"}}> Profile </h1>
+                <br/>
+                <div>
                     <form onSubmit={submit && handleSubmit}>
                         <br/>
                         <div>
@@ -121,6 +120,8 @@ export function UserPage(props) {
                                    placeholder="Username"
                                    name="Username"
                                    value={username}
+                                   className={"edit-team-name"}
+                                   style={{left: "400px"}}
                                    onChange={usernameChange}/>
                         </div>
                         <br/>
@@ -130,6 +131,8 @@ export function UserPage(props) {
                                    placeholder="Firstname"
                                    name="First name"
                                    value={first_name}
+                                   className={"edit-team-name"}
+                                   style={{left: "700px"}}
                                    onChange={first_nameChange}/>
                         </div>
                         <br/>
@@ -139,6 +142,8 @@ export function UserPage(props) {
                                    placeholder="Lastname"
                                    name="Last name"
                                    value={last_name}
+                                   className={"edit-team-name"}
+                                   style={{left: "1000px"}}
                                    onChange={last_nameChange}/>
                         </div>
                         <br/>
@@ -148,6 +153,8 @@ export function UserPage(props) {
                                    placeholder="Email"
                                    name="Email"
                                    value={email}
+                                   className={"edit-team-name"}
+                                   style={{left: "550px", top: "375px"}}
                                    onChange={emailChange}/>
                         </div>
                         <br/>
@@ -157,16 +164,18 @@ export function UserPage(props) {
                                    placeholder="Password"
                                    name="Password"
                                    value={password}
+                                   className={"edit-team-name"}
+                                   style={{left: "850px", top: "375px"}}
                                    onChange={passwordChange}/>
                         </div>
                         <div>
-                            <button id="submit" type="submit" className={"saveChangesButton"}
+                            <button id="submit" type="submit" className={"saveChangesButton"}    style={{right: "550px", fontSize: "16px"}}
                                     onClick={() => editUserRequest()}>Save Changes
                             </button>
                         </div>
                         <div>
                             <br/>
-                            <button className={"delete-button"} onClick={() => deleteMethod()}>Delete Account
+                            <button className={"delete-button"} style={{right: "750px"}} onClick={() => deleteMethod()}>Delete Account
                             </button>
                         </div>
                     </form>

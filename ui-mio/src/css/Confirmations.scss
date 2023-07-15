@@ -19,9 +19,6 @@ h1{
     white-space: nowrap;
 }
 .noConfirmationsTitle{
-    //position: absolute;
-    top: -1px;
-    //transform: translate(-60%, -189%);
     font-size: xx-large;
     white-space: nowrap;
 }
@@ -46,7 +43,7 @@ h1{
     bottom: 5%;
     color: black;
     border: 1px solid #4CAF50;
-    border-radius: 1px;
+    border-radius: 20px;
     transition-duration: 0.4s;
 }
 .confirmButton:hover{
@@ -61,7 +58,7 @@ h1{
     bottom: 5%;
     color: black;
     border: 1px solid #af4c4c;
-    border-radius: 1px;
+    border-radius: 20px;
     transition-duration: 0.4s;
 }
 .declineButton:hover{
@@ -72,7 +69,7 @@ h1{
     /*@extend .button;*/
     text-transform: capitalize;
     margin-left: 300px;
-    border-radius: 9px;
+    border-radius: 20px;
     display: block;
     background: white;
     margin-top: 40px;
@@ -101,7 +98,7 @@ h1{
     top: 390px;
     color: black;
     border: 1px solid #b95de3;
-    border-radius: 10px;
+    border-radius: 20px;
     transition-duration: 0.4s;
     width: auto;
     padding: 12px 20px;

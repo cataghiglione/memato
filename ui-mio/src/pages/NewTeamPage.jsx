@@ -10,6 +10,7 @@ import {render} from "@testing-library/react";
 import {useAuthProvider} from "../auth/auth";
 import MenuSidebarWrapper from "./TopBar/MenuSideBar";
 import {TopBar} from "./TopBar/TopBar";
+import {Icon} from "@iconify/react";
 
 export function NewTeamPage (props){
 
@@ -109,18 +110,19 @@ export function NewTeamPage (props){
             <div className={"containerPrincipalNewTeam"}>
                 {errorMsg && <div className="alert alert-danger" role="alert">{errorMsg}</div>}
                 {isOk && <div className="alert alert-success" role="alert">Team created</div>}
-                <h1>Create a team</h1>
+                <h1 className={"team_name"}>Create a team</h1>
                 {/*<img style={{width: 218, height: "auto"}} src={require("../images/RivalMatch_logoRecortado.png")}*/}
                 {/*     alt={"Logo"}/>*/}
                 <form onSubmit={handleSubmit}>
                     <br/>
-                    <div>
+                    <div className={"new-team-name"} >
                         <p>Team Name: <input type="Name"
                                id="Name"
                                placeholder="Name"
                                name="Name"
                                value={name}
-                               onChange={nameChange}/></p>
+                               onChange={nameChange}/>
+                        </p>
                     </div>
 
                     {/*<div>*/}
@@ -132,52 +134,50 @@ export function NewTeamPage (props){
                     {/*        value={zone}*/}
                     {/*        onChange={zoneChange}/></p>*/}
                     {/*</div>*/}
-                    <div>
-                    <p>Group:<select id="age_group"  onChange={groupChange} value={age_group}>
-                        <option  value=""></option>
-                        <option value="Young">Young</option>
-                        <option value="Adults">Adults</option>
-                    </select></p>
-                    </div>
-
-                    <p>Sport:<select id="sport"  onChange={sportChange} value={sport}>
-                        <option value=""></option>
-                        <option value="Football">Football</option>
-                        <option value="Padel">Padel</option>
-                    </select></p>
+                    <div className={"new-team-age-group"}>
                         <br/>
-                    {sport === "Football" &&
-                        (
+                        <p>Group:<select id="age_group"  onChange={groupChange} value={age_group}>
+                            <option  value=""></option>
+                            <option value="Young">Young</option>
+                            <option value="Adults">Adults</option>
+                        </select></p>
+                    </div>
+                    <br/>
+                    <div className={"new-team-sport"}>
+                        <p>Sport:<select id="sport"  onChange={sportChange} value={sport}>
+                            <option value=""></option>
+                            <option value="Football">Football</option>
+                            <option value="Padel">Padel</option>
+                        </select></p>
+                    </div>
+                    <br/><br/><br/>
+                    {sport === "Football" && (
+                        <div className={"new-team-quantity"}>
+                            {/*{handleFootballQuantChange()}*/}
 
-                            <div>
-                                {/*{handleFootballQuantChange()}*/}
-
-                                <p>Quantity<select id="Quantity"  onChange={quant_PlayersChange} value={quant_Players}>
-                                    <option value=""></option>
-                                    <option value="11">11</option>
-                                    <option value="7">7</option>
-                                    <option value="5">5</option>
-                                </select></p>
-                            </div>
-                        )
-                    }
-                    {sport === "Padel" &&
-                        (
-                            <div>
-                                {/*{handlePadellQuantChange()}*/}
-                                {/*{setQuant_player("2")}*/}
-                                <p>Quantity:<select id="Quantity"  onChange={quant_PlayersChange} value={quant_Players}>
-                                    <option  value=""></option>
-                                    <option value="2">2</option>
-                                    <option value="1">1</option>
-                                </select></p>
-                            </div>
-                        )
-                    }
+                            <p>Quantity<select id="Quantity"  onChange={quant_PlayersChange} value={quant_Players}>
+                                <option value=""></option>
+                                <option value="11">11</option>
+                                <option value="7">7</option>
+                                <option value="5">5</option>
+                            </select></p>
+                        </div>
+                    )}
+                    {sport === "Padel" && (
+                        <div className={"new-team-quantity"}>
+                            {/*{handlePadellQuantChange()}*/}
+                            {/*{setQuant_player("2")}*/}
+                            <p>Quantity:<select id="Quantity"  onChange={quant_PlayersChange} value={quant_Players}>
+                                <option  value=""></option>
+                                <option value="2">2</option>
+                                <option value="1">1</option>
+                            </select></p>
+                        </div>
+                    )}
                     <div>
                         <br/>
                         {/*<button type="submit" className={"signUpButton"}>Sign up</button>*/}
-                        <button id="submit" type="submit" className={"greenButton"} onClick={() => newTeamRequest()}>Create Team</button>
+                        <button id="submit" type="submit" className={"saveChangesButton"} onClick={() => newTeamRequest()}>Create Team</button>
                     </div>
                     <br/>
                 </form>
