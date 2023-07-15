@@ -313,13 +313,13 @@ export function FindRivalPage(props) {
         <div>
             <TopBar popupOpen = {showPopup} getTeamId={props.getTeamId} toggleTeamId={props.toggleTeamId}/>
             <div className={"sports_image"}>
-                <img style={{width: 218, height: "auto"}} src={require("../images/logoRM/logoRM_persona.png")}
-                     alt={"deportes"}/>
+                <img style={{width: 218, height: "auto"}} src={require("../images/logoRM/logoRM_persona.png")} alt={"deportes"}/>
             </div>
+
             <div className={"mirror_sports_image"}>
-                <img style={{width: 218, height: "auto"}} src={require("../images/logoRM/logoRM_persona.png")}
-                     alt={"deportes"}/>
+                <img style={{width: 218, height: "auto"}} src={require("../images/logoRM/logoRM_persona.png")} alt={"deportes"}/>
             </div>
+
             <div className={"containerPrincipalFindRival"}>
                 <div className="team_name_FR"><br/>
                     You've chosen {team.name}
@@ -328,7 +328,6 @@ export function FindRivalPage(props) {
                 </div>
                 <br/>
                 <form onSubmit={rivalMenuOpen && handleSubmit}>
-
                     <div className={"datePicker"}>
                         Choose a day to play:
                         <br/><br/>
@@ -367,7 +366,7 @@ export function FindRivalPage(props) {
                                 valueLabelDisplay="on"
                             />
                         </Box>
-    
+                        <Icon style ={{left:"-30px", top: "-7.5px", fontSize: "20px", position: "absolute"}} className="input-icon-log" icon="streamline:interface-time-hour-glass-hourglass-loading-measure-clock-time" />
                     </div>
 
 
@@ -449,33 +448,4 @@ export function FindRivalPage(props) {
                 <ToastContainer/> {/* Mover el ToastContainer aquí */}
             </div>
         </div>
-    )
-}
-
-
-// React.useEffect(()=>{
-//     async function getTeams(){
-//         const response = await fetch('http://localhost:4326/findRival',{
-//             method: 'GET',
-//             headers: {
-//                 'Content-Type': 'application/json',
-//                 'Authorization': 'Bearer ' + token
-//             }});
-//         const body = await response.json();
-//         setItems(body.results.map(({name})=>({label: name, value: name})));
-//         setLoading(false);
-//     }
-//     getTeams();
-// },[]);
-
-// <select disabled={loading}
-//         value={value}
-//         onChange={e => setValue(e.currentTarget.value)}>
-// <select>
-//     {teams.map(({ label, value }) => (
-//         <option key={value} value={value}>
-//             {label}
-//         </option>
-//     ))}
-//
-// </select>
+    )}
