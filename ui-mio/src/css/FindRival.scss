@@ -23,12 +23,21 @@ h1{
     color: #4E4E4E;
 }
 .datePicker{
-    position: relative;
+    position: absolute;
     //z-index: 3;
-    top: 100px;
+    left: 275px;
+    top: 150px;
+}
+.zone {
+    position: absolute;
+    left: 1050px;
+    top: 155px;
+    z-index: 10;
+
 }
 .team_name_FR {
     position: absolute;
+    //top: 4px;
     font-family: 'Baloo Bhai 2', sans-serif;
     font-size: x-large;
 }
@@ -38,16 +47,23 @@ h1{
     color: #fff;
 }
 .time_select {
-    position: relative;
-    max-width: 400px;
-    top: 120px;
-    //z-index: 4;
-    //left: 300px;
+    position: absolute;
+    width: 400px;
+    right: 180px;
+    top: 298px;
+    z-index: 4;
 }
 .ageSlider{
-    position: relative;
+    position: absolute;
     width: 300px;
-    top: 20px;
+    left: 280px;
+    top: 300px;
+}
+.checkboxRecurrent{
+    position:absolute;
+    top:230px;
+    left:675px;
+    background-color: transparent;
 }
 
 .selectLocationButton{
@@ -64,7 +80,7 @@ h1{
 #confirmLoc{}
 .sports_image {
     position: absolute;
-    left: 10%;
+    left: 12%;
     top: 48%;
     transform: translate(-50%, -50%);
     //z-index: -1;
@@ -102,7 +118,7 @@ h1{
 
 .mirror_sports_image {
     position: absolute;
-    left: 90%;
+    right: 10%;
     top: 48%;
     transform: translate(-50%, -50%);
 }
@@ -115,12 +131,7 @@ h1{
 
 }
 
-.zone {
-    position: relative;
-    top: 80px;
-    //z-index: 2;
 
-}
 
 .findRivalButton {
     position: absolute;
@@ -290,10 +301,6 @@ h1{
     background-color: #AF423F;
     color: white;
 }
-.checkboxRecurrent{
-    position:absolute;
-    left:37.6%;
-    bottom:45%;
-}
+
 
 

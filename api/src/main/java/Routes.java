@@ -594,15 +594,35 @@ public class Routes {
             res.status(200);
             return res.body();
         });
-        get(GET_COMPATIBLE_SEARCHES_ROUTE, (req, res) -> {
+        authorizedGet(GET_COMPATIBLE_SEARCHES_ROUTE, (req, res) -> {
             final EntityManager entityManager = entityManagerFactory.createEntityManager();
             final EntityManager entityManager2 = entityManagerFactory.createEntityManager();
             final Matches matches = new Matches(entityManager2);
             final Searches searches = new Searches(entityManager);
+            final TimeIntervals timeIntervals = new TimeIntervals(entityManager);
             final Long search_id = Long.valueOf(req.queryParams("search_id"));
-            List<Search> compatible_searches = searches.findCompatibleSearches(search_id);
-            res.body(toJson(matches.findNoMatch(Long.toString(search_id), compatible_searches)));
-            res.status(200);
+            getUser(req).ifPresent(
+                (user) -> {
+                    String user_id = user.getId().toString();
+                    searches.getSearchById(search_id).ifPresentOrElse(
+                        (search) -> {
+                            List<Search> candidates = searches.findCandidates(user_id, search.getTime(), search.getDate().createJavaDate(), search.getTeam().getSport(), search.getTeam().getQuantity(), search.getLatitude(), search.getLongitude(), search.getAverageAge());
+                            List<CommonTimeSearch> commonTimeSearchList = new ArrayList<>();
+                            List<Search> compatible_searches = matches.findNoMatch(Long.toString(search_id), candidates);
+                            for (Search candidate : compatible_searches) {
+                                List<String> times = timeIntervals.sameIntervals(search.getTime().getIntervals(), candidate.getTime().getIntervals());
+                                final CommonTimeSearch commonTimeSearch = new CommonTimeSearch();
+                                commonTimeSearch.search = candidate;
+                                commonTimeSearch.times = times;
+                                commonTimeSearchList.add(commonTimeSearch);
+                            }
+                            NewSearchResponse newSearchResponse = new NewSearchResponse(search_id, commonTimeSearchList);
+                            res.body(toJson(newSearchResponse));
+                        }, () -> {
+                                res.status(404);
+                                res.body("Invalid Token");
+                            }
+                        );});
             return res.body();
         });
         authorizedGet(GET_SEARCH_ROUTE, (req, res) -> {
