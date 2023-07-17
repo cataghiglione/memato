@@ -2,10 +2,18 @@ import React, {useEffect, useState} from 'react';
 import {useAuthProvider} from "../auth/auth";
 
 import "../css/CurrentSearches.scss"
-import {currentSearches, deleteSearch, getTeam} from "../service/mySystem";
+import {
+    confirmMatch,
+    currentSearches,
+    declineMatch,
+    deleteSearch,
+    getPendingConfirmations,
+    getTeam
+} from "../service/mySystem";
 import {TopBar} from "./TopBar/TopBar";
 import {ToastContainer} from "react-toastify";
 import SideBar from "./SideBar";
+import {toast} from "react-toastify";
 
 export function CurrentSearchesPage(props) {
     const auth = useAuthProvider()
@@ -20,6 +28,7 @@ export function CurrentSearchesPage(props) {
     const[recurringSearches,setRecurringSearches]=useState([])
     const[team, setTeam]=useState('');
     const[selectedSearch, setSelectedSearch]=useState('');
+    const[pendingMatches, setPendingMatches] = useState([])
    /* const [mapState, setMapState] = useState(false) */
   /*  const [teamSelectedLoc, setTeamSelectedLoc] = useState([0,0])
     const [pushpin, setPushpin] = useState([])
@@ -36,10 +45,21 @@ export function CurrentSearchesPage(props) {
             setRecurringSearches(searches.recurringSearches)
         });
     }, [])
+    useEffect(() => {
+            getPendingConfirmations(token, team_id, (matches) => {
+                    setPendingMatches(matches)
+                }, (matches) => {
+                    // TODO ERROR CALLBACK
+                }
+            )
+        },
+        [team_id, token]
+    )
 
     useEffect(() => {
         getTeam(token,team_id, (team) => setTeam(team));
     }, [token, team_id])
+
 
     const ConfirmationDialog = ({ message, onConfirm, onCancel }) => {
         return (
@@ -83,6 +103,53 @@ export function CurrentSearchesPage(props) {
         );
         setShowConfirmation(false);
     };
+    const handleConfirmMatch = async (match_id) => {
+        await confirmMatch(token, match_id, team_id, () => {
+            getPendingConfirmations(token, team_id, (matches) => {
+                    setPendingMatches(matches)
+                    toast.success('Confirmation sent!', {
+                        position: "top-center",
+                        autoClose: 5000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                        theme: "light",
+                    });
+
+                    // and takes you to that contact (hacleo hoy)
+                }, (matches) => {
+                    // TODO ERROR CALLBACK
+                }
+            )
+        })
+    }
+    const handleDeclineMatch = async (match_id) => {
+        await declineMatch(token, match_id, team_id, () => {
+            getPendingConfirmations(token, team_id, (matches) => {
+                    setPendingMatches(matches)
+                    toast.success('Match rejected!', {
+                        position: "top-center",
+                        autoClose: 5000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                        theme: "light",
+                    });
+
+
+
+                }, () => {
+                    // TODO ERROR CALLBACK
+
+                }
+            )
+        })
+
+    }
 
 
     // const handleDeleteClick = (search) => {
@@ -123,7 +190,7 @@ export function CurrentSearchesPage(props) {
         console.log(teamSelectedLoc)
     }*/
     return (
-        <div>
+        <div >
             <SideBar getTeamId={props.getTeamId} toggleTeamId={props.toggleTeamId}></SideBar>
 
             {popupMsg !=="" && <div className="searches-popup">{popupMsg}</div>}
@@ -142,19 +209,23 @@ export function CurrentSearchesPage(props) {
             <TopBar toggleTeamId = {props.toggleTeamId}    getTeamId={props.getTeamId}/>
 
             <div className={"containerSearchPage"}>
-                <div>
+                <div className={"currentSearchesTitle"}>
+                    {team.name}'s current searches
+                </div>
+                <div className={"recurrentSearchesTitle"}>
+                    {team.name}'s recurring searches
+                </div>
+                <div className={"pendingMatchesTitle"}>
+                    {team.name}'s pending confirmations
+                </div>
+                <div className={"currentSearchesList"}>
                     {searches.length > 0 && (
-                        <div>
-                            <br/>
-                            <div className={"hasSearchesTitle"}>
-                                {team.name}'s current searches
-                            </div>
-                            <br/>
-                            {searches.map((search) => (
-                                <div className={"searchesContainer"}>
-                                    <div key={search.id}>
-                                        <p className={"search-info"}>Time(s): {search.times.join(", ")}</p>
-                                        <p className={"search-info"}>Day: {search.day}/{search.month + 1}</p>
+                            searches.map((search) => (
+                                <div>
+                                <div className={"search-select"}>
+                                    <div key={search.id} className={"search-select.info"}>
+                                        <p >Time(s): {search.times.join(", ")}</p>
+                                        <p >Day: {search.day}/{search.month + 1}</p>
                                     </div>
                                    {/* <button className={"delete-search-button"} style={{left:"50%"}} onClick={() => {OpenCloseMap(); setTeamSelectedLoc([search.latitude, search.longitude])}}>
                                         <PinMapFill />
@@ -164,8 +235,9 @@ export function CurrentSearchesPage(props) {
                                         <i className={"bi bi-trash"}></i>
                                     </button>
                                 </div>
-                            ))}
-                        </div>
+                                </div>
+                            ))
+
                     )}
                 </div>
 
