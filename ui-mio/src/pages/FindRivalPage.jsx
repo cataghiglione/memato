@@ -319,6 +319,7 @@ export function FindRivalPage(props) {
         setShowPopup(false);
     }
 
+
     return (
         <div>
             <SideBar getTeamId={props.getTeamId} toggleTeamId={props.toggleTeamId}></SideBar>

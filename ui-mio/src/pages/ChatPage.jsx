@@ -38,12 +38,11 @@ export function ChatPage (props) {
 
     function pollForNewMessages(){
         getMessages(token, currentContact, (response) => {
+
             setYourMessages(response);
             setTimeout(pollForNewMessages, 1000);
         })
-
     }
-
 
 
     const sendMessageMethod = async () => {
@@ -71,6 +70,7 @@ export function ChatPage (props) {
                 }
             )
         },[teamId, token]
+
     )
 
     async function goToContact(id) {
