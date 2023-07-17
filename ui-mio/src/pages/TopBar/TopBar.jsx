@@ -75,27 +75,26 @@ export function TopBar(props) {
                 {/*<button className={"showNotificationCenter"} onClick={toggleNotificationCenter}>*/}
                 {/*    <img style={{ width: 25, height: "auto"}} src={require("../../images/bell.png")}/>*/}
                 {/*</button>*/}
-                <button className={"showMenu"} onClick={toggleMenuCenter}>
-                    <img style={{ width: 25, height: "auto"}} src={require("../../images/sideBarIcon.png")}/>
-                </button>
-                {menuVisible && (
-                    <div>
-                        <MenuSideBar getTeamId={props.getTeamId} toggleTeamId={props.toggleTeamId} changeVisible = {() => setMenuVisible(false)}/>
-                    </div>
-                )}
-                {(notifVisible && parseInt(props.getTeamId) !== 0) && (
-                    <div>
-                        <NotificationsCenter changeVisible = {() => setNotifVisible(false)}/>
-                    </div>
-                )}
-                {(parseInt(props.getTeamId) !== 0) && (
-                    <div>
-                        <button className={"showNotificationCenter"} onClick={toggleNotificationCenter}>
-                            <img style={{ width: 22, height: "auto"}} src={require("../../images/bell.png")}/>
-                        </button>
-                    </div>
-                )}
-                {/*<ToastContainer/> /!* Mover el ToastContainer aquí *!/*/}
+                {/*<button className={"showMenu"} onClick={toggleMenuCenter}>*/}
+                {/*    <img style={{ width: 25, height: "auto"}} src={require("../../images/sideBarIcon.png")}/>*/}
+                {/*</button>*/}
+                {/*{menuVisible && (*/}
+                {/*    <div>*/}
+                {/*        <MenuSideBar getTeamId={props.getTeamId} toggleTeamId={props.toggleTeamId} changeVisible = {() => setMenuVisible(false)}/>*/}
+                {/*    </div>*/}
+                {/*)}*/}
+                {/*{(notifVisible && parseInt(props.getTeamId) !== 0) && (*/}
+                {/*    <div>*/}
+                {/*        <NotificationsCenter changeVisible = {() => setNotifVisible(false)}/>*/}
+                {/*    </div>*/}
+                {/*)}*/}
+                {/*{(parseInt(props.getTeamId) !== 0) && (*/}
+                {/*    <div>*/}
+                {/*        <button className={"showNotificationCenter"} onClick={toggleNotificationCenter}>*/}
+                {/*            <img style={{ width: 22, height: "auto"}} src={require("../../images/bell.png")}/>*/}
+                {/*        </button>*/}
+                {/*    </div>*/}
+                {/*)}*/}
 
             </div>
         </div>
