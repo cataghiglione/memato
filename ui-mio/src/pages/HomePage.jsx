@@ -8,6 +8,7 @@ import { Icon } from '@iconify/react';
 import {useNavigate} from "react-router";
 import {TopBar} from "./TopBar/TopBar";
 import {PencilSquare} from "react-bootstrap-icons";
+import {ToastContainer} from "react-toastify";
 
 function goToNewTeam(){
     window.location.href = "/newTeam"
@@ -86,6 +87,7 @@ export function HomePage(props){
                     </div>
                 )}
             </div>
+            <ToastContainer/> {/* Mover el ToastContainer aquí */}
         </body>
     )
 }

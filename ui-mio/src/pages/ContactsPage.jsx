@@ -4,6 +4,7 @@ import {TopBar} from "./TopBar/TopBar";
 import "../css/Confirmations.scss"
 import {getContacts, getTeam, newMatch} from "../service/mySystem";
 import {ChatFill} from "react-bootstrap-icons";
+import {ToastContainer} from "react-toastify";
 
 
 export function ContactsPage(props) {
@@ -58,6 +59,7 @@ export function ContactsPage(props) {
                     }
                 </div>
             </div>
+            <ToastContainer/> {/* Mover el ToastContainer aquí */}
         </div>
     )
 }

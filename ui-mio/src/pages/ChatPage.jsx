@@ -4,6 +4,7 @@ import {TopBar} from "./TopBar/TopBar";
 import {getContacts, getMessages, sendMessage, getOtherTeamName} from "../service/mySystem";
 import {useAuthProvider} from "../auth/auth";
 import {useNavigate} from "react-router";
+import {ToastContainer} from "react-toastify";
 export function ChatPage (props) {
     const auth = useAuthProvider()
     const navigate = useNavigate()
@@ -151,6 +152,7 @@ export function ChatPage (props) {
                     </div>
                 )}
             </div>
+            <ToastContainer/> {/* Mover el ToastContainer aquí */}
         </div>
     );
 }

@@ -6,6 +6,7 @@ import {useAuthProvider} from "../auth/auth";
 import {TopBar} from "./TopBar/TopBar";
 import "../css/Home.scss";
 import {Pencil, PencilSquare} from "react-bootstrap-icons";
+import {ToastContainer} from "react-toastify";
 
 function goToNewTeam(){
     window.location.href = "/newTeam"
@@ -103,6 +104,7 @@ export function PickTeamPage(props) {
                     <p className={"noTeamPick"}>You haven't created any teams yet</p>
                 }
             </div>
+            <ToastContainer/> {/* Mover el ToastContainer aquí */}
         </div>
     )
 }

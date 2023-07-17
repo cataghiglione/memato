@@ -12,6 +12,7 @@ import 'semantic-ui-css/semantic.min.css'
 // import Map from "./ReactGoogleMap"; // Importa el componente Map desde MapInReact.js
 import MapContainer from "./GoogleMaps"
 import "bootstrap/dist/css/bootstrap.min.css";
+import {ToastContainer} from "react-toastify";
 
 
 export function MyConfirmationsPage(props) {
@@ -154,6 +155,7 @@ export function MyConfirmationsPage(props) {
                     </div>
                 )}
             </div>
+            <ToastContainer/> {/* Mover el ToastContainer aquí */}
         </div>
 
     )

@@ -11,6 +11,7 @@ import {useAuthProvider} from "../auth/auth";
 import MenuSidebarWrapper from "./TopBar/MenuSideBar";
 import {TopBar} from "./TopBar/TopBar";
 import {Icon} from "@iconify/react";
+import {ToastContainer} from "react-toastify";
 
 export function NewTeamPage (props){
 
@@ -182,6 +183,7 @@ export function NewTeamPage (props){
                     <br/>
                 </form>
             </div>
+            <ToastContainer/> {/* Mover el ToastContainer aquí */}
         </div>
     )
 }

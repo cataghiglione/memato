@@ -2,7 +2,7 @@ import * as React from 'react'
 import {useEffect, useState} from 'react'
 import {useSearchParams} from "react-router-dom";
 import {useNavigate} from "react-router";
-import {login} from "../service/mySystem";
+import {login, sendMessageWS} from "../service/mySystem";
 import "../css/Login.scss";
 import "bootstrap/dist/css/bootstrap.min.css"; //npm install bootstrap axios md5 universal-cookie
 import "../images/RivalMatch_logoRecortado.png";
@@ -61,6 +61,7 @@ export const LoginPage = () => {
                 setUsername('')
                 setPassword('')
             })
+
     }
 
     const handleSubmit = async e => {

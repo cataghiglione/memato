@@ -5,6 +5,7 @@ import {useAuthProvider} from "../auth/auth";
 import {getUser, updateUser, deleteAccount} from "../service/mySystem";
 import "../css/EditTeam.scss"
 import {TopBar} from "./TopBar/TopBar";
+import {ToastContainer} from "react-toastify";
 
 export function UserPage(props) {
     const navigate = useNavigate()
@@ -181,6 +182,7 @@ export function UserPage(props) {
                     </form>
                 </div>
             </div>
+            <ToastContainer/> {/* Mover el ToastContainer aquí */}
         </div>
     )
 }

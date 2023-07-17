@@ -4,6 +4,7 @@ import {useAuthProvider} from "../auth/auth";
 import "../css/CurrentSearches.scss"
 import {currentSearches, deleteSearch, getTeam} from "../service/mySystem";
 import {TopBar} from "./TopBar/TopBar";
+import {ToastContainer} from "react-toastify";
 
 export function CurrentSearchesPage(props) {
     const auth = useAuthProvider()
@@ -184,7 +185,7 @@ export function CurrentSearchesPage(props) {
 
 
             </div>
-
+            <ToastContainer/> {/* Mover el ToastContainer aquí */}
         </div>
 
 

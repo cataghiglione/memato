@@ -6,6 +6,7 @@ import { getTeam, updateTeam, deleteTeam} from "../service/mySystem";
 import {useLocation} from "react-router";
 import {useNavigate} from "react-router";
 import {TopBar} from "./TopBar/TopBar";
+import {ToastContainer} from "react-toastify";
 
 function goToPickTeam() {
     window.location.href = "/pickTeam"
@@ -230,6 +231,7 @@ export function EditTeamPage(props) {
 
 
                 </div>
+                <ToastContainer/> {/* Mover el ToastContainer aquí */}
 
             </div>
         </div>

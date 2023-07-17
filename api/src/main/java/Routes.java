@@ -43,6 +43,7 @@ public class Routes {
     public static final String NEW_SEARCH_ROUTE = "/newSearch";
     public static final String GET_ACTIVE_SEARCHES_ROUTE = "/currentSearches";
     public static final String GET_COMPATIBLE_SEARCHES_ROUTE = "/compatibleSearches";
+    public static final String GET_SEARCH_ROUTE = "/getSearch";
     public static final String UPDATE_TEAM_ROUTE = "/updateTeam";
     public static final String DELETE_TEAM_ROUTE = "/deleteTeam";
     public static final String DELETE_ACCOUNT_ROUTE = "/deleteAccount";
@@ -464,7 +465,57 @@ public class Routes {
 //            }
             return gson.toJson(users.listAll());
         });
-
+//        LO DE COCA PARA PODER MODIFICAR LA SEARCH EN FR
+//        post(NEW_SEARCH_ROUTE, (req, res) -> {
+//            final EntityManager entityManager = entityManagerFactory.createEntityManager();
+//            final Searches searches = new Searches(entityManager);
+//            final Teams teams = new Teams(entityManager);
+//            final String id = (req.queryParams("id"));
+//            final TimeIntervals timeIntervals = new TimeIntervals(entityManager);
+//            String timeParams = req.queryParams("time");
+//            String[] time = timeParams.split(",");
+//            Optional<User> user = getUser(req);
+//            AtomicLong searchId = new AtomicLong();
+//            TimeInterval timeInterval = system.createTimeInterval(List.of(time));
+//
+//            teams.findTeamsById(id).ifPresent(
+//                    (team) -> {
+//                        final CreateSearchForm searchForm = CreateSearchForm.createFromJson(req.body());
+//                        system.findOrCreateSearch(searchForm, team, timeInterval).ifPresentOrElse(
+//                                (search) -> {
+//                                    searchId.set(search.getId());
+//                                    res.status(200);
+//                                },
+//                                () -> {
+//                                    res.status(201);
+//                                }
+//
+//                        );
+////                        if (user.isPresent()) {
+////                            String user_id = user.get().getId().toString();
+////                            List<Search> candidates = searches.findCandidates(user_id, timeInterval, searchForm.getDate(), team.getSport(), team.getQuantity(), searchForm.getLatitude(), searchForm.getLongitude(),searchForm.getAge());
+////                            List<CommonTimeSearch> commonTimeSearchList = new ArrayList<>();
+////                            Long activeSearchId = searchId.longValue();
+////                            searches.getSearchById(activeSearchId).ifPresent(
+////                                    (search) -> {
+////                                        for (Search candidate : candidates) {
+////                                            List<String> times = timeIntervals.sameIntervals(search.getTime().getIntervals(), candidate.getTime().getIntervals());
+////                                            final CommonTimeSearch commonTimeSearch = new CommonTimeSearch();
+////                                            commonTimeSearch.search = candidate;
+////                                            commonTimeSearch.times = times;
+////                                            commonTimeSearchList.add(commonTimeSearch);
+////                                        }
+////                                    });
+////                            NewSearchResponse newSearchResponse = new NewSearchResponse(searchId.get(), commonTimeSearchList);
+////
+////
+////                            res.body(toJson(newSearchResponse));
+////                        }
+//                        res.body(toJson(searchId.get()));
+//                    }
+//            );
+//            return res.body();
+//        });
         post(NEW_SEARCH_ROUTE, (req, res) -> {
             final EntityManager entityManager = entityManagerFactory.createEntityManager();
             final Searches searches = new Searches(entityManager);
@@ -543,7 +594,7 @@ public class Routes {
             res.status(200);
             return res.body();
         });
-        authorizedGet(GET_COMPATIBLE_SEARCHES_ROUTE, (req, res) -> {
+        get(GET_COMPATIBLE_SEARCHES_ROUTE, (req, res) -> {
             final EntityManager entityManager = entityManagerFactory.createEntityManager();
             final EntityManager entityManager2 = entityManagerFactory.createEntityManager();
             final Matches matches = new Matches(entityManager2);
@@ -554,6 +605,23 @@ public class Routes {
             res.status(200);
             return res.body();
         });
+        authorizedGet(GET_SEARCH_ROUTE, (req, res) -> {
+            final EntityManager entityManager = entityManagerFactory.createEntityManager();
+            final Searches searches = new Searches(entityManager);
+            final Long search_id = Long.valueOf(req.queryParams("search_id"));
+            searches.getSearchById(search_id).ifPresentOrElse(
+                (search) -> {
+                    res.body(toJson(search));
+                    res.status(200);
+                },
+                ()->{
+                    res.body("There is no search with this id");
+                    res.status(400);
+                });
+
+            return res.body();
+        });
+
 
         post(UPDATE_TEAM_ROUTE, (req, res) -> {
             final EntityManager entityManager = entityManagerFactory.createEntityManager();
@@ -778,7 +846,8 @@ public class Routes {
                                     if (status) {
                                         res.status(200);
                                         if (match.getTeam1().equals(team))
-                                            system.createNotificationWithTeam(match.getTeam2(),
+                                            system.
+                                                    createNotificationWithTeam(match.getTeam2(),
                                                     String.format("%s has decline the match with %s for %d/%d", team.getName(),
                                                             match.getTeam2().getName(), match.getDay(), match.getMonth()),
                                                     4, team.getId());

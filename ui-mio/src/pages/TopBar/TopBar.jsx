@@ -6,6 +6,7 @@ import {useAuthProvider} from "../../auth/auth";
 import {MenuSideBar} from "./MenuSideBar";
 import {useLocation, useNavigate} from "react-router";
 import {NotificationsCenter} from "./NotificationsCenter";
+import {ToastContainer} from "react-toastify";
 
 function goToNewTeam(){
     window.location.href = "/newTeam"
@@ -94,6 +95,7 @@ export function TopBar(props) {
                         </button>
                     </div>
                 )}
+                {/*<ToastContainer/> /!* Mover el ToastContainer aquí *!/*/}
 
             </div>
         </div>

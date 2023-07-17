@@ -5,6 +5,7 @@ import {useNavigate} from "react-router";
 import {useAuthProvider} from "../auth/auth";
 import {getNotifications, updateNotification, newContact} from "../service/mySystem";
 import {TopBar} from "./TopBar/TopBar";
+import {ToastContainer} from "react-toastify";
 
 export function NotificationPage(props) {
     const navigate = useNavigate();
@@ -103,6 +104,7 @@ export function NotificationPage(props) {
                 ))}
                     </div>)}
             </div>
+            <ToastContainer/> {/* Mover el ToastContainer aquí */}
         </div>
     );
 }
