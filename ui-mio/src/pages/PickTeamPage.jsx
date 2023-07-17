@@ -6,6 +6,7 @@ import {useAuthProvider} from "../auth/auth";
 import {TopBar} from "./TopBar/TopBar";
 import "../css/Home.scss";
 import {Pencil, PencilSquare} from "react-bootstrap-icons";
+import SideBar from "./SideBar";
 
 function goToNewTeam(){
     window.location.href = "/newTeam"
@@ -49,6 +50,7 @@ export function PickTeamPage(props) {
     }
     return (
         <div>
+            <SideBar getTeamId={props.getTeamId} toggleTeamId={props.toggleTeamId}></SideBar>
             <TopBar getTeamId={props.getTeamId} toggleTeamId={props.toggleTeamId} noTeams={noTeams}/>
             <div className="containerPrincipalPickTeamPage" style={{marginLeft: '7%', marginTop: "-5%"}}>
                 <h1 className={"teamTitle"}>Your teams</h1>

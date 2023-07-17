@@ -11,6 +11,7 @@ import {useAuthProvider} from "../auth/auth";
 import MenuSidebarWrapper from "./TopBar/MenuSideBar";
 import {TopBar} from "./TopBar/TopBar";
 import {Icon} from "@iconify/react";
+import SideBar from "./SideBar";
 
 export function NewTeamPage (props){
 
@@ -106,6 +107,7 @@ export function NewTeamPage (props){
 
     return (
         <div>
+            <SideBar getTeamId={props.getTeamId} toggleTeamId={props.toggleTeamId}></SideBar>
             <TopBar getTeamId = {props.getTeamId}/>
             <div className={"containerPrincipalNewTeam"}>
                 {errorMsg && <div className="alert alert-danger" role="alert">{errorMsg}</div>}

@@ -5,6 +5,7 @@ import {useAuthProvider} from "../auth/auth";
 import {getUser, updateUser, deleteAccount} from "../service/mySystem";
 import "../css/EditTeam.scss"
 import {TopBar} from "./TopBar/TopBar";
+import SideBar from "./SideBar";
 
 export function UserPage(props) {
     const navigate = useNavigate()
@@ -105,6 +106,7 @@ export function UserPage(props) {
         <div>
             {errorMsg && <div className="alert alert-danger" role="alert">{errorMsg}</div>}
             {once && getUserMethod()}
+            <SideBar getTeamId={props.getTeamId} toggleTeamId={props.toggleTeamId}></SideBar>
             <TopBar getTeamId={props.getTeamId} toggleTeamId={props.toggleTeamId}/>
             <div className={"editTeamContainer"}>
                 <br/>

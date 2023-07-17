@@ -3,6 +3,7 @@ import {useEffect, useState} from 'react'
 import {useAuthProvider} from "../auth/auth";
 import {listTeams, getUser} from "../service/mySystem";
 import "../css/Home.scss";
+import SideBar from "./SideBar";
 import { Icon } from '@iconify/react';
 // import "../css/PickTeam.scss";
 import {useNavigate} from "react-router";
@@ -20,6 +21,8 @@ export function HomePage(props){
     const [onceOpen, setOnceOpen] = useState(true);
     const [teams, setTeams] = useState([]);
     const [nextTeam, setNextTeam] = useState('')
+    const [sidebarOpen, setSidebarOpen] = useState(false);
+
     const containerStyle = teams.length > 0 ? { marginTop: `-${10 * teams.length}px`, marginLeft: '7%'} : {marginLeft: '7%'};
 
 
@@ -46,8 +49,9 @@ export function HomePage(props){
     }
     return (
         <body>
+        <SideBar getTeamId={props.getTeamId} toggleTeamId={props.toggleTeamId}/>
             <TopBar toggleTeamId={props.toggleTeamId} getTeamId={props.getTeamId}/>
-            <div className="containerPrincipalHomePage" style={containerStyle}>
+            <div className={`containerPrincipalHomePage ${sidebarOpen ? 'page-content-shifted' : ''}`} style={containerStyle}>
                 {/*<nav>*/}
                 {/*    <ul>*/}
                 {/*        <figure className="brick">*/}

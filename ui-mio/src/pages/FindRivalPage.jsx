@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import "../css/FindRival.scss"
 import "../css/Home.scss"
+import SideBar from "./SideBar";
 import {useNavigate} from "react-router";
 import {findRival, getTeam, newMatch, possibleSearchCandidates} from "../service/mySystem";
 import {useAuthProvider} from "../auth/auth";
@@ -320,6 +321,7 @@ export function FindRivalPage(props) {
 
     return (
         <div>
+            <SideBar getTeamId={props.getTeamId} toggleTeamId={props.toggleTeamId}></SideBar>
             <TopBar popupOpen = {showPopup} getTeamId={props.getTeamId} toggleTeamId={props.toggleTeamId}/>
             <div className={"sports_image"}>
                 <img style={{width: 218, height: "auto"}} src={require("../images/logoRM/logoRM_persona.png")} alt={"deportes"}/>
@@ -377,7 +379,7 @@ export function FindRivalPage(props) {
                         </Box>
                         <Icon style ={{left:"-30px", top: "-7.5px", fontSize: "20px", position: "absolute"}} className="input-icon-log" icon="streamline:interface-time-hour-glass-hourglass-loading-measure-clock-time" />
                     </div>
-                    <div >
+                    <div className={"checkboxRecurrent"}>
                         <FormGroup>
                             <FormControlLabel control=
                                                   {<Checkbox checked={checked}

@@ -29,7 +29,12 @@ h1{
     display: flex;
     justify-content: flex-start;
     align-items: flex-start;
-    height: 100vh;
+    position:absolute;
+    left:5.3%;
+    z-index:1;
+
+
+
 }
 
 .map {
@@ -98,5 +103,9 @@ h1{
 .headerContainer{
     position:fixed;
     left:60%;
-    bottom:75%;
+    bottom:80%;
+}
+.leaflet-container {
+    width: 80vh;
+    height: 80vh;
 }

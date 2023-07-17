@@ -6,6 +6,7 @@ import { getTeam, updateTeam, deleteTeam} from "../service/mySystem";
 import {useLocation} from "react-router";
 import {useNavigate} from "react-router";
 import {TopBar} from "./TopBar/TopBar";
+import SideBar from "./SideBar";
 
 function goToPickTeam() {
     window.location.href = "/pickTeam"
@@ -135,6 +136,7 @@ export function EditTeamPage(props) {
     };
     return (
         <div>
+            <SideBar getTeamId={props.getTeamId} toggleTeamId={props.toggleTeamId}></SideBar>
             <TopBar getTeamId={props.getTeamId} toggleTeamId={props.toggleTeamId}/>
             <div className={"editTeamContainer"}>
 

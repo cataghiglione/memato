@@ -4,6 +4,7 @@ import {useAuthProvider} from "../auth/auth";
 import "../css/CurrentSearches.scss"
 import {currentSearches, deleteSearch, getTeam} from "../service/mySystem";
 import {TopBar} from "./TopBar/TopBar";
+import SideBar from "./SideBar";
 
 export function CurrentSearchesPage(props) {
     const auth = useAuthProvider()
@@ -122,6 +123,7 @@ export function CurrentSearchesPage(props) {
     }*/
     return (
         <div>
+            <SideBar getTeamId={props.getTeamId} toggleTeamId={props.toggleTeamId}></SideBar>
 
             {popupMsg !=="" && <div className="searches-popup">{popupMsg}</div>}
             {showConfirmation === true && (
@@ -135,7 +137,6 @@ export function CurrentSearchesPage(props) {
                     </div>
                 </div>
             )}
-
             <TopBar toggleTeamId = {props.toggleTeamId}    getTeamId={props.getTeamId}/>
 
             <div className={"containerSearchPage"}>

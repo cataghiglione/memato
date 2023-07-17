@@ -5,6 +5,7 @@ import {useNavigate} from "react-router";
 import {useAuthProvider} from "../auth/auth";
 import {getNotifications, updateNotification, newContact} from "../service/mySystem";
 import {TopBar} from "./TopBar/TopBar";
+import SideBar from "./SideBar";
 
 export function NotificationPage(props) {
     const navigate = useNavigate();
@@ -47,6 +48,7 @@ export function NotificationPage(props) {
 
     return (
         <div>
+            <SideBar getTeamId={props.getTeamId} toggleTeamId={props.toggleTeamId}></SideBar>
             <TopBar toggleTeamId={props.toggleTeamId} getTeamId={props.getTeamId}/>
             <div className={"notification-page"}>
                 <h1>Notifications Page</h1>
