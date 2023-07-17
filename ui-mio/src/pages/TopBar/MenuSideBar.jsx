@@ -41,6 +41,7 @@ export function MenuSideBar(props){
                 {props.getTeamId !== 0 && <option className={"option"} key={"/chat"} value="/chat">Chat</option>}
                 {props.getTeamId !== 0 && <option className={"option"} key={"/newTeam"} value="/newTeam">New Team</option>}
                 {props.getTeamId !== 0 && <option className={"option"} key={"/editTeam"} value="/editTeam">Team Settings</option>}
+                {props.getTeamId !== 0 && <option className={"option"} key={"/webSocketChat"} value="/webSocketChat">WS chat</option>}
                 <option className={"option"} key={"/user"} value="/user">Profile</option>
             </select>
 
