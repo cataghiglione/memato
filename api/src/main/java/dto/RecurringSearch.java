@@ -8,7 +8,7 @@ public class RecurringSearch {
     public Long id;
 
     public void setWeekDay(int number){
-        String[] daysOfTheWeek= new String[]{"Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"};
+        String[] daysOfTheWeek= new String[]{"Sundays","Mondays","Tuesdays","Wednesdays","Thursdays","Fridays","Saturdays"};
         weekDay=daysOfTheWeek[number];
     }
 

@@ -8,15 +8,27 @@ import {
     declineMatch,
     deleteSearch,
     getPendingConfirmations,
-    getTeam
+    getTeam, newContact
 } from "../service/mySystem";
 import {TopBar} from "./TopBar/TopBar";
 import {ToastContainer} from "react-toastify";
 import SideBar from "./SideBar";
 import {toast} from "react-toastify";
+import SentimentDissatisfiedOutlinedIcon from '@mui/icons-material/SentimentDissatisfiedOutlined';
+import IconButton from '@mui/material/IconButton';
+import DeleteIcon from '@mui/icons-material/Delete';
+import {useNavigate} from "react-router";
+import Stack from '@mui/material/Stack';
+import CheckOutlinedIcon from '@mui/icons-material/CheckOutlined';
+import DoDisturbAltOutlinedIcon from '@mui/icons-material/DoDisturbAltOutlined';
+import QuestionAnswerOutlinedIcon from '@mui/icons-material/QuestionAnswerOutlined';
+import {ChatFill} from "react-bootstrap-icons";
+
+
 
 export function CurrentSearchesPage(props) {
     const auth = useAuthProvider()
+    const navigate = useNavigate()
     const token = auth.getToken();
     const team_id = props.getTeamId;
     const [popupMsg, setPopupMsg] = useState('');
@@ -150,6 +162,21 @@ export function CurrentSearchesPage(props) {
         })
 
     }
+    function findOrCreateContact(otherTeamId) {
+        newContact(token, {
+                team1_id: team_id,
+                team2_id: otherTeamId
+            }, (res) => {
+                console.log(res)
+                navigate(`/webSocketChat?contactId=${res}`)
+            },
+            () => {
+                // TODO when error callback happens it takes you only to the /chat, without throwing the error on console
+                console.log('Contact already exists!')
+                navigate("/webSocketChat")
+            }
+        )
+    }
 
 
     // const handleDeleteClick = (search) => {
@@ -231,29 +258,93 @@ export function CurrentSearchesPage(props) {
                                         <PinMapFill />
                                     </button>*/}
 
-                                    <button className={"delete-search-button"} onClick={() => handleDeleteClick(search)}>
-                                        <i className={"bi bi-trash"}></i>
-                                    </button>
+                                    {/*<button className={"delete-search-button"} onClick={() => handleDeleteClick(search)}>*/}
+                                    {/*    <i className={"bi bi-trash"}></i>*/}
+                                    {/*</button>*/}
+                                    <IconButton aria-label="delete" onClick={() => handleDeleteClick(search)}>
+                                        <DeleteIcon />
+                                    </IconButton>
                                 </div>
                                 </div>
                             ))
 
                     )}
                 </div>
+                <div className={"recurringSearchesList"}>
+                    {recurringSearches.length>0&&(
+                        recurringSearches.map((recurring)=>(
+                            <div>
+                                <div className={"recurring-select"}>
+                                    <div key={recurring.id} className={"recurring-select.info"}>
+                                        <p >Time(s): {recurring.times.join(", ")}</p>
+                                        <p >Days: {recurring.weekDay}</p>
+                                    </div>
+                                    <IconButton aria-label="delete" onClick={() => handleDeleteClick(recurring)}>
+                                        <DeleteIcon />
+                                    </IconButton>
+
+                                </div>
+                            </div>
+                        )))
+                    }
+
+                </div>
+                <div className={"pendingConfirmationsList"}>
+                    {pendingMatches.length > 0 && (
+                        pendingMatches.map((match) => (
+                            <div className={"matches-select"}>
+                            <div key={match.id}  className="matches-select.info">
+                                    <p >Rival: {match.team2.name}
+                                    </p>
+                                    <p >Time(s): {match.time.join(", ")}</p>
+                                    <p >Day: {match.day}</p>
+                            </div>
+                                {match.team1Confirmed ? (
+                                    <p>You have confirmed this match, wait for the other team to confirm</p>
+                                ) : (
+                                    <div>
+                                        <Stack direction="row" spacing={18}>
+                                            <IconButton onClick={() => handleConfirmMatch(match.id)}>
+                                                <CheckOutlinedIcon/>
+                                            </IconButton>
+                                            <IconButton onClick={() => handleDeclineMatch(match.id)}>
+                                                <DoDisturbAltOutlinedIcon/>
+                                            </IconButton>
+                                            <IconButton onClick={() => findOrCreateContact(match.team2.id)}>
+                                                <QuestionAnswerOutlinedIcon/>
+                                            </IconButton>
+                                        </Stack>
+                                    </div>
+                                )}
+                            </div>
+                        ))
+                    )}
+                </div>
+
+
 
                 {searches.length===0 && (
                     <div>
                         <br/>
                         <div className={"noSearchesTitle"}>
                             You don't have any active searches
+                            <SentimentDissatisfiedOutlinedIcon/>
                         </div>
                         <br/><br/>
-                        <div className={"refereeImageSearches"}>
-                            <img style={{width: 218, height: "auto"}} src={require("../images/referee.png")}
-                                 alt={"referee"}/>
+
+
+                    </div>
+                )}
+                {recurringSearches.length===0 && (
+                    <div>
+                        <br/>
+                        <div className={"noRecurringSearchesTitle"}>
+                            You don't have any recurring searches
+                            <SentimentDissatisfiedOutlinedIcon/>
                         </div>
-                        <br/><br/><br/><br/>
-                        <button className={"goToUserButton"} onClick={handleGoBackClick}>Find a new rival!</button>
+                        <br/><br/>
+
+
                     </div>
                 )}
 

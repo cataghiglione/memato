@@ -543,12 +543,19 @@ public class Routes {
                         );
                         if (user.isPresent()) {
                             String user_id = user.get().getId().toString();
-                            List<Search> candidates = searches.findCandidates(user_id, timeInterval, searchForm.getDate(), team.getSport(), team.getQuantity(), searchForm.getLatitude(), searchForm.getLongitude(),searchForm.getAge());
+                            List<Search> candidates= new ArrayList<>();
+                            if (!searchForm.isRecurring()){
+                            candidates = searches.findCandidates(user_id, timeInterval, searchForm.getDate(), team.getSport(), team.getQuantity(), searchForm.getLatitude(), searchForm.getLongitude(),searchForm.getAge());}
+                            else {
+                                candidates=searches.findCandidatesWhenRecurring(user_id, timeInterval, searchForm.getDate(), team.getSport(), team.getQuantity(), searchForm.getLatitude(), searchForm.getLongitude(),searchForm.getAge());
+                            }
+
                             List<CommonTimeSearch> commonTimeSearchList = new ArrayList<>();
                             Long activeSearchId = searchId.longValue();
+                            List<Search> finalCandidates = candidates;
                             searches.getSearchById(activeSearchId).ifPresent(
                                     (search) -> {
-                                        for (Search candidate : candidates) {
+                                        for (Search candidate : finalCandidates) {
                                             List<String> times = timeIntervals.sameIntervals(search.getTime().getIntervals(), candidate.getTime().getIntervals());
                                             final CommonTimeSearch commonTimeSearch = new CommonTimeSearch();
                                             commonTimeSearch.search = candidate;
@@ -606,7 +613,13 @@ public class Routes {
                     String user_id = user.getId().toString();
                     searches.getSearchById(search_id).ifPresentOrElse(
                         (search) -> {
-                            List<Search> candidates = searches.findCandidates(user_id, search.getTime(), search.getDate().createJavaDate(), search.getTeam().getSport(), search.getTeam().getQuantity(), search.getLatitude(), search.getLongitude(), search.getAverageAge());
+                            List<Search> candidates = new ArrayList<>();
+                            if (!search.isRecurring()){
+                            candidates = searches.findCandidates(user_id, search.getTime(), search.getDate().createJavaDate(), search.getTeam().getSport(), search.getTeam().getQuantity(), search.getLatitude(), search.getLongitude(), search.getAverageAge());}
+                            else {
+                                candidates = searches.findCandidatesWhenRecurring(user_id, search.getTime(), search.getDate().createJavaDate(), search.getTeam().getSport(), search.getTeam().getQuantity(), search.getLatitude(), search.getLongitude(), search.getAverageAge());
+
+                        }
                             List<CommonTimeSearch> commonTimeSearchList = new ArrayList<>();
                             List<Search> compatible_searches = matches.findNoMatch(Long.toString(search_id), candidates);
                             for (Search candidate : compatible_searches) {

@@ -83,6 +83,51 @@ public class Searches {
     public boolean exists(String id, List<String> time, Date date, String latitude, String longitude,int age,boolean isRecurring){
         return findSearchByTeam(id,time,date.getMonth(),date.getDate(), date.getYear(),latitude,longitude,age,isRecurring).isPresent();
     }
+    public List<Search> findCandidatesWhenRecurring(String id, TimeInterval time, Date date , String sport, String quantity, String latitude, String longitude, int age){
+        int weekDay = date.getDay();
+        List<Search> possibleCandidates = entityManager.createQuery("SELECT s FROM Search s WHERE (  s.date.weekDay =: weekDay AND cast(s.team.user.id as string) not LIKE :id AND s.team.sport LIKE :sport " +
+                        "AND s.team.quantity LIKE :quantity AND isSearching = true AND (s.averageAge BETWEEN :minAge AND :maxAge))", Search.class)
+                .setParameter("weekDay",weekDay)
+                .setParameter("sport",sport )
+                .setParameter("id",id)
+                .setParameter("quantity",quantity)
+                .setParameter("minAge",age-10)
+                .setParameter("maxAge",age+10)
+                .getResultList();
+        for (int i = 0; i < possibleCandidates.size(); i++) {
+            Search candidate = possibleCandidates.get(i);
+            if (candidate.getDate().getYear() < date.getYear()){
+                possibleCandidates.remove(candidate);
+            }
+            else if(candidate.getDate().getYear() == date.getYear() && candidate.getDate().getMonth()<date.getMonth()){
+                possibleCandidates.remove(candidate);
+
+            } else if (candidate.getDate().getYear()==date.getYear() && candidate.getDate().getMonth() == date.getMonth() && candidate.getDate().getDate() < date.getDate()) {
+                possibleCandidates.remove(candidate);
+
+            }
+        }
+        return filtrateCandidates(time, latitude, longitude, possibleCandidates,date);
+
+
+    }
+
+    private List<Search> filtrateCandidates(TimeInterval time, String latitude, String longitude, List<Search> possibleCandidates, Date date) {
+        List<Search> candidates=new ArrayList<>(possibleCandidates.size());
+        for (int i = 0; i < possibleCandidates.size() ; i++) {
+            if (time.haveOneCoincidentTime(possibleCandidates.get(i).getTime().getIntervals())){
+                candidates.add(possibleCandidates.get(i));
+            }
+        }
+        for (Search candidate : candidates) {
+            if (!isInA5KmRadius(Double.parseDouble(latitude), Double.parseDouble(longitude), Double.parseDouble(candidate.getLatitude()), Double.parseDouble(candidate.getLongitude()))) {
+                candidates.remove(candidate);
+            }
+
+        }
+
+        return candidates;
+    }
 
 
     public List<Search> findCandidates(String id, TimeInterval time, Date date, String sport, String quantity, String latitude, String longitude,int age){
@@ -103,19 +148,22 @@ public class Searches {
                 .setParameter("minAge",age-10)
                 .setParameter("maxAge",age+10)
                 .getResultList();
-        List<Search> candidates=new ArrayList<>(possibleCandidates.size());
-        for (int i = 0; i < possibleCandidates.size() ; i++) {
-            if (time.haveOneCoincidentTime(possibleCandidates.get(i).getTime().getIntervals())){
-                candidates.add(possibleCandidates.get(i));
-            }
-        }
-        for (Search candidate : candidates) {
-            if (!isInA5KmRadius(Double.parseDouble(latitude), Double.parseDouble(longitude), Double.parseDouble(candidate.getLatitude()), Double.parseDouble(candidate.getLongitude()))) {
-                candidates.remove(candidate);
+        for (int i = 0; i < possibleCandidates.size(); i++) {
+            Search candidate = possibleCandidates.get(i);
+            if (candidate.isRecurring() ){
+                if (candidate.getDate().getYear()>year){
+                    possibleCandidates.remove(candidate);
+                } else if (candidate.getDate().getYear() == year && candidate.getDate().getMonth()>month) {
+                    possibleCandidates.remove(candidate);
+                }
+                else if (candidate.getDate().getYear() == year && candidate.getDate().getMonth()==month && candidate.getDate().getDate() > day){
+                    possibleCandidates.remove(candidate);
+                }
             }
 
         }
-        return candidates;
+
+        return filtrateCandidates(time, latitude, longitude, possibleCandidates,date);
 
     }
 

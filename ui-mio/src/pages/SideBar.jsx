@@ -56,13 +56,13 @@ export function MySidebar(props) {
                                 <Link to="/findRival" style={{color: 'black'}}>Find Rival</Link>
                             </MenuItem>
                             <MenuItem icon={<PendingActionsOutlinedIcon/>}>
-                                <Link to="/currentSearches" style={{color: 'black'}}>Pending Confirmations</Link>
+                                <Link to="/currentSearches" style={{color: 'black'}}>Searches&Confirmations</Link>
                             </MenuItem>
                             <MenuItem icon={<SportsSoccerOutlinedIcon/>}>
                                 <Link to="/myConfirmations" style={{color: 'black'}}>My Confirmed Matches</Link>
                             </MenuItem>
                             <MenuItem icon={<QuestionAnswerOutlinedIcon/>}>
-                                <Link to="/chat" style={{color: 'black'}}>Chat</Link>
+                                <Link to="/webSocketChat" style={{color: 'black'}}>Chat</Link>
                             </MenuItem>
                             <MenuItem icon={<GroupAddOutlinedIcon/>}>
                                 <Link to="/newTeam" style={{color: 'black'}}>New Team</Link>

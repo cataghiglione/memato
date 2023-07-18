@@ -34,10 +34,10 @@ h1{
 }
 
 .noSearchesTitle {
-    //position:relative;
-    font-size: xx-large;
-    //bottom: 80px;
-    //right: 90px;
+    position:fixed;
+    font-size: large;
+    top:20vh;
+    left:40vw;
     white-space:nowrap;
 }
 .hasSearchesTitle{
@@ -207,7 +207,7 @@ h1{
 }
 .currentSearchesList{
     position: fixed;
-    left: 30vw;
+    left: 35vw;
     top: 16vh;
     width:auto; /*  Con borde sería 49vh */
     max-width: 115vh;
@@ -251,4 +251,120 @@ h1{
     align-items: flex-start;
     position: fixed;
 }
+.recurringSearchesList{
+    position: fixed;
+    left: 35vw;
+    top: 46vh;
+    width:auto; /*  Con borde sería 49vh */
+    max-width: 115vh;
+    height: auto;
+    overflow-x: scroll;
+    scrollbar-width: thin;
+    display:inline-flex;
+}
+.recurringSearchesList::-webkit-scrollbar {
+    width: 3px;
+}
+
+.recurringSearchesList::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+    border-radius: 10px;
+    background-color: #F5F5F5;
+}
+
+.recurringSearchesList::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+    background-color: #555;
+}
+.recurring-select {
+    margin-left: 6px;
+    margin-top: 4px;
+    height: auto;
+    width: 48vh;
+    background: radial-gradient(circle, rgb(255, 255, 255) 70%, rgb(243, 243, 243) 100%);
+    position: relative;
+    overflow: hidden;
+    background: white;
+    border: 1px solid black;
+    border-radius: 15px;
+    /*box-shadow: 0 10px 25px rgba(42, 179, 248, 0.4);*/
+}
+.recurring-select .info{
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: column;
+    align-items: flex-start;
+    position: fixed;
+}
+.noRecurringSearchesTitle{
+    position:fixed;
+    font-size: large;
+    top:50vh;
+    left:40vw;
+    white-space:nowrap;
+
+}
+.pendingConfirmationsList{
+    position: fixed;
+    left: 35vw;
+    top: 76vh;
+    width:auto; /*  Con borde sería 49vh */
+    max-width: 115vh;
+    height: auto;
+    overflow-x: scroll;
+    scrollbar-width: thin;
+    display:inline-flex;
+}
+.pendingConfirmationsList::-webkit-scrollbar {
+    width: 3px;
+}
+
+.pendingConfirmationsList::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+    border-radius: 10px;
+    background-color: #F5F5F5;
+}
+
+.pendingConfirmationsList::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+    background-color: #555;
+}
+.matches-select {
+    margin-left: 6px;
+    margin-top: 4px;
+    height: auto;
+    width: 48vh;
+    background: radial-gradient(circle, rgb(255, 255, 255) 70%, rgb(243, 243, 243) 100%);
+    position: relative;
+    overflow: hidden;
+    background: white;
+    border: 1px solid black;
+    border-radius: 15px;
+    /*box-shadow: 0 10px 25px rgba(42, 179, 248, 0.4);*/
+}
+.matches-select .info{
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: column;
+    align-items: flex-start;
+    position: fixed;
+}
+.confirmButton{
+    position: absolute;
+    left: 55%;
+    bottom: 5%;
+    border-radius: 20px;
+    transition-duration: 0.4s;
+}
+
+.declineButton{
+    position: absolute;
+    left: 5%;
+    bottom: 5%;
+    border-radius: 20px;
+    transition-duration: 0.4s;
+}
+
 
