@@ -15,17 +15,13 @@ public class ChatWebSocketHandler {
     @OnWebSocketConnect
     public void onConnect(Session user) throws Exception {
         session = user; // por ahora solo guardo la session
-      /*  Chat.userUsernameMap.put(user, username); // este debería borrarlo
-        Chat.usernameSessionMap.put(username, user);
-        Chat.broadcastMessage(sender = "Server", msg = (username + " joined the chat"), user); // Pass the user Session as an argument*/
     }
 
     @OnWebSocketClose
     public void onClose(Session user, int statusCode, String reason) {
         String username = Chat.userUsernameMap.get(user);
         Chat.userUsernameMap.remove(user);
-        // en realidad quitamos la session de ese muchacho, acomodalo
-        Chat.usernameSessionMap.remove(username);
+        Chat.usernameSessionMap.get(username).remove(user);
     }
 
     @OnWebSocketMessage
@@ -36,17 +32,17 @@ public class ChatWebSocketHandler {
         if(count == 1){
             String username = JSONMessage.getString("sender"); // username = sender
             Chat.userUsernameMap.put(user, username); // should actually delete this one.
+            List<Session> sessions;
             if(!Chat.usernameSessionMap.containsKey(username)){
-                List<Session> sessions = new ArrayList<>();
-                sessions.add(user);
-                Chat.usernameSessionMap.put(username, sessions);
+                sessions = new ArrayList<>();
             }
             else{
-                List<Session> sessions = Chat.usernameSessionMap.get(username);
-                sessions.add(user);
-                Chat.usernameSessionMap.put(username, sessions);
+                sessions = Chat.usernameSessionMap.get(username);
             }
-            System.out.println(username); // idem
+            sessions.add(user);
+            Chat.usernameSessionMap.put(username, sessions);
+            System.out.println(Chat.usernameSessionMap.get(username).size());
+
         }
         // if it is an actual message:
         else{
@@ -62,17 +58,22 @@ public class ChatWebSocketHandler {
                     for (Session s: Chat.usernameSessionMap.get(receiver)){
                         Chat.privateMessage(sender, text, user, s);
                     }
+                    for (Session s: Chat.usernameSessionMap.get(sender)){
+                        Chat.privateMessage(sender, text, s, s);
+                    }
                 }
                 else{
-                    Chat.privateMessage(sender, text, user);
+                    for (Session s: Chat.usernameSessionMap.get(sender)){
+                        Chat.privateMessage(sender, text, s, s);
+                    }
                 }
             }
             else{
-                Chat.privateMessage(sender, text, user);
+                for (Session s: Chat.usernameSessionMap.get(sender)){
+                    Chat.privateMessage(sender, text, s, s);
+                }
             }
 
-            // TODO: Save and retrieve messages from DB
-            // Agarrarlos ya lo hizo coni.
         }
     }
 
