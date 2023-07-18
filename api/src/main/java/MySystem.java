@@ -63,7 +63,12 @@ public class MySystem {
         return runInTransaction(datasource -> {
             final Searches searches = datasource.searches();
             try {
-                return searches.exists(Long.toString(team.getId()), time.getIntervals(), date, form.getLatitude(), form.getLongitude(),form.getAge(), form.isRecurring()) ? searches.reactivateSearch(team, time.getIntervals(), date, form.getLatitude(), form.getLongitude(), form.getAge(), form.isRecurring()) : Optional.of(searches.createSearch(team, date, time.getIntervals(), form.getLatitude(), form.getLongitude(), form.getAge(), form.isRecurring()));
+                return searches.exists(Long.toString(team.getId()), time.getIntervals(), date,
+                        form.getLatitude(), form.getLongitude(),form.getAge(), form.isRecurring())
+                        ? searches.reactivateSearch(team, time.getIntervals(), date, form.getLatitude(),
+                        form.getLongitude(), form.getAge(), form.isRecurring()) :
+                        Optional.of(searches.createSearch(team, date, time.getIntervals(),
+                                form.getLatitude(), form.getLongitude(), form.getAge(), form.isRecurring()));
             } catch (ParseException e) {
                 throw new RuntimeException(e);
             }
@@ -174,17 +179,6 @@ public class MySystem {
                 return matches.declineMatchByTeam(matchid,teamid);
             }
             catch (Exception e){
-                throw new RuntimeException(e);
-            }
-        });
-    }
-    public boolean setRecurrentId(Long searchId, Long recurrentId){
-        return runInTransaction(datasource ->{
-            final Searches searches = datasource.searches();
-            try{
-                return searches.setRecurringSearchId(searchId,recurrentId);
-            }
-            catch(Exception e){
                 throw new RuntimeException(e);
             }
         });

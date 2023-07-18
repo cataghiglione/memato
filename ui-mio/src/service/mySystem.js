@@ -118,6 +118,7 @@ export const findRival = (token, id, form, okCallback, secondOkCallback ,errorCa
             resp.json().then(value => {
                 okCallback(JSON.parse(value));
             }).catch(err => {
+                errorCallback(err.value)
                 console.log(err);
             });
             // okCallback(resp)
@@ -126,11 +127,12 @@ export const findRival = (token, id, form, okCallback, secondOkCallback ,errorCa
             resp.json().then(value => {
                 secondOkCallback(JSON.parse(value));
             }).catch(err => {
+                errorCallback(err.value)
                 console.log(err);
             });
         }
         else {
-            errorCallback()
+            errorCallback(resp.body)
         }
 
     })

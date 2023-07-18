@@ -57,7 +57,7 @@ export function CurrentSearchesPage(props) {
             setSearches(searches.searches)
             setRecurringSearches(searches.recurringSearches)
         });
-    }, [])
+    }, [team_id, token])
     useEffect(() => {
             getPendingConfirmations(token, team_id, (matches) => {
                     setPendingMatches(matches)
@@ -67,6 +67,16 @@ export function CurrentSearchesPage(props) {
             )
         },
         [team_id, token]
+    )
+    useEffect(() => {
+            getPendingConfirmations(token, team_id, (matches) => {
+                    setPendingMatches(matches)
+                }, (matches) => {
+                    // TODO ERROR CALLBACK
+                }
+            )
+        },
+        [props.getReload]
     )
 
     useEffect(() => {

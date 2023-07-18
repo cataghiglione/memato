@@ -39,6 +39,7 @@ const App = () =>{
         return storedTeamId !== null ? JSON.parse(storedTeamId) : 0;}
         else {return 0;}
     });
+    const [reload, setReload] = useState(false);
 
     /**
      * WEB SOCKET
@@ -72,6 +73,7 @@ const App = () =>{
                 progress: undefined,
                 theme: "light",
         });
+        setReload(true);
     }
 
 
@@ -114,7 +116,7 @@ const App = () =>{
                         <Route path="/user" element={<UserPage toggleTeamId = {toggleTeamId} getTeamId={teamId} />} />
                         <Route path="/findRival" element={<FindRivalPage toggleTeamId = {toggleTeamId} getTeamId={teamId}/>} />
                         <Route path = "/editTeam" element = {<EditTeamPage toggleTeamId = {toggleTeamId} getTeamId={teamId}/>} />
-                        <Route path = "/currentSearches" element = {<CurrentSearchesPage toggleTeamId = {toggleTeamId} getTeamId={teamId}/>} />
+                        <Route path = "/currentSearches" element = {<CurrentSearchesPage toggleTeamId = {toggleTeamId} getTeamId={teamId} getReload={reload}/>} />
                         <Route path = "/ReactMap" element = {<BingMap toggleTeamId = {toggleTeamId} getTeamId={teamId}/>} />
                         <Route path = "/pendingConfirmations" element={<ConfirmationsPage toggleTeamId = {toggleTeamId} getTeamId={teamId}/>}/>
                         <Route path = "/notificationPage" element={<NotificationPage toggleTeamId = {toggleTeamId} getTeamId={teamId}/>}/>
