@@ -1,0 +1,184 @@
+@import url('https://fonts.googleapis.com/css?family=Baloo Bhai 2&display=swap');
+@import "Login";
+.notification-page h1 {
+    text-align: center;
+    background-color: transparent;
+}
+body {
+    height: 100vh;
+    margin: 0;
+    font-family: 'Baloo Bhai 2', sans-serif;
+    font-weight: 300;
+    font-size: 15px;
+    line-height: 1.7;
+    color: #4E4E4E;
+    background-color: $background-color;
+    overflow-x: hidden;
+}
+
+.notification-page {
+    //background-color: #f0f0f0;
+    height: auto;
+    min-height: 70vh;
+    ///*padding: 20px;*/
+    //font-family: "Times New Roman", sans-serif;
+    z-index: 1;
+    color: #4E4E4E;
+    font-family: 'Baloo Bhai 2', sans-serif;
+    //display: flex;
+    //justify-content: center;
+}
+
+.notification-page .notification {
+    position: relative;
+    left: 70px;
+    height: auto;
+    min-height: 10vh;
+    max-width: 200vh;
+    margin: 15px;
+    background-color: #fff;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+.notification-page .noNotification{
+    position: relative;
+    height: auto;
+    top: 15px;
+    margin: 20px;
+    text-align: center;
+    background-color: #808080;
+    padding: 10px;
+    border-radius: 5px;
+    color: white;
+    font-size: 25px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+.notification-page .notification .button {
+    bottom: 5px;
+    right: 5px;
+    /*align-items: start;*/
+    background-color: white;
+    color: #808080;
+    border: 1px solid #808080;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 14px;
+    cursor: pointer;
+    align-items: flex-end;
+    text-align: center;
+    margin-right: 10px;
+}
+.notification-page .notification .button:hover {
+    background-color: #808080;
+    color: white;
+}
+.notification-page .icon {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: white;
+    color: #808080;
+    border: 1px solid white;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 14px;
+    cursor: pointer;
+    display: inline-block;
+    margin-right: 10px;
+}
+
+.notification-page .content {
+    margin-left: 10px;
+}
+
+.notification-page .title {
+    text-align: center;
+    top: 60px;
+    background-color: transparent;
+}
+
+.notification-page .description {
+    font-size: 14px;
+    color: #888;
+}
+
+.notification-page .time {
+    font-size: 12px;
+    color: #888;
+    margin-left: auto;
+}
+
+.notifications-list{
+    position: absolute;
+    top: 1%; /*quitar, obvio*/
+    width: 45.21vh;
+    max-height: 310px;
+    overflow-y: scroll;
+    border: 1px solid gray;
+
+}
+.popover-notifications {
+    position: absolute;
+    font-family: 'Baloo Bhai 2', sans-serif;
+    top: 125px;
+    left: 800px;
+    color: #4E4E4E;
+}
+.popover-notifications h3{
+    font-family: 'Baloo Bhai 2', sans-serif;
+}
+
+.popover-notification {
+    height: 10vh;
+    width: 45vh;
+    background: white;
+    border: 9px solid lightgray;
+    border-radius: 9px;
+    text-align: left;
+    display: center;
+    padding: 10px;
+    font-size: 15px;
+    transition: all 0.2s ease;
+    color: #292d34;
+}
+
+.popover-notification:hover{
+    color: black;
+    background: rgba(239, 239, 239);
+}
+.popover-notificationButton {
+    bottom: 5px;
+    left: 5px;
+    /*align-items: start;*/
+    background-color: white;
+    color: #808080;
+    border: 1px solid #808080;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 14px;
+    cursor: pointer;
+    display: inline-block;
+    text-align: center;
+    margin-right: 10px;
+}
+.popover-notificationButton:hover {
+    background-color: #808080;
+    color: white;
+}
+.view-all{
+    padding: 12px 20px;
+    background-color: white;
+    color: black;
+    border: 2px solid #9F9280;
+    border-radius: 4px;
+    transition-duration: 0.4s;
+    width: 100%;
+    left:0;
+    position: relative;
+}
+
+.view-all:hover{
+    background-color: #9F9280;
+    color: white;
+}

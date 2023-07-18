@@ -5,6 +5,7 @@ import { TopBar } from './TopBar/TopBar';
 import {getContacts, getMessages, sendMessage} from '../service/mySystem';
 import { useAuthProvider } from '../auth/auth';
 import SideBar from "./SideBar";
+import {ToastContainer} from "react-toastify";
 
 export function WebSocketChat(props) {
     const navigate = useNavigate();
@@ -15,6 +16,7 @@ export function WebSocketChat(props) {
     const [chat, setChat] = useState([]);
     const [userList, setUserList] = useState([]);
     const [contacts, setContacts] = useState([]);
+    const [contactsId, setContactsId] = useState([])
     const [otherTeamName, setOtherTeamName] = useState('');
     const [isUserConnected, setIsUserConnected] = useState(false);
     const urlParams = new URLSearchParams(window.location.search);
@@ -120,9 +122,29 @@ export function WebSocketChat(props) {
         else{
             setYourMessages((prevChat) => [...prevChat, { ...data.userMessage, contact: targetUser }]);
         }
+
         setChat((prevChat) => [...prevChat, data.userMessage]);
         setUserList(data.userList);
     };
+    /*const updateChat = (event) => {
+  const data = JSON.parse(event.data);
+  const { userMessage, userList } = data;
+
+  // Update the chat history
+  setChat((prevChat) => [...prevChat, userMessage]);
+
+  // Check if the current contact is in the user list
+  const currentContactExists = userList.includes(currentContact);
+
+  // Update the user list
+  setUserList(userList);
+
+  // If the current contact is not in the user list, update the current contact to the first user in the list
+  if (!currentContactExists && userList.length > 0) {
+    setCurrentContact(userList[0]);
+  }
+};
+*/
 
     useEffect(() => {
         if (chatRef.current) {
@@ -132,8 +154,7 @@ export function WebSocketChat(props) {
     }, [chat]);
 
     const goToContact = (id, contactId) => {
-        // ES LITERALMENTE IRRELEVANTE LO QUE DICE EL URL, YO ME HAGO EL Q LO CAMBIO PARA REINICIAR
-        // LA PAGINA AL CAMBIAR DE usuario y que no me aparezcan mensajes vacíos. Resolver bien en el futuro.
+
         setTargetUser(id);
         setCurrentContact(contactId);
         const url = `/webSocketChat?contactId=${contactId}`;
@@ -154,6 +175,9 @@ export function WebSocketChat(props) {
     useEffect(() => {
         getContacts(token, props.getTeamId, (contacts) => {
             setContacts(contacts);
+            const contactsIds = contacts.map((contact) => contact.team2.id);
+            setContactsId(contactsIds);
+
         });
     }, [props.getTeamId, token]);
 
@@ -165,7 +189,7 @@ export function WebSocketChat(props) {
                 {/*Contacts*/}
                 <div className="contacts">
                     {contacts.length === 0 && (
-                        <div style={{ alignItems: 'center' }}>
+                        <div style={{ alignItems: 'center'}}>
                             <p>You don't have any contacts</p>
                         </div>
                     )}
@@ -186,12 +210,7 @@ export function WebSocketChat(props) {
                 {/*Chat*/}
                 {targetUser !== '0' && (
                     <div className={"conversation"}>
-                        <div className="user-bar">
-                            <div className="name">
-                                {/*This aint workin*/}
-                                <span>{otherTeamName}</span>
-                            </div>
-                        </div>
+
                         <div className="conversation-container messages-display" id="chat" ref={chatRef} style={{ zIndex: '3' }}>
 
                             {oldMessages.length === 0 && yourMessages.length === 0 && (
@@ -227,22 +246,23 @@ export function WebSocketChat(props) {
                                         return (
                                             <div
                                                 key={index}
-                                                className={`message ${sender === props.getTeamId ? 'sent' : 'received'}`}
                                             >
                                                 {sender === props.getTeamId && contact === targetUser && (
-                                                    <div>
+                                                    <div className={`message ${sender === props.getTeamId ? 'sent' : 'received'}`}>
                                                         <span>{content}</span>
                                                         <span className="metadata"><span className="time">{hour}:{minute}</span></span>
                                                     </div>
                                                 )}
 
                                                 {sender === targetUser && (
-                                                    <div>
+                                                    <div className={`message ${sender === props.getTeamId ? 'sent' : 'received'}`}>
                                                         <span>{content}</span>
                                                         <span className="metadata"><span className="time">{hour}:{minute}</span></span>
                                                     </div>
                                                 )}
+                                                {
 
+                                                }
                                             </div>
                                         );
                                     })}
@@ -267,6 +287,7 @@ export function WebSocketChat(props) {
                     </button>
                 </div>
             </div>
+            <ToastContainer /> {/* Mover el ToastContainer aquí */}
         </div>
     );
 }

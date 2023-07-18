@@ -25,10 +25,13 @@ public class NotificationService {
 
     public static void privateMessage(Long user_id, String message) {
         try {
-            userIdMap.get(user_id).getRemote().sendString(String.valueOf(new JSONObject()
-                    .put("userMessage", message)
-            ));
-            System.out.println("WEB SOCKET ENVIANDO NOTIIII");
+            Session session = userIdMap.get(user_id);
+            if(session.isOpen()){
+                session.getRemote().sendString(String.valueOf(new JSONObject()
+                        .put("userMessage", message)
+                ));
+                System.out.println("WEB SOCKET ENVIANDO NOTIIII");
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }

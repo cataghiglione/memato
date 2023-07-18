@@ -37,6 +37,10 @@ public class NotificationWebSocketHandler {
         if(message.contains("TeamId:") && !message.substring(7).equals("0")){
             NotificationService.userIdMap.put(NotificationService.system.findTeamById(message.substring(7)).get().getUserId(), user);
         }
+        else if(message.contains("CloseTeamId:")&& !message.substring(12).equals("0")){
+            NotificationService.userIdMap.remove(NotificationService.system.findTeamById(message.substring(12)).get().getUserId());
+        }
+
         else{
             CreateNotificationWSForm wsForm = CreateNotificationWSForm.createFromJson(message);
             if(wsForm.getSearch_id() == null){

@@ -63,6 +63,7 @@ export class BingMap extends Component {
         this.setState({infoboxesWithPushPins: []});
     }
 
+
     render() {
         return (
             <div>
@@ -71,17 +72,15 @@ export class BingMap extends Component {
                        {/* SELECT THE LOCATION OF YOUR TEAM
                         <br></br>*/}
                         {/*BUSCADOR: */}
-                       {/* <span style={{'display':'inline-block'}}>
-                                <div onSubmit={this.state.searchForm && this.handleSubmit.bind(this)}>
-                                    <input type="text" placeholder="search place, pin, city"
-                                           onChange={(event)=>{this.setState({searchInput:event.target.value})}}
-                                           value={this.state.searchInput}>
-                                    </input>
-                                    <button type="submit" value="Search" onClick={() => {
-                                        if (this.state.searchForm) this.handleSubmit.bind(this)
-                                        this.setState({searchForm: true})}}> Submit</button>
-                                </div>
-                            </span>*/}
+                        <span style={{'display':'inline-block'}}>
+                              <form onSubmit={this.handleSubmit.bind(this)}>
+                                <input type="text" placeholder="search place, pin, city"
+                                       onChange={(event)=>{this.setState({searchInput:event.target.value})}}
+                                       value={this.state.searchInput}>
+                                </input>
+                                <input type="submit" value="Search" />
+                              </form>
+                        </span>
                         <ReactBingmaps
                             id = "seven"
                             className = "customClass"

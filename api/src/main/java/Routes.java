@@ -205,9 +205,16 @@ public class Routes {
                                                 messages.createMessage(contact, team, form.getDate(), form.getText());
                                                 entityManager2.getTransaction().commit();
                                                 entityManager2.close();
-                                                system.createNotificationWithTeam(contact.getTeam1().equals(team) ? contact.getTeam2() : contact.getTeam1(),
-                                                        String.format("%s has send %s a message", team.getName(), contact.getTeam1().equals(team) ? contact.getTeam2().getName() : contact.getTeam1().getName()),
-                                                        2, team.getId());
+                                                if(contact.getTeam1().equals(team)){
+                                                    system.createNotificationWithTeam(contact.getTeam2(),
+                                                            String.format("%s's news: %s has send %s a message", contact.getTeam2().getName(), team.getName(), contact.getTeam2().getName()),
+                                                            2, team.getId());
+                                                }
+                                                else{
+                                                    system.createNotificationWithTeam(contact.getTeam1(),
+                                                            String.format("%s's news: %s has send %s a message", contact.getTeam1().getName(), team.getName(), contact.getTeam1().getName()),
+                                                            2, team.getId());
+                                                }
                                                 res.status(200);
                                                 res.body("new message");
                                             });
@@ -465,7 +472,41 @@ public class Routes {
 //            }
             return gson.toJson(users.listAll());
         });
-//        LO DE COCA PARA PODER MODIFICAR LA SEARCH EN FR
+
+//        post(NEW_SEARCH_ROUTE, (req, res) -> {
+//            final EntityManager entityManager = entityManagerFactory.createEntityManager();
+//            final Searches searches = new Searches(entityManager);
+//            final Teams teams = new Teams(entityManager);
+//            final String id = (req.queryParams("id"));
+//            final TimeIntervals timeIntervals = new TimeIntervals(entityManager);
+//            String timeParams = req.queryParams("time");
+//            String[] time = timeParams.split(",");
+//            Optional<User> user = getUser(req);
+//            AtomicLong searchId = new AtomicLong();
+//            TimeInterval timeInterval = system.createTimeInterval(List.of(time));
+//
+//            teams.findTeamsById(id).ifPresent(
+//                    (team) -> {
+//                        final CreateSearchForm searchForm = CreateSearchForm.createFromJson(req.body());
+//                        system.findOrCreateSearch(searchForm, team, timeInterval).ifPresentOrElse(
+//                                (search) -> {
+//                                    searchId.set(search.getId());
+//                                    List<Search> compatible_searches = searches.findCompatibleSearches(search.getId());
+//                                    for (Search otherSearch:compatible_searches) {
+//                                        system.createNotificationWithSearchId(otherSearch, String.format("%s's news:\n%s wants to play on %d/%d.\nDo you want to play?", otherSearch.getTeam().getName(), search.getTeam().getName(), otherSearch.getDate().getDate(), otherSearch.getDate().getMonth() + 1), 5, otherSearch.getId(), otherSearch.getTeam().getId());
+//                                    }
+//                                    res.status(200);
+//                                },
+//                                () -> {
+//                                    res.status(201);
+//                                }
+//
+//                        );
+//                        res.body(toJson(searchId.get()));
+//                    }
+//            );
+//            return res.body();
+//        });
 //        post(NEW_SEARCH_ROUTE, (req, res) -> {
 //            final EntityManager entityManager = entityManagerFactory.createEntityManager();
 //            final Searches searches = new Searches(entityManager);
@@ -622,6 +663,17 @@ public class Routes {
             res.status(200);
             return res.body();
         });
+        //        authorizedGet(GET_COMPATIBLE_SEARCHES_ROUTE, (req, res) -> {
+        //            final EntityManager entityManager = entityManagerFactory.createEntityManager();
+        //            final EntityManager entityManager2 = entityManagerFactory.createEntityManager();
+        //            final Matches matches = new Matches(entityManager2);
+        //            final Searches searches = new Searches(entityManager);
+        //            final Long search_id = Long.valueOf(req.queryParams("search_id"));
+        //            List<Search> compatible_searches = searches.findCompatibleSearches(search_id);
+        //            res.body(toJson(matches.findNoMatch(Long.toString(search_id), compatible_searches)));
+        //            res.status(200);
+        //            return res.body();
+        //        });
         authorizedGet(GET_COMPATIBLE_SEARCHES_ROUTE, (req, res) -> {
             final EntityManager entityManager = entityManagerFactory.createEntityManager();
             final EntityManager entityManager2 = entityManagerFactory.createEntityManager();
@@ -670,14 +722,14 @@ public class Routes {
             final Searches searches = new Searches(entityManager);
             final Long search_id = Long.valueOf(req.queryParams("search_id"));
             searches.getSearchById(search_id).ifPresentOrElse(
-                    (search) -> {
-                        res.body(toJson(search));
-                        res.status(200);
-                    },
-                    () -> {
-                        res.body("There is no search with this id");
-                        res.status(400);
-                    });
+                (search) -> {
+                    res.body(toJson(search));
+                    res.status(200);
+                },
+                ()->{
+                    res.body("There is no search with this id");
+                    res.status(400);
+                });
 
             return res.body();
         });
@@ -751,8 +803,14 @@ public class Routes {
                         (match) -> {
                             teams.getTeamByTeamId(team_id).ifPresent(
                                     (team) -> {
-                                        system.createNotificationWithSearch(match.getTeam1().equals(team) ? match.getSearch2() : match.getSearch1(),
-                                                String.format("%s has confirmed the match for %d/%d", team.getName(), match.getDay(), match.getMonth() + 1),
+                                        if(match.getTeam1().equals(team))
+                                            system.createNotificationWithSearch(match.getSearch2(),
+                                                    String.format("%s's news: %s has confirmed the match for %d/%d", match.getTeam2().getName(),
+                                                            team.getName(), match.getDay(), match.getMonth() + 1), match.isConfirmed() ? 3 : 1,
+                                                    team.getId());
+                                        else
+                                            system.createNotificationWithSearch(match.getSearch1(),
+                                                String.format("%s's news: %s has confirmed the match for %d/%d", match.getTeam1().getName(), team.getName(), match.getDay(), match.getMonth() + 1),
                                                 match.isConfirmed() ? 3 : 1, team.getId());
                                     }
                             );
@@ -908,12 +966,12 @@ public class Routes {
                                         if (match.getTeam1().equals(team))
                                             system.
                                                     createNotificationWithTeam(match.getTeam2(),
-                                                            String.format("%s has decline the match with %s for %d/%d", team.getName(),
-                                                                    match.getTeam2().getName(), match.getDay(), match.getMonth()),
-                                                            4, team.getId());
+                                                    String.format("Bad news! %s has decline the match with %s for %d/%d", team.getName(),
+                                                            match.getTeam2().getName(), match.getDay(), match.getMonth()),
+                                                    4, team.getId());
                                         else
                                             system.createNotificationWithTeam(match.getTeam1(),
-                                                    String.format("%s has decline the match with %s for %d/%d", team.getName(),
+                                                    String.format("Bad news! %s has decline the match with %s for %d/%d", team.getName(),
                                                             match.getTeam1().getName(), match.getDay(), match.getMonth()),
                                                     4, team.getId());
 

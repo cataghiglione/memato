@@ -93,6 +93,30 @@ public class MySystem {
             return notification.get();
         });
     }
+    public Notification createNotificationWithSearchId(Search search2, String message, int code_id, long searchId, long teamId) {
+        return runInTransaction(datasource -> {
+            final Notifications notifications = datasource.notifications();
+            long user_id = search2.getTeam().getUserId();
+            final Users users = datasource.users();
+            AtomicReference<Notification> notification = new AtomicReference<>();
+            users.findById(user_id).ifPresentOrElse(
+                    (user) -> {
+
+                        if(code_id == 5)
+                            notification.set(notifications.createNotificationWithSearchId(users.findById(user_id).get(), message, code_id, searchId, teamId));
+
+                        else
+                            notification.set(notifications.createNotification(users.findById(user_id).get(), message, code_id));
+                        NotificationService.privateMessage(user_id, message);
+                        sendNotificationViaGmail(user.getEmail(), message);
+                    },
+                    () -> {
+                        notification.set(new Notification());
+                    }
+            );
+            return notification.get();
+        });
+    }
     public Notification createNotificationWithTeam(Team team, String message, int code_id, long otherTeamId) {
         return runInTransaction(datasource -> {
             final Notifications notifications = datasource.notifications();

@@ -17,6 +17,7 @@ import {toast} from "react-toastify";
 import SentimentDissatisfiedOutlinedIcon from '@mui/icons-material/SentimentDissatisfiedOutlined';
 import { IconButton, Tooltip } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
+import SearchIcon from '@mui/icons-material/Search';
 import {useNavigate} from "react-router";
 import Stack from '@mui/material/Stack';
 import CheckOutlinedIcon from '@mui/icons-material/CheckOutlined';
@@ -175,7 +176,7 @@ export function CurrentSearchesPage(props) {
                 team2_id: otherTeamId
             }, (res) => {
                 console.log(res)
-                navigate(`/webSocketChat?contactId=${res}`)
+                navigate(`/webSocketChat?contactId=${res}&targetId=${otherTeamId}`)
             },
             () => {
                 // TODO when error callback happens it takes you only to the /chat, without throwing the error on console
@@ -208,8 +209,8 @@ export function CurrentSearchesPage(props) {
     //     }
     // }
 
-    const handleGoBackClick=()=>{
-        window.location.href = "/findRival"
+    const handleGoBackClick=(id)=>{
+        window.location.href = `/findRival?id=${id}`
 
     }
 
@@ -272,6 +273,9 @@ export function CurrentSearchesPage(props) {
                                     <IconButton aria-label="delete" onClick={() => handleDeleteClick(search)}>
                                         <DeleteIcon />
                                     </IconButton>
+                                    <IconButton aria-label="delete" onClick={() => handleGoBackClick(search.id)}>
+                                        <SearchIcon />
+                                    </IconButton>
                                     </Tooltip>
                                 </div>
                                 </div>
@@ -294,6 +298,9 @@ export function CurrentSearchesPage(props) {
                                     </IconButton>
                                     </Tooltip>
 
+                                    <IconButton aria-label="delete" onClick={() => handleGoBackClick(recurring.id)}>
+                                        <SearchIcon />
+                                    </IconButton>
                                 </div>
                             </div>
                         )))

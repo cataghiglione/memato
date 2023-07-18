@@ -23,6 +23,8 @@ import {ChatPage} from "./pages/ChatPage";
 import {FindRivalPage} from "./pages/FindRivalPage";
 import {toast} from "react-toastify";
 import NotificationsActiveIcon from '@mui/icons-material/NotificationsActive';
+import * as PropTypes from "prop-types";
+import {SelectPrefForRival} from "./pages/SeleftPrefForRival";
 
 
 const App = () =>{
@@ -78,6 +80,7 @@ const App = () =>{
         the count variable. This effect calls the setItem method
         of localStorage with the current value of count.*/
     useEffect(() => {
+
         localStorage.setItem('teamId', JSON.stringify(teamId));
     }, [teamId]);
     useEffect(() => {
@@ -89,6 +92,9 @@ const App = () =>{
 
 
     const toggleTeamId = (value) => {
+        if(teamId !== null || teamId!=="0" || teamId!=="0"){
+            webSocket.send(`CloseTeamId:${teamId}`);
+        }
         setTeamId(value);
     }
 
@@ -116,6 +122,8 @@ const App = () =>{
                         <Route path = "/webSocketChat" element={<WebSocketChat toggleTeamId = {toggleTeamId} getTeamId={teamId}/>}/>
                         <Route path = "/contacts" element={<ContactsPage toggleTeamId = {toggleTeamId} getTeamId={teamId}/>}/>
                         <Route path = "/myConfirmations" element={<MyConfirmationsPage toggleTeamId = {toggleTeamId} getTeamId={teamId}/>}/>
+                        <Route path="/selectPreferences" element={<SelectPrefForRival toggleTeamId = {toggleTeamId} getTeamId={teamId}/>} />
+                        <Route path = "/map" element={<BingMap toggleTeamId = {toggleTeamId} getTeamId={teamId}/>}/>
                     </Routes>
                 </RequireAuth>}
             />

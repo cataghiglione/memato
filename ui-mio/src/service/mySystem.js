@@ -104,7 +104,6 @@ export const deleteSearch = (token, searchId, okCallback, errorCallback) => {
 
 export const findRival = (token, id, form, okCallback, secondOkCallback ,errorCallback) => {
     const timeParam = form.time.join(',');
-
     fetch(`${restApiEndpoint}/newSearch?id=${id}&time=${timeParam}`, {
         method: 'POST',
         headers: {
@@ -116,13 +115,19 @@ export const findRival = (token, id, form, okCallback, secondOkCallback ,errorCa
         body: JSON.stringify({id, ...form})
     }).then(resp => {
         if ( resp.status === 200) {
-            console.log(resp.body)
-            return resp.json().then(response => okCallback(response))
+            resp.json().then(value => {
+                okCallback(JSON.parse(value));
+            }).catch(err => {
+                console.log(err);
+            });
             // okCallback(resp)
         }
         else if (resp.status === 201){
-            return resp.json().then(response => secondOkCallback(response))
-
+            resp.json().then(value => {
+                secondOkCallback(JSON.parse(value));
+            }).catch(err => {
+                console.log(err);
+            });
         }
         else {
             errorCallback()
@@ -254,9 +259,24 @@ export const possibleSearchCandidates = (token, search_id, okCallback, errorCall
         }
     }).then(resp => {
         if (resp.status === 200) {
-            return resp.json().then(teams => okCallback(teams))
+            return resp.json().then(searches => okCallback(searches))
         } else {
             errorCallback("Not able to fetch searches")
+        }
+    })
+}
+export const getSearch = (token, search_id, okCallback, errorCallback) => {
+    fetch(`${restApiEndpoint}/getSearch?search_id=${search_id}`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token
+        }
+    }).then(resp => {
+        if (resp.status === 200) {
+            return resp.json().then(search => okCallback(search))
+        } else {
+            errorCallback(resp.body)
         }
     })
 }

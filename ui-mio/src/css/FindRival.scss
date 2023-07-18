@@ -105,7 +105,30 @@ h1{
     background: rgba(0, 0, 0, 0.5); /* Fondo oscuro */
     padding: 200px 500px;
 }
-
+.popUpContainer{
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 900; /* Asegura que el popup esté por encima de otros elementos */
+    background: rgba(0, 0, 0, 0.5); /* Fondo oscuro */
+    padding: 1000px 3000px;
+}
+.popUpContainer1{
+    background-color: white;
+    color: black;
+    padding: 20px;
+    display: flex;
+    //justify-content: center;
+    width:max-content;
+    height: 20vh;
+    border: 1px solid lightgrey;
+    border-radius: 5px;
+    z-index: 999;
+}
+.popUpCloseButton{
+    justify-content: end;
+}
 .noTeamSearch {
     position: fixed;
     left: 47.5%;
@@ -302,5 +325,47 @@ h1{
     color: white;
 }
 
+.editFR{
+    position: absolute;
+    left: 1200px;
+    top: 250px;
+    background-color: $background-color;
+    color: black;
+    border: 1px solid #9F9280;
+    border-radius: 40px;
+    transition-duration: 0.4s;
+    padding: 12px;
+    font-size: 20px;
+}
 
+.editFR:hover {
+    background-color: #9F9280;
+    color: white;
+}
+
+.finalDate{
+    position: absolute;
+    font-size: 15px;
+    top: 200px;
+    left: 350px;
+}
+.finalTime{
+    position: absolute;
+    max-width: 400px;
+    top: 250px;
+    left: 550px;
+    font-size: 15px;
+}
+.finalAgeGroup{
+    position: absolute;
+    top: 200px;
+    left: 550px;
+    font-size: 15px;
+}
+.finalZone{
+    position: absolute;
+    top: 200px;
+    left: 750px;
+    font-size: 15px;
+}
 
