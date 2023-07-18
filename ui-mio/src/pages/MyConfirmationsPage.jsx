@@ -135,12 +135,12 @@ export function MyConfirmationsPage(props) {
                                 </div>
                             </div>
                             <div className={'headerContainer'}>
-                                <Header as="h2" icon>
-                                    <Icon name="trophy" circular/>
-                                    <Header.Subheader>
-                                        Here is a list of {team.name}'s confirmed matches
-                                    </Header.Subheader>
-                                </Header>
+                                <h2 class={"ui  header"}>
+                                    <div className="content">
+                                        Confirmed Matches
+                                        <div className="sub header">Here's a list of {team.name}'s confirmed matches.</div>
+                                    </div>
+                                </h2>
                             </div>
                             <div className="matches-list">
                                 <MatchesList items={confirmedMatches} />

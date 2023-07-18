@@ -15,7 +15,7 @@ import {ToastContainer} from "react-toastify";
 import SideBar from "./SideBar";
 import {toast} from "react-toastify";
 import SentimentDissatisfiedOutlinedIcon from '@mui/icons-material/SentimentDissatisfiedOutlined';
-import IconButton from '@mui/material/IconButton';
+import { IconButton, Tooltip } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import {useNavigate} from "react-router";
 import Stack from '@mui/material/Stack';
@@ -105,6 +105,9 @@ export function CurrentSearchesPage(props) {
                     setSearches(searches.searches)
                     setRecurringSearches(searches.recurringSearches)
                 });
+                getPendingConfirmations(token,team_id,(matches)=>{
+                    setPendingMatches(matches)
+                })
             },
             (error) => {
                 setPopupMsg('Error');
@@ -135,6 +138,10 @@ export function CurrentSearchesPage(props) {
                     // TODO ERROR CALLBACK
                 }
             )
+            currentSearches(token,team_id,(searches)=>{
+                setSearches(searches.searches)
+                setRecurringSearches(searches.recurringSearches)
+            })
         })
     }
     const handleDeclineMatch = async (match_id) => {
@@ -261,9 +268,11 @@ export function CurrentSearchesPage(props) {
                                     {/*<button className={"delete-search-button"} onClick={() => handleDeleteClick(search)}>*/}
                                     {/*    <i className={"bi bi-trash"}></i>*/}
                                     {/*</button>*/}
+                                    <Tooltip title={"Cancel search"}>
                                     <IconButton aria-label="delete" onClick={() => handleDeleteClick(search)}>
                                         <DeleteIcon />
                                     </IconButton>
+                                    </Tooltip>
                                 </div>
                                 </div>
                             ))
@@ -279,9 +288,11 @@ export function CurrentSearchesPage(props) {
                                         <p >Time(s): {recurring.times.join(", ")}</p>
                                         <p >Days: {recurring.weekDay}</p>
                                     </div>
+                                    <Tooltip title={"Cancel searching"}>
                                     <IconButton aria-label="delete" onClick={() => handleDeleteClick(recurring)}>
                                         <DeleteIcon />
                                     </IconButton>
+                                    </Tooltip>
 
                                 </div>
                             </div>
@@ -304,15 +315,21 @@ export function CurrentSearchesPage(props) {
                                 ) : (
                                     <div>
                                         <Stack direction="row" spacing={18}>
+                                            <Tooltip title={"Confirm match"}>
                                             <IconButton onClick={() => handleConfirmMatch(match.id)}>
                                                 <CheckOutlinedIcon/>
                                             </IconButton>
+                                            </Tooltip>
+                                            <Tooltip title={"Decline match"}>
                                             <IconButton onClick={() => handleDeclineMatch(match.id)}>
                                                 <DoDisturbAltOutlinedIcon/>
                                             </IconButton>
+                                            </Tooltip>
+                                            <Tooltip title={"Open chat"}>
                                             <IconButton onClick={() => findOrCreateContact(match.team2.id)}>
                                                 <QuestionAnswerOutlinedIcon/>
                                             </IconButton>
+                                            </Tooltip>
                                         </Stack>
                                     </div>
                                 )}
@@ -345,6 +362,16 @@ export function CurrentSearchesPage(props) {
                         <br/><br/>
 
 
+                    </div>
+                )}
+                {pendingMatches.length===0 && (
+                    <div>
+                        <br/>
+                        <div className={"noPendingMatchesTitle"}>
+                            You don't have any pending confirmations
+                            <SentimentDissatisfiedOutlinedIcon/>
+                        </div>
+                        <br/>
                     </div>
                 )}
 

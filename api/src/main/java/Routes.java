@@ -530,10 +530,14 @@ public class Routes {
 
             teams.findTeamsById(id).ifPresent(
                     (team) -> {
+                        List<Search> searchesForCandidates = new ArrayList<>();
                         final CreateSearchForm searchForm = CreateSearchForm.createFromJson(req.body());
-                        system.findOrCreateSearch(searchForm, team, timeInterval).ifPresentOrElse(
+                        system.findOrCreateSearch(searchForm, team, timeInterval, searchForm.getDate()[0]).ifPresentOrElse(
                                 (search) -> {
                                     searchId.set(search.getId());
+                                    if (!search.isRecurring()) {
+                                        searchesForCandidates.add(search);
+                                    }
                                     res.status(200);
                                 },
                                 () -> {
@@ -541,22 +545,39 @@ public class Routes {
                                 }
 
                         );
+                        if (searchForm.isRecurring()) {
+                            searches.getSearchById(searchId.longValue()).ifPresent(
+                                    (search) -> {
+                                        CreateSearchForm newSearchForm = new CreateSearchForm(search.getTeam(), search.searching(), searchForm.getDate(), searchForm.getLatitude(), searchForm.getLongitude(), searchForm.getAge(), false);
+                                        for (int i = 0; i < searchForm.getDate().length; i++) {
+                                            system.findOrCreateSearch(newSearchForm, team, timeInterval, searchForm.getDate()[i]).ifPresent(
+                                                    (search2) -> {
+                                                        search2.setRecurrentSearchId(searchId.longValue());
+                                                        system.setRecurrentId(search2.getId(), search.getId());
+                                                        searchesForCandidates.add(search2);
+                                                    }
+                                            );
+                                        }
+                                    }
+                            );
+
+                        }
+
                         if (user.isPresent()) {
                             String user_id = user.get().getId().toString();
-                            List<Search> candidates= new ArrayList<>();
-                            if (!searchForm.isRecurring()){
-                            candidates = searches.findCandidates(user_id, timeInterval, searchForm.getDate(), team.getSport(), team.getQuantity(), searchForm.getLatitude(), searchForm.getLongitude(),searchForm.getAge());}
-                            else {
-                                candidates=searches.findCandidatesWhenRecurring(user_id, timeInterval, searchForm.getDate(), team.getSport(), team.getQuantity(), searchForm.getLatitude(), searchForm.getLongitude(),searchForm.getAge());
+                            List<Search> candidates = new ArrayList<>();
+                            for (int i = 0; i < searchesForCandidates.size(); i++) {
+                                Search search = searchesForCandidates.get(i);
+                                List<Search> possibleCandidates = searches.findCandidates(user_id, search.getTime(), search.getDate(), search.getTeam().getSport(), search.getTeam().getQuantity(), search.getLatitude(), search.getLongitude(), search.getAverageAge());
+                                candidates.addAll(possibleCandidates);
                             }
-
                             List<CommonTimeSearch> commonTimeSearchList = new ArrayList<>();
                             Long activeSearchId = searchId.longValue();
                             List<Search> finalCandidates = candidates;
                             searches.getSearchById(activeSearchId).ifPresent(
                                     (search) -> {
                                         for (Search candidate : finalCandidates) {
-                                            List<String> times = timeIntervals.sameIntervals(search.getTime().getIntervals(), candidate.getTime().getIntervals());
+                                            List<String> times = timeIntervals.sameIntervals(timeInterval.getIntervals(), candidate.getTime().getIntervals());
                                             final CommonTimeSearch commonTimeSearch = new CommonTimeSearch();
                                             commonTimeSearch.search = candidate;
                                             commonTimeSearch.times = times;
@@ -587,7 +608,7 @@ public class Routes {
                 currentSearch.times = search.getTime().getIntervals();
                 return currentSearch;
             }).toList();
-            List<RecurringSearch> dtoRecurringSearches=activeRecurringSearches.stream().map(recurring->{
+            List<RecurringSearch> dtoRecurringSearches = activeRecurringSearches.stream().map(recurring -> {
                 final RecurringSearch recurringSearch = new RecurringSearch();
                 recurringSearch.id = recurring.getId();
                 recurringSearch.times = recurring.getTime().getIntervals();
@@ -609,33 +630,39 @@ public class Routes {
             final TimeIntervals timeIntervals = new TimeIntervals(entityManager);
             final Long search_id = Long.valueOf(req.queryParams("search_id"));
             getUser(req).ifPresent(
-                (user) -> {
-                    String user_id = user.getId().toString();
-                    searches.getSearchById(search_id).ifPresentOrElse(
-                        (search) -> {
-                            List<Search> candidates = new ArrayList<>();
-                            if (!search.isRecurring()){
-                            candidates = searches.findCandidates(user_id, search.getTime(), search.getDate().createJavaDate(), search.getTeam().getSport(), search.getTeam().getQuantity(), search.getLatitude(), search.getLongitude(), search.getAverageAge());}
-                            else {
-                                candidates = searches.findCandidatesWhenRecurring(user_id, search.getTime(), search.getDate().createJavaDate(), search.getTeam().getSport(), search.getTeam().getQuantity(), search.getLatitude(), search.getLongitude(), search.getAverageAge());
-
-                        }
-                            List<CommonTimeSearch> commonTimeSearchList = new ArrayList<>();
-                            List<Search> compatible_searches = matches.findNoMatch(Long.toString(search_id), candidates);
-                            for (Search candidate : compatible_searches) {
-                                List<String> times = timeIntervals.sameIntervals(search.getTime().getIntervals(), candidate.getTime().getIntervals());
-                                final CommonTimeSearch commonTimeSearch = new CommonTimeSearch();
-                                commonTimeSearch.search = candidate;
-                                commonTimeSearch.times = times;
-                                commonTimeSearchList.add(commonTimeSearch);
-                            }
-                            NewSearchResponse newSearchResponse = new NewSearchResponse(search_id, commonTimeSearchList);
-                            res.body(toJson(newSearchResponse));
-                        }, () -> {
-                                res.status(404);
-                                res.body("Invalid Token");
-                            }
-                        );});
+                    (user) -> {
+                        String user_id = user.getId().toString();
+                        searches.getSearchById(search_id).ifPresentOrElse(
+                                (search) -> {
+                                    List<Search> candidates = new ArrayList<>();
+                                    if (search.isRecurring()) {
+                                        List<Search> linkedSearches = searches.getSearchesByRecurringSearchId(search_id);
+                                        for (int i = 0; i < linkedSearches.size(); i++) {
+                                            Search thisSearch = linkedSearches.get(i);
+                                            List<Search> thisSearchCandidates = searches.findCandidates(user_id, thisSearch.getTime(), thisSearch.getDate(), thisSearch.getTeam().getSport(), thisSearch.getTeam().getQuantity(), thisSearch.getLatitude(), thisSearch.getLongitude(), thisSearch.getAverageAge());
+                                            candidates.addAll(thisSearchCandidates);
+                                        }
+                                    }
+                                    else {
+                                        candidates.addAll(searches.findCandidates(user_id,search.getTime(),search.getDate(),search.getTeam().getSport(),search.getTeam().getQuantity(),search.getLatitude(),search.getLongitude(),search.getAverageAge()));
+                                    }
+                                    List<CommonTimeSearch> commonTimeSearchList = new ArrayList<>();
+                                    List<Search> compatible_searches = matches.findNoMatch(Long.toString(search_id), candidates);
+                                    for (Search candidate : compatible_searches) {
+                                        List<String> times = timeIntervals.sameIntervals(search.getTime().getIntervals(), candidate.getTime().getIntervals());
+                                        final CommonTimeSearch commonTimeSearch = new CommonTimeSearch();
+                                        commonTimeSearch.search = candidate;
+                                        commonTimeSearch.times = times;
+                                        commonTimeSearchList.add(commonTimeSearch);
+                                    }
+                                    NewSearchResponse newSearchResponse = new NewSearchResponse(search_id, commonTimeSearchList);
+                                    res.body(toJson(newSearchResponse));
+                                }, () -> {
+                                    res.status(404);
+                                    res.body("Invalid Token");
+                                }
+                        );
+                    });
             return res.body();
         });
         authorizedGet(GET_SEARCH_ROUTE, (req, res) -> {
@@ -643,14 +670,14 @@ public class Routes {
             final Searches searches = new Searches(entityManager);
             final Long search_id = Long.valueOf(req.queryParams("search_id"));
             searches.getSearchById(search_id).ifPresentOrElse(
-                (search) -> {
-                    res.body(toJson(search));
-                    res.status(200);
-                },
-                ()->{
-                    res.body("There is no search with this id");
-                    res.status(400);
-                });
+                    (search) -> {
+                        res.body(toJson(search));
+                        res.status(200);
+                    },
+                    () -> {
+                        res.body("There is no search with this id");
+                        res.status(400);
+                    });
 
             return res.body();
         });
@@ -881,9 +908,9 @@ public class Routes {
                                         if (match.getTeam1().equals(team))
                                             system.
                                                     createNotificationWithTeam(match.getTeam2(),
-                                                    String.format("%s has decline the match with %s for %d/%d", team.getName(),
-                                                            match.getTeam2().getName(), match.getDay(), match.getMonth()),
-                                                    4, team.getId());
+                                                            String.format("%s has decline the match with %s for %d/%d", team.getName(),
+                                                                    match.getTeam2().getName(), match.getDay(), match.getMonth()),
+                                                            4, team.getId());
                                         else
                                             system.createNotificationWithTeam(match.getTeam1(),
                                                     String.format("%s has decline the match with %s for %d/%d", team.getName(),

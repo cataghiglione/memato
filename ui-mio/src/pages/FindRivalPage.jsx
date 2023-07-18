@@ -6,6 +6,7 @@ import {useNavigate} from "react-router";
 import {findRival, getTeam, newMatch, possibleSearchCandidates} from "../service/mySystem";
 import {useAuthProvider} from "../auth/auth";
 import DatePicker, {CalendarContainer} from "react-datepicker";
+import { addWeeks } from 'date-fns';
 import "react-datepicker/dist/react-datepicker.css";
 import {TopBar} from "./TopBar/TopBar";
 import {BingMap} from "./BingMap"
@@ -75,6 +76,8 @@ export function FindRivalPage(props) {
     const [changeLocationButton, setChangeLocationButton] = useState('Select location');
     const [selectedLocation, setSelectedLocation] = useState("")
     const [finalSelectedTimes, setFinalSelectedTimes] = useState([]);
+    const[amountWeeks,setAmountWeeks]=useState(0);
+    const[weeksOpen,setWeeksOpen]=useState(false);
     const handleTimeChange = (selectedTime) => {
         const {valueText} = selectedTime;
         setTime(valueText)
@@ -134,6 +137,7 @@ export function FindRivalPage(props) {
         {label: "22:00-23:00", value: "22:00-23:00"},
         {label: "23:00-00:00", value: "23:00-00:00"}
     ]
+    const weekOptions=[{label:"1 week",value:1},{label:"2 weeks", value:2},{label:"3 weeks",value:3},{label:"4 weeks",value:4}]
 
     // con esto lee los params
     // const searchParams = useSearchParams();
@@ -152,6 +156,17 @@ export function FindRivalPage(props) {
     useEffect(() => {
         setFinalSelectedTimes(selectedTimes.map(option => option.value));
     }, [selectedTimes]);
+    const generateDatesArray = () => {
+        const dates = [];
+        if (date) {
+            dates.push(date);
+            for (let i = 1; i <= amountWeeks.value; i++) {
+                const weekStartDate = addWeeks(date, i);
+                dates.push(weekStartDate);
+            }
+        }
+        return dates;
+    };
 
 
     const handleSubmit = async (e) => {
@@ -159,7 +174,7 @@ export function FindRivalPage(props) {
         const finalValues = selectedTimes.map(option => option.value)
         setFinalSelectedTimes(finalValues)
         await findRivalMethod({
-            date: date,
+            date: generateDatesArray(),
             time: finalSelectedTimes,
             latitude: zone[0].toString(),
             longitude: zone[1].toString(),
@@ -169,6 +184,7 @@ export function FindRivalPage(props) {
     }
     const handleCheckedBox = (event) => {
         setChecked(event.target.checked);
+        setWeeksOpen(!weeksOpen);
     };
     const findRivalMethod = (search) => {
         if (rivalMenuOpen) {
@@ -389,6 +405,14 @@ export function FindRivalPage(props) {
                                               label="Recurrent search" />
                         </FormGroup>
                     </div>
+                    {weeksOpen &&(
+                        <div>
+                            <Select
+                                options={weekOptions}
+                                value={amountWeeks}
+                                onChange={setAmountWeeks}></Select>
+                        </div>
+                    )}
 
 
                     <div className={"zone"}>
@@ -444,6 +468,8 @@ export function FindRivalPage(props) {
                                             group: {search.search.team.age_group}</p>
                                         <p style={{marginLeft: '5px', marginBottom: '15px'}}> Time(s) in common:
                                             {search.times.join(", ")}</p>
+                                        <p style={{marginLeft: '5px', marginBottom: '15px'}}> Day:
+                                             {search.search.date.day}/{search.search.date.month +1}/{search.search.date.year +1900}</p>
                                     </div>
                                     <br/><br/>
                                     <div>

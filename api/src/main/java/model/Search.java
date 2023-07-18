@@ -3,13 +3,9 @@ package model;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicLong;
 
 
 @Entity
@@ -44,6 +40,8 @@ public class Search {
     private model.Date date;
     @Column
     private int averageAge;
+    @Column
+    private Long recurrentSearchId;
 
 
     public Search() {
@@ -58,6 +56,7 @@ public class Search {
         this.date= new model.Date(date.getDate(),date.getMonth(),date.getYear(),date.getDay());
         this.averageAge=age;
         this.isRecurring=isRecurring;
+        this.recurrentSearchId = (long) -1;
 
 
     }
@@ -104,6 +103,12 @@ public class Search {
 
     public TimeInterval getTime() {
         return time;
+    }
+    public Long getRecurrentSearchId(){
+        return recurrentSearchId;
+    }
+    public void setRecurrentSearchId(Long value){
+        this.recurrentSearchId=value;
     }
 
 //    public int getMonth() {

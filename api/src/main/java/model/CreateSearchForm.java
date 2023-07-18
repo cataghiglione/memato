@@ -17,7 +17,7 @@ public class CreateSearchForm {
     private final Team team;
     private final boolean isSearching;
 
-    private final Date date;
+    private final Date[] date;
     private final String latitude;
     private final String longitude;
     private final int age;
@@ -27,7 +27,7 @@ public class CreateSearchForm {
         return fromJson(body, CreateSearchForm.class);
     }
 
-    public CreateSearchForm(Team team, boolean isSearching, Date date,  String latitude,String longitude,int age, boolean isRecurring) {
+    public CreateSearchForm(Team team, boolean isSearching, Date[] date,  String latitude,String longitude,int age, boolean isRecurring) {
         this.team = team;
         this.isSearching = isSearching;
 //        LocalDate localDate = LocalDate.parse(date, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
@@ -46,7 +46,7 @@ public class CreateSearchForm {
         return isSearching;
     }
 
-    public Date getDate()  {
+    public Date[] getDate()  {
         return date;
     }
 

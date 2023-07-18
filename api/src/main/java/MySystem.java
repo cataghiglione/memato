@@ -59,11 +59,11 @@ public class MySystem {
         });
     }
 
-    public Optional<Search> findOrCreateSearch(CreateSearchForm form, Team team, TimeInterval time) {
+    public Optional<Search> findOrCreateSearch(CreateSearchForm form, Team team, TimeInterval time, java.util.Date date) {
         return runInTransaction(datasource -> {
             final Searches searches = datasource.searches();
             try {
-                return searches.exists(Long.toString(team.getId()), time.getIntervals(), form.getDate(), form.getLatitude(), form.getLongitude(),form.getAge(), form.isRecurring()) ? searches.reactivateSearch(team, time.getIntervals(), form.getDate(), form.getLatitude(), form.getLongitude(), form.getAge(), form.isRecurring()) : Optional.of(searches.createSearch(team, form.getDate(), time.getIntervals(), form.getLatitude(), form.getLongitude(), form.getAge(), form.isRecurring()));
+                return searches.exists(Long.toString(team.getId()), time.getIntervals(), date, form.getLatitude(), form.getLongitude(),form.getAge(), form.isRecurring()) ? searches.reactivateSearch(team, time.getIntervals(), date, form.getLatitude(), form.getLongitude(), form.getAge(), form.isRecurring()) : Optional.of(searches.createSearch(team, date, time.getIntervals(), form.getLatitude(), form.getLongitude(), form.getAge(), form.isRecurring()));
             } catch (ParseException e) {
                 throw new RuntimeException(e);
             }
@@ -150,6 +150,17 @@ public class MySystem {
                 return matches.declineMatchByTeam(matchid,teamid);
             }
             catch (Exception e){
+                throw new RuntimeException(e);
+            }
+        });
+    }
+    public boolean setRecurrentId(Long searchId, Long recurrentId){
+        return runInTransaction(datasource ->{
+            final Searches searches = datasource.searches();
+            try{
+                return searches.setRecurringSearchId(searchId,recurrentId);
+            }
+            catch(Exception e){
                 throw new RuntimeException(e);
             }
         });
