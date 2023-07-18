@@ -78,6 +78,7 @@ const App = () =>{
         the count variable. This effect calls the setItem method
         of localStorage with the current value of count.*/
     useEffect(() => {
+
         localStorage.setItem('teamId', JSON.stringify(teamId));
     }, [teamId]);
     useEffect(() => {
@@ -89,6 +90,9 @@ const App = () =>{
 
 
     const toggleTeamId = (value) => {
+        if(teamId !== null || teamId!=="0" || teamId!=="0"){
+            webSocket.send(`CloseTeamId:${teamId}`);
+        }
         setTeamId(value);
     }
 

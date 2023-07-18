@@ -4,6 +4,7 @@ import '../css/Chat.css';
 import { TopBar } from './TopBar/TopBar';
 import {getContacts, getMessages, sendMessage} from '../service/mySystem';
 import { useAuthProvider } from '../auth/auth';
+import {ToastContainer} from "react-toastify";
 
 export function WebSocketChat(props) {
     const navigate = useNavigate();
@@ -265,6 +266,7 @@ export function WebSocketChat(props) {
                     </button>
                 </div>
             </div>
+            <ToastContainer /> {/* Mover el ToastContainer aquí */}
         </div>
     );
 }

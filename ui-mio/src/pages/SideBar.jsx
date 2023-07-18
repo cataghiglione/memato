@@ -62,7 +62,7 @@ export function MySidebar(props) {
                                 <Link to="/myConfirmations" style={{color: 'black'}}>My Confirmed Matches</Link>
                             </MenuItem>
                             <MenuItem icon={<QuestionAnswerOutlinedIcon/>}>
-                                <Link to="/chat" style={{color: 'black'}}>Chat</Link>
+                                <Link to="/webSocketChat" style={{color: 'black'}}>Chat</Link>
                             </MenuItem>
                             <MenuItem icon={<GroupAddOutlinedIcon/>}>
                                 <Link to="/newTeam" style={{color: 'black'}}>New Team</Link>
