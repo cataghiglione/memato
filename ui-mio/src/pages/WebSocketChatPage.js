@@ -5,6 +5,7 @@ import { TopBar } from './TopBar/TopBar';
 import {getContacts, getMessages, sendMessage} from '../service/mySystem';
 import { useAuthProvider } from '../auth/auth';
 import SideBar from "./SideBar";
+import {ToastContainer} from "react-toastify";
 
 export function WebSocketChat(props) {
     const navigate = useNavigate();
