@@ -123,6 +123,7 @@ const App = () =>{
                         <Route path = "/contacts" element={<ContactsPage toggleTeamId = {toggleTeamId} getTeamId={teamId}/>}/>
                         <Route path = "/myConfirmations" element={<MyConfirmationsPage toggleTeamId = {toggleTeamId} getTeamId={teamId}/>}/>
                         <Route path="/selectPreferences" element={<SelectPrefForRival toggleTeamId = {toggleTeamId} getTeamId={teamId}/>} />
+                        <Route path = "/map" element={<BingMap toggleTeamId = {toggleTeamId} getTeamId={teamId}/>}/>
                     </Routes>
                 </RequireAuth>}
             />

@@ -45,11 +45,7 @@ public class Chat {
                         .put("userMessage", createJsonMessageFromSender(sender, message, isCurrentUser))
                         .put("userList", userUsernameMap.values())
                 ));
-                // sender también recive el msj.
-                senderSession.getRemote().sendString(String.valueOf(new JSONObject()
-                        .put("userMessage", createJsonMessageFromSender(sender, message, isCurrentUser))
-                        .put("userList", userUsernameMap.values())
-                ));
+
             } catch (Exception e) {
                 e.printStackTrace();
             }

@@ -169,7 +169,7 @@ export function CurrentSearchesPage(props) {
                 team2_id: otherTeamId
             }, (res) => {
                 console.log(res)
-                navigate(`/webSocketChat?contactId=${res}`)
+                navigate(`/webSocketChat?contactId=${res}&targetId=${otherTeamId}`)
             },
             () => {
                 // TODO when error callback happens it takes you only to the /chat, without throwing the error on console
