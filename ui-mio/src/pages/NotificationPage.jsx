@@ -1,4 +1,4 @@
-import "../css/Notifications.css";
+import "../css/Notifications.scss";
 import {useEffect, useState} from "react";
 import * as React from "react";
 import {useNavigate} from "react-router";
@@ -23,11 +23,13 @@ export function NotificationPage(props) {
     )
 
     function goToConfirmationsPage(id) {
+        props.toggleTeamId(id);
         changeStatusOpened(id).then(r =>
-            navigate("/pendingConfirmations"))
+            navigate("/currentSearches"))
     }
 
     const goToMessages= async (id, notification_id) =>{
+        props.toggleTeamId(id);
         newContact(token, {
             team1_id: teamId,
             team2_id: id
@@ -40,11 +42,18 @@ export function NotificationPage(props) {
     }
 
     const changeStatusOpened = (id) => {
+
         updateNotification(token, id, () => {
             getNotifications(token, (notifications) => {
                 setNotifications(notifications)
             })
         })
+    }
+
+    function goToFindRival(team_id, id, search_id) {
+        props.toggleTeamId(team_id);
+        changeStatusOpened(id);
+        navigate(`/findRival?id=${search_id}`)
     }
 
     return (
@@ -66,7 +75,7 @@ export function NotificationPage(props) {
                         <br/>
                         {notification.code_id === 0 && (
                             <div>
-                                <button className={"button"} onClick={() => goToConfirmationsPage()}>Don't forget to
+                                <button className={"button"} onClick={() => goToConfirmationsPage(notification.team_id, notification.id)}>Don't forget to
                                     confirm
                                 </button>
                                 <button className={"button"} onClick={() => goToMessages(notification.team_id, notification.id)}>Send a message</button>
@@ -74,20 +83,25 @@ export function NotificationPage(props) {
                         )}
                         {notification.code_id === 1 && (
                             <div>
-                                <button className={"button"} onClick={() => goToConfirmationsPage()}>Don't forget to
+                                <button className={"button"} onClick={() => goToConfirmationsPage(notification.team_id, notification.id)}>Don't forget to
                                     confirm
                                 </button>
                             </div>
                         )}
                         {notification.code_id === 2 && (
                             <div>
-                                <button className={"button"} onClick={() => goToMessages(notification.team_id)}>Send a message
+                                <button className={"button"} onClick={() => goToMessages(notification.team_id, notification.id)}>Send a message
                                 </button>
                             </div>
                         )}
                         {notification.code_id === 3 && (
                             <div>
                                 <button className={"button"}>See pending matches</button>
+                            </div>
+                        )}
+                        {notification.code_id === 5 && (
+                            <div>
+                                <button className={"button"} onClick={() => goToFindRival(notification.team_id, notification.id, notification.search_id)}>Find Rival</button>
                             </div>
                         )}
                         {notification.opened && (

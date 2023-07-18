@@ -25,6 +25,7 @@ public class Notification {
      * <li>2 --> new message alert</li>
      * <li>3 --> pending match coming soon</li>
      * <li>4 --> a team has decline a match</li>
+     * <li>5 --> new team search</li>
      */
     @Column
     private int code_id;
@@ -33,6 +34,9 @@ public class Notification {
 
     @Column
     private boolean opened;
+    @Column
+    private long search_id;
+
 
     private Notification(User user, String message, int code_id){
         this.user = user;
@@ -40,6 +44,7 @@ public class Notification {
         this.opened = false;
         this.code_id = code_id;
         this.team_id = 0;
+        this.search_id = 0;
     }
     private Notification(User user, String message, int code_id, long team_id){
         this.user = user;
@@ -47,6 +52,20 @@ public class Notification {
         this.opened = false;
         this.code_id = code_id;
         this.team_id = team_id;
+        this.search_id = 0;
+    }
+
+    public long getSearch_id() {
+        return search_id;
+    }
+
+    private Notification(User user, String message, int code_id, long team_id, long search_id){
+        this.user = user;
+        this.message = message;
+        this.opened = false;
+        this.code_id = code_id;
+        this.team_id = team_id;
+        this.search_id = search_id;
     }
 
     public Notification() {
@@ -56,6 +75,9 @@ public class Notification {
     }
     public static Notification createWithTeamId(User user, String message, int code_id, long team_id){
         return new Notification(user, message, code_id, team_id);
+    }
+    public static Notification createWithTeamId(User user, String message, int code_id, long team_id, long search_id){
+        return new Notification(user, message, code_id, team_id, search_id);
     }
 
     public Long getId() {

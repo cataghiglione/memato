@@ -93,11 +93,13 @@
     white-space: nowrap;
     margin-bottom: 3px;
 }
-
 .team-select-option-pick:hover
 {
+    //overflow: visible;
+    //width: max-content;
     color: white;
     background: #5bc5fa;
+    z-index: 990;
     /*box-shadow: 0 5px 12.5px rgba(42, 179, 248, 0.4);*/
 }
 /*Esto de abajo era para la implementación anterior y la animación (queda bien para celu pero para compu es muy apretado al dope)*/
@@ -115,6 +117,7 @@
     background: white;
     margin-bottom: 3px;
     margin-right: 3px;
+    z-index: 1;
     /*background-image: url("../images/Modify_team_pencil.jpg");*/
 }
 .team-edit-option:hover{

@@ -1,4 +1,4 @@
-import "../../css/Notifications.css";
+import "../../css/Notifications.scss";
 import {useEffect, useState} from "react";
 import * as React from "react";
 import {useLocation, useNavigate} from "react-router";
@@ -37,9 +37,18 @@ export function NotificationsCenter(props){
         updateNotification(token, id)
     }
     return(
+        <body>
         <div className={"popover-notifications"}>
+            <h1>  </h1>
+            <br/>
+            <h3> Pending Notifications </h3>
+            <br/>
+            <button className={"view-all"} onClick={() => seeAllNotifications()}>
+                See all the notifications
+            </button>
+            <br/><br/>
             {notifications.length === 0 &&(
-                <div className={"notification"} style={{border: "1px solid lightgray"}}>
+                <div className={"popover-notification"} style={{border: "1px solid lightgray"}}>
                     You don't have any pending notifications.
                 </div>
             )}
@@ -47,50 +56,41 @@ export function NotificationsCenter(props){
             {notifications.length !== 0 && (
                 <div className={"notifications-list"}>
                     {notifications.map((notification) => (
-                        <div className={"notification"}>
+                        <div className={"popover-notification"}>
                             {notification.message}
                             <br/>
                             {notification.code_id === 0 && (
                                 <div>
-                                    <button className={"button"} onClick={() => goToConfirmationsPage(notification.id)}>Don't forget to
+                                    <button className={"popover-notificationButton"} onClick={() => goToConfirmationsPage(notification.id)}>Don't forget to
                                         confirm
                                     </button>
-                                    <button className={"button"} onClick={() => goToMessages(notification.id)}>Send a message</button>
+                                    <button className={"popover-notificationButton"} onClick={() => goToMessages(notification.id)}>Send a message</button>
                                 </div>
                             )}
                             {notification.code_id === 1 && (
                                 <div>
-                                    <button className={"button"} onClick={() => goToConfirmationsPage(notification.id)}>Don't forget to
+                                    <button className={"popover-notificationButton"} onClick={() => goToConfirmationsPage(notification.id)}>Don't forget to
                                         confirm
                                     </button>
                                 </div>
                             )}
                             {notification.code_id === 2 && (
                                 <div>
-                                    <button className={"button"} onClick={() => goToMessages(notification.id)}>Send a message</button>
+                                    <button className={"popover-notificationButton"} onClick={() => goToMessages(notification.id)}>Send a message</button>
                                 </div>
                             )}
 
                             {notification.code_id === 3 && (
                                 <div>
-                                    <button className={"button"}>See pending matches</button>
+                                    <button className={"popover-notificationButton"}>See pending matches</button>
                                 </div>
                             )}
                         </div>
                     ))}
                 </div>
             )}
-            {notifications.length > 3 && (
-                <button className={"view-all"} style={{ top: "320px" }} onClick={() => seeAllNotifications()}>
-                    See all the notifications
-                </button>
-            )}
-            {notifications.length <= 3 && (
-                <button className={"view-all"} style={{ top: `${notifications.length * 95}px` }} onClick={() => seeAllNotifications()}>
-                    See all the notifications
-                </button>
-            )}
 
         </div>
+        </body>
     );
 }

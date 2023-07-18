@@ -23,6 +23,8 @@ import {ChatPage} from "./pages/ChatPage";
 import {FindRivalPage} from "./pages/FindRivalPage";
 import {toast} from "react-toastify";
 import NotificationsActiveIcon from '@mui/icons-material/NotificationsActive';
+import * as PropTypes from "prop-types";
+import {SelectPrefForRival} from "./pages/SeleftPrefForRival";
 
 
 const App = () =>{
@@ -120,6 +122,7 @@ const App = () =>{
                         <Route path = "/webSocketChat" element={<WebSocketChat toggleTeamId = {toggleTeamId} getTeamId={teamId}/>}/>
                         <Route path = "/contacts" element={<ContactsPage toggleTeamId = {toggleTeamId} getTeamId={teamId}/>}/>
                         <Route path = "/myConfirmations" element={<MyConfirmationsPage toggleTeamId = {toggleTeamId} getTeamId={teamId}/>}/>
+                        <Route path="/selectPreferences" element={<SelectPrefForRival toggleTeamId = {toggleTeamId} getTeamId={teamId}/>} />
                     </Routes>
                 </RequireAuth>}
             />

@@ -5,8 +5,9 @@ $hover-top-bar-color: #92B8D1;
 .containerPrincipalHomePage{
   position: absolute;
   font-family: 'Baloo Bhai 2', sans-serif;
-  top: 15%;
+  top: 100px;
   color: #4E4E4E;
+  margin-left: 7%;
 }
 body {
   height: 100vh;
@@ -18,6 +19,9 @@ body {
   color: #4E4E4E;
   background-color: $background-color;
   overflow-x: hidden;
+}
+.containerPrincipalHomePage h3{
+  font-family: 'Baloo Bhai 2', sans-serif;
 }
 
 .containerPrincipalNewTeam{

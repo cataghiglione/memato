@@ -135,7 +135,7 @@ export const RegisterPage = () => {
                     </div>
 
                     <div>
-                        <input type="username" name="logUsername" className="form-style"
+                        <input type="name" name="logUsername" className="form-style"
                                placeholder="Your Username" id="logUsername" autoComplete="off" onChange={usernameChange}/>
                         <Icon className="input-icon-log" icon="material-symbols:person" />
                     </div>

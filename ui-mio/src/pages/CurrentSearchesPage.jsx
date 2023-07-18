@@ -17,6 +17,7 @@ import {toast} from "react-toastify";
 import SentimentDissatisfiedOutlinedIcon from '@mui/icons-material/SentimentDissatisfiedOutlined';
 import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
+import SearchIcon from '@mui/icons-material/Search';
 import {useNavigate} from "react-router";
 import Stack from '@mui/material/Stack';
 import CheckOutlinedIcon from '@mui/icons-material/CheckOutlined';
@@ -201,8 +202,8 @@ export function CurrentSearchesPage(props) {
     //     }
     // }
 
-    const handleGoBackClick=()=>{
-        window.location.href = "/findRival"
+    const handleGoBackClick=(id)=>{
+        window.location.href = `/findRival?id=${id}`
 
     }
 
@@ -263,6 +264,9 @@ export function CurrentSearchesPage(props) {
                                     {/*</button>*/}
                                     <IconButton aria-label="delete" onClick={() => handleDeleteClick(search)}>
                                         <DeleteIcon />
+                                    </IconButton>
+                                    <IconButton aria-label="delete" onClick={() => handleGoBackClick(search.id)}>
+                                        <SearchIcon />
                                     </IconButton>
                                 </div>
                                 </div>

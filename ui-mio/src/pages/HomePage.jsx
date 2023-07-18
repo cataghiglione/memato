@@ -10,6 +10,7 @@ import {useNavigate} from "react-router";
 import {TopBar} from "./TopBar/TopBar";
 import {PencilSquare} from "react-bootstrap-icons";
 import {ToastContainer} from "react-toastify";
+import {NotificationsCenter} from "./TopBar/NotificationsCenter";
 
 function goToNewTeam(){
     window.location.href = "/newTeam"
@@ -24,7 +25,7 @@ export function HomePage(props){
     const [nextTeam, setNextTeam] = useState('')
     const [sidebarOpen, setSidebarOpen] = useState(false);
 
-    const containerStyle = teams.length > 0 ? { marginTop: `-${10 * teams.length}px`, marginLeft: '7%'} : {marginLeft: '7%'};
+    // const containerStyle = teams.length > 0 ? { marginTop: `-${10 * teams.length}px`, marginLeft: '7%'} : {marginLeft: '7%'};
 
 
     useEffect(() => {
@@ -52,7 +53,8 @@ export function HomePage(props){
         <body>
         <SideBar getTeamId={props.getTeamId} toggleTeamId={props.toggleTeamId}/>
             <TopBar toggleTeamId={props.toggleTeamId} getTeamId={props.getTeamId}/>
-            <div className={`containerPrincipalHomePage ${sidebarOpen ? 'page-content-shifted' : ''}`} style={containerStyle}>
+            {/*<div className={`containerPrincipalHomePage ${sidebarOpen ? 'page-content-shifted' : ''}`} style={containerStyle}>*/}
+            <div className={`containerPrincipalHomePage ${sidebarOpen ? 'page-content-shifted' : ''}`}>
                 {/*<nav>*/}
                 {/*    <ul>*/}
                 {/*        <figure className="brick">*/}
@@ -65,7 +67,7 @@ export function HomePage(props){
                 {/*        </figure>*/}
                 {/*    </ul>*/}
                 {/*</nav>*/}
-                <h1> Welcome {user.firstName}! </h1>
+                <h1> Hi {user.username}! </h1>
                 <br/>
                 <h3> Your teams </h3>
                 <br/>
@@ -91,6 +93,7 @@ export function HomePage(props){
                     </div>
                 )}
             </div>
+            <NotificationsCenter/>
             <ToastContainer/> {/* Mover el ToastContainer aquí */}
         </body>
     )
