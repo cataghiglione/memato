@@ -4,7 +4,7 @@ import '../css/Chat.css';
 import { TopBar } from './TopBar/TopBar';
 import {getContacts, getMessages, sendMessage} from '../service/mySystem';
 import { useAuthProvider } from '../auth/auth';
-import {ToastContainer} from "react-toastify";
+import SideBar from "./SideBar";
 
 export function WebSocketChat(props) {
     const navigate = useNavigate();
@@ -159,6 +159,7 @@ export function WebSocketChat(props) {
 
     return (
         <div>
+            <SideBar getTeamId={props.getTeamId} toggleTeamId={props.toggleTeamId}></SideBar>
             <TopBar getTeamId={props.getTeamId} toggleTeamId={props.toggleTeamId} />
             <div className="chat-container">
                 {/*Contacts*/}
