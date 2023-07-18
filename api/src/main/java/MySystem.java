@@ -63,7 +63,12 @@ public class MySystem {
         return runInTransaction(datasource -> {
             final Searches searches = datasource.searches();
             try {
-                return searches.exists(Long.toString(team.getId()), time.getIntervals(), form.getDate(), form.getLatitude(), form.getLongitude(),form.getAge(), form.isRecurring()) ? searches.reactivateSearch(team, time.getIntervals(), form.getDate(), form.getLatitude(), form.getLongitude(), form.getAge(), form.isRecurring()) : Optional.of(searches.createSearch(team, form.getDate(), time.getIntervals(), form.getLatitude(), form.getLongitude(), form.getAge(), form.isRecurring()));
+                return searches.exists(Long.toString(team.getId()), time.getIntervals(), form.getDate(), form.getLatitude(), form.getLongitude(),
+                        form.getAge(), form.isRecurring()) ?
+                        searches.reactivateSearch(team, time.getIntervals(), form.getDate(), form.getLatitude(), form.getLongitude(),
+                                form.getAge(), form.isRecurring())
+                        : Optional.of(searches.createSearch(team, form.getDate(), time.getIntervals(), form.getLatitude(), form.getLongitude(),
+                        form.getAge(), form.isRecurring()));
             } catch (ParseException e) {
                 throw new RuntimeException(e);
             }
