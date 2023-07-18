@@ -286,7 +286,9 @@ export function CurrentSearchesPage(props) {
                                     <IconButton aria-label="delete" onClick={() => handleDeleteClick(recurring)}>
                                         <DeleteIcon />
                                     </IconButton>
-
+                                    <IconButton aria-label="delete" onClick={() => handleGoBackClick(recurring.id)}>
+                                        <SearchIcon />
+                                    </IconButton>
                                 </div>
                             </div>
                         )))
