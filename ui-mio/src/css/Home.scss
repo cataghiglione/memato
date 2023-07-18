@@ -1,4 +1,4 @@
-$top-bar-color: #3F83AF;
+$top-bar-color: #6FA2C3;
 $hover-top-bar-color: #92B8D1;
 @import url('https://fonts.googleapis.com/css?family=Baloo Bhai 2&display=swap');
 @import "Login";
@@ -65,6 +65,7 @@ body {
   position: absolute;
   top: 1px;
   right: 7px;
+  transition-duration: 0.4s;
 }
 
 input, select {

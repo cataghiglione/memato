@@ -7,6 +7,7 @@ import {MenuSideBar} from "./MenuSideBar";
 import {useLocation, useNavigate} from "react-router";
 import {NotificationsCenter} from "./NotificationsCenter";
 import {ToastContainer} from "react-toastify";
+import 'animate.css';
 
 function goToNewTeam(){
     window.location.href = "/newTeam"
@@ -59,8 +60,13 @@ export function TopBar(props) {
         <div>
             {once && getTeamMethod()}
             <div className={"top-bar"} style={{backgroundColor: 204257}}>
+                <div className={"top-bar-logo"}  onClick={goToHome}>
+                    <div className="animate__animated animate__bounceInLeft">
+                        <img style={{width: 250, height: "auto"}} src={require("../../images/logoRM/logoRM_letra.png")} alt={"Logo"}/>
+                        <img style={{width: 50, height: "auto"}} src={require("../../images/logoRM/logoRM_persona.png")} alt={"Logo"}/>
+                    </div>
+                </div>
 
-                <img className={"top-bar-logo"} onClick={goToHome} style={{width: 250, height: "auto"}} src={require("../../images/logoRM/logoRM_letra.png")} alt={"Logo"}/>
 
                 <div className={"team-dropdown"}>
                     {!(props.getTeamId === 0) &&

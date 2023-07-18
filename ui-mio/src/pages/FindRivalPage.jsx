@@ -242,10 +242,6 @@ export function FindRivalPage(props) {
                     if (searches.length === 0) {
                         setNoSearchesCandidates("There are currently no more teams searching for rivals with your preferences");
                     }
-                    props.sendMessageWS({
-                        candidate_search_id: id,
-                        searchId: searchId
-                    })
                     console.log(searches)
                 },)
             },
@@ -328,18 +324,19 @@ export function FindRivalPage(props) {
         <div>
             <SideBar getTeamId={props.getTeamId} toggleTeamId={props.toggleTeamId}></SideBar>
             <TopBar popupOpen = {showPopup} getTeamId={props.getTeamId} toggleTeamId={props.toggleTeamId}/>
-            <div className={"sports_image"}>
-                <img style={{width: 218, height: "auto"}} src={require("../images/logoRM/logoRM_persona.png")} alt={"deportes"}/>
-            </div>
+            {/*<div className={"sports_image"}>*/}
+            {/*    <img style={{width: 218, height: "auto"}} src={require("../images/logoRM/logoRM_persona.png")} alt={"deportes"}/>*/}
+            {/*</div>*/}
 
-            <div className={"mirror_sports_image"}>
-                <img style={{width: 218, height: "auto"}} src={require("../images/logoRM/logoRM_persona.png")} alt={"deportes"}/>
-            </div>
+            {/*<div className={"mirror_sports_image"}>*/}
+            {/*    <img style={{width: 218, height: "auto"}} src={require("../images/logoRM/logoRM_persona.png")} alt={"deportes"}/>*/}
+            {/*</div>*/}
 
             <div className={"containerPrincipalFindRival"}>
-                <div className="team_name_FR"><br/>
+                <div className="team_name_FR">
+                    <br/>
                     You've chosen {team.name}
-                    <br/><br/>
+                    <br/>
                     Sport: {team.sport}
                 </div>
                 <br/>

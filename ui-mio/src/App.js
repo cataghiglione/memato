@@ -22,7 +22,7 @@ import {MyConfirmationsPage} from "./pages/MyConfirmationsPage";
 import {ChatPage} from "./pages/ChatPage";
 import {FindRivalPage} from "./pages/FindRivalPage";
 import {toast} from "react-toastify";
-import {Icon} from "@iconify/react";
+import NotificationsActiveIcon from '@mui/icons-material/NotificationsActive';
 
 
 const App = () =>{
@@ -49,30 +49,21 @@ const App = () =>{
         if(teamId !== null || teamId !== '0')
             webSocket.send(`TeamId:${teamId}`);
     }
-    function sendMessageWS(message) {
-        if (message !== "") {
-            if(message.substring(7) === "TeamId:"){
-                webSocket.send(message);
-            }
-            else{
-                webSocket.send(JSON.stringify(message));
-            }
-        }
-    }
 
     function updateChat(msg) {
         var data = JSON.parse(msg.data);
-        var message = (
+        var icon = (
             <div>
-                {/*PROBAR CON IMAGEN*/}
-                <img></img>
-                <p>{data.userMessage}</p>
+                <p>
+                    <img style={{width: 20, height: "auto"}} src={require("./images/bell-ring-1.png")} alt={"Logo"}/>
+                </p>
             </div>);
-        toast(data.userMessage, {
+        toast.info(data.userMessage, {
             containerId: 'toast-container',
                 position: "top-left",
                 autoClose: 5000,
                 hideProgressBar: false,
+                icon: icon,
                 closeOnClick: true,
                 pauseOnHover: true,
                 draggable: true,
@@ -115,7 +106,7 @@ const App = () =>{
                         <Route path="/pickTeam" element={<PickTeamPage toggleTeamId = {toggleTeamId}    getTeamId={teamId}/>} />
                         <Route path="/newTeam" element={<NewTeamPage toggleTeamId = {toggleTeamId}    getTeamId={teamId}/>} />
                         <Route path="/user" element={<UserPage toggleTeamId = {toggleTeamId} getTeamId={teamId} />} />
-                        <Route path="/findRival" element={<FindRivalPage toggleTeamId = {toggleTeamId} getTeamId={teamId} sendMesssageWS={(message) =>sendMessageWS(message)}/>} />
+                        <Route path="/findRival" element={<FindRivalPage toggleTeamId = {toggleTeamId} getTeamId={teamId}/>} />
                         <Route path = "/editTeam" element = {<EditTeamPage toggleTeamId = {toggleTeamId} getTeamId={teamId}/>} />
                         <Route path = "/currentSearches" element = {<CurrentSearchesPage toggleTeamId = {toggleTeamId} getTeamId={teamId}/>} />
                         <Route path = "/ReactMap" element = {<BingMap toggleTeamId = {toggleTeamId} getTeamId={teamId}/>} />
