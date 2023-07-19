@@ -75,55 +75,55 @@ export function NotificationPage(props) {
                 )}
                 {(notifications.length > 0) &&  (
                     <div>
-                        {notifications.map((notification) => (
-                            <div className={"notification"}>
-                                <div className={"content"}>{notification.message}</div>
-                                <br/>
-                                {notification.code_id === 0 && (
-                                    <div>
-                                        <button className={"button"} onClick={() => goToConfirmationsPage(notification.team_id, notification.id)}>Don't forget to
-                                            confirm
-                                        </button>
-                                        <button className={"button"} onClick={() => goToMessages(notification.id, notification.team_id, notification.other_team_id)}>Send a message</button>
-                                    </div>
-                                )}
-                                {notification.code_id === 1 && (
-                                    <div>
-                                        <button className={"button"} onClick={() => goToConfirmationsPage(notification.team_id, notification.id)}>Don't forget to
-                                            confirm
-                                        </button>
-                                    </div>
-                                )}
-                                {notification.code_id === 2 && (
-                                    <div>
-                                        <button className={"button"} onClick={() => goToMessages(notification.id, notification.team_id, notification.other_team_id)}>Send a message
-                                        </button>
-                                    </div>
-                                )}
-                                {notification.code_id === 3 && (
-                                    <div>
-                                        <button className={"button"}>See pending matches</button>
-                                    </div>
-                                )}
-                                {notification.code_id === 5 && (
-                                    <div>
-                                        <button className={"button"} onClick={() => goToFindRival(notification.team_id, notification.id, notification.search_id)}>Find Rival</button>
-                                    </div>
-                                )}
-                                {notification.opened && (
-                                    <div>
-                                        <button className={"icon"}>
-                                            <img style={{ width: 22, height: "auto"}} src={require("../images/tickGreenIcon.jpg")} alt={"Logo"}/>
-                                        </button>
-                                    </div>)}
-                                {!notification.opened && (
-                                    <div>
-                                        <button className={"icon"} onClick={() => changeStatusOpened(notification.id)}>
-                                            <img style={{ width: 22, height: "auto"}} src={require("../images/tickBlackIcon.jpg")} alt={"Logo"}/>
-                                        </button>
-                                    </div>)}
+                {notifications.map((notification) => (
+                    <div className={"notification"}>
+                        <div className={"content"}>{notification.message}</div>
+                        <br/>
+                        {notification.code_id === 0 && (
+                            <div>
+                                <button className={"button"} onClick={() => goToConfirmationsPage(notification.team_id, notification.id)}>Don't forget to
+                                    confirm
+                                </button>
+                                <button className={"button"} onClick={() => goToMessages(notification.id, notification.team_id, notification.other_team_id)}>Send a message</button>
                             </div>
-                        ))}
+                        )}
+                        {notification.code_id === 1 && (
+                            <div>
+                                <button className={"button"} onClick={() => goToConfirmationsPage(notification.team_id, notification.id)}>Don't forget to
+                                    confirm
+                                </button>
+                            </div>
+                        )}
+                        {notification.code_id === 2 && (
+                            <div>
+                                <button className={"button"} onClick={() => goToMessages(notification.id, notification.team_id, notification.other_team_id)}>Send a message
+                                </button>
+                            </div>
+                        )}
+                        {notification.code_id === 3 && (
+                            <div>
+                                <button className={"button"}>See pending matches</button>
+                            </div>
+                        )}
+                        {notification.code_id === 5 && (
+                            <div>
+                                <button className={"button"} onClick={() => goToFindRival(notification.team_id, notification.id, notification.search_id)}>Find Rival</button>
+                            </div>
+                        )}
+                        {notification.opened && (
+                            <div>
+                                <button className={"icon"}>
+                                    <img style={{ width: 22, height: "auto"}} src={require("../images/tickGreenIcon.jpg")} alt={"Logo"}/>
+                                </button>
+                            </div>)}
+                        {!notification.opened && (
+                            <div>
+                                <button className={"icon"} onClick={() => changeStatusOpened(notification.id)}>
+                                    <img style={{ width: 22, height: "auto"}} src={require("../images/tickBlackIcon.jpg")} alt={"Logo"}/>
+                                </button>
+                            </div>)}
+                    </div>
+                ))}
                     </div>)}
             </div>
             <ToastContainer/> {/* Mover el ToastContainer aquí */}

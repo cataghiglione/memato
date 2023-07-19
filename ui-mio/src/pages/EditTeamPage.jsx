@@ -189,6 +189,7 @@ export function EditTeamPage(props) {
     }
     const printSelectedLocation = (location) => {
         const [lat, long] = location;
+
         if (long && lat) {
             setSelectedLocation(`Latitude: ${lat}, Longitude: ${long}`);
         }
