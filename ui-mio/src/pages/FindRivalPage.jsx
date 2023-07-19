@@ -57,7 +57,7 @@ export function FindRivalPage(props) {
         getTeam(token, teamId, (team) => setTeam(team));
         if(searchId !== "0"){
             possibleSearchCandidates(token, searchId, (res)=>{
-                setSearches(res)
+                setSearches(res.searches)
             })
             getSearch(token, searchId, (res)=>{
                 console.log(res);
@@ -143,43 +143,42 @@ export function FindRivalPage(props) {
                         </IconButton>
                         <br/><br/>
                         Do you want to find rivals with a current search or a new search?
-
                         <br/>
-                        <button onClick={() => goToCurrentSearches()}>Go to current search</button>
-                        <button onClick={() => goToNewSearch()}> new search</button>
+                        <button className={"popUpButton"} onClick={() => goToCurrentSearches()}>Go to current search</button>
+                        <button className={"popUpButton"} onClick={() => goToNewSearch()}> Create a new search</button>
                     </div>
                 </div>
             )}
-
             <div className={"containerPrincipalFindRival"}>
-                <div className="team_name_FR"><br/>
-                    You've chosen {team.name}
-                    <br/>
-                    Sport: {team.sport}
-                </div>
-                <br/>
-                <div className={"finalDate"}>
-                    Day: {date}
-                </div>
 
-                <br/>
-                <div className={"finalTime"}>
-                    Time(s): {finalSelectedTimes}
-                </div>
+                {(searchId !== null && searchId !== "0") && (
+                    <div>
+                        <div className="team_name_FR"><br/>
+                            You've chosen {team.name}
+                            <br/>
+                            Sport: {team.sport}
+                        </div>
+                        <br/>
+                        <div className={"finalDate"}>
+                        Day: {date}
+                        </div>
 
-                <br/>
-                <div className={"finalAgeGroup"}>
-                    Average age group: {averageAge}
-                </div>
+                        <br/>
+                        <div className={"finalTime"}>
+                        Time(s): {finalSelectedTimes}
+                        </div>
 
-                <br/>
-                <div className={"finalZone"}>
-                    Zone: {selectedLocation}
-                </div>
-                {/*<button className={"editFR"} id="submit" type="submit" onClick={closeRivalMenu}>*/}
-                {/*    <Icon icon="fluent:edit-20-regular" />*/}
-                {/*</button>*/}
+                        <br/>
+                        <div className={"finalAgeGroup"}>
+                        Average age group: {averageAge}
+                        </div>
 
+                        <br/>
+                        <div className={"finalZone"}>
+                        Zone: {selectedLocation}
+                        </div>
+                    </div>
+                )}
                 {(searches.length > 0) &&
                     <div>
                         <div className={"title"}>
@@ -190,16 +189,16 @@ export function FindRivalPage(props) {
                                 <div>
                                     <div className={"team-select"}>
                                         <div className={"team-select.info"}>
-                                            <span style={{fontWeight: 'bold', marginLeft: '5px', marginBottom: '15px'}}> Team name: {search.team.name.charAt(0).toUpperCase() + search.team.name.substring(1).toLowerCase()}</span>
+                                            <span style={{fontWeight: 'bold', marginLeft: '5px', marginBottom: '15px'}}> Team name: {search.search.team.name.charAt(0).toUpperCase() + search.search.team.name.substring(1).toLowerCase()}</span>
                                             <p style={{marginLeft: '5px', marginBottom: '15px'}}> Age
-                                                group: {search.team.age_group}</p>
+                                                group: {search.search.team.age_group}</p>
                                             <p style={{marginLeft: '5px', marginBottom: '15px'}}> Time(s) in common:
-                                                {search.time.intervals.join(", ")}</p>
+                                                {search.search.time.intervals.join(", ")}</p>
                                         </div>
                                         <br/><br/>
                                         <div>
                                             <button className={"button-play"}
-                                                    onClick={async () => await playButton(search.id)}>
+                                                    onClick={async () => await playButton(search.search.id)}>
                                                 Play
                                             </button>
 
@@ -211,7 +210,7 @@ export function FindRivalPage(props) {
                         </div>
                     </div>
                 }
-                {(searches.length === 0) && (
+                {(searches.length === 0 && searchId !== "0" && searchId !== null) && (
 
                     <p className={"noTeamSearch"}>{noSearchesCandidates}</p>)
                 }

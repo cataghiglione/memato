@@ -3,7 +3,7 @@ import {useEffect, useState} from "react";
 import * as React from "react";
 import {useLocation, useNavigate} from "react-router";
 import {useAuthProvider} from "../../auth/auth";
-import {getNotifications, getPendingNotifications, updateNotification} from "../../service/mySystem";
+import {getNotifications, getPendingNotifications, newContact, updateNotification} from "../../service/mySystem";
 
 export function NotificationsCenter(props){
     const navigate = useNavigate();
@@ -23,8 +23,9 @@ export function NotificationsCenter(props){
             navigate("/pendingConfirmations"))
     }
 
-    function goToMessages(id) {
-        changeStatusOpened(id).then(r => navigate("/chat"))
+    function goToMessages(id, team_id, other_team_id) {
+        props.toggleTeamId(team_id)
+        changeStatusOpened(id).then(r => findOrCreateContact(team_id, other_team_id))
     }
 
     function seeAllNotifications() {
@@ -35,6 +36,21 @@ export function NotificationsCenter(props){
     }
     const changeStatusOpened = async (id) => {
         updateNotification(token, id)
+    }
+    function findOrCreateContact(team_id, otherTeamId) {
+        newContact(token, {
+                team1_id: team_id,
+                team2_id: otherTeamId
+            }, (res) => {
+                console.log(res)
+                navigate(`/webSocketChat?contactId=${res}&targetId=${otherTeamId}`)
+            },
+            () => {
+                // TODO when error callback happens it takes you only to the /chat, without throwing the error on console
+                console.log('Contact already exists!')
+                navigate("/webSocketChat")
+            }
+        )
     }
     return(
         <body>
@@ -48,8 +64,10 @@ export function NotificationsCenter(props){
             </button>
             <br/><br/>
             {notifications.length === 0 &&(
-                <div className={"popover-notification"} style={{border: "1px solid lightgray"}}>
+                <div className={"notifications-list"}>
+                <div className={"popover-notification"} style={{height: "10vh", width: "48vh", textAlign:"center" }}>
                     You don't have any pending notifications.
+                </div>
                 </div>
             )}
 
@@ -64,7 +82,7 @@ export function NotificationsCenter(props){
                                     <button className={"popover-notificationButton"} onClick={() => goToConfirmationsPage(notification.id)}>Don't forget to
                                         confirm
                                     </button>
-                                    <button className={"popover-notificationButton"} onClick={() => goToMessages(notification.id)}>Send a message</button>
+                                    <button className={"popover-notificationButton"} onClick={() => goToMessages(notification.id, notification.team_id, notification.other_team_id)}>Send a message</button>
                                 </div>
                             )}
                             {notification.code_id === 1 && (
@@ -76,7 +94,7 @@ export function NotificationsCenter(props){
                             )}
                             {notification.code_id === 2 && (
                                 <div>
-                                    <button className={"popover-notificationButton"} onClick={() => goToMessages(notification.id)}>Send a message</button>
+                                    <button className={"popover-notificationButton"} onClick={() => goToMessages(notification.id,notification.team_id, notification.other_team_id)}>Send a message</button>
                                 </div>
                             )}
 

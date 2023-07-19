@@ -116,7 +116,7 @@ export const findRival = (token, id, form, okCallback, secondOkCallback ,errorCa
     }).then(resp => {
         if ( resp.status === 200) {
             resp.json().then(value => {
-                okCallback(JSON.parse(value));
+                okCallback(value);
             }).catch(err => {
                 errorCallback(err.value)
                 console.log(err);

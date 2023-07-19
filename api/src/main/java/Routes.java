@@ -628,7 +628,7 @@ public class Routes {
                             NewSearchResponse newSearchResponse = new NewSearchResponse(searchId.get(), commonTimeSearchList);
 
 
-                            res.body(toJson(newSearchResponse));
+                            res.body(Long.toString(searchId.get()));
                         }
 
                     }
@@ -1037,6 +1037,8 @@ public class Routes {
             dtoNotification.opened = notification.isOpened();
             dtoNotification.id = notification.getId();
             dtoNotification.team_id = notification.getTeam_id();
+            dtoNotification.other_team_id = notification.getOther_team_id();
+            dtoNotification.search_id = notification.getSearch_id();
             return dtoNotification;
         }).toList();
 

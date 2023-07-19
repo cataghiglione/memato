@@ -93,7 +93,7 @@ export function HomePage(props){
                     </div>
                 )}
             </div>
-            <NotificationsCenter/>
+            <NotificationsCenter toggleTeamId={props.toggleTeamId} getTeamId={props.getTeamId}/>
             <ToastContainer/> {/* Mover el ToastContainer aquí */}
         </body>
     )

@@ -12,7 +12,7 @@ export function NotificationPage(props) {
     const navigate = useNavigate();
     const auth = useAuthProvider();
     const token = auth.getToken();
-    const teamId = props.getTeamId;
+    const team_id = props.team_id;
     const [notifications, setNotifications] = useState([''])
     useEffect(() => {
             getNotifications(token, (notifications) => {
@@ -23,21 +23,24 @@ export function NotificationPage(props) {
     )
 
     function goToConfirmationsPage(id) {
-        props.toggleTeamId(id);
         changeStatusOpened(id).then(r =>
             navigate("/currentSearches"))
     }
 
-    const goToMessages= async (id, notification_id) =>{
-        props.toggleTeamId(id);
+    const goToMessages= async (id, notification_id, other_team_id) =>{
+        props.toggleTeamId(id)
         newContact(token, {
-            team1_id: teamId,
-            team2_id: id
-        },(res) => {
-            console.log(res);
-            changeStatusOpened(notification_id);
-            navigate(`/chat?contactId=${res}`)
-        },
+                team1_id: id,
+                team2_id: other_team_id
+            }, (res) => {
+                console.log(res)
+                navigate(`/webSocketChat?contactId=${res}&targetId=${other_team_id}`)
+            },
+            () => {
+                // TODO when error callback happens it takes you only to the /chat, without throwing the error on console
+                console.log('Contact already exists!')
+                navigate("/webSocketChat")
+            }
         )
     }
 
@@ -78,7 +81,7 @@ export function NotificationPage(props) {
                                 <button className={"button"} onClick={() => goToConfirmationsPage(notification.team_id, notification.id)}>Don't forget to
                                     confirm
                                 </button>
-                                <button className={"button"} onClick={() => goToMessages(notification.team_id, notification.id)}>Send a message</button>
+                                <button className={"button"} onClick={() => goToMessages(notification.team_id, notification.id, notification.other_team_id)}>Send a message</button>
                             </div>
                         )}
                         {notification.code_id === 1 && (
@@ -90,7 +93,7 @@ export function NotificationPage(props) {
                         )}
                         {notification.code_id === 2 && (
                             <div>
-                                <button className={"button"} onClick={() => goToMessages(notification.team_id, notification.id)}>Send a message
+                                <button className={"button"} onClick={() => goToMessages(notification.team_id, notification.id, notification.other_team_id)}>Send a message
                                 </button>
                             </div>
                         )}

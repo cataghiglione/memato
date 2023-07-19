@@ -37,6 +37,7 @@ h1{
 }
 .team_name_FR {
     position: absolute;
+    left: 45%;
     //top: 4px;
     font-family: 'Baloo Bhai 2', sans-serif;
     font-size: x-large;
@@ -127,7 +128,38 @@ h1{
     z-index: 999;
 }
 .popUpCloseButton{
+    bottom: 5px;
+    right: 5px;
+    /*align-items: start;*/
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 14px;
+    cursor: pointer;
+    align-items: flex-end;
+    text-align: center;
+    margin-right: 10px;
+    width: max-content;
+    height: max-content;
     justify-content: end;
+}
+.popUpButton{
+    position: relative;
+    top: 80%;
+    background-color: white;
+    color: #808080;
+    border: 1px solid #808080;
+    border-radius: 5px;
+    font-size: 14px;
+    cursor: pointer;
+    text-align: center;
+    margin-right: 10px;
+    //margin-bottom: 100px;
+    width: max-content;
+    height: max-content;
+}
+.popUpButton:hover {
+    background-color: #808080;
+    color: white;
 }
 .noTeamSearch {
     position: fixed;

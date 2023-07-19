@@ -74,6 +74,17 @@ public class MySystem {
             }
         });
     }
+    public boolean setRecurrentId(Long searchId, Long recurrentId){
+        return runInTransaction(datasource ->{
+            final Searches searches = datasource.searches();
+            try{
+                return searches.setRecurringSearchId(searchId,recurrentId);
+            }
+            catch(Exception e){
+                throw new RuntimeException(e);
+            }
+        });
+    }
     public Notification createNotificationWithSearch(Search search2, String message, int code_id, long teamId1) {
         return runInTransaction(datasource -> {
             final Notifications notifications = datasource.notifications();
@@ -84,7 +95,7 @@ public class MySystem {
                     (user) -> {
 
                         if(code_id == 0 || code_id == 2)
-                            notification.set(notifications.createNotificationWithTeamId(users.findById(user_id).get(), message, code_id, teamId1));
+                            notification.set(notifications.createNotificationWithTeamId(users.findById(user_id).get(), message, code_id, teamId1, search2.getTeam().getId()));
 
                         else
                             notification.set(notifications.createNotification(users.findById(user_id).get(), message, code_id));
@@ -131,7 +142,7 @@ public class MySystem {
             users.findById(user_id).ifPresentOrElse(
                     (user) -> {
                         if(code_id == 0 || code_id == 2)
-                            notification.set(notifications.createNotificationWithTeamId(users.findById(user_id).get(), message, code_id, team.getId()));
+                            notification.set(notifications.createNotificationWithTeamId(users.findById(user_id).get(), message, code_id, team.getId(), otherTeamId));
                         else
                             notification.set(notifications.createNotification(users.findById(user_id).get(), message, code_id));
                         NotificationService.privateMessage(user_id, message);

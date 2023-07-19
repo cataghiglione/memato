@@ -17,13 +17,13 @@ public class Notifications {
         entityManager.persist(newNotification);
         return newNotification;
     }
-    public Notification createNotificationWithTeamId(User user, String message, int code_id, long team_id) {
-        final Notification newNotification = Notification.createWithTeamId(user, message, code_id, team_id);
+    public Notification createNotificationWithTeamId(User user, String message, int code_id, long team_id, long other_team_id) {
+        final Notification newNotification = Notification.createWithTeamIds(user, message, code_id, team_id, other_team_id);
         entityManager.persist(newNotification);
         return newNotification;
     }
     public Notification createNotificationWithSearchId(User user, String message, int code_id, long search_id, long team_id) {
-        final Notification newNotification = Notification.createWithTeamId(user, message, code_id, search_id, team_id);
+        final Notification newNotification = Notification.createWithTeamSearchId(user, message, code_id, search_id, team_id);
         entityManager.persist(newNotification);
         return newNotification;
     }

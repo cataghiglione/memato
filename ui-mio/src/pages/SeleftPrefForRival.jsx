@@ -20,6 +20,7 @@ import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
 import {useSearchParams} from "react-router-dom";
+import { addWeeks } from 'date-fns';
 
 
 // import '@mobiscroll/react/dist/css/mobiscroll.min.css';
@@ -55,6 +56,9 @@ export function SelectPrefForRival(props) {
     const [team, setTeam] = useState('');
     const teamId = props.getTeamId;
 
+    const[amountWeeks,setAmountWeeks]=useState(0);
+    const[weeksOpen,setWeeksOpen]=useState(false);
+
     const options = [{label: "8:00-9:00", value: "8:00-9:00"},
         {label: "9:00-10:00", value: "9:00-10:00"}, {label: "10:00-11:00", value: "10:00-11:00"},
         {label: "11:00-12:00", value: "11:00-12:00"},
@@ -71,7 +75,7 @@ export function SelectPrefForRival(props) {
         {label: "22:00-23:00", value: "22:00-23:00"},
         {label: "23:00-00:00", value: "23:00-00:00"}
     ]
-
+    const weekOptions=[{label:"1 week",value:1},{label:"2 weeks", value:2},{label:"3 weeks",value:3},{label:"4 weeks",value:4}]
     // con esto lee los params
     // const searchParams = useSearchParams();
     // // con este lee el paramentro de "id"
@@ -132,6 +136,17 @@ export function SelectPrefForRival(props) {
             setSelectedLocation(`Latitude: ${lat}, Longitude: ${long}`);
         }
     };
+    const generateDatesArray = () => {
+        const dates = [];
+        if (date) {
+            dates.push(date);
+            for (let i = 1; i <= amountWeeks.value; i++) {
+                const weekStartDate = addWeeks(date, i);
+                dates.push(weekStartDate);
+            }
+        }
+        return dates;
+    };
     const handleSubmit = async (e) => {
         e.preventDefault();
         const finalValues = selectedTimes.map(option => option.value)
@@ -150,7 +165,7 @@ export function SelectPrefForRival(props) {
         }
         else{
             await findRivalMethod({
-                date: date,
+                date: generateDatesArray(),
                 time: finalSelectedTimes,
                 latitude: zone[0].toString(),
                 longitude: zone[1].toString(),
@@ -161,6 +176,7 @@ export function SelectPrefForRival(props) {
     }
     const handleCheckedBox = (event) => {
         setChecked(event.target.checked);
+        setWeeksOpen(!weeksOpen);
     };
     const findRivalMethod = async (search) => {
         if (rivalMenuOpen) {
@@ -342,6 +358,14 @@ export function SelectPrefForRival(props) {
                                               label="Recurrent search" />
                         </FormGroup>
                     </div>
+                    {weeksOpen &&(
+                        <div>
+                            <Select
+                                options={weekOptions}
+                                value={amountWeeks}
+                                onChange={setAmountWeeks}></Select>
+                        </div>
+                    )}
 
 
                     <div className={"zone"}>
