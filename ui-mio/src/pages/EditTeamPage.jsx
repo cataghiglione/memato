@@ -8,6 +8,8 @@ import {useNavigate} from "react-router";
 import {TopBar} from "./TopBar/TopBar";
 import {ToastContainer} from "react-toastify";
 import SideBar from "./SideBar";
+import {Icon} from "@iconify/react/dist/iconify";
+import {BingMap} from "./BingMap";
 
 function goToPickTeam() {
     window.location.href = "/pickTeam"
@@ -21,15 +23,24 @@ export function EditTeamPage(props) {
     const [searchParams] = useSearchParams();
     const [errorMsg, setErrorMsg] = useState(undefined)
     const isOk = searchParams.get("ok")
+    const [changeLocationButton, setChangeLocationButton] = useState('Select location');
 
-
+    const [locationName, setLocationName] = useState("")
     const [sport, setSport] = useState('')
     const [quant_Players, setQuant_player] = useState('')
     const [age_group, setAge_group] = useState('')
     // const [zone, setZone] = useState('')
     const [name, setName] = useState('')
     const [team, setTeam] = useState('');
+    const [newZone, setNewZone] = useState([])
+    const [zone, setZone] = useState([])
+    const [selectedLocation, setSelectedLocation] = useState("")
 
+
+    function handleSelectLocation(e) {
+        e.preventDefault(); // Prevent form submission
+        setShowPopup(!showPopup);
+    }
     useEffect(() => {
         getTeam(token, id, (team) => setTeam(team));
     }, [])
@@ -43,13 +54,33 @@ export function EditTeamPage(props) {
 
     const isEmpty = value => value === null || value === undefined || value === '';
 
+    const apiKey = 'ApqYZq8IsmnPRxOON1m_mY9eGEZqjDawW2cleubNdcVT5CbVMU8snXUF4qku9DcW'; // Replace with your Bing Maps API key
+
+    function getLocationName(lat, long, apiKey){
+        const url = `http://dev.virtualearth.net/REST/v1/Locations/${lat},${long}?o=xml&key=${apiKey}`;
+
+        fetch(url)
+            .then(response => response.text())
+            .then(data => {
+                // Parse the XML response
+                const parser = new DOMParser();
+                const xmlDoc = parser.parseFromString(data, 'text/xml');
+
+                // Extract the address name
+                const name = xmlDoc.querySelector('Name').textContent;
+                setLocationName(name) // Output: 3386 156th Ave NE, Redmond, WA 98052, United States
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    }
 
 
     const handleSubmit = async e => {
         e.preventDefault();
 
         if (isEmpty(name)){setName(team.name)
-        console.log("entre a este if")}
+            console.log("entre a este if")}
         // if (isEmpty(zone)){setZone(team.zone)}
         if (isEmpty(sport)){setSport( team.sport)}
         if(isEmpty(quant_Players)){setQuant_player(team.quantity)}
@@ -135,6 +166,23 @@ export function EditTeamPage(props) {
         fontSize: 30,
         textTransform: 'capitalize'
     };
+    const handleInfoboxesWithPushPins = (infoboxesWithPushPinsData) => {
+        setChangeLocationButton('Change Location');
+        setNewZone(infoboxesWithPushPinsData[0].location);
+    };
+    function confirmZone() {
+        setZone(newZone);
+        printSelectedLocation(newZone);
+        setShowPopup(false);
+    }
+    const printSelectedLocation = (location) => {
+        const [lat, long] = location;
+        if (long && lat) {
+            setSelectedLocation(`Latitude: ${lat}, Longitude: ${long}`);
+        }
+        getLocationName(lat, long, apiKey)
+    };
+    const [showPopup, setShowPopup] = useState(false);
     return (
         <div>
             <SideBar getTeamId={props.getTeamId} toggleTeamId={props.toggleTeamId}></SideBar>
@@ -162,11 +210,11 @@ export function EditTeamPage(props) {
                         <br/>
                         <div className={"edit-team-name"}>
                             <p>Team name: <input type="Name"
-                                   id="Name"
-                                   placeholder="Name"
-                                   name="Name"
-                                   value={name}
-                                   onChange={nameChange}/></p>
+                                                 id="Name"
+                                                 placeholder="Name"
+                                                 name="Name"
+                                                 value={name}
+                                                 onChange={nameChange}/></p>
                         </div>
                         {/*<div>*/}
                         {/*    <input*/}
@@ -179,7 +227,7 @@ export function EditTeamPage(props) {
                         {/*</div>*/}
                         <div className={"edit-age-group"}>
                             <br/>
-                           <p>Group:  <select id="age_group" required onChange={groupChange} value={age_group}>
+                            <p>Group:  <select id="age_group" required onChange={groupChange} value={age_group}>
                                 <option  value=""></option>
                                 <option value="Young">Young</option>
                                 <option value="Adults">Adults</option>
@@ -218,6 +266,24 @@ export function EditTeamPage(props) {
                                 </div>
                             )
                         }
+                        <div className={"zone"} style={{top:"380px", left: "605px"}}>
+                            {changeLocationButton === 'Select location' && <p>Select your preferred zone: </p>}
+                            {changeLocationButton !== 'Select location' && <p>Your preferred zone: {locationName}</p>}
+                            <button className={"selectLocationButton"} onClick={handleSelectLocation}> <Icon style ={{left:"-30px", top: "-5px", fontSize: "20"}} className="input-icon-log" icon="mi:location" /> {changeLocationButton} </button>
+                            {showPopup && (
+                                <div className="popupFR">
+                                    <BingMap
+                                        onInfoboxesWithPushPinsChange={handleInfoboxesWithPushPins}
+                                    />
+                                    {(zone !== newZone && newZone.length !== 0) && (
+                                        <div>
+                                            <button className={"confirmLocation"} id="confirmLoc" onClick={confirmZone}>Confirm location</button>
+                                        </div>
+                                    )}
+                                    <button className={"goBackSelLoc"} onClick={handleSelectLocation}>Go back</button>
+                                </div>
+                            )}
+                        </div>
                         <div>
                             {/*<button type="submit" className={"signUpButton"}>Sign up</button>*/}
                             <button id="submit" type="submit" className={"saveChangesButton"} style={{right: "550px"}} onClick={() => newTeamRequest()}>Save Changes</button>
@@ -226,10 +292,10 @@ export function EditTeamPage(props) {
                             <button className={"goBackButton"} onClick={handleGoToPickTeam}>Return to Pick Team</button>
                         </div>
                     </form>
-                        <br/>
-                        <div>
-                            <button className={"delete-button"} onClick={handleDeleteClick}>Delete team</button>
-                        </div>
+                    <br/>
+                    <div>
+                        <button className={"delete-button"} onClick={handleDeleteClick}>Delete team</button>
+                    </div>
 
 
                 </div>

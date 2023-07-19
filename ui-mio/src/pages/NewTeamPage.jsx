@@ -13,6 +13,7 @@ import {TopBar} from "./TopBar/TopBar";
 import {Icon} from "@iconify/react";
 import SideBar from "./SideBar";
 import {ToastContainer} from "react-toastify";
+import {BingMap} from "./BingMap";
 
 export function NewTeamPage (props){
 
@@ -28,12 +29,38 @@ export function NewTeamPage (props){
     const navigate = useNavigate();
     const [searchParams, setSearchParams] = useSearchParams();
     const isOk = searchParams.get("ok")
-
+    const [locationName, setLocationName] = useState("")
     const [menuOpen, setMenuOpen] = useState(false);
     const [pageChange, setPageChange] = useState("Home");
+    const [changeLocationButton, setChangeLocationButton] = useState('Select location');
+    const [showPopup, setShowPopup] = useState(false);
+    const [zone, setZone] = useState([])
+    const [newZone, setNewZone] = useState([])
+    const [selectedLocation, setSelectedLocation] = useState("")
 
     const changePage = (event) => {
         setPageChange(event.target.value);
+    }
+
+    const apiKey = 'ApqYZq8IsmnPRxOON1m_mY9eGEZqjDawW2cleubNdcVT5CbVMU8snXUF4qku9DcW'; // Replace with your Bing Maps API key
+
+    function getLocationName(lat, long, apiKey){
+        const url = `http://dev.virtualearth.net/REST/v1/Locations/${lat},${long}?o=xml&key=${apiKey}`;
+
+        fetch(url)
+            .then(response => response.text())
+            .then(data => {
+                // Parse the XML response
+                const parser = new DOMParser();
+                const xmlDoc = parser.parseFromString(data, 'text/xml');
+
+                // Extract the address name
+                const name = xmlDoc.querySelector('Name').textContent;
+                setLocationName(name) // Output: 3386 156th Ave NE, Redmond, WA 98052, United States
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
     }
 
     const handleSubmit = async e => {
@@ -49,7 +76,9 @@ export function NewTeamPage (props){
             quantity: quant_Players,
             age_group: age_group,
             // zone: zone,
-            name: name.charAt(0).toUpperCase() + name.substring(1).toLowerCase()
+            name: name.charAt(0).toUpperCase() + name.substring(1).toLowerCase(),
+            latitude: zone[0].toString(),
+            longitude: zone[1].toString(),
         })
     }
 
@@ -105,6 +134,28 @@ export function NewTeamPage (props){
     }
 
 
+    function handleSelectLocation(e) {
+        e.preventDefault(); // Prevent form submission
+        setShowPopup(!showPopup);
+    }
+
+
+    const handleInfoboxesWithPushPins = (infoboxesWithPushPinsData) => {
+        setChangeLocationButton('Change Location');
+        setNewZone(infoboxesWithPushPinsData[0].location);
+    };
+    function confirmZone() {
+        setZone(newZone);
+        printSelectedLocation(newZone);
+        setShowPopup(false);
+    }
+    const printSelectedLocation = (location) => {
+        const [lat, long] = location;
+        if (long && lat) {
+            setSelectedLocation(`Latitude: ${lat}, Longitude: ${long}`);
+        }
+        getLocationName(lat, long, apiKey)
+    };
 
     return (
         <div>
@@ -120,11 +171,11 @@ export function NewTeamPage (props){
                     <br/>
                     <div className={"new-team-name"} >
                         <p>Team Name: <input type="Name"
-                               id="Name"
-                               placeholder="Name"
-                               name="Name"
-                               value={name}
-                               onChange={nameChange}/>
+                                             id="Name"
+                                             placeholder="Name"
+                                             name="Name"
+                                             value={name}
+                                             onChange={nameChange}/>
                         </p>
                     </div>
 
@@ -177,6 +228,25 @@ export function NewTeamPage (props){
                             </select></p>
                         </div>
                     )}
+                    <div className={"zone"} style={{top:"380px", left: "605px"}}>
+                        {changeLocationButton === 'Select location' && <p>Select your preferred zone: </p>}
+                        {changeLocationButton !== 'Select location' && <p>Your preferred zone: {locationName}</p>}
+                        <button className={"selectLocationButton"} onClick={handleSelectLocation}> <Icon style ={{left:"-30px", top: "-5px", fontSize: "20"}} className="input-icon-log" icon="mi:location" /> {changeLocationButton} </button>
+                        {showPopup && (
+                            <div className="popupFR">
+                                <BingMap
+                                    onInfoboxesWithPushPinsChange={handleInfoboxesWithPushPins}
+                                />
+                                {(zone !== newZone && newZone.length !== 0) && (
+                                    <div>
+                                        <button className={"confirmLocation"} id="confirmLoc" onClick={confirmZone}>Confirm location</button>
+                                    </div>
+                                )}
+                                <button className={"goBackSelLoc"} onClick={handleSelectLocation}>Go back</button>
+                            </div>
+                        )}
+                    </div>
+
                     <div>
                         <br/>
                         {/*<button type="submit" className={"signUpButton"}>Sign up</button>*/}

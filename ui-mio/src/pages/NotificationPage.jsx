@@ -28,14 +28,13 @@ export function NotificationPage(props) {
             navigate("/currentSearches"))
     }
 
-    const goToMessages= async (id, notification_id, other_team_id) =>{
-        props.toggleTeamId(id)
+    function findOrCreateContact(otherTeamId) {
         newContact(token, {
-                team1_id: id,
-                team2_id: other_team_id
+                team1_id: team_id,
+                team2_id: otherTeamId
             }, (res) => {
                 console.log(res)
-                navigate(`/webSocketChat?contactId=${res}&targetId=${other_team_id}`)
+                navigate(`/webSocketChat?contactId=${res}&targetId=${otherTeamId}`)
             },
             () => {
                 // TODO when error callback happens it takes you only to the /chat, without throwing the error on console
@@ -81,7 +80,7 @@ export function NotificationPage(props) {
                                 <button className={"button"} onClick={() => goToConfirmationsPage(notification.team_id, notification.id)}>Don't forget to
                                     confirm
                                 </button>
-                                <button className={"button"} onClick={() => goToMessages(notification.team_id, notification.id, notification.other_team_id)}>Send a message</button>
+                                <button className={"button"} onClick={() => findOrCreateContact(notification.other_team_id)}>Send a message</button>
                             </div>
                         )}
                         {notification.code_id === 1 && (
@@ -93,7 +92,7 @@ export function NotificationPage(props) {
                         )}
                         {notification.code_id === 2 && (
                             <div>
-                                <button className={"button"} onClick={() => goToMessages(notification.team_id, notification.id, notification.other_team_id)}>Send a message
+                                <button className={"button"} onClick={() => findOrCreateContact(notification.other_team_id)}>Send a message
                                 </button>
                             </div>
                         )}
