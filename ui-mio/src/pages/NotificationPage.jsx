@@ -24,11 +24,15 @@ export function NotificationPage(props) {
 
     function goToConfirmationsPage(team_id, id) {
         props.toggleTeamId(team_id);
-        changeStatusOpened(id).then(r =>
-            navigate("/currentSearches"))
+        changeStatusOpened(id);
+        navigate(`/currentSearches`)
     }
-
-    function findOrCreateContact(otherTeamId) {
+    function goToMessages(id, team_id, other_team_id) {
+        props.toggleTeamId(team_id)
+        changeStatusOpened(id)
+        findOrCreateContact(team_id, other_team_id)
+    }
+    function findOrCreateContact(team_id, otherTeamId) {
         newContact(token, {
                 team1_id: team_id,
                 team2_id: otherTeamId
@@ -80,7 +84,7 @@ export function NotificationPage(props) {
                                 <button className={"button"} onClick={() => goToConfirmationsPage(notification.team_id, notification.id)}>Don't forget to
                                     confirm
                                 </button>
-                                <button className={"button"} onClick={() => findOrCreateContact(notification.other_team_id)}>Send a message</button>
+                                <button className={"button"} onClick={() => goToMessages(notification.id, notification.team_id, notification.other_team_id)}>Send a message</button>
                             </div>
                         )}
                         {notification.code_id === 1 && (
@@ -92,7 +96,7 @@ export function NotificationPage(props) {
                         )}
                         {notification.code_id === 2 && (
                             <div>
-                                <button className={"button"} onClick={() => findOrCreateContact(notification.other_team_id)}>Send a message
+                                <button className={"button"} onClick={() => goToMessages(notification.id, notification.team_id, notification.other_team_id)}>Send a message
                                 </button>
                             </div>
                         )}
