@@ -17,7 +17,7 @@ public class NotificationService {
     public static void startNotificationServer(MySystem mySystem) {
         staticFiles.location("public"); //index.html is served at localhost:4567 (default port)
         staticFiles.expireTime(60000);
-        webSocketIdleTimeoutMillis(600000);
+        webSocketIdleTimeoutMillis(1800000);
         webSocket("/notificationServer", NotificationWebSocketHandler.class);
         init();
         system = mySystem;

@@ -1134,9 +1134,9 @@ public class Routes {
         tx.begin();
         if (users.listAll().isEmpty()) {
             final User kate =
-                    User.create("cata.ghiglione@gmail.com", "91218", "Catuchi", "Ghi", "cghi");
+                    User.create("catuchi22@river.com", "91218", "Catuchi", "Ghi", "cghi");
             final User coke =
-                    User.create("constanzalasarte@gmail.com", "1234", "Coke", "Lasa", "clasa");
+                    User.create("cocaL@depo.com", "1234", "Coke", "Lasa", "clasa");
 
             final User fercho =
                     User.create("ferpalacios@remix.com", "4321", "Fercho", "Palacios", "ferpa");

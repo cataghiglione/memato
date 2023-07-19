@@ -44,8 +44,7 @@ export function EditTeamPage(props) {
     useEffect(() => {
         getTeam(token, props.getTeamId, (team) => {
             setTeam(team);
-            printSelectedLocation([team.latitude, team.longitude]);
-
+            // printSelectedLocation([team.latitude, team.longitude]);
         });
     }, [props.getTeamId, token, locationName]);
 
@@ -108,7 +107,7 @@ export function EditTeamPage(props) {
 
     const resetForm = () => {
         setName(team.name);
-        // setZone(team.zone);
+        setZone(team.zone);
         setAge_group(team.age_group);
         setSport(team.sport);
         setQuant_player(team.quantity);
@@ -180,11 +179,12 @@ export function EditTeamPage(props) {
     const handleInfoboxesWithPushPins = (infoboxesWithPushPinsData) => {
         setChangeLocationButton('Change Location');
         setNewZone(infoboxesWithPushPinsData[0].location);
+        printSelectedLocation(infoboxesWithPushPinsData[0].location);
     };
 
     function confirmZone() {
         setZone(newZone);
-        printSelectedLocation(newZone);
+        // printSelectedLocation(newZone);
         setShowPopup(false);
     }
     const printSelectedLocation = (location) => {
@@ -193,7 +193,7 @@ export function EditTeamPage(props) {
         if (long && lat) {
             setSelectedLocation(`Latitude: ${lat}, Longitude: ${long}`);
         }
-        setZone([lat, long]);
+        // setZone([lat, long]);
         getLocationName(lat, long, apiKey);
 
     };
@@ -292,7 +292,7 @@ export function EditTeamPage(props) {
                                     />
                                     {(zone !== newZone && newZone.length !== 0) && (
                                         <div>
-                                            <button className={"confirmLocation"} id="confirmLoc" onClick={confirmZone}>Confirm location</button>
+                                            <button className={"confirmLocation"} id="confirmLoc" onClick={()=>confirmZone()}>Confirm location</button>
                                         </div>
                                     )}
                                     <button className={"goBackSelLoc"} onClick={handleSelectLocation}>Go back</button>
