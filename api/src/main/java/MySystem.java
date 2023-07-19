@@ -167,6 +167,7 @@ public class MySystem {
             return notifications.changeStatusOpen(id);
         });
     }
+
     public boolean deactivateSearch(Long id){
         return runInTransaction(datasource ->{
             final Searches searches = datasource.searches();

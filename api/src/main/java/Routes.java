@@ -591,7 +591,8 @@ public class Routes {
                                     (search) -> {
                                         CreateSearchForm newSearchForm = new CreateSearchForm(search.getTeam(), search.searching(), searchForm.getDate(), searchForm.getLatitude(), searchForm.getLongitude(), searchForm.getAge(), false);
                                         for (int i = 0; i < searchForm.getDate().length; i++) {
-                                            system.findOrCreateSearch(newSearchForm, team, timeInterval, searchForm.getDate()[i]).ifPresent(
+                                            TimeInterval timeInterval2 = system.createTimeInterval(List.of(time));
+                                            system.findOrCreateSearch(newSearchForm, team, timeInterval2, searchForm.getDate()[i]).ifPresent(
                                                     (search2) -> {
                                                         search2.setRecurrentSearchId(searchId.longValue());
                                                         system.setRecurrentId(search2.getId(), search.getId());
@@ -1133,9 +1134,9 @@ public class Routes {
         tx.begin();
         if (users.listAll().isEmpty()) {
             final User kate =
-                    User.create("catuchi22@river.com", "91218", "Catuchi", "Ghi", "cghi");
+                    User.create("cata.ghiglione@gmail.com", "91218", "Catuchi", "Ghi", "cghi");
             final User coke =
-                    User.create("cocaL@depo.com", "1234", "Coke", "Lasa", "clasa");
+                    User.create("constanzalasarte@gmail.com", "1234", "Coke", "Lasa", "clasa");
 
             final User fercho =
                     User.create("ferpalacios@remix.com", "4321", "Fercho", "Palacios", "ferpa");

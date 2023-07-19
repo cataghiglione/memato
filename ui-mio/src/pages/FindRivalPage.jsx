@@ -62,7 +62,7 @@ export function FindRivalPage(props) {
             getSearch(token, searchId, (res)=>{
                 console.log(res);
                 setAverageAge(res.averageAge);
-                setDate(`${res.date.day.toString()}/${res.date.month.toString()}/${res.date.year.toString()}`)
+                setDate(`${res.date.day.toString()}/${(res.date.month+1).toString()}/${(res.date.year+1900).toString()}`)
                 setSelectedLocation(`Longitude: ${res.longitude} Latitude: ${res.latitude}`)
                 setFinalSelectedTimes(res.time.intervals.join(", "))
             })
@@ -185,7 +185,9 @@ export function FindRivalPage(props) {
                                             <p style={{marginLeft: '5px', marginBottom: '15px'}}> Age
                                                 group: {search.search.team.age_group}</p>
                                             <p style={{marginLeft: '5px', marginBottom: '15px'}}> Time(s) in common:
-                                                {search.search.time.intervals.join(", ")}</p>
+                                                {search.times.join(", ")}</p>
+                                            <p style={{marginLeft: '5px', marginBottom: '15px'}}> Day:
+                                                {search.search.date.day}/{search.search.date.month+1}</p>
                                         </div>
                                         <br/><br/>
                                         <div>

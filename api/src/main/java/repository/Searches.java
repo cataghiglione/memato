@@ -39,7 +39,7 @@ public class Searches {
 
 
     public List<Search> findActiveSearchesByTeamId(Long team_id) {
-        return entityManager.createQuery("SELECT s FROM Search s WHERE(s.team.id =:team_id AND s.isSearching  =true AND s.isRecurring =false)", Search.class)
+        return entityManager.createQuery("SELECT s FROM Search s WHERE(s.team.id =:team_id AND s.isSearching  =true AND s.isRecurring =false AND s.recurrentSearchId =-1)", Search.class)
                 .setParameter("team_id", team_id)
                 .getResultList();
     }
@@ -151,14 +151,12 @@ public class Searches {
         int month = date.getMonth();
         int day = date.getDate();
         int year = date.getYear();
-        int weekDay = date.getWeekDay();
-        List<Search> possibleCandidates = entityManager.createQuery("SELECT s FROM Search s WHERE ( ( (s.isRecurring = false AND s.date.month =: month AND s.date.day =: day AND s.date.year=: year) OR (s.isRecurring = true AND s.date.weekDay =: weekDay))" +
+        List<Search> possibleCandidates = entityManager.createQuery("SELECT s FROM Search s WHERE ( ( (s.isRecurring = false AND s.date.month =: month AND s.date.day =: day AND s.date.year=: year))" +
                         "AND cast(s.team.user.id as string) not LIKE :id AND s.team.sport LIKE :sport " +
                         "AND s.team.quantity LIKE :quantity AND isSearching = true AND (s.averageAge BETWEEN :minAge AND :maxAge))", Search.class)
                 .setParameter("month", month)
                 .setParameter("day", day)
                 .setParameter("year", year)
-                .setParameter("weekDay", weekDay)
                 .setParameter("sport", sport)
                 .setParameter("id", id)
                 .setParameter("quantity", quantity)
