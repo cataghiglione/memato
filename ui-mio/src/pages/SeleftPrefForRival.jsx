@@ -364,7 +364,8 @@ export function SelectPrefForRival(props) {
                     </div>
                     <div className={"time_select_container"}>
                         <div className={"time_select"}>
-                            {/*<p>Select your time intervals of preference!</p>*/}
+                            <p>Select your time intervals of preference!</p>
+                            <br/>
                             <Select
                                 options={options}
                                 value={selectedTimes}
@@ -372,10 +373,12 @@ export function SelectPrefForRival(props) {
                                 defaultValues={defaultTimes}
                                 isMulti
                             />
-                            <Icon style ={{left:"-25px", top: "-5px", fontSize: "20px", position: "absolute"}} className="input-icon-log" icon="ion:time-outline" />
+                            <Icon style ={{left:"-25px", top: "50px", fontSize: "20px", position: "absolute"}} className="input-icon-log" icon="ion:time-outline" />
                         </div>
                     </div>
                     <div className={"ageSlider"}>
+                        Average age:
+                        <br/><br/><br/>
                         <Box sx={{ width: 300 }}>
                             <Slider
                                 aria-label="Always visible"
@@ -389,22 +392,34 @@ export function SelectPrefForRival(props) {
                                 valueLabelDisplay="on"
                             />
                         </Box>
-                        <Icon style ={{left:"-30px", top: "-7.5px", fontSize: "20px", position: "absolute"}} className="input-icon-log" icon="streamline:interface-time-hour-glass-hourglass-loading-measure-clock-time" />
+                        <Icon style ={{left:"-30px", top: "55px", fontSize: "20px", position: "absolute"}} className="input-icon-log" icon="streamline:interface-time-hour-glass-hourglass-loading-measure-clock-time" />
                     </div>
-                    <div className={"checkboxRecurrent"}>
-                        <FormGroup>
-                            <FormControlLabel control=
-                                                  {<Checkbox checked={checked}
-                                                             onChange={handleCheckedBox} />}
-                                              label="Recurrent search" />
-                        </FormGroup>
-                    </div>
+                    {!weeksOpen && (
+                        <div className={"checkboxRecurrent"}>
+                            <FormGroup>
+                                <FormControlLabel control=
+                                                      {<Checkbox checked={checked}
+                                                                 onChange={handleCheckedBox} />}
+                                                  label="Recurrent search" />
+                            </FormGroup>
+                        </div>
+                    )}
                     {weeksOpen &&(
                         <div>
-                            <Select
-                                options={weekOptions}
-                                value={amountWeeks}
-                                onChange={setAmountWeeks}></Select>
+                            <div className={"checkboxRecurrent"} style={{left:"575px"}}>
+                                <FormGroup>
+                                    <FormControlLabel control=
+                                                          {<Checkbox checked={checked}
+                                                                     onChange={handleCheckedBox} />}
+                                                      label="Recurrent search" />
+                                </FormGroup>
+                            </div>
+                            <div className={"selectRecurrent"}>
+                                <Select
+                                    options={weekOptions}
+                                    value={amountWeeks}
+                                    onChange={setAmountWeeks}></Select>
+                            </div>
                         </div>
                     )}
 
