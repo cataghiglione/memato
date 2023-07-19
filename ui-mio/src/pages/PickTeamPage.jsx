@@ -33,19 +33,19 @@ export function PickTeamPage(props) {
         console.log(typeof teams)
     }
 
-    const changeNextTeam = (event) => {
-        setNextTeam(event.target.value);
-        props.toggleTeamId(event.target.value);
-        if(event.target.value != null){
+    const changeNextTeam = (id) => {
+        setNextTeam(id);
+        props.toggleTeamId(id);
+        if(id != null){
             navigate('/editTeam')
         }
     }
     //todo Fijate que en changeNextTeam como que va dos veces a /editTeam, findRival te lleva primero a /editTeam y dps a /findRival
     // si haces volver atrás en el buscador de findTeam te lleva a /editTeam
-    const findRival = (event) => {
-        setNextTeam(event.target.value);
-        props.toggleTeamId(event.target.value)
-        if(event.target.value != null){
+    const findRival = (id) => {
+        setNextTeam(id);
+        props.toggleTeamId(id)
+        if(id != null){
             navigate('/findRival')
         }
     }
@@ -53,55 +53,32 @@ export function PickTeamPage(props) {
         <div>
             <SideBar getTeamId={props.getTeamId} toggleTeamId={props.toggleTeamId}></SideBar>
             <TopBar getTeamId={props.getTeamId} toggleTeamId={props.toggleTeamId} noTeams={noTeams}/>
-            <div className="containerPrincipalPickTeamPage" style={{marginLeft: '7%', marginTop: "-5%"}}>
-                <h1 className={"teamTitle"}>Your teams</h1>
-                <h2 className={"teamSubtitle"}>Click on a team to use it</h2>
-                <div>
+            <div className="containerPrincipalPickTeam" style={{marginLeft: '10%'}}>
+                <div className={"teamTitle"}>
+                    <h1 style={{left: "700px"}}>Your teams</h1>
+                    {/*<br/>*/}
+                    <h2 style={{fontSize: "20px"}}>Click on a team to use it</h2>
+                </div>
+                <br/>
                 <button className={"newTeamButton"} onClick={goToNewTeam}>New Team</button>
-                </div>
-                <div>
-                    {!noTeams &&
-                        <div>
-
-                           {/* <select className={`team-pick ${editing ? 'editing' : ''}`} multiple={true} onChange={findRival}>
-                                {teams.map((team) => (
-                                        <option className={"team-select-option-pick"} key={team.id} value={team.id}>
-                                        Nombre: {team.name}, Deporte: {team.sport} {team.quantity}
-                                        </option>
-                                ))}
-                            </select>
-                            <select className={`team-edit ${editing ? 'editing' : ''}`} multiple={true} onChange={changeNextTeam}>
-                                {teams.map((team) => (
-                                    <option className={"team-edit-option"} key={team.id} value={team.id} >
-                                        X
-                                    </option>
-                                ))}
-                            </select>*/}
-                            <div className={`team-pick`} multiple={true} onClick={findRival}>
-                                {teams.map((team) => (
-                                    <button className={"team-select-option-pick"} key={team.id} value={team.id} >
-                                        {team.sport} {team.quantity}: {team.name}
-                                    </button>
-                                ))}
-                            </div>
-                            <div className={`team-edit`} multiple={true} onClick={changeNextTeam}>
-                                {teams.map((team) => (
-                                    <button className={"team-edit-option"} key={team.id} value={team.id} >
-                                        <PencilSquare style={{color:"black"}} />
-                                    </button>
-                                ))}
-                            </div>
-
-    {/*SI borro todos mis equipos confundo todo: arreglar
-    jaja el to-do de arriba tiene doble sentido, épico
-    */}
-
-                        {/*<button className="modify-team-button" onClick={() => setEditing(!editing)}>Edit Team</button>*/}
+                {!noTeams && (
+                    <div>
+                        <div className={`team-pick`} multiple={true}>
+                            {teams.map((team) => (
+                                <button className={"team-select-option-pick"} key={team.id} value={team.id} onClick={() => findRival(team.id)}>
+                                    {team.sport} {team.quantity}: {team.name}
+                                </button>
+                            ))}
                         </div>
-
-                    }
-
-                </div>
+                        <div className={`team-edit`} multiple={true}>
+                            {teams.map((team) => (
+                                <button className={"team-edit-option"} key={team.id} value={team.id} onClick={() => changeNextTeam(team.id)}>
+                                    <PencilSquare style={{color:"black"}} />
+                                </button>
+                            ))}
+                        </div>
+                    </div>
+                )}
                 {noTeams &&
                     <p className={"noTeamPick"}>You haven't created any teams yet</p>
                 }

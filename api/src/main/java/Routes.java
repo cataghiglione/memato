@@ -781,6 +781,7 @@ public class Routes {
                         res.status(400);
                     }
             );
+            entityManager.close();
             return res.status();
 
 

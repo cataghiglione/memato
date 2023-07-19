@@ -2,11 +2,15 @@ import * as React from 'react'
 import {useEffect, useState} from 'react'
 import {useNavigate} from "react-router";
 import {useAuthProvider} from "../auth/auth";
-import {getUser, updateUser, deleteAccount} from "../service/mySystem";
+import {getUser, updateUser, deleteAccount, login} from "../service/mySystem";
 import "../css/EditTeam.scss"
 import {TopBar} from "./TopBar/TopBar";
-import {ToastContainer} from "react-toastify";
+import {toast, ToastContainer} from "react-toastify";
 import SideBar from "./SideBar";
+
+function setToken(userToken) {
+    sessionStorage.setItem('token', JSON.stringify(userToken));
+}
 
 export function UserPage(props) {
     const navigate = useNavigate()
@@ -32,11 +36,16 @@ export function UserPage(props) {
         setUsername(user.username)
     }, [user]);
 
-    const getUserMethod = () => {
-        console.log(token)
+    useEffect(()=>{
         getUser(token, (user) => setUser(user))
         setOnce(false);
-    }
+    }, [])
+
+    // const getUserMethod = () => {
+    //     console.log(token)
+    //     getUser(token, (user) => setUser(user))
+    //     setOnce(false);
+    // }
 
     const isEmpty = value => value === null || value === undefined || value === '';
 
@@ -58,21 +67,45 @@ export function UserPage(props) {
             setUsername(user.username)
         }
         saveChanges({
-            first_name: first_name || user.first_name,
-            last_name: last_name || user.last_name,
-            email: email || user.email,
-            password: password || user.password,
-            username: username || user.username
+            first_name: first_name,
+            last_name: last_name,
+            email: email,
+            password: password,
+            username: username
         })
     }
 
     const saveChanges = (form) => {
         updateUser(token,
             form,
-            () => navigate("/user"),
             () => {
-                setErrorMsg('An error ocurred')
-                navigate("/user")
+                toast.success('User updated!', {
+                    containerId: 'toast-container',
+                    position: "top-center",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                });
+                login({email:form.email, password: form.password}, (token) => {
+                        setToken(token)})
+                getUser(token, (user) => setUser(user));
+            },
+            () => {
+                toast.error('Something wrong has happened', {
+                    containerId: 'toast-container',
+                    position: "top-center",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                });
             }
         )
     }
@@ -106,7 +139,7 @@ export function UserPage(props) {
     return (
         <div>
             {errorMsg && <div className="alert alert-danger" role="alert">{errorMsg}</div>}
-            {once && getUserMethod()}
+            {/*{once && getUserMethod()}*/}
             <SideBar getTeamId={props.getTeamId} toggleTeamId={props.toggleTeamId}></SideBar>
             <TopBar getTeamId={props.getTeamId} toggleTeamId={props.toggleTeamId}/>
             <div className={"editTeamContainer"}>
@@ -117,58 +150,46 @@ export function UserPage(props) {
                 <div>
                     <form onSubmit={submit && handleSubmit}>
                         <br/>
-                        <div>
-                            <input type="Username"
+                        <div className={"edit-user-name"} style={{left: "400px"}}>
+                            Username:<input type="Username"
                                    id="Username"
                                    placeholder="Username"
                                    name="Username"
                                    value={username}
-                                   className={"edit-team-name"}
-                                   style={{left: "400px"}}
                                    onChange={usernameChange}/>
                         </div>
                         <br/>
-                        <div>
-                            <input type="First name"
+                        <div className={"edit-user-name"} style={{left: "700px"}}>
+                            First name:<input type="First name"
                                    id="First name"
                                    placeholder="Firstname"
                                    name="First name"
                                    value={first_name}
-                                   className={"edit-team-name"}
-                                   style={{left: "700px"}}
                                    onChange={first_nameChange}/>
                         </div>
                         <br/>
-                        <div>
-                            <input type="Last name"
+                        <div className={"edit-user-name"} style={{left: "1000px"}}>Last name:<input type="Last name"
                                    id="Last name"
                                    placeholder="Lastname"
                                    name="Last name"
                                    value={last_name}
-                                   className={"edit-team-name"}
-                                   style={{left: "1000px"}}
                                    onChange={last_nameChange}/>
                         </div>
                         <br/>
-                        <div>
-                            <input type="Email"
+                        <div className={"edit-user-name"} style={{left: "550px", top: "350px"}}>Email:<input type="Email"
                                    id="Email"
                                    placeholder="Email"
                                    name="Email"
                                    value={email}
-                                   className={"edit-team-name"}
-                                   style={{left: "550px", top: "375px"}}
                                    onChange={emailChange}/>
                         </div>
                         <br/>
-                        <div>
-                            <input type="Password"
+                        <div className={"edit-user-name"}
+                             style={{left: "850px", top: "350px"}}>Password:<input type="Password"
                                    id="Password"
                                    placeholder="Password"
                                    name="Password"
                                    value={password}
-                                   className={"edit-team-name"}
-                                   style={{left: "850px", top: "375px"}}
                                    onChange={passwordChange}/>
                         </div>
                         <div>

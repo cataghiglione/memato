@@ -71,19 +71,19 @@ export function HomePage(props){
                 <br/>
                 <h3> Your teams </h3>
                 <br/>
-                <button className={"newTeamButton"} onClick={goToNewTeam} style={{width:"325px"}}>
+                <button className={"newTeamButtonHome"} onClick={goToNewTeam} style={{width:"325px"}}>
                     {teams.length===0 ? 'Create your first team' : 'New Team'}
                 </button>
                 {teams.length > 0 && (
                     <div>
-                        <div className={`team-pick`} multiple={true} onClick={findRival}>
+                        <div className={`team-pick-home`} multiple={true} onClick={findRival}>
                             {teams.map((team) => (
                                 <button className={"team-select-option-pick"} key={team.id} value={team.id} >
                                     {team.sport} {team.quantity}: {team.name}
                                 </button>
                             ))}
                         </div>
-                        <div className={`team-edit`} multiple={true} onClick={changeNextTeam}>
+                        <div className={`team-edit-home`} multiple={true} onClick={changeNextTeam}>
                             {teams.map((team) => (
                                 <button className={"team-edit-option"} key={team.id} value={team.id} >
                                     <PencilSquare style={{color:"black"}} />

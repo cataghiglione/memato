@@ -47,7 +47,7 @@ export function MySidebar(props) {
                         {""}
                         Rival Match
                     </MenuItem>
-                    <MenuItem icon={<PermIdentityOutlinedIcon/>}>
+                    <MenuItem icon={<PermIdentityOutlinedIcon/>} onClick={()=> navigate("/user")}>
                         <Link to="/user" style={{color: 'black'}}>Profile </Link>
                     </MenuItem>
                     {props.getTeamId !== 0 && (

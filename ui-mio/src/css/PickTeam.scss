@@ -1,5 +1,13 @@
 @import "Login";
-.team-pick {
+
+.containerPrincipalPickTeam{
+    z-index: 1;
+    color: #4E4E4E;
+    font-family: 'Baloo Bhai 2', sans-serif;
+    display: flex;
+    justify-content: center;
+}
+.team-pick-home {
     position: absolute;
     top: 110%;
     height: max-content;
@@ -12,7 +20,37 @@
     border: 1px solid #ccc; /* grey border */
     border-radius: 7px;
 }
+.team-pick {
+    position: absolute;
+    top: 270px;
+    height: max-content;
+    width:  48vh;
+    padding: 10px;
+    left:575px;
+    background: radial-gradient(circle, rgb(255, 255, 255) 70%, rgb(243, 243, 243) 100%);
+    overflow: hidden;
+    background: white;
+    border: 1px solid #ccc; /* grey border */
+    border-radius: 7px;
+}
 .team-edit{
+    position: absolute;
+    top: 270px;
+    padding: 10px;
+    transition: all 0.2s ease;
+    height: max-content;
+    left:850px;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    //background: white;
+    //border: 1px solid #ccc;
+    border-left: none;
+    border-radius: 0 7px 7px 0;
+    outline:0;
+    white-space: nowrap;
+}
+.team-edit-home{
     position: absolute;
     top: 110%;
     padding: 10px;
@@ -55,10 +93,14 @@
     width: 100%;
     text-decoration: underline;
 }
-
-.teamTitle{
-    position:relative;
-    left: 20%;
+.teamTitle {
+    position: absolute;
+    text-align: center;
+    top: 16%;
+    font-family: 'Baloo Bhai 2', sans-serif;
+    transform: translate(-50%, -50%);
+    background-color: transparent;
+    font-size: xxx-large;
 }
 .teamSubtitle{
     position:relative;
@@ -132,7 +174,7 @@
     align-items: center;
     width: 100%;
 }
-.newTeamButton{
+.newTeamButtonHome{
     padding: 12px 20px;
     background-color: white;
     color: black;
@@ -142,6 +184,24 @@
     width: 100%;
     left:0;
     position: relative;
+
+}
+.newTeamButtonHome:hover {
+    background-color: #9F9280;
+    color: white;
+}
+.newTeamButton{
+    padding: 12px 20px;
+    background-color: white;
+    color: black;
+    border: 2px solid #9F9280;
+    border-radius: 4px;
+    transition-duration: 0.4s;
+    width: 48vh;
+    left:575px;
+    top: 200px;
+    justify-content: center;
+    position: absolute;
 
 }
 .newTeamButton:hover {
@@ -173,20 +233,20 @@
     background: #5bc5fa;
     /*box-shadow: 0 5px 12.5px rgba(42, 179, 248, 0.4);*/
 }
-.team-pick-home{
-    position: relative;
-    top: 110%;
-    height: max-content;
-    width: 100%;
-    padding: 10px;
-    left: 0;
-    background: radial-gradient(circle, rgb(255, 255, 255) 70%, rgb(243, 243, 243) 100%);
-    overflow: hidden;
-    background: white;
-    border: 1px solid #ccc; /* grey border */
-    border-radius: 7px;
-
-}
+//.team-pick-home{
+//    position: relative;
+//    top: 110%;
+//    height: max-content;
+//    width: 100%;
+//    padding: 10px;
+//    left: 0;
+//    background: radial-gradient(circle, rgb(255, 255, 255) 70%, rgb(243, 243, 243) 100%);
+//    overflow: hidden;
+//    background: white;
+//    border: 1px solid #ccc; /* grey border */
+//    border-radius: 7px;
+//
+//}
 .team-select-option-pick-home{
     @extend .button;
     text-transform: capitalize;
@@ -209,23 +269,23 @@
     color: white;
     background: #5bc5fa;
 }
-.team-edit-home{
-    position: absolute;
-    top: 100%;
-    padding: 10px;
-    transition: all 0.2s ease;
-    height: max-content;
-    left: 78%;
-    text-align: center;
-    justify-content: center;
-    align-items: center;
-    background: white;
-    border: 1px solid #ccc;
-    border-left: none;
-    border-radius: 0 7px 7px 0;
-    outline:0;
-    white-space: nowrap;
-}
+//.team-edit-home{
+//    position: absolute;
+//    top: 100%;
+//    padding: 10px;
+//    transition: all 0.2s ease;
+//    height: max-content;
+//    left: 78%;
+//    text-align: center;
+//    justify-content: center;
+//    align-items: center;
+//    background: white;
+//    border: 1px solid #ccc;
+//    border-left: none;
+//    border-radius: 0 7px 7px 0;
+//    outline:0;
+//    white-space: nowrap;
+//}
 .team-edit-option-home{
     @extend .button;
     text-transform: capitalize;
