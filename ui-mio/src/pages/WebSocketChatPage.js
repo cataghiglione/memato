@@ -54,6 +54,8 @@ export function WebSocketChat(props) {
 
         socket.onmessage = (event) => {
             updateChat(event);
+            console.log("contactsid: ")
+            console.log(contactsId); //(river, depo == 1, 2) (river, depo, pincha ==1,2,3)
         };
         socket.onclose = () => {
             console.log('WebSocket connection closed');
@@ -114,6 +116,11 @@ export function WebSocketChat(props) {
         if(data.userList.lenght >1){
             if (data.userList[0] === props.getTeamId) {
                 setYourMessages((prevChat) => [...prevChat, { ...data.userMessage, contact: data.userList[1] }]);
+                if (!contactsId.includes(data.userList[1])) {
+                    // Code to execute when data.userList[1] is not in contactsId
+                    // ...
+                }
+
             }
             else {
                 setYourMessages((prevChat) => [...prevChat, { ...data.userMessage, contact: data.userList[0] }]);
@@ -122,7 +129,9 @@ export function WebSocketChat(props) {
         else{
             setYourMessages((prevChat) => [...prevChat, { ...data.userMessage, contact: targetUser }]);
         }
-
+        console.log("contactsid: ")
+        console.log(contactsId); //(river, depo == 1, 2) (river, depo, pincha ==1,2,3)
+        // en el update chat puedo actualizar la lista de contactos.
         setChat((prevChat) => [...prevChat, data.userMessage]);
         setUserList(data.userList);
     };
@@ -178,16 +187,24 @@ export function WebSocketChat(props) {
             const contactsIds = contacts.map((contact) => contact.team2.id);
             setContactsId(contactsIds);
 
+
         });
     }, [props.getTeamId, token]);
 
+    const updateContactsList = () => {
+        getContacts(token, props.getTeamId, (contacts) => {
+            setContacts(contacts);
+            const contactsIds = contacts.map((contact) => contact.team2.id);
+            setContactsId(contactsIds);
+        });
+    };
     return (
         <div>
             <SideBar getTeamId={props.getTeamId} toggleTeamId={props.toggleTeamId}></SideBar>
             <TopBar getTeamId={props.getTeamId} toggleTeamId={props.toggleTeamId} />
             <div className="chat-container">
                 {/*Contacts*/}
-                <div className="contacts">
+                <div className="contacts" style={{zIndex:"2"}}>
                     {contacts.length === 0 && (
                         <div style={{ alignItems: 'center'}}>
                             <p>You don't have any contacts</p>
@@ -213,30 +230,25 @@ export function WebSocketChat(props) {
 
                         <div className="conversation-container messages-display" id="chat" ref={chatRef} style={{ zIndex: '3' }}>
 
-                            {oldMessages.length === 0 && yourMessages.length === 0 && (
-                                <div style={{ alignItems: "center", fontFamily: "Tiro Gurmukhi" }}>
-                                    <p>There are no messages in this chat</p>
-                                </div>
-                            )}
                             {oldMessages.length > 0 && (
-                                    <div>
-                                        {oldMessages.map((message)=>(
-                                            <div>
-                                                {message.team_id === parseInt(teamId) && (
-                                                    <div className="message sent">
-                                                        <span>{message.text}</span>
-                                                        <span className="metadata"><span className="time">{message.hour}:{message.minute}</span></span>
-                                                    </div>
-                                                )}
-                                                {message.team_id !== parseInt(teamId) && (
-                                                    <div className="message received">
-                                                        <span>{message.text}</span>
-                                                        <span className="metadata"><span className="time">{message.hour}:{message.minute}</span></span>
-                                                    </div>
-                                                )}
-                                            </div>
-                                        ))}
-                                    </div>
+                                <div>
+                                    {oldMessages.map((message)=>(
+                                        <div>
+                                            {message.team_id === parseInt(teamId) && (
+                                                <div className="message sent">
+                                                    <span>{message.text}</span>
+                                                    <span className="metadata"><span className="time">{message.hour}:{message.minute}</span></span>
+                                                </div>
+                                            )}
+                                            {message.team_id !== parseInt(teamId) && (
+                                                <div className="message received">
+                                                    <span>{message.text}</span>
+                                                    <span className="metadata"><span className="time">{message.hour}:{message.minute}</span></span>
+                                                </div>
+                                            )}
+                                        </div>
+                                    ))}
+                                </div>
                             )}
                             {yourMessages.length > 0 && (
                                 <div>
@@ -253,19 +265,16 @@ export function WebSocketChat(props) {
                                                         <span className="metadata"><span className="time">{hour}:{minute}</span></span>
                                                     </div>
                                                 )}
-
                                                 {sender === targetUser && (
                                                     <div className={`message ${sender === props.getTeamId ? 'sent' : 'received'}`}>
                                                         <span>{content}</span>
                                                         <span className="metadata"><span className="time">{hour}:{minute}</span></span>
                                                     </div>
                                                 )}
-                                                {
-
-                                                }
                                             </div>
                                         );
                                     })}
+
                                 </div>
                             )}
                         </div>

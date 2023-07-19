@@ -16,24 +16,33 @@ export class BingMap extends Component {
         this.UndoPinSelected = this.UndoPinSelected.bind(this);
     }
 
-    handleSubmit(event){
+
+    handleSubmit(event) {
         event.preventDefault();
-        if(this.state.searchInput !== null && this.state.searchInput !== ""){
+
+        if (this.state.searchInput !== null && this.state.searchInput !== "") {
             this.setState({
                 boundary: {
-                    "search" : this.state.searchInput,
-                    "polygonStyle" :{
+                    "search": this.state.searchInput,
+                    "polygonStyle": {
                         fillColor: 'rgba(161,224,255,0.4)',
                         strokeColor: '#a495b2',
                         strokeThickness: 2
                     },
-                    "option":{
+                    "option": {
                         entityType: 'PopulatedPlace'
                     }
                 }
-            })
+            });
+        }
+
+        // Check if preventDefault() was successful
+        if (!event.defaultPrevented) {
+            // Display error message
+            console.log("Error: Default behavior not prevented.");
         }
     }
+
     GetLocationHandled(location) {
         const newInfoboxesWithPushPins = [{
             "location": [location.latitude, location.longitude],
@@ -68,19 +77,21 @@ export class BingMap extends Component {
         return (
             <div>
                 {this.state.isVisible && (<div>
+                     <span style={{ 'display': 'flex' }}>
+                          <input
+                              type="text"
+                              placeholder="search place, pin, city"
+                              onChange={(event) => { this.setState({ searchInput: event.target.value }) }}
+                              value={this.state.searchInput}
+                          />
+                          <button onClick={this.handleSubmit.bind(this)}>Search</button>
+                        </span>
+
                     <div className = "map-one">
-                       {/* SELECT THE LOCATION OF YOUR TEAM
+                        {/* SELECT THE LOCATION OF YOUR TEAM
                         <br></br>*/}
                         {/*BUSCADOR: */}
-                        <span style={{'display':'inline-block'}}>
-                              <form onSubmit={this.handleSubmit.bind(this)}>
-                                <input type="text" placeholder="search place, pin, city"
-                                       onChange={(event)=>{this.setState({searchInput:event.target.value})}}
-                                       value={this.state.searchInput}>
-                                </input>
-                                <input type="submit" value="Search" />
-                              </form>
-                        </span>
+
                         <ReactBingmaps
                             id = "seven"
                             className = "customClass"
