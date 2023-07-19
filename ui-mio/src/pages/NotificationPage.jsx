@@ -22,7 +22,8 @@ export function NotificationPage(props) {
         [token]
     )
 
-    function goToConfirmationsPage(id) {
+    function goToConfirmationsPage(team_id, id) {
+        props.toggleTeamId(team_id);
         changeStatusOpened(id).then(r =>
             navigate("/currentSearches"))
     }
@@ -45,7 +46,6 @@ export function NotificationPage(props) {
     }
 
     const changeStatusOpened = (id) => {
-
         updateNotification(token, id, () => {
             getNotifications(token, (notifications) => {
                 setNotifications(notifications)

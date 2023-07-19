@@ -52,25 +52,25 @@ export function MySidebar(props) {
                     </MenuItem>
                     {props.getTeamId !== 0 && (
                         <>
-                            <MenuItem icon={<EmojiEventsOutlinedIcon/>}>
+                            <MenuItem icon={<EmojiEventsOutlinedIcon/>} onClick={()=> navigate("/findRival")}>
                                 <Link to="/findRival" style={{color: 'black'}}>Find Rival</Link>
                             </MenuItem>
-                            <MenuItem icon={<PendingActionsOutlinedIcon/>}>
+                            <MenuItem icon={<PendingActionsOutlinedIcon/>} onClick={()=> navigate("/currentSearches")}>
                                 <Link to="/currentSearches" style={{color: 'black'}}>Searches&Confirmations</Link>
                             </MenuItem>
-                            <MenuItem icon={<SportsSoccerOutlinedIcon/>}>
+                            <MenuItem icon={<SportsSoccerOutlinedIcon/>} onClick={()=> navigate("/myConfirmations")}>
                                 <Link to="/myConfirmations" style={{color: 'black'}}>My Confirmed Matches</Link>
                             </MenuItem>
-                            <MenuItem icon={<QuestionAnswerOutlinedIcon/>}>
+                            <MenuItem icon={<QuestionAnswerOutlinedIcon/>} onClick={()=> navigate("/webSocketChat")}>
                                 <Link to="/webSocketChat" style={{color: 'black'}}>Chat</Link>
                             </MenuItem>
-                            <MenuItem icon={<GroupAddOutlinedIcon/>}>
+                            <MenuItem icon={<GroupAddOutlinedIcon/>} onClick={()=> navigate("/newTeam")}>
                                 <Link to="/newTeam" style={{color: 'black'}}>New Team</Link>
                             </MenuItem>
-                            <MenuItem icon={<EditOutlinedIcon/>}>
+                            <MenuItem icon={<EditOutlinedIcon/>} onClick={()=> navigate("/editTeam")}>
                                 <Link to="/editTeam" style={{color: 'black'}}>Edit Team</Link>
                             </MenuItem>
-                            <MenuItem icon={<NotificationsNoneOutlinedIcon/>}>
+                            <MenuItem icon={<NotificationsNoneOutlinedIcon/>} onClick={()=> navigate("/notificationPage")}>
                                 <Link to="/notificationPage" style={{color: 'black'}}>
                                     Notifications</Link>
                             </MenuItem>
