@@ -23,7 +23,7 @@ export function EditTeamPage(props) {
     const [searchParams] = useSearchParams();
     const [errorMsg, setErrorMsg] = useState(undefined)
     const isOk = searchParams.get("ok")
-    const [changeLocationButton, setChangeLocationButton] = useState('Select location');
+    const [changeLocationButton, setChangeLocationButton] = useState('Change location');
 
     const [locationName, setLocationName] = useState("")
     const [sport, setSport] = useState('')
@@ -42,8 +42,13 @@ export function EditTeamPage(props) {
         setShowPopup(!showPopup);
     }
     useEffect(() => {
-        getTeam(token, id, (team) => setTeam(team));
-    }, [])
+        getTeam(token, props.getTeamId, (team) => {
+            setTeam(team);
+            printSelectedLocation([team.latitude, team.longitude]);
+
+        });
+    }, [props.getTeamId, token, locationName]);
+
     useEffect(() => {
         setSport(team.sport);
         setQuant_player(team.quantity);
@@ -56,22 +61,24 @@ export function EditTeamPage(props) {
 
     const apiKey = 'ApqYZq8IsmnPRxOON1m_mY9eGEZqjDawW2cleubNdcVT5CbVMU8snXUF4qku9DcW'; // Replace with your Bing Maps API key
 
-    function getLocationName(lat, long, apiKey){
+    function getLocationName(lat, long, apiKey) {
         const url = `http://dev.virtualearth.net/REST/v1/Locations/${lat},${long}?o=xml&key=${apiKey}`;
-
         fetch(url)
-            .then(response => response.text())
-            .then(data => {
+            .then((response) => response.text())
+            .then((data) => {
                 // Parse the XML response
                 const parser = new DOMParser();
-                const xmlDoc = parser.parseFromString(data, 'text/xml');
+                const xmlDoc = parser.parseFromString(data, "text/xml");
 
                 // Extract the address name
-                const name = xmlDoc.querySelector('Name').textContent;
-                setLocationName(name) // Output: 3386 156th Ave NE, Redmond, WA 98052, United States
+                const nameElement = xmlDoc.querySelector("Name");
+                const name = nameElement ? nameElement.textContent : "Location Name Not Found";
+                setLocationName(name.toString());
+                console.log(name);
+                console.log(locationName);
             })
-            .catch(error => {
-                console.error('Error:', error);
+            .catch((error) => {
+                console.error("Error:", error);
             });
     }
 
@@ -86,12 +93,16 @@ export function EditTeamPage(props) {
         if(isEmpty(quant_Players)){setQuant_player(team.quantity)}
         if(isEmpty(age_group)){setAge_group(team.age_group)}
         console.log("no entre al error")
+        console.log(zone[0])
+        console.log(zone[1])
         saveChanges({
             sport: sport || team.sport,
             quantity: quant_Players || team.quantity,
             age_group: age_group || team.age_group,
             // zone: zone || team.zone,
-            name: name || team.name
+            name: name || team.name,
+            latitude: zone[0],
+            longitude: zone[1]
         })
     }
 
@@ -170,6 +181,7 @@ export function EditTeamPage(props) {
         setChangeLocationButton('Change Location');
         setNewZone(infoboxesWithPushPinsData[0].location);
     };
+
     function confirmZone() {
         setZone(newZone);
         printSelectedLocation(newZone);
@@ -177,10 +189,13 @@ export function EditTeamPage(props) {
     }
     const printSelectedLocation = (location) => {
         const [lat, long] = location;
+
         if (long && lat) {
             setSelectedLocation(`Latitude: ${lat}, Longitude: ${long}`);
         }
-        getLocationName(lat, long, apiKey)
+        setZone([lat, long]);
+        getLocationName(lat, long, apiKey);
+
     };
     const [showPopup, setShowPopup] = useState(false);
     return (

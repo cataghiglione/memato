@@ -11,6 +11,9 @@ public class CreateTeamForm {
 
     private final String quantity;
     private  final String age_group;
+
+    private final String latitude;
+    private final String longitude;
 //    private final String zone;
 
     public String getName() {
@@ -33,15 +36,19 @@ public class CreateTeamForm {
     public int getPuntuality() {
         return puntuality;
     }
+    public String getLatitude(){return latitude;}
+    public String getLongitude(){return longitude;}
 
     private final int puntuality;
 
-    public CreateTeamForm(String name, String sport, String quantity, int puntuality, String group){
+    public CreateTeamForm(String name, String sport, String quantity, int puntuality, String group, String latitude, String longitude){
         this.name=name;
         this.sport=sport;
         this.quantity=quantity;
         this.puntuality=puntuality;
         this.age_group=group;
+        this.latitude = latitude;
+        this.longitude = longitude;
 //        this.zone=zone;
     }
 
