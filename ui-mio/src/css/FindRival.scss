@@ -51,22 +51,27 @@ h1{
     position: absolute;
     width: 400px;
     right: 180px;
-    top: 298px;
+    top: 375px;
     z-index: 4;
 }
 .ageSlider{
     position: absolute;
     width: 300px;
     left: 280px;
-    top: 300px;
+    top: 375px;
 }
 .checkboxRecurrent{
     position:absolute;
-    top:230px;
+    top:275px;
     left:675px;
     background-color: transparent;
 }
-
+.selectRecurrent{
+    position:absolute;
+    top:290px;
+    left:775px;
+    background-color: transparent;
+}
 .selectLocationButton{
     position: relative;
     background-color: white;

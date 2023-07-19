@@ -17,9 +17,10 @@ export const RegisterPage = () => {
     const [password, setPassword] = useState('')
     const[name, setName] = useState('')
     const[lastName, setLastName] = useState('')
+    const navigate = useNavigate()
 
     const [errorMsg, setErrorMsg] = useState(undefined)
-    const navigate = useNavigate();
+    const [registerButton, setRegisterButton] = useState(false)
 
     const handleSubmit = async e => {
         e.preventDefault();
@@ -51,6 +52,9 @@ export const RegisterPage = () => {
         setName('')
         setMail('')
         setLastName('')
+    }
+    const goToLogin=()=> {
+        navigate("/")
     }
 
     const registerUser = (user) => {
@@ -100,6 +104,7 @@ export const RegisterPage = () => {
         setMail(event.target.value)
     }
     function RegisterRequest(){
+        setRegisterButton(true);
         console.log("Im requesting a register!");
     }
 
@@ -113,7 +118,7 @@ export const RegisterPage = () => {
             </div>
             <div className={"containerPrincipalRegisterPage"}>
                 <ToastContainer /> {/* Mover el ToastContainer aquí */}
-                <form onSubmit={handleSubmit}>
+                <form onSubmit={registerButton && handleSubmit}>
                     <br/>
                     <div>
                         <input type="email" name="logemail" className="form-style"
@@ -147,13 +152,13 @@ export const RegisterPage = () => {
                     </div>
 
                     <br/><br/>
-                    <div>
-                        <button id="submit" type="submit" className={"submitButtonRegister"} onClick={() => RegisterRequest()}>Register</button>
-                    </div>
-                    <div>
-                        <button className={"signUpButtonLogin"} onClick={goToLogin}>Go to Login</button>
-                    </div>
                 </form>
+                <div>
+                    <button id="submit" type="submit" className={"submitButtonRegister"} onClick={() => RegisterRequest()}>Register</button>
+                </div>
+                <div>
+                    <button className={"signUpButtonLogin"} onClick={goToLogin}>Go to Login</button>
+                </div>
             </div>
         </div>
     )
