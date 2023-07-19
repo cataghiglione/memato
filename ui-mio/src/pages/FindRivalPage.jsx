@@ -127,14 +127,6 @@ export function FindRivalPage(props) {
             <SideBar getTeamId={props.getTeamId} toggleTeamId={props.toggleTeamId}></SideBar>
             <TopBar getTeamId={props.getTeamId} toggleTeamId={props.toggleTeamId}/>
 
-            {/*<div className={"sports_image"}>*/}
-            {/*    <img style={{width: 218, height: "auto"}} src={require("../images/logoRM/logoRM_persona.png")} alt={"deportes"}/>*/}
-            {/*</div>*/}
-
-            {/*<div className={"mirror_sports_image"}>*/}
-            {/*    <img style={{width: 218, height: "auto"}} src={require("../images/logoRM/logoRM_persona.png")} alt={"deportes"}/>*/}
-            {/*</div>*/}
-
             {(searchId === null || searchId === "0") && (
                 <div className="popUpContainer">
                     <div className={"popUpContainer1"}>
