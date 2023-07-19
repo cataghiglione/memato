@@ -23,7 +23,7 @@ export function EditTeamPage(props) {
     const [searchParams] = useSearchParams();
     const [errorMsg, setErrorMsg] = useState(undefined)
     const isOk = searchParams.get("ok")
-    const [changeLocationButton, setChangeLocationButton] = useState('Change location');
+    const [changeLocationButton, setChangeLocationButton] = useState('Location');
 
     const [locationName, setLocationName] = useState("")
     const [sport, setSport] = useState('')
@@ -41,11 +41,10 @@ export function EditTeamPage(props) {
         e.preventDefault(); // Prevent form submission
         setShowPopup(!showPopup);
     }
+
     useEffect(() => {
         getTeam(token, props.getTeamId, (team) => {
             setTeam(team);
-            printSelectedLocation([team.latitude, team.longitude]);
-
         });
     }, [props.getTeamId, token, locationName]);
 
@@ -102,7 +101,8 @@ export function EditTeamPage(props) {
             // zone: zone || team.zone,
             name: name || team.name,
             latitude: zone[0],
-            longitude: zone[1]
+            longitude: zone[1],
+            location: locationName
         })
     }
 
@@ -182,14 +182,13 @@ export function EditTeamPage(props) {
         setNewZone(infoboxesWithPushPinsData[0].location);
     };
 
-    function confirmZone() {
+    const confirmZone =() => {
         setZone(newZone);
         printSelectedLocation(newZone);
         setShowPopup(false);
     }
     const printSelectedLocation = (location) => {
         const [lat, long] = location;
-
         if (long && lat) {
             setSelectedLocation(`Latitude: ${lat}, Longitude: ${long}`);
         }
@@ -282,8 +281,8 @@ export function EditTeamPage(props) {
                             )
                         }
                         <div className={"zone"} style={{top:"380px", left: "605px"}}>
-                            {changeLocationButton === 'Select location' && <p>Select your preferred zone: </p>}
-                            {changeLocationButton !== 'Select location' && <p>Your preferred zone: {locationName}</p>}
+                            {changeLocationButton === 'Location'  && <p>Your preferred zone: {team.location}</p>}
+                            {changeLocationButton === 'Change Location' && <p>Your preferred zone: {locationName}</p>}
                             <button className={"selectLocationButton"} onClick={handleSelectLocation}> <Icon style ={{left:"-30px", top: "-5px", fontSize: "20"}} className="input-icon-log" icon="mi:location" /> {changeLocationButton} </button>
                             {showPopup && (
                                 <div className="popupFR">

@@ -12,20 +12,27 @@ export function NotificationsCenter(props){
     const token = auth.getToken();
     const [notifications, setNotifications] = useState([''])
     useEffect(() => {
-        getPendingNotifications(token, (notifications) => {
+            getPendingNotifications(token, (notifications) => {
                 setNotifications(notifications)
             })
         }, [token]
     )
 
-    function goToConfirmationsPage(id) {
-        changeStatusOpened(id).then(r =>
-            navigate("/pendingConfirmations"))
+    function goToConfirmationsPage(team_id, id) {
+        props.toggleTeamId(team_id);
+        updateNotification(token, id)
+        navigate(`/currentSearches`)
+    }
+    function goToFindRival(team_id, id, search_id) {
+        props.toggleTeamId(team_id);
+        updateNotification(token, id)
+        navigate(`/findRival?id=${search_id}`)
     }
 
     function goToMessages(id, team_id, other_team_id) {
         props.toggleTeamId(team_id)
-        changeStatusOpened(id).then(r => findOrCreateContact(team_id, other_team_id))
+        changeStatusOpened(id)
+        findOrCreateContact(team_id, other_team_id);
     }
 
     function seeAllNotifications() {
@@ -65,9 +72,9 @@ export function NotificationsCenter(props){
             <br/><br/>
             {notifications.length === 0 &&(
                 <div className={"notifications-list"}>
-                <div className={"popover-notification"} style={{height: "10vh", width: "48vh", textAlign:"center" }}>
-                    You don't have any pending notifications.
-                </div>
+                    <div className={"popover-notification"} style={{height: "10vh", width: "48vh", textAlign:"center" }}>
+                        You don't have any pending notifications.
+                    </div>
                 </div>
             )}
 
@@ -79,28 +86,33 @@ export function NotificationsCenter(props){
                             <br/>
                             {notification.code_id === 0 && (
                                 <div>
-                                    <button className={"popover-notificationButton"} onClick={() => goToConfirmationsPage(notification.id)}>Don't forget to
+                                    <button className={"button"} onClick={() => goToConfirmationsPage(notification.team_id, notification.id)}>Don't forget to
                                         confirm
                                     </button>
-                                    <button className={"popover-notificationButton"} onClick={() => goToMessages(notification.id, notification.team_id, notification.other_team_id)}>Send a message</button>
+                                    <button className={"button"} onClick={() => goToMessages(notification.id, notification.team_id, notification.other_team_id)}>Send a message</button>
                                 </div>
                             )}
                             {notification.code_id === 1 && (
                                 <div>
-                                    <button className={"popover-notificationButton"} onClick={() => goToConfirmationsPage(notification.id)}>Don't forget to
+                                    <button className={"button"} onClick={() => goToConfirmationsPage(notification.team_id, notification.id)}>Don't forget to
                                         confirm
                                     </button>
                                 </div>
                             )}
                             {notification.code_id === 2 && (
                                 <div>
-                                    <button className={"popover-notificationButton"} onClick={() => goToMessages(notification.id,notification.team_id, notification.other_team_id)}>Send a message</button>
+                                    <button className={"button"} onClick={() => goToMessages(notification.id, notification.team_id, notification.other_team_id)}>Send a message
+                                    </button>
                                 </div>
                             )}
-
                             {notification.code_id === 3 && (
                                 <div>
-                                    <button className={"popover-notificationButton"}>See pending matches</button>
+                                    <button className={"button"}>See pending matches</button>
+                                </div>
+                            )}
+                            {notification.code_id === 5 && (
+                                <div>
+                                    <button className={"button"} onClick={() => goToFindRival(notification.team_id, notification.id, notification.search_id)}>Find Rival</button>
                                 </div>
                             )}
                         </div>

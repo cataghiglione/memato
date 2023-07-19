@@ -19,6 +19,7 @@ public class Chat {
     public static void main(String[] args) {
         staticFiles.location("/public");
         staticFiles.expireTime(600);
+        webSocketIdleTimeoutMillis(1800000);
         webSocket("/chat", ChatWebSocketHandler.class);
         init();
     }

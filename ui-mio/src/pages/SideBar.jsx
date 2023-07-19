@@ -80,7 +80,6 @@ export function MySidebar(props) {
                             <MenuItem disabled></MenuItem>
                             <MenuItem disabled></MenuItem>
                             <MenuItem disabled></MenuItem>
-                            <MenuItem disabled></MenuItem>
                         </>)}
                     {props.getTeamId === 0 &&(
                         <>

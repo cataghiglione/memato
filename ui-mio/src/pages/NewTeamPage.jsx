@@ -79,6 +79,7 @@ export function NewTeamPage (props){
             name: name.charAt(0).toUpperCase() + name.substring(1).toLowerCase(),
             latitude: zone[0].toString(),
             longitude: zone[1].toString(),
+            location: locationName
         })
     }
 

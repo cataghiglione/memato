@@ -71,6 +71,7 @@ h1{
     top:290px;
     left:775px;
     background-color: transparent;
+    z-index: 10;
 }
 .selectLocationButton{
     position: relative;
@@ -313,7 +314,7 @@ h1{
 }
 .searches-list::-webkit-scrollbar {
     width: 3px;
- }
+}
 
 .searches-list::-webkit-scrollbar-track {
     -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
@@ -405,4 +406,3 @@ h1{
     left: 750px;
     font-size: 15px;
 }
-
