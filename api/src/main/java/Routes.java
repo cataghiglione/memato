@@ -750,7 +750,7 @@ public class Routes {
                         EntityTransaction transaction = entityManager.getTransaction();
                         transaction.begin();
                         //por las dudas, aca en el form habia un teamForm.getTeam en la query
-                        teams.updateTeam(teamForm.getName(), teamForm.getSport(), teamForm.getQuantity(), teamForm.getAgeGroup(), Long.valueOf(id));
+                        teams.updateTeam(teamForm.getName(), teamForm.getSport(), teamForm.getQuantity(), teamForm.getAgeGroup(), Long.valueOf(id), teamForm.getLatitude(), teamForm.getLongitude());
                         if (!Objects.equals(teamForm.getQuantity(), prev_quantity) || !Objects.equals(teamForm.getSport(), prev_sport)) {
                             searches.deactivateSearchesByTeam(Long.parseLong(id));
                             matches.cancelMatchesByTeam(Long.parseLong(id));
@@ -1158,11 +1158,11 @@ public class Routes {
         tx.begin();
         if (teams.listAll().isEmpty()) {
             final Team kateTeam =
-                    Team.create("river", "Football", "11", "Young", userList.get(0));
+                    Team.create("river", "Football", "11", "Young", userList.get(0), "-34.47204649653611", "-58.76249867178074");
             final Team cocaTeam =
-                    Team.create("depo", "Football", "11", "Young", userList.get(1));
+                    Team.create("depo", "Football", "11", "Young", userList.get(1), "-34.47204649653611", "-58.76249867178074");
             final Team ferpaTeam =
-                    Team.create("pincha", "Football", "11", "Young", userList.get(2));
+                    Team.create("pincha", "Football", "11", "Young", userList.get(2), "-34.47204649653611", "-58.76249867178074");
             teams.persist(kateTeam);
             teams.persist(cocaTeam);
             teams.persist(ferpaTeam);

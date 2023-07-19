@@ -24,6 +24,10 @@ public class Team {
 
     @Column(name = "PUNTUALITY")
     private int puntuality;
+    @Column(name = "LATITUDE")
+    private String latitude;
+    @Column(name = "LONGITUDE")
+    private String longitude;
 
 //    @Column(name = "ZONE")
 //    private String zone;
@@ -36,7 +40,7 @@ public class Team {
     public Team() {
     }
 
-    private Team(String name, String sport, String quantity,  String age_group,  User user) {
+    private Team(String name, String sport, String quantity,  String age_group,  User user, String latitude, String longitude) {
         this.name = name;
         this.sport = sport;
         this.quantity = quantity;
@@ -44,10 +48,12 @@ public class Team {
         this.age_group = age_group;
 //        this.zone = zone;
         this.user = user;
+        this.latitude = latitude;
+        this.longitude = longitude;
     }
 
-    public static Team create(String name, String sport, String quantity, String group,  User user) {
-        return new Team(name, sport, quantity, group, user);
+    public static Team create(String name, String sport, String quantity, String group,  User user, String latitude, String longitude) {
+        return new Team(name, sport, quantity, group, user, latitude, longitude);
     }
 
 //    public String getZone() {

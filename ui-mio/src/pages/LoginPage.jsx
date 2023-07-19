@@ -18,6 +18,7 @@ export const LoginPage = () => {
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
     const [errorMsg, setErrorMsg] = useState(undefined)
+
     const navigate = useNavigate()
     const [searchParams, setSearchParams] = useSearchParams();
     const isOk = searchParams.get("ok")
