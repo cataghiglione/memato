@@ -124,8 +124,7 @@ export function WebSocketChat(props) {
         else{
             setYourMessages((prevChat) => [...prevChat, { ...data.userMessage, contact: targetUser }]);
         }
-        if(!contactsId.includes(data.userList[1]) && !contactsId.includes(data.userList[2])){
-            window.location.reload();
+        if(!contactsId.includes(data.userList[1]) && !contactsId.includes(data.userList[0])){
         }
         console.log("contactsid: ")
         console.log(contactsId); //(river, depo == 1, 2) (river, depo, pincha ==1,2,3)
