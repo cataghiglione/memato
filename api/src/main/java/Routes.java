@@ -579,6 +579,10 @@ public class Routes {
                                     if (!search.isRecurring()) {
                                         searchesForCandidates.add(search);
                                     }
+                                    List<Search> compatible_searches = searches.findCompatibleSearches(search.getId());
+                                    for (Search otherSearch:compatible_searches) {
+                                        system.createNotificationWithSearchId(otherSearch, String.format("%s's news:\n%s wants to play on %d/%d.\nDo you want to play?", otherSearch.getTeam().getName(), search.getTeam().getName(), otherSearch.getDate().getDate(), otherSearch.getDate().getMonth() + 1), 5, otherSearch.getId(), otherSearch.getTeam().getId());
+                                    }
                                     res.status(200);
                                 },
                                 () -> {
