@@ -23,7 +23,7 @@ export function EditTeamPage(props) {
     const [searchParams] = useSearchParams();
     const [errorMsg, setErrorMsg] = useState(undefined)
     const isOk = searchParams.get("ok")
-    const [changeLocationButton, setChangeLocationButton] = useState('Change location');
+    const [changeLocationButton, setChangeLocationButton] = useState('Location');
 
     const [locationName, setLocationName] = useState("")
     const [sport, setSport] = useState('')
@@ -41,10 +41,10 @@ export function EditTeamPage(props) {
         e.preventDefault(); // Prevent form submission
         setShowPopup(!showPopup);
     }
+
     useEffect(() => {
         getTeam(token, props.getTeamId, (team) => {
             setTeam(team);
-            // printSelectedLocation([team.latitude, team.longitude]);
         });
     }, [props.getTeamId, token, locationName]);
 
@@ -101,13 +101,14 @@ export function EditTeamPage(props) {
             // zone: zone || team.zone,
             name: name || team.name,
             latitude: zone[0],
-            longitude: zone[1]
+            longitude: zone[1],
+            location: locationName
         })
     }
 
     const resetForm = () => {
         setName(team.name);
-        setZone(team.zone);
+        // setZone(team.zone);
         setAge_group(team.age_group);
         setSport(team.sport);
         setQuant_player(team.quantity);
@@ -179,12 +180,11 @@ export function EditTeamPage(props) {
     const handleInfoboxesWithPushPins = (infoboxesWithPushPinsData) => {
         setChangeLocationButton('Change Location');
         setNewZone(infoboxesWithPushPinsData[0].location);
-        printSelectedLocation(infoboxesWithPushPinsData[0].location);
     };
 
-    function confirmZone() {
+    const confirmZone =() => {
         setZone(newZone);
-        // printSelectedLocation(newZone);
+        printSelectedLocation(newZone);
         setShowPopup(false);
     }
     const printSelectedLocation = (location) => {
@@ -193,7 +193,7 @@ export function EditTeamPage(props) {
         if (long && lat) {
             setSelectedLocation(`Latitude: ${lat}, Longitude: ${long}`);
         }
-        // setZone([lat, long]);
+        setZone([lat, long]);
         getLocationName(lat, long, apiKey);
 
     };
@@ -282,8 +282,8 @@ export function EditTeamPage(props) {
                             )
                         }
                         <div className={"zone"} style={{top:"380px", left: "605px"}}>
-                            {changeLocationButton === 'Select location' && <p>Select your preferred zone: </p>}
-                            {changeLocationButton !== 'Select location' && <p>Your preferred zone: {locationName}</p>}
+                            {changeLocationButton === 'Location'  && <p>Your preferred zone: {team.location}</p>}
+                            {changeLocationButton === 'Change Location' && <p>Your preferred zone: {locationName}</p>}
                             <button className={"selectLocationButton"} onClick={handleSelectLocation}> <Icon style ={{left:"-30px", top: "-5px", fontSize: "20"}} className="input-icon-log" icon="mi:location" /> {changeLocationButton} </button>
                             {showPopup && (
                                 <div className="popupFR">
@@ -292,7 +292,7 @@ export function EditTeamPage(props) {
                                     />
                                     {(zone !== newZone && newZone.length !== 0) && (
                                         <div>
-                                            <button className={"confirmLocation"} id="confirmLoc" onClick={()=>confirmZone()}>Confirm location</button>
+                                            <button className={"confirmLocation"} id="confirmLoc" onClick={confirmZone}>Confirm location</button>
                                         </div>
                                     )}
                                     <button className={"goBackSelLoc"} onClick={handleSelectLocation}>Go back</button>

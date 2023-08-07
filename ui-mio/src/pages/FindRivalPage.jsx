@@ -54,7 +54,11 @@ export function FindRivalPage(props) {
 
     // aca va al mySystem para agarrar los != teams
     useEffect(() => {
-        getTeam(token, teamId, (team) => setTeam(team));
+        getTeam(token, props.getTeamId, (team) => {
+            setTeam(team);
+            getLocationName(team.latitude, team.longitude, apiKey);
+        });
+
         if(searchId !== "0"){
             possibleSearchCandidates(token, searchId, (res)=>{
                 setSearches(res.searches)
@@ -72,6 +76,34 @@ export function FindRivalPage(props) {
     // aca va al mySystem para agarrar el team
     const closeRivalMenu = async e => {
         navigate(`/selectPreferences?id=${searchId}`)
+    }
+
+    const [locationName, setLocationName] = useState("");
+    const apiKey = 'ApqYZq8IsmnPRxOON1m_mY9eGEZqjDawW2cleubNdcVT5CbVMU8snXUF4qku9DcW';
+
+
+    function getLocationName(lat, long, apiKey) {
+        const url = `http://dev.virtualearth.net/REST/v1/Locations/${lat},${long}?o=xml&key=${apiKey}`;
+        console.log("called", lat, long, apiKey);
+        fetch(url)
+            .then((response) => response.text())
+            .then((data) => {
+                console.log("Acá");
+                console.log(data);
+                // Parse the XML response
+                const parser = new DOMParser();
+                const xmlDoc = parser.parseFromString(data, "text/xml");
+
+                // Extract the address name
+                const nameElement = xmlDoc.querySelector("Name");
+                const name = nameElement ? nameElement.textContent : "Location Name Not Found";
+                setLocationName(name.toString());
+                console.log(name);
+                console.log(locationName);
+            })
+            .catch((error) => {
+                console.error("Error:", error);
+            });
     }
 
 
@@ -95,7 +127,7 @@ export function FindRivalPage(props) {
                 });
                 console.log(res)
                 await possibleSearchCandidates(token, searchId, (searches) => {
-                    setSearches(searches)
+                    setSearches(searches.searches)
                     if (searches.length === 0) {
                         setNoSearchesCandidates("There are currently no more teams searching for rivals with your preferences");
                     }
@@ -152,22 +184,22 @@ export function FindRivalPage(props) {
                         </div>
                         <br/>
                         <div className={"finalDate"}>
-                        Day: {date}
+                            Day: {date}
                         </div>
 
                         <br/>
                         <div className={"finalTime"}>
-                        Time(s): {finalSelectedTimes}
+                            Time(s): {finalSelectedTimes}
                         </div>
 
                         <br/>
                         <div className={"finalAgeGroup"}>
-                        Average age group: {averageAge}
+                            Average age group: {averageAge}
                         </div>
 
                         <br/>
                         <div className={"finalZone"}>
-                        Zone: {selectedLocation}
+                            Zone: {locationName}
                         </div>
                     </div>
                 )}
@@ -188,6 +220,8 @@ export function FindRivalPage(props) {
                                                 {search.times.join(", ")}</p>
                                             <p style={{marginLeft: '5px', marginBottom: '15px'}}> Day:
                                                 {search.search.date.day}/{search.search.date.month+1}</p>
+                                            <p style={{marginLeft: '5px', marginBottom: '15px'}}> Age Average:
+                                                {search.search.averageAge}</p>
                                         </div>
                                         <br/><br/>
                                         <div>

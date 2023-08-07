@@ -12,7 +12,7 @@ export function NotificationsCenter(props){
     const token = auth.getToken();
     const [notifications, setNotifications] = useState([''])
     useEffect(() => {
-        getPendingNotifications(token, (notifications) => {
+            getPendingNotifications(token, (notifications) => {
                 setNotifications(notifications)
             })
         }, [token]
@@ -72,9 +72,9 @@ export function NotificationsCenter(props){
             <br/><br/>
             {notifications.length === 0 &&(
                 <div className={"notifications-list"}>
-                <div className={"popover-notification"} style={{height: "10vh", width: "48vh", textAlign:"center" }}>
-                    You don't have any pending notifications.
-                </div>
+                    <div className={"popover-notification"} style={{height: "10vh", width: "48vh", textAlign:"center" }}>
+                        You don't have any pending notifications.
+                    </div>
                 </div>
             )}
 

@@ -116,11 +116,6 @@ export function WebSocketChat(props) {
         if(data.userList.lenght >1){
             if (data.userList[0] === props.getTeamId) {
                 setYourMessages((prevChat) => [...prevChat, { ...data.userMessage, contact: data.userList[1] }]);
-                if (!contactsId.includes(data.userList[1])) {
-                    // Code to execute when data.userList[1] is not in contactsId
-                    // ...
-                }
-
             }
             else {
                 setYourMessages((prevChat) => [...prevChat, { ...data.userMessage, contact: data.userList[0] }]);
@@ -128,6 +123,8 @@ export function WebSocketChat(props) {
         }
         else{
             setYourMessages((prevChat) => [...prevChat, { ...data.userMessage, contact: targetUser }]);
+        }
+        if(!contactsId.includes(data.userList[1]) && !contactsId.includes(data.userList[0])){
         }
         console.log("contactsid: ")
         console.log(contactsId); //(river, depo == 1, 2) (river, depo, pincha ==1,2,3)
@@ -224,6 +221,7 @@ export function WebSocketChat(props) {
                         </div>
                     ))}
                 </div>
+
                 {/*Chat*/}
                 {targetUser !== '0' && (
                     <div className={"conversation"}>

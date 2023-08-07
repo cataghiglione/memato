@@ -579,6 +579,10 @@ public class Routes {
                                     if (!search.isRecurring()) {
                                         searchesForCandidates.add(search);
                                     }
+                                    List<Search> compatible_searches = searches.findCompatibleSearches(search.getId());
+                                    for (Search otherSearch:compatible_searches) {
+                                        system.createNotificationWithSearchId(otherSearch, String.format("%s's news:\n%s wants to play on %d/%d.\nDo you want to play?", otherSearch.getTeam().getName(), search.getTeam().getName(), otherSearch.getDate().getDate(), otherSearch.getDate().getMonth() + 1), 5, otherSearch.getId(), otherSearch.getTeam().getId());
+                                    }
                                     res.status(200);
                                 },
                                 () -> {
@@ -723,14 +727,14 @@ public class Routes {
             final Searches searches = new Searches(entityManager);
             final Long search_id = Long.valueOf(req.queryParams("search_id"));
             searches.getSearchById(search_id).ifPresentOrElse(
-                (search) -> {
-                    res.body(toJson(search));
-                    res.status(200);
-                },
-                ()->{
-                    res.body("There is no search with this id");
-                    res.status(400);
-                });
+                    (search) -> {
+                        res.body(toJson(search));
+                        res.status(200);
+                    },
+                    ()->{
+                        res.body("There is no search with this id");
+                        res.status(400);
+                    });
 
             return res.body();
         });
@@ -750,7 +754,7 @@ public class Routes {
                         EntityTransaction transaction = entityManager.getTransaction();
                         transaction.begin();
                         //por las dudas, aca en el form habia un teamForm.getTeam en la query
-                        teams.updateTeam(teamForm.getName(), teamForm.getSport(), teamForm.getQuantity(), teamForm.getAgeGroup(), Long.valueOf(id), teamForm.getLatitude(), teamForm.getLongitude());
+                        teams.updateTeam(teamForm.getName(), teamForm.getSport(), teamForm.getQuantity(), teamForm.getAgeGroup(), Long.valueOf(id), teamForm.getLatitude(), teamForm.getLongitude(), teamForm.getLocation());
                         if (!Objects.equals(teamForm.getQuantity(), prev_quantity) || !Objects.equals(teamForm.getSport(), prev_sport)) {
                             searches.deactivateSearchesByTeam(Long.parseLong(id));
                             matches.cancelMatchesByTeam(Long.parseLong(id));
@@ -812,8 +816,8 @@ public class Routes {
                                                     team.getId());
                                         else
                                             system.createNotificationWithSearch(match.getSearch1(),
-                                                String.format("%s's news: %s has confirmed the match for %d/%d", match.getTeam1().getName(), team.getName(), match.getDay(), match.getMonth() + 1),
-                                                match.isConfirmed() ? 3 : 1, team.getId());
+                                                    String.format("%s's news: %s has confirmed the match for %d/%d", match.getTeam1().getName(), team.getName(), match.getDay(), match.getMonth() + 1),
+                                                    match.isConfirmed() ? 3 : 1, team.getId());
                                     }
                             );
                         }
@@ -968,9 +972,9 @@ public class Routes {
                                         if (match.getTeam1().equals(team))
                                             system.
                                                     createNotificationWithTeam(match.getTeam2(),
-                                                    String.format("Bad news! %s has decline the match with %s for %d/%d", team.getName(),
-                                                            match.getTeam2().getName(), match.getDay(), match.getMonth()),
-                                                    4, team.getId());
+                                                            String.format("Bad news! %s has decline the match with %s for %d/%d", team.getName(),
+                                                                    match.getTeam2().getName(), match.getDay(), match.getMonth()),
+                                                            4, team.getId());
                                         else
                                             system.createNotificationWithTeam(match.getTeam1(),
                                                     String.format("Bad news! %s has decline the match with %s for %d/%d", team.getName(),
@@ -1158,11 +1162,11 @@ public class Routes {
         tx.begin();
         if (teams.listAll().isEmpty()) {
             final Team kateTeam =
-                    Team.create("river", "Football", "11", "Young", userList.get(0), "-34.47204649653611", "-58.76249867178074");
+                    Team.create("river", "Football", "11", "Young", userList.get(0), "-34.47204649653611", "-58.76249867178074", "Pilar, Argentina");
             final Team cocaTeam =
-                    Team.create("depo", "Football", "11", "Young", userList.get(1), "-34.47204649653611", "-58.76249867178074");
+                    Team.create("depo", "Football", "11", "Young", userList.get(1), "-34.47204649653611", "-58.76249867178074", "Pilar, Argentina");
             final Team ferpaTeam =
-                    Team.create("pincha", "Football", "11", "Young", userList.get(2), "-34.47204649653611", "-58.76249867178074");
+                    Team.create("pincha", "Football", "11", "Young", userList.get(2), "-34.47204649653611", "-58.76249867178074", "Pilar, Argentina");
             teams.persist(kateTeam);
             teams.persist(cocaTeam);
             teams.persist(ferpaTeam);
@@ -1198,7 +1202,6 @@ public class Routes {
     }
 
 }
-
 
 
 

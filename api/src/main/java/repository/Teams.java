@@ -19,7 +19,7 @@ public class Teams {
     public Team createTeam(CreateTeamForm creationValues, User user) {
         if (findTeamByName(creationValues.getName(), user).isPresent())
             throw new IllegalStateException("A team with that name already exists");
-        final Team newTeam = Team.create(creationValues.getName(), creationValues.getSport(), creationValues.getQuantity(), creationValues.getAgeGroup(), user, creationValues.getLatitude(), creationValues.getLongitude());
+        final Team newTeam = Team.create(creationValues.getName(), creationValues.getSport(), creationValues.getQuantity(), creationValues.getAgeGroup(), user, creationValues.getLatitude(), creationValues.getLongitude(), creationValues.getLocation());
         entityManager.persist(newTeam);
         return newTeam;
     }
@@ -73,15 +73,16 @@ public class Teams {
         return team;
     }
 
-    public void updateTeam(String t_name, String t_sport, String t_quantity, String t_age,  Long t_id, String t_lat, String t_lon) {
+    public void updateTeam(String t_name, String t_sport, String t_quantity, String t_age,  Long t_id, String t_lat, String t_lon, String t_loc) {
         try {
-            entityManager.createQuery("UPDATE Team set name =:t_name, sport=:t_sport, quantity =:t_quantity, age_group =:t_age, latitude =:t_lat, longitude=:t_lon where id =:t_id")
+            entityManager.createQuery("UPDATE Team set name =:t_name, sport=:t_sport, quantity =:t_quantity, age_group =:t_age, latitude =:t_lat, longitude=:t_lon, location=: t_loc where id =:t_id")
                     .setParameter("t_name", t_name)
                     .setParameter("t_sport", t_sport)
                     .setParameter("t_quantity", t_quantity)
                     .setParameter("t_age", t_age)
                     .setParameter("t_lat", t_lat)
                     .setParameter("t_lon", t_lon)
+                    .setParameter("t_loc", t_loc)
 //                    .setParameter("t_zone", t_zone)
                     .setParameter("t_id", t_id)
                     .executeUpdate();

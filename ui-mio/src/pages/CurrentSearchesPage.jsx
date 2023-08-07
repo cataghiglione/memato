@@ -331,7 +331,7 @@ export function CurrentSearchesPage(props) {
                                     <p>You have confirmed this match, wait for the other team to confirm</p>
                                 ) : (
                                     <div>
-                                        <Stack direction="row" spacing={18}>
+                                        <Stack direction="row" spacing={16}>
                                             <Tooltip title={"Confirm match"}>
                                             <IconButton onClick={() => handleConfirmMatch(match.id)}>
                                                 <CheckOutlinedIcon/>
