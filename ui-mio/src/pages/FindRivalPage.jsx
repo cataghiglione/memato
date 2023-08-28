@@ -56,7 +56,6 @@ export function FindRivalPage(props) {
     useEffect(() => {
         getTeam(token, props.getTeamId, (team) => {
             setTeam(team);
-            getLocationName(team.latitude, team.longitude, apiKey);
         });
 
         if(searchId !== "0"){
@@ -68,6 +67,7 @@ export function FindRivalPage(props) {
                 setAverageAge(res.averageAge);
                 setDate(`${res.date.day.toString()}/${(res.date.month+1).toString()}/${(res.date.year+1900).toString()}`)
                 setSelectedLocation(`Longitude: ${res.longitude} Latitude: ${res.latitude}`)
+                getLocationName(res.latitude, res.longitude, apiKey);
                 setFinalSelectedTimes(res.time.intervals.join(", "))
             })
         }
