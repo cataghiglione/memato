@@ -136,14 +136,13 @@ public class Searches {
                 candidates.add(possibleCandidates.get(i));
             }
         }
+        List<Search> finalCandidates = new ArrayList<>(candidates.size());
         for (Search candidate : candidates) {
-            if (!isInA5KmRadius(Double.parseDouble(latitude), Double.parseDouble(longitude), Double.parseDouble(candidate.getLatitude()), Double.parseDouble(candidate.getLongitude()))) {
-                candidates.remove(candidate);
+            if (isInA5KmRadius(Double.parseDouble(latitude), Double.parseDouble(longitude), Double.parseDouble(candidate.getLatitude()), Double.parseDouble(candidate.getLongitude()))) {
+                finalCandidates.add(candidate);
             }
-
         }
-
-        return candidates;
+        return finalCandidates;
     }
 
 
