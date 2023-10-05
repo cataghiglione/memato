@@ -31,10 +31,10 @@ body {
 
 .notification-page .notification {
     position: relative;
-    left: 70px;
+    left: 95px;
     height: auto;
     min-height: 10vh;
-    max-width: 200vh;
+    max-width: 180vh;
     margin: 15px;
     background-color: #fff;
     padding: 10px;
@@ -109,13 +109,11 @@ body {
     margin-left: auto;
 }
 
-.notifications-list{
+.notificationsCenter-list{
     position: absolute;
-    //top: 1%; /*quitar, obvio*/
-    width: max-content;
+    max-width: 48vh;
     height: max-content;
     border-radius: 7px;
-    border: 1px solid #ccc; /* grey border */
 }
 .popover-notifications {
     position: absolute;
@@ -128,27 +126,26 @@ body {
     font-family: 'Baloo Bhai 2', sans-serif;
 }
 
-.popover-notification {
-    //height: 10vh;
-    //width: 45vh;
+.popover-notificationCenter {
     background: white;
     border-radius: 9px;
     text-align: left;
     padding: 15px;
+    margin: 5px;
     font-size: 15px;
     transition: all 0.2s ease;
     color: #292d34;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 
 }
 
-.popover-notification:hover{
+.popover-notificationCenter:hover{
     color: black;
     background: rgba(239, 239, 239);
 }
 .popover-notificationButton {
     bottom: 5px;
     left: 5px;
-    /*align-items: start;*/
     background-color: white;
     color: #808080;
     border: 1px solid #808080;

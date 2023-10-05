@@ -83,7 +83,12 @@ public class Searches {
 
     public Optional<Search> reactivateSearch(Team team, List<String> time, Date date, String latitude, String longitude, int age, boolean isRecurring) {
         Optional<Search> search = findSearchByTeam(Long.toString(team.getId()), time, date.getMonth(), date.getDate(), date.getYear(), latitude, longitude, age, isRecurring);
-        search.ifPresent(Search::reactivateSearching);
+        if(search.isPresent() && search.get().searching()){
+            return Optional.empty();
+        }
+        else{
+            search.ifPresent(Search::reactivateSearching);
+        }
         return search;
     }
     public boolean setRecurringSearchId(Long searchId, Long recurrentId){

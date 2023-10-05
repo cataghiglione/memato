@@ -247,8 +247,6 @@ export function SelectPrefForRival(props) {
                         progress: undefined,
                         theme: "light",
                     });
-                    console.log(res)
-                    navigate(`/findRival?id=${res}`)
                 },
                 () => {
                     toast.error('Something went wrong', {

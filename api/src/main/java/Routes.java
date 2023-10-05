@@ -349,7 +349,9 @@ public class Routes {
                         if (notificationsList.size() > 5) {
                             transformNotifications(res, notificationsList.subList(0, 5));
                         }
-                        transformNotifications(res, notificationsList);
+                        else{
+                            transformNotifications(res, notificationsList);
+                        }
                     },
                     () -> {
                         res.status(404);

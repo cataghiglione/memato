@@ -82,50 +82,50 @@ export function NotificationsCenter(props){
             </button>
             <br/><br/>
             {notifications.length === 0 &&(
-                <div className={"notifications-list"}>
-                    <div className={"popover-notification"} style={{height: "10vh", width: "48vh", textAlign:"center" }}>
+                <div className={"notificationsCenter-list"}>
+                    <div className={"popover-notificationCenter"} style={{height: "10vh", width: "48vh", textAlign:"center" }}>
                         You don't have any pending notifications.
                     </div>
                 </div>
             )}
 
             {notifications.length !== 0 && (
-                <div className={"notifications-list"}>
+                <div className={"notificationsCenter-list"}>
                     {notifications.map((notification) => (
-                        <div className={"popover-notification"}>
+                        <div className={"popover-notificationCenter"}>
                             {notification.message}
                             <br/>
                             {notification.code_id === 0 && (
                                 <div>
-                                    <button className={"button"} onClick={() => goToConfirmationsPage(notification.team_id, notification.id)}>
+                                    <button className={"popover-notificationButton"} onClick={() => goToConfirmationsPage(notification.team_id, notification.id)}>
                                         Don't forget to confirm
                                     </button>
-                                    <button className={"button"} onClick={() => goToMessages(notification.id, notification.team_id, notification.other_team_id)}>
+                                    <button className={"popover-notificationButton"} onClick={() => goToMessages(notification.id, notification.team_id, notification.other_team_id)}>
                                         Send a message</button>
                                 </div>
                             )}
                             {notification.code_id === 1 && (
                                 <div>
-                                    <button className={"button"} onClick={() => goToConfirmationsPage(notification.team_id, notification.id)}>
+                                    <button className={"popover-notificationButton"} onClick={() => goToConfirmationsPage(notification.team_id, notification.id)}>
                                         Don't forget to confirm
                                     </button>
                                 </div>
                             )}
                             {notification.code_id === 2 && (
                                 <div>
-                                    <button className={"button"} onClick={() => goToMessages(notification.id, notification.team_id, notification.other_team_id)}>
+                                    <button className={"popover-notificationButton"} onClick={() => goToMessages(notification.id, notification.team_id, notification.other_team_id)}>
                                         Send a message </button>
                                 </div>
                             )}
                             {notification.code_id === 3 && (
                                 <div>
-                                    <button className={"button"} onClick={() => goToPendingMatches(notification.id, notification.team_id, notification.other_team_id)}>
+                                    <button className={"popover-notificationButton"} onClick={() => goToPendingMatches(notification.id, notification.team_id, notification.other_team_id)}>
                                         See pending matches</button>
                                 </div>
                             )}
                             {notification.code_id === 5 && (
                                 <div>
-                                    <button className={"button"} onClick={() => goToFindRival(notification.team_id, notification.id, notification.search_id)}>
+                                    <button className={"popover-notificationButton"} onClick={() => goToFindRival(notification.team_id, notification.id, notification.search_id)}>
                                         Find Rival</button>
                                 </div>
                             )}
