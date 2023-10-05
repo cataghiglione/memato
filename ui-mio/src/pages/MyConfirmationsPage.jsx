@@ -67,7 +67,7 @@ export function MyConfirmationsPage(props) {
 
     const clickAction = (id, lat, lng) => {
         setMarker(id);
-        setZoom(10);
+        setZoom(50);
         setCenter([lat, lng]);
         setTimeout(() => {
             markerRefs.current[id]?.openPopup();
@@ -108,7 +108,7 @@ export function MyConfirmationsPage(props) {
                         <div className="row">
                             <div className="col-md-8">
                                 <div className="map-container">
-                                    <MapContainer center={center} zoom={zoom} scrollWheelZoom={false}>
+                                    <MapContainer center={center} zoom={zoom} scrollWheelZoom={true}>
                                         <TileLayer
                                             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                                             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
