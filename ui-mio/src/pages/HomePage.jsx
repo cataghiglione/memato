@@ -4,8 +4,6 @@ import {useAuthProvider} from "../auth/auth";
 import {listTeams, getUser} from "../service/mySystem";
 import "../css/Home.scss";
 import SideBar from "./SideBar";
-import { Icon } from '@iconify/react';
-// import "../css/PickTeam.scss";
 import {useNavigate} from "react-router";
 import {TopBar} from "./TopBar/TopBar";
 import {PencilSquare} from "react-bootstrap-icons";

@@ -61,6 +61,12 @@ export function NotificationPage(props) {
         changeStatusOpened(id);
         navigate(`/findRival?id=${search_id}`)
     }
+    function goToPendingMatches(id, team_id) {
+        props.toggleTeamId(team_id);
+        changeStatusOpened(id);
+        navigate(`/myConfirmations`)
+    }
+
 
     return (
         <div>
@@ -102,7 +108,9 @@ export function NotificationPage(props) {
                         )}
                         {notification.code_id === 3 && (
                             <div>
-                                <button className={"button"}>See pending matches</button>
+                                <button className={"button"} onClick={() => goToPendingMatches(notification.id, notification.team_id)}>
+                                    See pending matches</button>
+                                {console.log(notification)}
                             </div>
                         )}
                         {notification.code_id === 5 && (

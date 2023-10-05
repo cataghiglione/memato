@@ -100,11 +100,11 @@ public class MySystem {
             users.findById(user_id).ifPresentOrElse(
                     (user) -> {
 
-                        if(code_id == 0 || code_id == 2)
+//                        if(code_id == 0 || code_id == 2)
                             notification.set(notifications.createNotificationWithTeamId(users.findById(user_id).get(), message, code_id, search2.getTeam().getId(), teamId1));
 
-                        else
-                            notification.set(notifications.createNotification(users.findById(user_id).get(), message, code_id));
+//                        else
+//                            notification.set(notifications.createNotification(users.findById(user_id).get(), message, code_id));
                         NotificationService.privateMessage(user_id, message);
                         sendNotificationViaGmail(user.getEmail(), message);
                     },
