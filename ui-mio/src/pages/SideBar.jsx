@@ -80,6 +80,8 @@ export function MySidebar(props) {
                             <MenuItem disabled></MenuItem>
                             <MenuItem disabled></MenuItem>
                             <MenuItem disabled></MenuItem>
+                            <MenuItem icon={<LogoutOutlinedIcon/>} onClick={signOutMethod}>Logout
+                            </MenuItem>
                         </>)}
                     {props.getTeamId === 0 &&(
                         <>
@@ -96,15 +98,15 @@ export function MySidebar(props) {
                             <MenuItem disabled></MenuItem>
                             <MenuItem disabled></MenuItem>
                             <MenuItem disabled></MenuItem>
-                            <MenuItem disabled></MenuItem>
+                            <MenuItem icon={<LogoutOutlinedIcon/>} onClick={signOutMethod}>Logout
+                            </MenuItem>
                         </>
                     )}
 
-                    <div className="sidebar-bottom">
-                        <MenuItem icon={<LogoutOutlinedIcon/>} onClick={signOutMethod}>
-                            Logout
-                        </MenuItem>
-                    </div>
+                    {/*<div className="sidebar-bottom">*/}
+                    {/*    <MenuItem icon={<LogoutOutlinedIcon/>} onClick={signOutMethod}>Logout*/}
+                    {/*    </MenuItem>*/}
+                    {/*</div>*/}
                 </Menu>
 
             </Sidebar>

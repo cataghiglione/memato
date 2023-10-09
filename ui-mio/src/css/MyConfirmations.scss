@@ -47,7 +47,8 @@ h1{
     justify-content: center;
     align-items: center;
     font-size: xx-large;
-    white-space: nowrap;
+  font-family: 'Baloo Bhai 2', sans-serif;
+  white-space: nowrap;
     position:fixed;
     left:40vw;
 }
@@ -63,7 +64,8 @@ h1{
     left: 50%;
     transform: translateX(-50%);
     top: 50%; /* Ajusta la posición vertical según sea necesario */
-    font-size: xx-large;
+  font-family: 'Baloo Bhai 2', sans-serif;
+  font-size: xx-large;
     white-space: nowrap;
 }
 
@@ -74,6 +76,7 @@ h1{
     transform: translateX(-50%);
     font-size: xx-large;
     white-space: nowrap;
+  font-family: 'Baloo Bhai 2', sans-serif;
 }
 .findRivalB{
     position: absolute;
