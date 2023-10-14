@@ -235,7 +235,7 @@ export function CurrentSearchesPage(props) {
         console.log(teamSelectedLoc)
     }*/
     return (
-        <div >
+        <div>
             <SideBar getTeamId={props.getTeamId} toggleTeamId={props.toggleTeamId}></SideBar>
 
             {popupMsg !=="" && <div className="searches-popup">{popupMsg}</div>}
@@ -253,15 +253,35 @@ export function CurrentSearchesPage(props) {
 
             <TopBar toggleTeamId = {props.toggleTeamId}    getTeamId={props.getTeamId}/>
 
+
+            {searches.length > 0 && (
+                <div>
+                    {searches.length < 4 && <div className="line" style={{ top: '230px' }}></div>}
+                    {searches.length < 4 && <div className="line" style={{ top: '130px' }}></div>}
+                </div>
+            )}
+            {recurringSearches.length>0 &&(
+                <div>
+                    {recurringSearches.length < 4 && <div className="line" style={{ top: '350px' }}></div>}
+                    {recurringSearches.length < 4 && <div className="line" style={{ top: '450px' }}></div>}
+                </div>
+            )}
+            {pendingMatches.length > 0 && (
+                <div>
+                    {pendingMatches.length < 3 && <div className="line" style={{ top: '570px' }}></div>}
+                    {pendingMatches.length < 3 && <div className="line" style={{ top: '705px' }}></div>}
+                </div>
+            )}
+
             <div className={"containerSearchPage"}>
                 <div className={"currentSearchesTitle"}>
-                    {team.name}'s current searches
+                    {team.name}'s current searches:
                 </div>
                 <div className={"recurrentSearchesTitle"}>
-                    {team.name}'s recurring searches
+                    {team.name}'s recurring searches:
                 </div>
                 <div className={"pendingMatchesTitle"}>
-                    {team.name}'s pending confirmations
+                    {team.name}'s pending confirmations:
                 </div>
                 <div className={"currentSearchesList"}>
                     {searches.length > 0 && (
@@ -292,6 +312,7 @@ export function CurrentSearchesPage(props) {
                             ))
 
                     )}
+
                 </div>
                 <div className={"recurringSearchesList"}>
                     {recurringSearches.length>0&&(

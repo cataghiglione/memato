@@ -150,7 +150,7 @@ export function UserPage(props) {
                 <div>
                     <form onSubmit={submit && handleSubmit}>
                         <br/>
-                        <div className={"edit-user-name"} style={{left: "400px"}}>
+                        <div className={"edit-user-name"} style={{left: "24%"}}>
                             Username:<input type="Username"
                                    id="Username"
                                    placeholder="Username"
@@ -159,7 +159,7 @@ export function UserPage(props) {
                                    onChange={usernameChange}/>
                         </div>
                         <br/>
-                        <div className={"edit-user-name"} style={{left: "700px"}}>
+                        <div className={"edit-user-name"} style={{left: "44%"}}>
                             First name:<input type="First name"
                                    id="First name"
                                    placeholder="Firstname"
@@ -168,7 +168,7 @@ export function UserPage(props) {
                                    onChange={first_nameChange}/>
                         </div>
                         <br/>
-                        <div className={"edit-user-name"} style={{left: "1000px"}}>Last name:<input type="Last name"
+                        <div className={"edit-user-name"} style={{left: "64%"}}>Last name:<input type="Last name"
                                    id="Last name"
                                    placeholder="Lastname"
                                    name="Last name"
@@ -176,7 +176,7 @@ export function UserPage(props) {
                                    onChange={last_nameChange}/>
                         </div>
                         <br/>
-                        <div className={"edit-user-name"} style={{left: "550px", top: "350px"}}>Email:<input type="Email"
+                        <div className={"edit-user-name"} style={{left: "34%", top: "350px"}}>Email:<input type="Email"
                                    id="Email"
                                    placeholder="Email"
                                    name="Email"
@@ -185,7 +185,7 @@ export function UserPage(props) {
                         </div>
                         <br/>
                         <div className={"edit-user-name"}
-                             style={{left: "850px", top: "350px"}}>Password:<input type="Password"
+                             style={{left: "54%", top: "350px"}}>Password:<input type="Password"
                                    id="Password"
                                    placeholder="Password"
                                    name="Password"
@@ -193,13 +193,13 @@ export function UserPage(props) {
                                    onChange={passwordChange}/>
                         </div>
                         <div>
-                            <button id="submit" type="submit" className={"saveChangesButton"}    style={{right: "550px", fontSize: "16px"}}
+                            <button id="submit" type="submit" className={"saveChangesButton"}    style={{left: "55%", fontSize: "16px"}}
                                     onClick={() => editUserRequest()}>Save Changes
                             </button>
                         </div>
                         <div>
                             <br/>
-                            <button className={"delete-button"} style={{right: "750px"}} onClick={() => deleteMethod()}>Delete Account
+                            <button className={"delete-button"} style={{left: "35%"}} onClick={() => deleteMethod()}>Delete Account
                             </button>
                         </div>
                     </form>
