@@ -44,6 +44,7 @@ export const RegisterPage = () => {
             email: mail,
             password: password
         })
+        goToLogin()
     }
 
     const resetForm = () => {
@@ -156,8 +157,8 @@ export const RegisterPage = () => {
                         <button id="submit" type="submit" className={"submitButtonRegister"} onClick={() => RegisterRequest()}>Register</button>
                     </div>
                 </form>
+                <button className={"signUpButtonLogin"} onClick={goToLogin}>Go to Login</button>
                 <div>
-                    <button className={"signUpButtonLogin"} onClick={goToLogin}>Go to Login</button>
                 </div>
             </div>
         </div>
