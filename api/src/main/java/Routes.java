@@ -1164,11 +1164,11 @@ public class Routes {
         tx.begin();
         if (teams.listAll().isEmpty()) {
             final Team kateTeam =
-                    Team.create("river", "Football", "11", "Young", userList.get(0), "-34.47204649653611", "-58.76249867178074", "Pilar, Argentina");
+                    Team.create("River", "Football", "11", "Young", userList.get(0), "-34.47204649653611", "-58.76249867178074", "General San Martín 49, B1667DHA Tortuguitas");
             final Team cocaTeam =
-                    Team.create("depo", "Football", "11", "Young", userList.get(1), "-34.47204649653611", "-58.76249867178074", "Pilar, Argentina");
+                    Team.create("Depo", "Football", "11", "Young", userList.get(1), "-34.47204649653611", "-58.76249867178074", "General San Martín 49, B1667DHA Tortuguitas");
             final Team ferpaTeam =
-                    Team.create("pincha", "Football", "11", "Young", userList.get(2), "-34.47204649653611", "-58.76249867178074", "Pilar, Argentina");
+                    Team.create("Pincha", "Football", "11", "Young", userList.get(2), "-34.47204649653611", "-58.76249867178074", "General San Martín 49, B1667DHA Tortuguitas");
             teams.persist(kateTeam);
             teams.persist(cocaTeam);
             teams.persist(ferpaTeam);

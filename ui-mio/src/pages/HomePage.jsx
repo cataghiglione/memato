@@ -52,7 +52,7 @@ export function HomePage(props){
         <SideBar getTeamId={props.getTeamId} toggleTeamId={props.toggleTeamId}/>
             <TopBar toggleTeamId={props.toggleTeamId} getTeamId={props.getTeamId}/>
             {/*<div className={`containerPrincipalHomePage ${sidebarOpen ? 'page-content-shifted' : ''}`} style={containerStyle}>*/}
-            <div className={`containerPrincipalHomePage ${sidebarOpen ? 'page-content-shifted' : ''}`}>
+            <div className={`containerPrincipalHomePage ${sidebarOpen ? 'page-content-shifted' : ''}`} style={{left: "1.5%"}}>
                 {/*<nav>*/}
                 {/*    <ul>*/}
                 {/*        <figure className="brick">*/}

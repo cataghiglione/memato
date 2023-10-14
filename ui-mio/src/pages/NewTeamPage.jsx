@@ -165,7 +165,7 @@ export function NewTeamPage (props){
             <div className={"containerPrincipalNewTeam"}>
                 {errorMsg && <div className="alert alert-danger" role="alert">{errorMsg}</div>}
                 {isOk && <div className="alert alert-success" role="alert">Team created</div>}
-                <h1 className={"team_name"}>Create a team</h1>
+                <h1 className={"create_team_name"}>Create a team</h1>
                 {/*<img style={{width: 218, height: "auto"}} src={require("../images/RivalMatch_logoRecortado.png")}*/}
                 {/*     alt={"Logo"}/>*/}
                 <form onSubmit={handleSubmit}>
@@ -229,7 +229,7 @@ export function NewTeamPage (props){
                             </select></p>
                         </div>
                     )}
-                    <div className={"zone"} style={{top:"380px", left: "605px"}}>
+                    <div className={"new-team-zone"} >
                         {changeLocationButton === 'Select location' && <p>Select your preferred zone: </p>}
                         {changeLocationButton !== 'Select location' && <p>Your preferred zone: {locationName}</p>}
                         <button className={"selectLocationButton"} onClick={handleSelectLocation}> <Icon style ={{left:"-30px", top: "-5px", fontSize: "20"}} className="input-icon-log" icon="mi:location" /> {changeLocationButton} </button>
@@ -251,7 +251,7 @@ export function NewTeamPage (props){
                     <div>
                         <br/>
                         {/*<button type="submit" className={"signUpButton"}>Sign up</button>*/}
-                        <button id="submit" type="submit" className={"saveChangesButton"} onClick={() => newTeamRequest()}>Create Team</button>
+                        <button id="submit" type="submit" className={"createTeamButton"} onClick={() => newTeamRequest()}>Create Team</button>
                     </div>
                     <br/>
                 </form>
