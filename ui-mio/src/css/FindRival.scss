@@ -25,15 +25,14 @@ h1{
 .datePicker{
     position: absolute;
     //z-index: 3;
-    left: 275px;
+    left: 19%;
     top: 150px;
 }
 .zone {
     position: absolute;
-    left: 1050px;
-    top: 155px;
+    top: 150px;
     z-index: 10;
-
+    left:63%;
 }
 .team_name_FR {
     position: absolute;
@@ -49,21 +48,21 @@ h1{
 }
 .time_select {
     position: absolute;
-    width: 400px;
-    right: 180px;
+    width: 350px;
+    left: 63%;
     top: 375px;
     z-index: 4;
 }
 .ageSlider{
     position: absolute;
     width: 300px;
-    left: 280px;
+    left: 19.7%;
     top: 375px;
 }
 .checkboxRecurrent{
     position:absolute;
     top:275px;
-    left:675px;
+    left:47%;
     background-color: transparent;
 }
 .selectRecurrent{
@@ -114,7 +113,7 @@ h1{
 }
 .popUpContainer{
     position: fixed;
-    top: 50%;
+    top: 370px;
     left: 50%;
     transform: translate(-50%, -50%);
     z-index: 900; /* Asegura que el popup esté por encima de otros elementos */
@@ -169,7 +168,7 @@ h1{
 }
 .noTeamSearch {
     position: fixed;
-    left: 47.5%;
+    left: 53%;
     top: 70%;
     transform: translate(-50%, -50%);
     padding: 16px;
@@ -196,14 +195,15 @@ h1{
 
 .findRivalButton {
     position: absolute;
-    left: 45%;
-    bottom: 8%;
+    left: 47%;
+    top: 670px;
+    height: 50px;
     background-color: $background-color;
     color: black;
     border: 1px solid #4CAF50;
     border-radius: 20px;
     transition-duration: 0.4s;
-    width: 10%;
+    width: 135px;
     padding: 12px 20px;
 }
 
@@ -293,7 +293,7 @@ h1{
 }
 .title{
     position: absolute;
-    left: 650px;
+    left: 45%;
     top: 400px;
     font-size: x-large;
 }
@@ -303,10 +303,10 @@ h1{
 
 .searches-list{
     position: fixed;
-    left: 250px;
+    left: 15%;
     top: 430px;
     width: auto; /*  Con borde sería 49vh */
-    max-width: 125vh;
+    max-width: 75%;
     height: auto;
     overflow-x: scroll;
     scrollbar-width: thin;
@@ -385,24 +385,25 @@ h1{
     position: absolute;
     font-size: 15px;
     top: 200px;
-    left: 350px;
+    left: 20%;
 }
 .finalTime{
     position: absolute;
     max-width: 400px;
     top: 250px;
-    left: 550px;
+    left: 45%;
     font-size: 15px;
 }
 .finalAgeGroup{
     position: absolute;
     top: 200px;
-    left: 550px;
+    left: 45%;
     font-size: 15px;
 }
 .finalZone{
     position: absolute;
     top: 200px;
-    left: 750px;
+    left: 70%;
     font-size: 15px;
+    max-width: 250px;
 }
