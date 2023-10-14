@@ -152,10 +152,10 @@ export const RegisterPage = () => {
                     </div>
 
                     <br/><br/>
+                    <div>
+                        <button id="submit" type="submit" className={"submitButtonRegister"} onClick={() => RegisterRequest()}>Register</button>
+                    </div>
                 </form>
-                <div>
-                    <button id="submit" type="submit" className={"submitButtonRegister"} onClick={() => RegisterRequest()}>Register</button>
-                </div>
                 <div>
                     <button className={"signUpButtonLogin"} onClick={goToLogin}>Go to Login</button>
                 </div>
