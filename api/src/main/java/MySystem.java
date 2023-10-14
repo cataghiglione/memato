@@ -308,7 +308,7 @@ public class MySystem {
             message.addRecipient(javax.mail.Message.RecipientType.TO, new InternetAddress(receiver));   //Se podrían añadir varios de la misma manera
             message.setSubject("Rival Match's Notification");
             message.setText(emailText);
-            attachmentPart.attachFile(new File("/home/constanza/projects/facu/lab1/rival/ui-mio/src/images/logoRivalMatch.png"));
+            attachmentPart.attachFile(new File("../../../../ui-mio/src/images/logoRivalMatch.png"));
             multipart.addBodyPart(attachmentPart);
             message.setContent(multipart);
             Transport transport = session.getTransport("smtp");
