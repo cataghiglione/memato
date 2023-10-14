@@ -19,7 +19,7 @@
 .sport_and_quantity{
     position: absolute;
     left: 50%;
-    top: 20%;
+    top: 160px;
     transform: translate(-50%, -50%);
     background-color: transparent;
     font-size: large;
@@ -36,7 +36,7 @@
 }
 .edit-team-name{
     position: absolute;
-    left: 300px;
+    left: 20%;
     font-family: 'Baloo Bhai 2', sans-serif;
     top: 280px;
 }
@@ -48,18 +48,18 @@
 }
 .edit-age-group{
     position: absolute;
-    left: 610px;
+    left: 40%;
     top: 255px;
 }
 .edit-sport{
     position: absolute;
-    left: 810px;
+    left: 55%;
     top: 255px;
 }
 .edit-quantity{
     position: absolute;
-    left: 1030px;
-    top: 280px;
+    left: 70%;
+    top: 275px;
 }
 .saveChangesButton {
     position: absolute;
@@ -90,7 +90,7 @@
     width: max-content;
     font-size: 16px;
     cursor: pointer;
-    right: 850px;
+    left: 30%;
     top: 500px;
 
     color: rebeccapurple;
@@ -113,7 +113,7 @@
     border: 1px solid #da190b;
     font-size: 16px;
     cursor: pointer;
-    right: 700px;
+    left: 60%;
     top: 500px;
 }
 

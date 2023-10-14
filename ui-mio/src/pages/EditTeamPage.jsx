@@ -281,7 +281,7 @@ export function EditTeamPage(props) {
                                 </div>
                             )
                         }
-                        <div className={"zone"} style={{top:"380px", left: "605px"}}>
+                        <div className={"zone"} style={{top:"380px", left: "45%"}}>
                             {changeLocationButton === 'Location'  && <p>Your preferred zone: {team.location}</p>}
                             {changeLocationButton === 'Change Location' && <p>Your preferred zone: {locationName}</p>}
                             <button className={"selectLocationButton"} onClick={handleSelectLocation}> <Icon style ={{left:"-30px", top: "-5px", fontSize: "20"}} className="input-icon-log" icon="mi:location" /> {changeLocationButton} </button>
@@ -301,7 +301,7 @@ export function EditTeamPage(props) {
                         </div>
                         <div>
                             {/*<button type="submit" className={"signUpButton"}>Sign up</button>*/}
-                            <button id="submit" type="submit" className={"saveChangesButton"} style={{right: "550px"}} onClick={() => newTeamRequest()}>Save Changes</button>
+                            <button id="submit" type="submit" className={"saveChangesButton"}  onClick={() => newTeamRequest()}>Save Changes</button>
                         </div>
                         <div>
                             <button className={"goBackButton"} onClick={handleGoToPickTeam}>Return to Pick Team</button>
