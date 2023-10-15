@@ -30,7 +30,8 @@ public class ChatWebSocketHandler {
         int count = JSONMessage.length();
         // if a user just connected. It ain't actually a message, it's just adding the user to the sessions maps.
         if(count == 1){
-            String username = JSONMessage.getString("sender"); // username = sender
+            System.out.println("SESSION CREATED");
+            String username = (String) JSONMessage.get("sender"); // username = sender
             Chat.userUsernameMap.put(user, username); // should actually delete this one.
             List<Session> sessions;
             if(!Chat.usernameSessionMap.containsKey(username)){
@@ -41,7 +42,6 @@ public class ChatWebSocketHandler {
             }
             sessions.add(user);
             Chat.usernameSessionMap.put(username, sessions);
-            System.out.println(Chat.usernameSessionMap.get(username).size());
 
         }
         // if it is an actual message:
