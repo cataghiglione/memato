@@ -81,8 +81,6 @@ export function FindRivalPage(props) {
         fetch(url)
             .then((response) => response.text())
             .then((data) => {
-                console.log("Acá");
-                console.log(data);
                 // Parse the XML response
                 const parser = new DOMParser();
                 const xmlDoc = parser.parseFromString(data, "text/xml");

@@ -7,7 +7,6 @@
 	width: 700px;
 	float: left;
 	height: 600px;
-
 	margin: 5px;
 }
 div#eleven {
@@ -20,4 +19,25 @@ div#eleven {
 }
 .customClass{
 	height: 96%;
+}
+
+.search-button{
+
+}
+
+.search-bar{
+    widht: 100% ;
+}
+
+.search-button{
+    border: none;
+    padding: 12px 20px;
+    height: 100%;
+    margin: 5px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 16px;
+    transition-duration: 0.4s;
+    cursor: pointer;
+    border-radius: 5px;
 }

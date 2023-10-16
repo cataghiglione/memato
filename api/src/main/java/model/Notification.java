@@ -115,6 +115,6 @@ public class Notification {
     }
 
     public long getTeam_id() {
-        return team_id;
+        return this.team_id;
     }
 }

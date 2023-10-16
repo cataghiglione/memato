@@ -41,15 +41,20 @@ export function WebSocketChat(props) {
         // on open cargar todos los mensajes en las listas receivedMessages y sentMessages.
         socket.onopen = () => {
             console.log('WebSocket connection opened');
+            console.log("Type of the id is: " + typeof props.getTeamId)
             if (!isUserConnected) {
                 const messageJSON = {
-                    sender: props.getTeamId,
+                    sender: props.getTeamId.toString(),
                 };
                 socket.send(JSON.stringify(messageJSON));
 
                 setIsUserConnected(true);
             }
 
+        };
+
+        socket.onerror = (errorEvent) => {
+            console.error("WebSocket error:", errorEvent);
         };
 
         socket.onmessage = (event) => {
@@ -81,16 +86,16 @@ export function WebSocketChat(props) {
     };
 
     const handleSendMessage = () => {
+
         if (message.trim() !== '') {
             const messageJSON = {
-                sender: props.getTeamId,
+                sender: props.getTeamId.toString(),
                 receiver: targetUser,
                 content: message,
             };
-            console.log(otherTeamName)
-
             // Send message via WebSocket
-            webSocket.send(JSON.stringify(messageJSON));
+            console.log("id " +messageJSON)
+                webSocket.send(JSON.stringify(messageJSON));
             //HACER FORMA DE VERIFICAR Q FUÉ ENVIADO.
             // Save message in the database
             const messageData = {
@@ -113,8 +118,8 @@ export function WebSocketChat(props) {
         const data = JSON.parse(event.data);
         console.log('Received data:', { ...data.userMessage, contact: targetUser }); // {isCurrentUser: false, sender: '1', message: 'hola', timestamp: '22:25:54'}
         console.log('Data: ' + data.userList)
-        if(data.userList.lenght >1){
-            if (data.userList[0] === props.getTeamId) {
+        if(data.userList.length >1){
+            if (data.userList[0] === props.getTeamId.toString()) {
                 setYourMessages((prevChat) => [...prevChat, { ...data.userMessage, contact: data.userList[1] }]);
             }
             else {
@@ -179,17 +184,17 @@ export function WebSocketChat(props) {
     };
 
     useEffect(() => {
-        getContacts(token, props.getTeamId, (contacts) => {
+        getContacts(token, props.getTeamId.toString(), (contacts) => {
             setContacts(contacts);
             const contactsIds = contacts.map((contact) => contact.team2.id);
             setContactsId(contactsIds);
 
 
         });
-    }, [props.getTeamId, token]);
+    }, [props.getTeamId.toString(), token]);
 
     const updateContactsList = () => {
-        getContacts(token, props.getTeamId, (contacts) => {
+        getContacts(token, props.getTeamId.toString(), (contacts) => {
             setContacts(contacts);
             const contactsIds = contacts.map((contact) => contact.team2.id);
             setContactsId(contactsIds);
@@ -257,14 +262,14 @@ export function WebSocketChat(props) {
                                             <div
                                                 key={index}
                                             >
-                                                {sender === props.getTeamId && contact === targetUser && (
-                                                    <div className={`message ${sender === props.getTeamId ? 'sent' : 'received'}`}>
+                                                {sender === props.getTeamId.toString() && contact === targetUser && (
+                                                    <div className={`message ${sender === props.getTeamId.toString() ? 'sent' : 'received'}`}>
                                                         <span>{content}</span>
                                                         <span className="metadata"><span className="time">{hour}:{minute}</span></span>
                                                     </div>
                                                 )}
                                                 {sender === targetUser && (
-                                                    <div className={`message ${sender === props.getTeamId ? 'sent' : 'received'}`}>
+                                                    <div className={`message ${sender === props.getTeamId.toString() ? 'sent' : 'received'}`}>
                                                         <span>{content}</span>
                                                         <span className="metadata"><span className="time">{hour}:{minute}</span></span>
                                                     </div>
@@ -279,20 +284,23 @@ export function WebSocketChat(props) {
                     </div>
                 )}
                 {/*Input*/}
-                <div className="conversation-compose">
-                    <input
-                        className="input-msg"
-                        placeholder="Type your message"
-                        value={message}
-                        onChange={(event) => setMessage(event.target.value)}
-                        onKeyPress={handleKeyPress}
-                    />
-                    <button className="send" onClick={handleSendMessage}>
-                        <div className="circle">
-                            <img src={require("../images/sendIcon.png")} alt="send-icon" />
-                        </div>
-                    </button>
-                </div>
+                {currentContact !== "0" &&(
+                    <div className="conversation-compose">
+                        <input
+                            className="input-msg"
+                            placeholder="Type your message"
+                            value={message}
+                            onChange={(event) => setMessage(event.target.value)}
+                            onKeyPress={handleKeyPress}
+                        />
+                        <button className="send" onClick={handleSendMessage}>
+                            <div className="circle">
+                                <img src={require("../images/sendIcon.png")} alt="send-icon" />
+                            </div>
+                        </button>
+                    </div>
+                )}
+
             </div>
             <ToastContainer /> {/* Mover el ToastContainer aquí */}
         </div>

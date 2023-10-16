@@ -101,7 +101,7 @@ public class MySystem {
                     (user) -> {
 
 //                        if(code_id == 0 || code_id == 2)
-                            notification.set(notifications.createNotificationWithTeamId(users.findById(user_id).get(), message, code_id, search2.getTeam().getId(), teamId1));
+                        notification.set(notifications.createNotificationWithTeamId(users.findById(user_id).get(), message, code_id, search2.getTeam().getId(), teamId1));
 
 //                        else
 //                            notification.set(notifications.createNotification(users.findById(user_id).get(), message, code_id));
