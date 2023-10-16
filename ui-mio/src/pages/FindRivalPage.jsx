@@ -11,13 +11,21 @@ import {TopBar} from "./TopBar/TopBar";
 import {BingMap} from "./BingMap"
 import {ToastContainer, toast} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import {Icon} from "@iconify/react";
+import Select from 'react-select';
 import 'bootstrap/dist/css/bootstrap.css';
+import Box from '@mui/material/Box';
+import Slider from '@mui/material/Slider';
+import FormGroup from '@mui/material/FormGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Checkbox from '@mui/material/Checkbox';
 import {useSearchParams} from "react-router-dom";
 import CloseIcon from '@mui/icons-material/Close';
 import IconButton from "@mui/material/IconButton";
-import Spinner from 'react-bootstrap/Spinner';
-import 'bootstrap/dist/css/bootstrap.min.css';
 
+
+// import '@mobiscroll/react/dist/css/mobiscroll.min.css';
+// import { Datepicker } from '@mobiscroll/react';
 
 
 export function FindRivalPage(props) {
@@ -28,11 +36,10 @@ export function FindRivalPage(props) {
     const searchId = searchParams.get('id');
 
     const [date, setDate] = useState("");
-    const [averageAge, setAverageAge] = useState(25);
+    const [rangeAge, setRangeAge] = useState([20, 30]);
     const [checked, setChecked] = React.useState(false);
 
     const [selectedLocation, setSelectedLocation] = useState("")
-    const [isLoading,setIsLoading] = useState(false);
     const [finalSelectedTimes, setFinalSelectedTimes] = useState("");
 
     const [searches, setSearches] = useState([]);
@@ -57,7 +64,7 @@ export function FindRivalPage(props) {
             })
             getSearch(token, searchId, (res)=>{
                 console.log(res);
-                setAverageAge(res.averageAge);
+                setRangeAge([res.minAge, res.maxAge]);
                 setDate(`${res.date.day.toString()}/${(res.date.month+1).toString()}/${(res.date.year+1900).toString()}`)
                 setSelectedLocation(`Longitude: ${res.longitude} Latitude: ${res.latitude}`)
                 getLocationName(res.latitude, res.longitude, apiKey);
@@ -100,7 +107,6 @@ export function FindRivalPage(props) {
 
 
     const playButton = async (id) => {
-        setIsLoading(true);
         await newMatch(token, {
                 candidate_search_id: id,
                 searchId: searchId
@@ -125,15 +131,11 @@ export function FindRivalPage(props) {
                     }
                     console.log(searches)
                 },)
-                setIsLoading(false);
-
             },
             () => {
-                setIsLoading(false);
                 console.log('A match with this searches already exists!')
             }
         )
-
 
     }
 
@@ -155,7 +157,6 @@ export function FindRivalPage(props) {
             <SideBar getTeamId={props.getTeamId} toggleTeamId={props.toggleTeamId}></SideBar>
             <TopBar getTeamId={props.getTeamId} toggleTeamId={props.toggleTeamId}/>
 
-
             {(searchId === null || searchId === "0") && (
                 <div className="popUpContainer">
                     <div className={"popUpContainer1"}>
@@ -170,13 +171,6 @@ export function FindRivalPage(props) {
                     </div>
                 </div>
             )}
-            {isLoading && (
-                <div className={"spinner"}>
-                <Spinner animation={"border"}/>
-                </div>
-            )}
-            {!isLoading &&(
-
             <div className={"containerPrincipalFindRival"}>
 
                 {(searchId !== null && searchId !== "0") && (
@@ -198,7 +192,9 @@ export function FindRivalPage(props) {
 
                         <br/>
                         <div className={"finalAgeGroup"}>
-                            Average age group: {averageAge}
+                            Minimum age group: {rangeAge[0]}
+                            <br/>
+                            Maximum age group: {rangeAge[1]}
                         </div>
 
                         <br/>
@@ -224,8 +220,12 @@ export function FindRivalPage(props) {
                                                 {search.times.join(", ")}</p>
                                             <p style={{marginLeft: '5px', marginBottom: '15px'}}> Day:
                                                 {search.search.date.day}/{search.search.date.month+1}</p>
-                                            <p style={{marginLeft: '5px', marginBottom: '15px'}}> Age Average:
-                                                {search.search.averageAge}</p>
+                                            <p style={{marginLeft: '5px', marginBottom: '15px'}}> Minimum Age:
+                                                {search.search.minAge}
+                                            </p>
+                                            <p style={{marginLeft: '5px', marginBottom: '15px'}}> Maximum Age:
+                                                {search.search.maxAge}
+                                            </p>
                                         </div>
                                         <br/><br/>
                                         <div>
@@ -246,9 +246,8 @@ export function FindRivalPage(props) {
 
                     <p className={"noTeamSearch"}>{noSearchesCandidates}</p>)
                 }
+                <ToastContainer/> {/* Mover el ToastContainer aquí */}
             </div>
-                )}
-            <ToastContainer/> {/* Mover el ToastContainer aquí */}
         </div>
     )
 }
