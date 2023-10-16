@@ -23,7 +23,7 @@ public class Notifications {
         return newNotification;
     }
     public Notification createNotificationWithSearchId(User user, String message, int code_id, long search_id, long team_id) {
-        final Notification newNotification = Notification.createWithTeamSearchId(user, message, code_id, search_id, team_id);
+        final Notification newNotification = Notification.createWithTeamSearchId(user, message, code_id, team_id, search_id);
         entityManager.persist(newNotification);
         return newNotification;
     }

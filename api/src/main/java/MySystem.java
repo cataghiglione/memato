@@ -3,18 +3,13 @@ import repository.*;
 import model.Team;
 
 import javax.mail.MessagingException;
-import javax.mail.Multipart;
 import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
-import javax.mail.internet.MimeMultipart;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
-import java.io.File;
-import java.io.IOException;
 import java.text.ParseException;
 import java.util.List;
 import java.util.Optional;
@@ -106,7 +101,7 @@ public class MySystem {
                     (user) -> {
 
 //                        if(code_id == 0 || code_id == 2)
-                            notification.set(notifications.createNotificationWithTeamId(users.findById(user_id).get(), message, code_id, search2.getTeam().getId(), teamId1));
+                        notification.set(notifications.createNotificationWithTeamId(users.findById(user_id).get(), message, code_id, search2.getTeam().getId(), teamId1));
 
 //                        else
 //                            notification.set(notifications.createNotification(users.findById(user_id).get(), message, code_id));
@@ -301,16 +296,12 @@ public class MySystem {
 
         Session session = Session.getDefaultInstance(props);
         MimeMessage message = new MimeMessage(session);
-        MimeBodyPart attachmentPart = new MimeBodyPart();
-        Multipart multipart = new MimeMultipart();
+
         try {
             message.setFrom(new InternetAddress(sender));
             message.addRecipient(javax.mail.Message.RecipientType.TO, new InternetAddress(receiver));   //Se podrían añadir varios de la misma manera
             message.setSubject("Rival Match's Notification");
             message.setText(emailText);
-            attachmentPart.attachFile(new File("../../../../ui-mio/src/images/logoRivalMatch.png"));
-            multipart.addBodyPart(attachmentPart);
-            message.setContent(multipart);
             Transport transport = session.getTransport("smtp");
             transport.connect("smtp.gmail.com", sender, password);
             transport.sendMessage(message, message.getAllRecipients());
@@ -319,8 +310,6 @@ public class MySystem {
         }
         catch (MessagingException me) {
             me.printStackTrace();   //Si se produce un error
-        } catch (IOException e) {
-            throw new RuntimeException(e);
         }
     }
 }
