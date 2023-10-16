@@ -284,20 +284,23 @@ export function WebSocketChat(props) {
                     </div>
                 )}
                 {/*Input*/}
-                <div className="conversation-compose">
-                    <input
-                        className="input-msg"
-                        placeholder="Type your message"
-                        value={message}
-                        onChange={(event) => setMessage(event.target.value)}
-                        onKeyPress={handleKeyPress}
-                    />
-                    <button className="send" onClick={handleSendMessage}>
-                        <div className="circle">
-                            <img src={require("../images/sendIcon.png")} alt="send-icon" />
-                        </div>
-                    </button>
-                </div>
+                {currentContact !== "0" &&(
+                    <div className="conversation-compose">
+                        <input
+                            className="input-msg"
+                            placeholder="Type your message"
+                            value={message}
+                            onChange={(event) => setMessage(event.target.value)}
+                            onKeyPress={handleKeyPress}
+                        />
+                        <button className="send" onClick={handleSendMessage}>
+                            <div className="circle">
+                                <img src={require("../images/sendIcon.png")} alt="send-icon" />
+                            </div>
+                        </button>
+                    </div>
+                )}
+
             </div>
             <ToastContainer /> {/* Mover el ToastContainer aquí */}
         </div>
