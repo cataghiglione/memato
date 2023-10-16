@@ -77,21 +77,18 @@ export class BingMap extends Component {
         return (
             <div>
                 {this.state.isVisible && (<div>
-                     <span style={{ 'display': 'flex' }}>
+                     <span style={{ 'display': 'flex'}} >
                           <input
                               type="text"
+                              style={{"width": "90%", "margin": "5px"}}
                               placeholder="search place, pin, city"
                               onChange={(event) => { this.setState({ searchInput: event.target.value }) }}
                               value={this.state.searchInput}
                           />
-                          <button onClick={this.handleSubmit.bind(this)}>Search</button>
+                          <button className={"search-button"} onClick={this.handleSubmit.bind(this)}>Search</button>
                         </span>
 
                     <div className = "map-one">
-                        {/* SELECT THE LOCATION OF YOUR TEAM
-                        <br></br>*/}
-                        {/*BUSCADOR: */}
-
                         <ReactBingmaps
                             id = "seven"
                             className = "customClass"
