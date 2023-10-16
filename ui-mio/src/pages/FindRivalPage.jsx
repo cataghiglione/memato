@@ -11,21 +11,13 @@ import {TopBar} from "./TopBar/TopBar";
 import {BingMap} from "./BingMap"
 import {ToastContainer, toast} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import {Icon} from "@iconify/react";
-import Select from 'react-select';
 import 'bootstrap/dist/css/bootstrap.css';
-import Box from '@mui/material/Box';
-import Slider from '@mui/material/Slider';
-import FormGroup from '@mui/material/FormGroup';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
 import {useSearchParams} from "react-router-dom";
 import CloseIcon from '@mui/icons-material/Close';
 import IconButton from "@mui/material/IconButton";
+import Spinner from 'react-bootstrap/Spinner';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
-
-// import '@mobiscroll/react/dist/css/mobiscroll.min.css';
-// import { Datepicker } from '@mobiscroll/react';
 
 
 export function FindRivalPage(props) {
@@ -40,6 +32,7 @@ export function FindRivalPage(props) {
     const [checked, setChecked] = React.useState(false);
 
     const [selectedLocation, setSelectedLocation] = useState("")
+    const [isLoading,setIsLoading] = useState(false);
     const [finalSelectedTimes, setFinalSelectedTimes] = useState("");
 
     const [searches, setSearches] = useState([]);
@@ -109,6 +102,7 @@ export function FindRivalPage(props) {
 
 
     const playButton = async (id) => {
+        setIsLoading(true);
         await newMatch(token, {
                 candidate_search_id: id,
                 searchId: searchId
@@ -133,11 +127,15 @@ export function FindRivalPage(props) {
                     }
                     console.log(searches)
                 },)
+                setIsLoading(false);
+
             },
             () => {
+                setIsLoading(false);
                 console.log('A match with this searches already exists!')
             }
         )
+
 
     }
 
@@ -159,6 +157,7 @@ export function FindRivalPage(props) {
             <SideBar getTeamId={props.getTeamId} toggleTeamId={props.toggleTeamId}></SideBar>
             <TopBar getTeamId={props.getTeamId} toggleTeamId={props.toggleTeamId}/>
 
+
             {(searchId === null || searchId === "0") && (
                 <div className="popUpContainer">
                     <div className={"popUpContainer1"}>
@@ -173,6 +172,13 @@ export function FindRivalPage(props) {
                     </div>
                 </div>
             )}
+            {isLoading && (
+                <div className={"spinner"}>
+                <Spinner animation={"border"}/>
+                </div>
+            )}
+            {!isLoading &&(
+
             <div className={"containerPrincipalFindRival"}>
 
                 {(searchId !== null && searchId !== "0") && (
@@ -242,8 +248,9 @@ export function FindRivalPage(props) {
 
                     <p className={"noTeamSearch"}>{noSearchesCandidates}</p>)
                 }
-                <ToastContainer/> {/* Mover el ToastContainer aquí */}
             </div>
+                )}
+            <ToastContainer/> {/* Mover el ToastContainer aquí */}
         </div>
     )
 }

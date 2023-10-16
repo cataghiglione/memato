@@ -20,8 +20,9 @@ import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
 import {useSearchParams} from "react-router-dom";
-import { addWeeks } from 'date-fns';
-
+import {addWeeks} from 'date-fns';
+import Spinner from 'react-bootstrap/Spinner';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 // import '@mobiscroll/react/dist/css/mobiscroll.min.css';
 // import { Datepicker } from '@mobiscroll/react';
@@ -38,6 +39,8 @@ export function SelectPrefForRival(props) {
     const [date, setDate] = useState(new Date());
     const [averageAge, setAverageAge] = useState(25);
     const [checked, setChecked] = React.useState(false);
+    const [isLoading, setIsLoading] = useState(false);
+    const [isLocationLoading, setIsLocationLoading] = useState(false);
 
 
     const [rivalMenuOpen, setRivalMenuOpen] = useState(false);
@@ -58,12 +61,15 @@ export function SelectPrefForRival(props) {
     const [team, setTeam] = useState('');
     const teamId = props.getTeamId;
 
-    const[amountWeeks,setAmountWeeks]=useState(0);
-    const[weeksOpen,setWeeksOpen]=useState(false);
+    const [amountWeeks, setAmountWeeks] = useState(0);
+    const [weeksOpen, setWeeksOpen] = useState(false);
 
     const apiKey = 'ApqYZq8IsmnPRxOON1m_mY9eGEZqjDawW2cleubNdcVT5CbVMU8snXUF4qku9DcW'; // Replace with your Bing Maps API key
 
     function getLocationName(lat, long, apiKey) {
+        setIsLocationLoading(true);
+        console.log("location")
+        console.log(isLocationLoading)
         const url = `http://dev.virtualearth.net/REST/v1/Locations/${lat},${long}?o=xml&key=${apiKey}`;
         console.log("called", lat, long, apiKey);
         fetch(url)
@@ -81,9 +87,11 @@ export function SelectPrefForRival(props) {
                 setLocationName(name.toString());
                 console.log(name);
                 console.log(locationName);
+                setIsLocationLoading(false);
             })
             .catch((error) => {
                 console.error("Error:", error);
+                setIsLocationLoading(false);
             });
     }
 
@@ -115,7 +123,10 @@ export function SelectPrefForRival(props) {
         {label: "22:00-23:00", value: "22:00-23:00"},
         {label: "23:00-00:00", value: "23:00-00:00"}
     ]
-    const weekOptions=[{label:"1 week",value:1},{label:"2 weeks", value:2},{label:"3 weeks",value:3},{label:"4 weeks",value:4}]
+    const weekOptions = [{label: "1 week", value: 1}, {label: "2 weeks", value: 2}, {
+        label: "3 weeks",
+        value: 3
+    }, {label: "4 weeks", value: 4}]
     // con esto lee los params
     // const searchParams = useSearchParams();
     // // con este lee el paramentro de "id"
@@ -130,8 +141,8 @@ export function SelectPrefForRival(props) {
             console.log(team.latitude)
         }, [teamId, token, locationName]);
 
-        if(searchId !== null || searchId !== ""){
-            getSearch(token, searchId, (res)=>{
+        if (searchId !== null || searchId !== "") {
+            getSearch(token, searchId, (res) => {
                 console.log(res);
                 setAverageAge(res.averageAge);
                 // setDate(new Date(res.d ate.year, res.date.month, res.date.date))
@@ -189,10 +200,9 @@ export function SelectPrefForRival(props) {
         return dates;
     };
     const handleSubmit = async (e) => {
-        e.preventDefault();
         const finalValues = selectedTimes.map(option => option.value)
         setFinalSelectedTimes(finalValues)
-        if(!date || !finalSelectedTimes || !zone || !averageAge){
+        if (!date || !finalSelectedTimes || !zone || !averageAge) {
             toast.error('Please fill out all the required fields', {
                 position: "top-center",
                 autoClose: 2500,
@@ -203,15 +213,14 @@ export function SelectPrefForRival(props) {
                 progress: undefined,
                 theme: "light",
             });
-        }
-        else{
+        } else {
             await findRivalMethod({
                 date: generateDatesArray(),
                 time: finalSelectedTimes,
                 latitude: zone[0].toString(),
                 longitude: zone[1].toString(),
-                age:averageAge,
-                isRecurring:checked
+                age: averageAge,
+                isRecurring: checked
             })
         }
     }
@@ -221,6 +230,7 @@ export function SelectPrefForRival(props) {
     };
     const findRivalMethod = async (search) => {
         if (rivalMenuOpen) {
+            setIsLoading(true)
             await findRival(token, teamId, search, (res) => {
                     toast.success('Search is now active!', {
                         containerId: 'toast-container',
@@ -233,6 +243,7 @@ export function SelectPrefForRival(props) {
                         progress: undefined,
                         theme: "light",
                     });
+                    setIsLoading(false)
                     console.log(res)
                     navigate(`/findRival?id=${res}`)
                 },
@@ -247,6 +258,7 @@ export function SelectPrefForRival(props) {
                         progress: undefined,
                         theme: "light",
                     });
+                    setIsLoading(false)
                 },
                 () => {
                     toast.error('Something went wrong', {
@@ -260,6 +272,7 @@ export function SelectPrefForRival(props) {
                             theme: "light",
                         }
                     )
+                    setIsLoading(false)
                 })
         }
     }
@@ -275,9 +288,11 @@ export function SelectPrefForRival(props) {
             </div>
         );
     };
+
     function valuetext(value) {
         return `${value}`;
     }
+
     const handleAverageAgeChange = (event, value) => {
         setAverageAge(value);
     };
@@ -294,7 +309,7 @@ export function SelectPrefForRival(props) {
             value: 35,
             label: '35',
         },
-        {value:45,label:'45'},
+        {value: 45, label: '45'},
         {
             value: 55,
             label: '55',
@@ -318,7 +333,6 @@ export function SelectPrefForRival(props) {
     ];
 
 
-
     function confirmZone() {
         setZone(newZone);
         printSelectedLocation(newZone);
@@ -328,125 +342,137 @@ export function SelectPrefForRival(props) {
     return (
         <div>
             <SideBar getTeamId={props.getTeamId} toggleTeamId={props.toggleTeamId}></SideBar>
-            <TopBar popupOpen = {showPopup} getTeamId={props.getTeamId} toggleTeamId={props.toggleTeamId}/>
-            {/*<div className={"sports_image"}>*/}
-            {/*    <img style={{width: 218, height: "auto"}} src={require("../images/logoRM/logoRM_persona.png")} alt={"deportes"}/>*/}
-            {/*</div>*/}
-
-            {/*<div className={"mirror_sports_image"}>*/}
-            {/*    <img style={{width: 218, height: "auto"}} src={require("../images/logoRM/logoRM_persona.png")} alt={"deportes"}/>*/}
-            {/*</div>*/}
-
-            <div className={"containerPrincipalFindRival"}>
-                <div className="team_name_FR">
-                    <br/>
-                    You've chosen {team.name}
-                    <br/>
-                    Sport: {team.sport}
+            <TopBar popupOpen={showPopup} getTeamId={props.getTeamId} toggleTeamId={props.toggleTeamId}/>
+            {isLoading && (
+                <div className={"spinner"}>
+                    <Spinner animation={"border"}/>
                 </div>
-                <br/>
-                <form onSubmit={rivalMenuOpen && handleSubmit}>
-                    <div className={"datePicker"}>
-                        Choose a day to play:
-                        <br/><br/>
-                        <DatePicker
-                            showIcon
-                            selected={date}
-                            dateFormat="dd/MM/yyyy"
-                            onChange={date => setDate(date)}
-                            minDate={new Date()}
-                            showDisabledMonthNavigation
-                            calendarContainer={MyContainer}
-                        />
-                        <Icon style ={{left:"-25px", top: "-40px", fontSize: "20"}} className="input-icon-log" icon="radix-icons:calendar" />
+            )}
+            {!isLoading && (
+
+                <div className={"containerPrincipalFindRival"}>
+                    <div className="team_name_FR">
+                        <br/>
+                        You've chosen {team.name}
+                        <br/>
+                        Sport: {team.sport}
                     </div>
-                    <div className={"time_select_container"}>
-                        <div className={"time_select"}>
-                            <p>Select your time intervals of preference!</p>
-                            <br/>
-                            <Select
-                                options={options}
-                                value={selectedTimes}
-                                onChange={setSelectedTimes}
-                                defaultValues={defaultTimes}
-                                isMulti
+                    <br/>
+                    <form onSubmit={rivalMenuOpen && handleSubmit}>
+                        <div className={"datePicker"}>
+                            Choose a day to play:
+                            <br/><br/>
+                            <DatePicker
+                                showIcon
+                                selected={date}
+                                dateFormat="dd/MM/yyyy"
+                                onChange={date => setDate(date)}
+                                minDate={new Date()}
+                                showDisabledMonthNavigation
+                                calendarContainer={MyContainer}
                             />
-                            <Icon style ={{left:"-25px", top: "50px", fontSize: "20px", position: "absolute"}} className="input-icon-log" icon="ion:time-outline" />
+                            <Icon style={{left: "-25px", top: "-40px", fontSize: "20"}} className="input-icon-log"
+                                  icon="radix-icons:calendar"/>
                         </div>
-                    </div>
-                    <div className={"ageSlider"}>
-                        Average age:
-                        <br/><br/><br/>
-                        <Box sx={{ width: 300 }}>
-                            <Slider
-                                aria-label="Always visible"
-                                defaultValue={25}
-                                getAriaValueText={valuetext}
-                                marks={marks}
-                                min={18}
-                                max={100}
-                                value={averageAge}
-                                onChange={handleAverageAgeChange}
-                                valueLabelDisplay="on"
-                            />
-                        </Box>
-                        <Icon style ={{left:"-30px", top: "55px", fontSize: "20px", position: "absolute"}} className="input-icon-log" icon="streamline:interface-time-hour-glass-hourglass-loading-measure-clock-time" />
-                    </div>
-                    {!weeksOpen && (
-                        <div className={"checkboxRecurrent"}>
-                            <FormGroup>
-                                <FormControlLabel control=
-                                                      {<Checkbox checked={checked}
-                                                                 onChange={handleCheckedBox} />}
-                                                  label="Recurrent search" />
-                            </FormGroup>
+                        <div className={"time_select_container"}>
+                            <div className={"time_select"}>
+                                <p>Select your time intervals of preference!</p>
+                                <br/>
+                                <Select
+                                    options={options}
+                                    value={selectedTimes}
+                                    onChange={setSelectedTimes}
+                                    defaultValues={defaultTimes}
+                                    isMulti
+                                />
+                                <Icon style={{left: "-25px", top: "50px", fontSize: "20px", position: "absolute"}}
+                                      className="input-icon-log" icon="ion:time-outline"/>
+                            </div>
                         </div>
-                    )}
-                    {weeksOpen &&(
-                        <div>
-                            <div className={"checkboxRecurrent"} style={{left:"575px"}}>
+                        <div className={"ageSlider"}>
+                            Average age:
+                            <br/><br/><br/>
+                            <Box sx={{width: 300}}>
+                                <Slider
+                                    aria-label="Always visible"
+                                    defaultValue={25}
+                                    getAriaValueText={valuetext}
+                                    marks={marks}
+                                    min={18}
+                                    max={100}
+                                    value={averageAge}
+                                    onChange={handleAverageAgeChange}
+                                    valueLabelDisplay="on"
+                                />
+                            </Box>
+                            <Icon style={{left: "-30px", top: "55px", fontSize: "20px", position: "absolute"}}
+                                  className="input-icon-log"
+                                  icon="streamline:interface-time-hour-glass-hourglass-loading-measure-clock-time"/>
+                        </div>
+                        {!weeksOpen && (
+                            <div className={"checkboxRecurrent"}>
                                 <FormGroup>
                                     <FormControlLabel control=
                                                           {<Checkbox checked={checked}
-                                                                     onChange={handleCheckedBox} />}
-                                                      label="Recurrent search" />
+                                                                     onChange={handleCheckedBox}/>}
+                                                      label="Recurrent search"/>
                                 </FormGroup>
                             </div>
-                            <div className={"selectRecurrent"}>
-                                <Select
-                                    options={weekOptions}
-                                    value={amountWeeks}
-                                    onChange={setAmountWeeks}></Select>
-                            </div>
-                        </div>
-                    )}
-
-
-                    <div className={"zone"}>
-                        {changeLocationButton === 'Select location' && <p>Select your preferred zone: </p>}
-                        {changeLocationButton !== 'Select location' && <p>Your preferred zone: {locationName}</p>}
-                        <button className={"selectLocationButton"} onClick={handleSelectLocation}> <Icon style ={{left:"-30px", top: "-5px", fontSize: "20"}} className="input-icon-log" icon="mi:location" /> {changeLocationButton} </button>
-                        {showPopup && (
-                            <div className="popupFR">
-                                <BingMap
-                                    onInfoboxesWithPushPinsChange={handleInfoboxesWithPushPins}
-                                />
-                                {(zone !== newZone && newZone.length !== 0) && (
-                                    <div>
-                                        <button className={"confirmLocation"} id="confirmLoc" onClick={confirmZone}>Confirm location</button>
-                                    </div>
-                                )}
-                                <button className={"goBackSelLoc"} onClick={handleSelectLocation}>Go back</button>
+                        )}
+                        {weeksOpen && (
+                            <div>
+                                <div className={"checkboxRecurrent"} style={{left: "575px"}}>
+                                    <FormGroup>
+                                        <FormControlLabel control=
+                                                              {<Checkbox checked={checked}
+                                                                         onChange={handleCheckedBox}/>}
+                                                          label="Recurrent search"/>
+                                    </FormGroup>
+                                </div>
+                                <div className={"selectRecurrent"}>
+                                    <Select
+                                        options={weekOptions}
+                                        value={amountWeeks}
+                                        onChange={setAmountWeeks}></Select>
+                                </div>
                             </div>
                         )}
-                    </div>
 
 
-                    <button className={"findRivalButton"} id="submit" type="submit" onClick={openAndFindRivals}> Find rival!
-                    </button>
-                </form>
-                <ToastContainer/> {/* Mover el ToastContainer aquí */}
-            </div>
+                        <div className={"zone"}>
+                            {isLocationLoading && (<div className={"spinnerZone"}><Spinner animation={"border"}/>
+                            </div>)}
+
+                            {changeLocationButton === 'Select location' && <p>Select your preferred zone: </p>}
+                            {changeLocationButton !== 'Select location' && <p>Your preferred zone: {locationName}</p>}
+                            <button className={"selectLocationButton"} onClick={handleSelectLocation}><Icon
+                                style={{left: "-30px", top: "-5px", fontSize: "20"}} className="input-icon-log"
+                                icon="mi:location"/> {changeLocationButton} </button>
+                            {showPopup && (
+                                <div className="popupFR">
+                                    <BingMap
+                                        onInfoboxesWithPushPinsChange={handleInfoboxesWithPushPins}
+                                    />
+                                    {(zone !== newZone && newZone.length !== 0) && (
+                                        <div>
+                                            <button className={"confirmLocation"} id="confirmLoc"
+                                                    onClick={confirmZone}>Confirm location
+                                            </button>
+                                        </div>
+                                    )}
+                                    <button className={"goBackSelLoc"} onClick={handleSelectLocation}>Go back</button>
+                                </div>
+                            )}
+                        </div>
+
+
+                        <button className={"findRivalButton"} id="submit" type="submit"
+                                onClick={openAndFindRivals}> Find
+                            rival!
+                        </button>
+                    </form>
+                </div>)}
+            <ToastContainer/> {/* Mover el ToastContainer aquí */}
         </div>
     )
 }

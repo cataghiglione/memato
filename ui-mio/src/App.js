@@ -25,6 +25,8 @@ import {toast} from "react-toastify";
 import NotificationsActiveIcon from '@mui/icons-material/NotificationsActive';
 import * as PropTypes from "prop-types";
 import {SelectPrefForRival} from "./pages/SeleftPrefForRival";
+import 'bootstrap/dist/css/bootstrap.min.css';
+
 
 
 const App = () =>{

@@ -24,6 +24,7 @@ import CheckOutlinedIcon from '@mui/icons-material/CheckOutlined';
 import DoDisturbAltOutlinedIcon from '@mui/icons-material/DoDisturbAltOutlined';
 import QuestionAnswerOutlinedIcon from '@mui/icons-material/QuestionAnswerOutlined';
 import {ChatFill} from "react-bootstrap-icons";
+import Spinner from "react-bootstrap/Spinner";
 
 
 
@@ -33,6 +34,7 @@ export function CurrentSearchesPage(props) {
     const token = auth.getToken();
     const team_id = props.getTeamId;
     const [popupMsg, setPopupMsg] = useState('');
+    const [ isLoading, setIsLoading ] = useState(false);
 
     function goToHome() {
         window.location.href = "/home"
@@ -104,6 +106,7 @@ export function CurrentSearchesPage(props) {
         setShowConfirmation(false);
     };
     const handleConfirm = () => {
+        setIsLoading(true)
         deleteSearch(
             token,
             selectedSearch.id,
@@ -119,17 +122,20 @@ export function CurrentSearchesPage(props) {
                 getPendingConfirmations(token,team_id,(matches)=>{
                     setPendingMatches(matches)
                 })
+                setIsLoading(false)
             },
             (error) => {
                 setPopupMsg('Error');
                 setTimeout(() => {
                     setPopupMsg('');
                 }, 180);
+                setIsLoading(false)
             }
         );
         setShowConfirmation(false);
     };
     const handleConfirmMatch = async (match_id) => {
+        setIsLoading(true)
         await confirmMatch(token, match_id, team_id, () => {
             getPendingConfirmations(token, team_id, (matches) => {
                     setPendingMatches(matches)
@@ -143,20 +149,23 @@ export function CurrentSearchesPage(props) {
                         progress: undefined,
                         theme: "light",
                     });
-
                     // and takes you to that contact (hacleo hoy)
                 }, (matches) => {
                     // TODO ERROR CALLBACK
+                setIsLoading(false)
                 }
             )
             currentSearches(token,team_id,(searches)=>{
                 setSearches(searches.searches)
                 setRecurringSearches(searches.recurringSearches)
+                setIsLoading(false)
             })
         })
     }
     const handleDeclineMatch = async (match_id) => {
-        await declineMatch(token, match_id, team_id, () => {
+        setIsLoading(true)
+        await declineMatch(
+            token, match_id, team_id, () => {
             getPendingConfirmations(token, team_id, (matches) => {
                     setPendingMatches(matches)
                     toast.success('Match rejected!', {
@@ -169,6 +178,7 @@ export function CurrentSearchesPage(props) {
                         progress: undefined,
                         theme: "light",
                     });
+                    setIsLoading(false)
 
 
 
@@ -176,8 +186,8 @@ export function CurrentSearchesPage(props) {
                     // TODO ERROR CALLBACK
 
                 }
-            )
-        })
+            )}
+        )
 
     }
     function findOrCreateContact(otherTeamId) {
@@ -197,43 +207,11 @@ export function CurrentSearchesPage(props) {
     }
 
 
-    // const handleDeleteClick = (search) => {
-    //     if (window.confirm('Are you sure you want to delete this search?')) {
-    //         deleteSearch(
-    //             token,
-    //             search.id,
-    //             () => {
-    //                 setPopupMsg('Delete succesfull')
-    //                 setTimeout(() => {
-    //                     setPopupMsg('');
-    //                 }, 180);
-    //                 currentSearches(token, (searches)=>setSearches(searches));
-    //             },
-    //             (error) => {
-    //                 setPopupMsg('Error')
-    //                 setTimeout(() => {
-    //                     setPopupMsg('');
-    //                 }, 180);
-    //             }
-    //         )
-    //     }
-    // }
-
     const handleGoBackClick=(id)=>{
         window.location.href = `/findRival?id=${id}`
 
     }
 
- /*   function OpenCloseMap(e){
-
-        if (mapState === false){
-            setMapState(true);
-        }
-        else{
-            setMapState(false);
-        }
-        console.log(teamSelectedLoc)
-    }*/
     return (
         <div>
             <SideBar getTeamId={props.getTeamId} toggleTeamId={props.toggleTeamId}></SideBar>
@@ -252,7 +230,11 @@ export function CurrentSearchesPage(props) {
             )}
 
             <TopBar toggleTeamId = {props.toggleTeamId}    getTeamId={props.getTeamId}/>
-
+            {isLoading && (
+                <div className={"spinner"}>
+                    <Spinner animation={"border"}/>
+                </div>
+            )}
 
             {searches.length > 0 && (
                 <div>
@@ -292,17 +274,12 @@ export function CurrentSearchesPage(props) {
                                         <p >Time(s): {search.times.join(", ")}</p>
                                         <p >Day: {search.day}/{search.month + 1}</p>
                                     </div>
-                                   {/* <button className={"delete-search-button"} style={{left:"50%"}} onClick={() => {OpenCloseMap(); setTeamSelectedLoc([search.latitude, search.longitude])}}>
-                                        <PinMapFill />
-                                    </button>*/}
-
-                                    {/*<button className={"delete-search-button"} onClick={() => handleDeleteClick(search)}>*/}
-                                    {/*    <i className={"bi bi-trash"}></i>*/}
-                                    {/*</button>*/}
                                     <Tooltip title={"Cancel search"}>
                                     <IconButton aria-label="delete" onClick={() => handleDeleteClick(search)}>
                                         <DeleteIcon />
                                     </IconButton>
+                                    </Tooltip>
+                                    <Tooltip title={"Check search matches"}>
                                     <IconButton aria-label="delete" onClick={() => handleGoBackClick(search.id)}>
                                         <SearchIcon />
                                     </IconButton>
@@ -328,10 +305,11 @@ export function CurrentSearchesPage(props) {
                                         <DeleteIcon />
                                     </IconButton>
                                     </Tooltip>
-
+                                    <Tooltip title={"Check search matches"}>
                                     <IconButton aria-label="delete" onClick={() => handleGoBackClick(recurring.id)}>
                                         <SearchIcon />
                                     </IconButton>
+                                    </Tooltip>
                                 </div>
                             </div>
                         )))
