@@ -21,6 +21,8 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
 import {useSearchParams} from "react-router-dom";
 import { addWeeks } from 'date-fns';
+import Spinner from 'react-bootstrap/Spinner';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 
 // import '@mobiscroll/react/dist/css/mobiscroll.min.css';
@@ -38,7 +40,8 @@ export function SelectPrefForRival(props) {
     const [date, setDate] = useState(new Date());
     const [rangeAge, setRangeAge] = useState([20, 30]);
     const [checked, setChecked] = React.useState(false);
-
+    const [isLoading, setIsLoading] = useState(false);
+    const [isLocationLoading, setIsLocationLoading] = useState(false);
 
     const [rivalMenuOpen, setRivalMenuOpen] = useState(false);
 
@@ -64,6 +67,7 @@ export function SelectPrefForRival(props) {
     const apiKey = 'ApqYZq8IsmnPRxOON1m_mY9eGEZqjDawW2cleubNdcVT5CbVMU8snXUF4qku9DcW'; // Replace with your Bing Maps API key
 
     function getLocationName(lat, long, apiKey) {
+        setIsLocationLoading(true);
         const url = `http://dev.virtualearth.net/REST/v1/Locations/${lat},${long}?o=xml&key=${apiKey}`;
         console.log("called", lat, long, apiKey);
         fetch(url)
@@ -79,9 +83,11 @@ export function SelectPrefForRival(props) {
                 setLocationName(name.toString());
                 console.log(name);
                 console.log(locationName);
+                setIsLocationLoading(false);
             })
             .catch((error) => {
                 console.error("Error:", error);
+                setIsLocationLoading(false);
             });
     }
 
@@ -220,6 +226,7 @@ export function SelectPrefForRival(props) {
     };
     const findRivalMethod = async (search) => {
         if (rivalMenuOpen) {
+            setIsLoading(true)
             await findRival(token, teamId, search, (res) => {
                     toast.success('Search is now active!', {
                         containerId: 'toast-container',
@@ -232,6 +239,7 @@ export function SelectPrefForRival(props) {
                         progress: undefined,
                         theme: "light",
                     });
+                    setIsLoading(false)
                     console.log(res)
                     navigate(`/findRival?id=${res}`)
                 },
@@ -246,6 +254,7 @@ export function SelectPrefForRival(props) {
                         progress: undefined,
                         theme: "light",
                     });
+                    setIsLoading(false)
                 },
                 () => {
                     toast.error('Something went wrong', {
@@ -259,6 +268,7 @@ export function SelectPrefForRival(props) {
                             theme: "light",
                         }
                     )
+                    setIsLoading(false)
                 })
         }
     }
@@ -328,13 +338,11 @@ export function SelectPrefForRival(props) {
         <div>
             <SideBar getTeamId={props.getTeamId} toggleTeamId={props.toggleTeamId}></SideBar>
             <TopBar popupOpen = {showPopup} getTeamId={props.getTeamId} toggleTeamId={props.toggleTeamId}/>
-            {/*<div className={"sports_image"}>*/}
-            {/*    <img style={{width: 218, height: "auto"}} src={require("../images/logoRM/logoRM_persona.png")} alt={"deportes"}/>*/}
-            {/*</div>*/}
-
-            {/*<div className={"mirror_sports_image"}>*/}
-            {/*    <img style={{width: 218, height: "auto"}} src={require("../images/logoRM/logoRM_persona.png")} alt={"deportes"}/>*/}
-            {/*</div>*/}
+            {isLoading && (
+                <div className={"spinner"}>
+                    <Spinner animation={"border"}/>
+                </div>)}
+            {!isLoading &&(
 
             <div className={"containerPrincipalFindRival"}>
                 <div className="team_name_FR">
@@ -422,6 +430,8 @@ export function SelectPrefForRival(props) {
 
 
                     <div className={"zone"}>
+                        {isLocationLoading && (<div className={"spinnerZone"}><Spinner animation={"border"}/>
+                        </div>)}
                         {changeLocationButton === 'Select location' && <p>Select your preferred zone: </p>}
                         {changeLocationButton !== 'Select location' && <p>Your preferred zone: {locationName}</p>}
                         <button className={"selectLocationButton"} onClick={handleSelectLocation}> <Icon style ={{left:"-30px", top: "-5px", fontSize: "20"}} className="input-icon-log" icon="mi:location" /> {changeLocationButton} </button>
@@ -444,8 +454,8 @@ export function SelectPrefForRival(props) {
                     <button className={"findRivalButton"} id="submit" type="submit" onClick={openAndFindRivals}> Find rival!
                     </button>
                 </form>
-                <ToastContainer/> {/* Mover el ToastContainer aquí */}
-            </div>
+            </div>)}
+            <ToastContainer/> {/* Mover el ToastContainer aquí */}
         </div>
     )
 }
