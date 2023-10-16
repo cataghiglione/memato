@@ -595,7 +595,7 @@ public class Routes {
                         if (searchForm.isRecurring()) {
                             searches.getSearchById(searchId.longValue()).ifPresent(
                                     (search) -> {
-                                        CreateSearchForm newSearchForm = new CreateSearchForm(search.getTeam(), search.searching(), searchForm.getDate(), searchForm.getLatitude(), searchForm.getLongitude(), searchForm.getAge(), false);
+                                        CreateSearchForm newSearchForm = new CreateSearchForm(search.getTeam(), search.searching(), searchForm.getDate(), searchForm.getLatitude(), searchForm.getLongitude(), false, searchForm.getMinAge(), searchForm.getMaxAge());
                                         for (int i = 0; i < searchForm.getDate().length; i++) {
                                             TimeInterval timeInterval2 = system.createTimeInterval(List.of(time));
                                             system.findOrCreateSearch(newSearchForm, team, timeInterval2, searchForm.getDate()[i]).ifPresent(
@@ -616,7 +616,7 @@ public class Routes {
                             List<Search> candidates = new ArrayList<>();
                             for (int i = 0; i < searchesForCandidates.size(); i++) {
                                 Search search = searchesForCandidates.get(i);
-                                List<Search> possibleCandidates = searches.findCandidates(user_id, search.getTime(), search.getDate(), search.getTeam().getSport(), search.getTeam().getQuantity(), search.getLatitude(), search.getLongitude(), search.getAverageAge());
+                                List<Search> possibleCandidates = searches.findCandidates(user_id, search.getTime(), search.getDate(), search.getTeam().getSport(), search.getTeam().getQuantity(), search.getLatitude(), search.getLongitude(),search.getMinAge(),search.getMaxAge());
                                 candidates.addAll(possibleCandidates);
                             }
                             List<CommonTimeSearch> commonTimeSearchList = new ArrayList<>();
@@ -698,12 +698,12 @@ public class Routes {
                                         List<Search> linkedSearches = searches.getSearchesByRecurringSearchId(search_id);
                                         for (int i = 0; i < linkedSearches.size(); i++) {
                                             Search thisSearch = linkedSearches.get(i);
-                                            List<Search> thisSearchCandidates = searches.findCandidates(user_id, thisSearch.getTime(), thisSearch.getDate(), thisSearch.getTeam().getSport(), thisSearch.getTeam().getQuantity(), thisSearch.getLatitude(), thisSearch.getLongitude(), thisSearch.getAverageAge());
+                                            List<Search> thisSearchCandidates = searches.findCandidates(user_id, thisSearch.getTime(), thisSearch.getDate(), thisSearch.getTeam().getSport(), thisSearch.getTeam().getQuantity(), thisSearch.getLatitude(), thisSearch.getLongitude(), thisSearch.getMinAge(), thisSearch.getMaxAge());
                                             candidates.addAll(thisSearchCandidates);
                                         }
                                     }
                                     else {
-                                        candidates.addAll(searches.findCandidates(user_id,search.getTime(),search.getDate(),search.getTeam().getSport(),search.getTeam().getQuantity(),search.getLatitude(),search.getLongitude(),search.getAverageAge()));
+                                        candidates.addAll(searches.findCandidates(user_id,search.getTime(),search.getDate(),search.getTeam().getSport(),search.getTeam().getQuantity(),search.getLatitude(),search.getLongitude(),search.getMinAge(),search.getMaxAge()));
                                     }
                                     List<CommonTimeSearch> commonTimeSearchList = new ArrayList<>();
                                     List<Search> compatible_searches = matches.findNoMatch(Long.toString(search_id), candidates);
