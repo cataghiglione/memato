@@ -20,22 +20,25 @@ public class CreateSearchForm {
     private final Date[] date;
     private final String latitude;
     private final String longitude;
-    private final int age;
+//    private final int age;
     private final boolean isRecurring;
+    private final int minAge;
+    private final int maxAge;
 
     public static CreateSearchForm createFromJson(String body) {
         return fromJson(body, CreateSearchForm.class);
     }
 
-    public CreateSearchForm(Team team, boolean isSearching, Date[] date,  String latitude,String longitude,int age, boolean isRecurring) {
+    public CreateSearchForm(Team team, boolean isSearching, Date[] date,  String latitude,String longitude, boolean isRecurring, int minAge, int maxAge) {
         this.team = team;
         this.isSearching = isSearching;
 //        LocalDate localDate = LocalDate.parse(date, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
         this.date = date;
         this.latitude=latitude;
         this.longitude=longitude;
-        this.age=age;
         this.isRecurring=isRecurring;
+        this.minAge=minAge;
+        this.maxAge=maxAge;
     }
 
     public Team getTeam() {
@@ -58,9 +61,17 @@ public class CreateSearchForm {
         return longitude;
     }
 
-    public int getAge() {
-        return age;
+    public int getMinAge() {
+        return minAge;
     }
+
+    public int getMaxAge() {
+        return maxAge;
+    }
+
+    //    public int getAge() {
+//        return age;
+//    }
     public boolean isRecurring(){return isRecurring;}
     //    public List<String> getTime() {
 //        return time;

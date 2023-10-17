@@ -23,16 +23,16 @@ public class Searches {
         this.entityManager = entityManager;
     }
 
-    public Search createSearch(Team team, Date date, List<String> time, String latitude, String longitude, int age, boolean isRecurring) throws ParseException {
-        Optional<Search> searchOptional = findSearchByTeam(Long.toString(team.getId()), time, date.getMonth(), date.getDate(), date.getYear(), latitude, longitude, age, isRecurring);
+    public Search createSearch(Team team, Date date, List<String> time, String latitude, String longitude, boolean isRecurring, int minAge, int maxAge) throws ParseException {
+        Optional<Search> searchOptional = findSearchByTeam(Long.toString(team.getId()), time, date.getMonth(), date.getDate(), date.getYear(), latitude, longitude,  isRecurring, minAge, maxAge);
         if (searchOptional.isEmpty()) {
-            final Search search = Search.create(team, date, time, latitude, longitude, age, isRecurring);
+            final Search search = Search.create(team, date, time, latitude, longitude,  isRecurring,minAge,maxAge);
 
             entityManager.persist(search);
             return search;
 
         } else {
-            reactivateSearch(team, time, date, latitude, longitude, age, isRecurring);
+            reactivateSearch(team, time, date, latitude, longitude,  isRecurring,minAge,maxAge);
             return searchOptional.get();
         }
     }
@@ -57,7 +57,7 @@ public class Searches {
                 .stream()
                 .findFirst();
 
-        return findCandidates(Long.toString(search.get().getTeam().getUserId()), search.get().getTime(), search.get().getDate(), search.get().getTeam().getSport(), search.get().getTeam().getQuantity(), search.get().getLatitude(), search.get().getLongitude(), search.get().getAverageAge());
+        return findCandidates(Long.toString(search.get().getTeam().getUserId()), search.get().getTime(), search.get().getDate(), search.get().getTeam().getSport(), search.get().getTeam().getQuantity(), search.get().getLatitude(), search.get().getLongitude(), search.get().getMinAge(), search.get().getMaxAge());
     }
 
     public boolean deactivateSearchBySearchId(Long search_id) {
@@ -81,8 +81,8 @@ public class Searches {
                 .getResultList();
     }
 
-    public Optional<Search> reactivateSearch(Team team, List<String> time, Date date, String latitude, String longitude, int age, boolean isRecurring) {
-        Optional<Search> search = findSearchByTeam(Long.toString(team.getId()), time, date.getMonth(), date.getDate(), date.getYear(), latitude, longitude, age, isRecurring);
+    public Optional<Search> reactivateSearch(Team team, List<String> time, Date date, String latitude, String longitude,  boolean isRecurring, int minAge, int maxAge) {
+        Optional<Search> search = findSearchByTeam(Long.toString(team.getId()), time, date.getMonth(), date.getDate(), date.getYear(), latitude, longitude, isRecurring,minAge,maxAge);
         if(search.isPresent() && search.get().searching()){
             return Optional.empty();
         }
@@ -100,39 +100,39 @@ public class Searches {
         return updatedCount>0;
     }
 
-    public boolean exists(String id, List<String> time, Date date, String latitude, String longitude, int age, boolean isRecurring) {
-        return findSearchByTeam(id, time, date.getMonth(), date.getDate(), date.getYear(), latitude, longitude, age, isRecurring).isPresent();
+    public boolean exists(String id, List<String> time, Date date, String latitude, String longitude,  boolean isRecurring, int minAge, int maxAge) {
+        return findSearchByTeam(id, time, date.getMonth(), date.getDate(), date.getYear(), latitude, longitude,  isRecurring, minAge,maxAge).isPresent();
     }
 
-    public List<Search> findCandidatesWhenRecurring(String id, TimeInterval time, Date date, String sport, String quantity, String latitude, String longitude, int age) {
-        int weekDay = date.getDay();
-        List<Search> possibleCandidates = entityManager.createQuery("SELECT s FROM Search s WHERE (  s.date.weekDay =: weekDay AND cast(s.team.user.id as string) not LIKE :id AND s.team.sport LIKE :sport " +
-                        "AND s.team.quantity LIKE :quantity AND isSearching = true AND (s.averageAge BETWEEN :minAge AND :maxAge))", Search.class)
-                .setParameter("weekDay", weekDay)
-                .setParameter("sport", sport)
-                .setParameter("id", id)
-                .setParameter("quantity", quantity)
-                .setParameter("minAge", age - 10)
-                .setParameter("maxAge", age + 10)
-                .getResultList();
-        for (int i = 0; i < possibleCandidates.size(); i++) {
-            Search candidate = possibleCandidates.get(i);
-            if (!candidate.isRecurring()) {
-                if (candidate.getDate().getYear() < date.getYear()) {
-                    possibleCandidates.remove(candidate);
-                } else if (candidate.getDate().getYear() == date.getYear() && candidate.getDate().getMonth() < date.getMonth()) {
-                    possibleCandidates.remove(candidate);
-
-                } else if (candidate.getDate().getYear() == date.getYear() && candidate.getDate().getMonth() == date.getMonth() && candidate.getDate().getDate() < date.getDate()) {
-                    possibleCandidates.remove(candidate);
-
-                }
-            }
-        }
-        return filtrateCandidates(time, latitude, longitude, possibleCandidates);
-
-
-    }
+//    public List<Search> findCandidatesWhenRecurring(String id, TimeInterval time, Date date, String sport, String quantity, String latitude, String longitude, int age) {
+//        int weekDay = date.getDay();
+//        List<Search> possibleCandidates = entityManager.createQuery("SELECT s FROM Search s WHERE (  s.date.weekDay =: weekDay AND cast(s.team.user.id as string) not LIKE :id AND s.team.sport LIKE :sport " +
+//                        "AND s.team.quantity LIKE :quantity AND isSearching = true AND (s.averageAge BETWEEN :minAge AND :maxAge))", Search.class)
+//                .setParameter("weekDay", weekDay)
+//                .setParameter("sport", sport)
+//                .setParameter("id", id)
+//                .setParameter("quantity", quantity)
+//                .setParameter("minAge", age - 10)
+//                .setParameter("maxAge", age + 10)
+//                .getResultList();
+//        for (int i = 0; i < possibleCandidates.size(); i++) {
+//            Search candidate = possibleCandidates.get(i);
+//            if (!candidate.isRecurring()) {
+//                if (candidate.getDate().getYear() < date.getYear()) {
+//                    possibleCandidates.remove(candidate);
+//                } else if (candidate.getDate().getYear() == date.getYear() && candidate.getDate().getMonth() < date.getMonth()) {
+//                    possibleCandidates.remove(candidate);
+//
+//                } else if (candidate.getDate().getYear() == date.getYear() && candidate.getDate().getMonth() == date.getMonth() && candidate.getDate().getDate() < date.getDate()) {
+//                    possibleCandidates.remove(candidate);
+//
+//                }
+//            }
+//        }
+//        return filtrateCandidates(time, latitude, longitude, possibleCandidates);
+//
+//
+//    }
 
     private List<Search> filtrateCandidates(TimeInterval time, String latitude, String longitude, List<Search> possibleCandidates) {
         List<Search> candidates = new ArrayList<>(possibleCandidates.size());
@@ -151,21 +151,21 @@ public class Searches {
     }
 
 
-    public List<Search> findCandidates(String id, TimeInterval time, model.Date date, String sport, String quantity, String latitude, String longitude, int age) {
+    public List<Search> findCandidates(String id, TimeInterval time, model.Date date, String sport, String quantity, String latitude, String longitude, int minAge, int maxAge) {
         int month = date.getMonth();
         int day = date.getDate();
         int year = date.getYear();
         List<Search> possibleCandidates = entityManager.createQuery("SELECT s FROM Search s WHERE ( ( (s.isRecurring = false AND s.date.month =: month AND s.date.day =: day AND s.date.year=: year))" +
                         "AND cast(s.team.user.id as string) not LIKE :id AND s.team.sport LIKE :sport " +
-                        "AND s.team.quantity LIKE :quantity AND isSearching = true AND (s.averageAge BETWEEN :minAge AND :maxAge))", Search.class)
+                        "AND s.team.quantity LIKE :quantity AND isSearching = true AND NOT (:maxAge < s.minAge OR s.maxAge < :minAge))", Search.class)
                 .setParameter("month", month)
                 .setParameter("day", day)
                 .setParameter("year", year)
                 .setParameter("sport", sport)
                 .setParameter("id", id)
                 .setParameter("quantity", quantity)
-                .setParameter("minAge", age - 10)
-                .setParameter("maxAge", age + 10)
+                .setParameter("minAge", minAge)
+                .setParameter("maxAge", maxAge)
                 .getResultList();
 
         return filtrateCandidates(time, latitude, longitude, possibleCandidates);
@@ -199,15 +199,16 @@ public class Searches {
                 .executeUpdate();
     }
 
-    private Optional<Search> findSearchByTeam(String team_id, List<String> time, int month, int day, int year, String latitude, String longitude, int age, boolean isRecurring) {
-        Optional<Search> search = entityManager.createQuery("SELECT s FROM Search s WHERE (cast(s.team.id as string) LIKE :team_id  AND isRecurring = :isRecurring AND s.date.day = :day AND s.date.month = :month AND s.date.year = :year AND s.latitude LIKE :latitude AND s.longitude LIKE :longitude AND s.averageAge = :age)", Search.class)
+    private Optional<Search> findSearchByTeam(String team_id, List<String> time, int month, int day, int year, String latitude, String longitude,  boolean isRecurring, int minAge, int maxAge) {
+        Optional<Search> search = entityManager.createQuery("SELECT s FROM Search s WHERE (cast(s.team.id as string) LIKE :team_id  AND isRecurring = :isRecurring AND s.date.day = :day AND s.date.month = :month AND s.date.year = :year AND s.latitude LIKE :latitude AND s.longitude LIKE :longitude AND s.minAge = :minAge AND s.maxAge = :maxAge)", Search.class)
                 .setParameter("team_id", team_id)
                 .setParameter("month", month)
                 .setParameter("year", year)
                 .setParameter("day", day)
                 .setParameter("latitude", latitude)
                 .setParameter("longitude", longitude)
-                .setParameter("age", age)
+                .setParameter("minAge",minAge)
+                .setParameter("maxAge",maxAge)
                 .setParameter("isRecurring", isRecurring)
                 .getResultList()
                 .stream()

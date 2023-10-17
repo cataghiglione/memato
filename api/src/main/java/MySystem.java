@@ -70,11 +70,11 @@ public class MySystem {
             final Searches searches = datasource.searches();
             try {
                 return searches.exists(Long.toString(team.getId()), time.getIntervals(), date,
-                        form.getLatitude(), form.getLongitude(),form.getAge(), form.isRecurring())
+                        form.getLatitude(), form.getLongitude(),form.isRecurring(),form.getMinAge(),form.getMaxAge())
                         ? searches.reactivateSearch(team, time.getIntervals(), date, form.getLatitude(),
-                        form.getLongitude(), form.getAge(), form.isRecurring()) :
+                        form.getLongitude(), form.isRecurring(),form.getMinAge(),form.getMaxAge()) :
                         Optional.of(searches.createSearch(team, date, time.getIntervals(),
-                                form.getLatitude(), form.getLongitude(), form.getAge(), form.isRecurring()));
+                                form.getLatitude(), form.getLongitude(),  form.isRecurring(),form.getMinAge(),form.getMaxAge()));
             } catch (ParseException e) {
                 throw new RuntimeException(e);
             }

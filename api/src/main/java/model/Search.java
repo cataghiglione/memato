@@ -38,8 +38,12 @@ public class Search {
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "DATE_ID", referencedColumnName = "id")
     private model.Date date;
+
+
     @Column
-    private int averageAge;
+    private int minAge;
+    @Column
+    private int maxAge;
     @Column
     private Long recurrentSearchId;
 
@@ -47,21 +51,22 @@ public class Search {
     public Search() {
     }
 
-    private Search(Team team, Date date, List<String> time,String latitude, String longitude, int age,boolean isRecurring) {
+    private Search(Team team, Date date, List<String> time,String latitude, String longitude, boolean isRecurring, int minAge, int maxAge) {
         this.team=team;
         this.isSearching=true;
         this.time=new TimeInterval(time);
         this.latitude=latitude;
         this.longitude=longitude;
         this.date= new model.Date(date.getDate(),date.getMonth(),date.getYear(),date.getDay());
-        this.averageAge=age;
         this.isRecurring=isRecurring;
         this.recurrentSearchId = (long) -1;
+        this.minAge = minAge;
+        this.maxAge = maxAge;
 
 
     }
-    public static Search create(Team team, Date date, List<String> time,String latitude,String longitude,int age, boolean isRecurring){
-        return new Search(team, date,time,latitude,longitude,age,isRecurring);
+    public static Search create(Team team, Date date, List<String> time,String latitude,String longitude, boolean isRecurring, int minAge, int maxAge){
+        return new Search(team, date,time,latitude,longitude,isRecurring,minAge,maxAge);
     }
     private void setSearching(boolean value){
         this.isSearching=value;
@@ -83,6 +88,14 @@ public class Search {
 
     public Team getTeam() {
         return team;
+    }
+
+    public int getMinAge() {
+        return minAge;
+    }
+
+    public int getMaxAge() {
+        return maxAge;
     }
 
     public void isSearching() {
@@ -127,9 +140,7 @@ public class Search {
         return id;
     }
 
-    public int getAverageAge() {
-        return averageAge;
-    }
+
 
     public boolean isRecurring() {
         return isRecurring;
