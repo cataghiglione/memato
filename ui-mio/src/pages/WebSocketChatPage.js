@@ -41,7 +41,6 @@ export function WebSocketChat(props) {
         // on open cargar todos los mensajes en las listas receivedMessages y sentMessages.
         socket.onopen = () => {
             console.log('WebSocket connection opened');
-            console.log("Type of the id is: " + typeof props.getTeamId)
             if (!isUserConnected) {
                 const messageJSON = {
                     sender: props.getTeamId.toString(),
@@ -94,8 +93,7 @@ export function WebSocketChat(props) {
                 content: message,
             };
             // Send message via WebSocket
-            console.log("id " +messageJSON)
-                webSocket.send(JSON.stringify(messageJSON));
+            webSocket.send(JSON.stringify(messageJSON));
             //HACER FORMA DE VERIFICAR Q FUÉ ENVIADO.
             // Save message in the database
             const messageData = {
@@ -131,8 +129,6 @@ export function WebSocketChat(props) {
         }
         if(!contactsId.includes(data.userList[1]) && !contactsId.includes(data.userList[0])){
         }
-        console.log("contactsid: ")
-        console.log(contactsId); //(river, depo == 1, 2) (river, depo, pincha ==1,2,3)
         // en el update chat puedo actualizar la lista de contactos.
         setChat((prevChat) => [...prevChat, data.userMessage]);
         setUserList(data.userList);
@@ -200,6 +196,13 @@ export function WebSocketChat(props) {
             setContactsId(contactsIds);
         });
     };
+
+
+    function checkNewContacts(){
+        for (let message in yourMessages) {
+            console.log(message)
+        }
+    }
     return (
         <div>
             <SideBar getTeamId={props.getTeamId} toggleTeamId={props.toggleTeamId}></SideBar>
@@ -222,11 +225,28 @@ export function WebSocketChat(props) {
                                     {contact.team2.name.charAt(0).toUpperCase() + contact.team2.name.substring(1).toLowerCase()}
                                 </li>
                             </ul>
+                            {/*The line below seems totally redundant to me*/}
                             {contact.id === currentContact && setOtherTeamName(contact.team2.name)}
                         </div>
                     ))}
-                </div>
 
+                {/*If I recieve a message from a new contact*/}
+                    <div>
+                        {yourMessages.map((message, index) => {
+                            const { sender, message: content, timestamp, contact } = message;
+                            const [hour, minute] = timestamp.split(':');
+
+                            if (
+                                contactsId.indexOf(sender) === -1 &&
+                                sender !== props.getTeamId.toString()
+                            ) {
+                                // You can perform your desired actions here
+                                // If you want to call a function, do it outside the JSX block
+                                updateContactsList();
+                            }
+                        })}
+                    </div>
+                </div>
                 {/*Chat*/}
                 {targetUser !== '0' && (
                     <div className={"conversation"}>
@@ -283,6 +303,7 @@ export function WebSocketChat(props) {
                         </div>
                     </div>
                 )}
+
                 {/*Input*/}
                 {currentContact !== "0" &&(
                     <div className="conversation-compose">
